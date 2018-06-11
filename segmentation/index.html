@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang=de>
+<head>
+	<meta charset=utf-8>
+	<title>Segmentation</title>
+	<link href="bootstrap.css" rel="stylesheet">
+	<script src="jquery.js"></script>
+	<script src="underscore.js"></script>
+	<!-- <script src="pixi.js"></script> -->
+	<script src="d3.js"></script>
+	<style>
+		body {
+			background-color: #f2f2f2;
+		}
+		
+		.card {
+			margin-bottom: 1rem;
+		}
+	</style>
+</head>
+<body>
+
+	<canvas style="border: 1px solid black;" width="848" height="477" id="draw"></canvas>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-4" style="display: none;">
+				<div class="card">
+				  <img class="card-img-top" id="source" src="people.jpg">
+				  <div class="card-body">
+					<h5 class="card-title">Source</h5>
+					<!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+				  </div>
+				</div>
+			</div>
+						
+			<div class="col-4">
+				<div class="card">
+				  <canvas class="card-img-top" width="848" height="477" id="transfer"></canvas>
+				  <div class="card-body">
+					IMG Transfer
+					<!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+				  </div>
+				</div>
+				
+				<div class="card">
+				  <canvas class="card-img-top" width="848" height="477" id="mask"></canvas>
+				  <div class="card-body">
+					Maske
+					<!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+				  </div>
+				</div>
+				
+				<div class="card">
+				  <canvas class="card-img-top" width="848" height="477" id="indexmap"></canvas>
+				  <div class="card-body">
+					Index Map
+					<!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+				  </div>
+				</div>
+				
+				<div class="card">
+				  <canvas class="card-img-top" width="848" height="477" id="segments"></canvas>
+				  <div class="card-body">
+					Segments
+					<!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+				  </div>
+				</div>
+			</div>	
+			
+			<div class="col-8">
+				<div class="card">
+				  <canvas class="card-img-top" width="848" height="477" id="draw"></canvas>
+				  <div class="card-body">
+					<h5 class="card-title">Draw</h5>
+					
+				  </div>
+				</div>
+				<div class="card">
+				  <canvas class="card-img-top" width="848" height="477" id="webgl"></canvas>
+				  <div class="card-body">
+					<h5 class="card-title">WebGL</h5>
+					
+				  </div>
+				</div>
+				
+				<div class="card">
+				  <canvas class="card-img-top" width="848" height="477" id="target"></canvas>
+				  <div class="card-body">
+					<h5 class="card-title">Target
+						<button id="pf-segment" class="btn btn-primary">PFSeg</button>
+						<button id="slic-rerender" class="btn btn-default">Rerender</button>
+					</h5>
+					<form>
+							<div class="form-row">
+								<div class="form-group col-4">
+									<label for="minRegionSize-input">minRegionSize</label>
+									<input type="number" id="minRegionSize-input" value="255" class="form-control form-control-sm">
+								</div>
+								<div class="form-group col-4">
+									<label for="minSize-input">minSize</label>
+									<input type="number" id="minSize-input" value="20" class="form-control form-control-sm">
+								</div>
+								<div class="form-group col-4">
+									<label for="regionSize-input">regionSize</label>
+									<input type="number" id="regionSize-input" value="30" class="form-control form-control-sm">
+								</div>
+							</div>
+						</form>
+				  </div>
+				</div>
+				
+				<div class="card">
+				  <canvas class="card-img-top" width="848" height="477" id="edges"></canvas>
+				  <div class="card-body">
+					<h5 class="card-title">Edges 
+						<button id="rerender-edges" class="btn btn-primary">Render</button>
+						<!-- <button id="sobel-edges" class="btn btn-default">Sobel</button> -->
+					</h5>
+					<p class="">
+						<form>
+							<div class="form-row">
+								<div class="form-group col-6">
+									<label for="ht-input">high threshold</label>
+									<input type="number" id="ht-input" value="100" class="form-control form-control-sm">
+								</div>
+								<div class="form-group col-6">
+									<label for="lt-input">low threshold</label>
+									<input type="number" id="lt-input" value="50" class="form-control form-control-sm">
+								</div>
+							</div>
+							
+							<div class="form-row">
+								<div class="form-group col-6">
+									<label for="sigma-input">sigma</label>
+									<input type="number" id="ht-input" value="1.4" step="0.1" class="form-control form-control-sm">
+								</div>
+								<div class="form-group col-6">
+									<label for="kernelsize-input">kernel size</label>
+									<input type="number" id="kernelsize-input" value="5" class="form-control form-control-sm">
+								</div>
+							</div>
+							
+						</form>
+					</p>
+					<!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+				  </div>
+				</div>
+			</div>
+	
+	</div>
+	
+	
+	<canvas width="848" height="477" id="transfer"></canvas>
+	
+	<canvas width="848" height="477" id="target"></canvas>
+	
+	<script src="pf-segmentation.js"></script>
+	<script src="slic-segmentation.js"></script>
+	<script src="canny.js"></script>
+	
+	<!-- <script src="vertex.vert" type="x-shader/x-vertex" id="vertex-shader"></script> -->
+	<!-- <script src="fragment.frag" type="x-shader/x-fragment" id="fragment-shader"></script> -->
+	<script src="main.js"></script>
+	<script src="draw.js"></script>
+	<script src="main-gl.js"></script>
+</body>
+</html>
