@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
+import {takeLatest, call, put} from 'redux-saga/effects';
 import axios from 'axios';
 import {USER} from "../actions/constants";
 
@@ -22,9 +22,9 @@ function* loginWorker(action) {
         const response = yield call(loginUser, action);
         const user = response.data;
         localStorage.setItem('jwt', user.token);
-        yield put({ type: USER.LOGIN.SUCCESS, user });
+        yield put({type: USER.LOGIN.SUCCESS, user});
 
     } catch (error) {
-        yield put({ type: USER.LOGIN.FAILURE, error });
+        yield put({type: USER.LOGIN.FAILURE, error});
     }
 }

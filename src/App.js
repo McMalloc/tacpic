@@ -4,6 +4,7 @@ import Editor from './components/editor/Editor';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 import Login from "./components/Login";
+import Page from "./components/cms/Page";
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -44,6 +45,8 @@ class App extends Component {
                         this.props.fetch()
                     }}>Fetch!
                     </button>
+                    <Page pageId={2} />
+                    <Page pageId={11} />
                 </div>
             </Router>
         );

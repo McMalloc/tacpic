@@ -11,3 +11,4 @@ function constants(domain, methods) {
 
 export const USER       = constants('USER',     ['LOGIN', 'CREATE']);
 export const PRODUCT    = constants('PRODUCT',  ['FETCH', 'GET']);
+export const PAGE       = constants('PAGE',     ['GET']);

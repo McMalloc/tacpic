@@ -1,23 +1,16 @@
-import {USER} from '../actions/constants';
+import {PAGE} from '../actions/constants';
 
-const api = (state = {user: {logged_in: false, login_pending: false, error: null}}, action) => {
+const pagesApi = (state = {}, action) => {
     switch (action.type) {
-        case USER.LOGIN.REQUEST:
+        case PAGE.GET.REQUEST:
             return {
-                ...state, user:
-                    {
-                        login_pending: true
-                    }
+                ...state
             };
-        case USER.LOGIN.SUCCESS:
+        case PAGE.GET.SUCCESS:
             return {
-                ...state, user:
-                    {
-                        login_pending: false,
-                        logged_in: true
-                    }
+                ...state, [action.page.id]: action.page.content.rendered
             };
-        case USER.LOGIN.FAILURE:
+        case PAGE.GET.FAILURE:
             return {
                 ...state, user:
                     {
@@ -46,4 +39,4 @@ Wann kann sich etwas am Canvas ändern und wie wird das kommuniziert?
 */
 
 
-export default api
+export default pagesApi

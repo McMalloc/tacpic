@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux'
 import editor from './editor'
-import api from './api'
+import user from './userApi'
+import pages from './pagesApi'
 
 export default combineReducers({
     editor,
-    api
+    user,
+    pages
 });

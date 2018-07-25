@@ -1,28 +1,32 @@
 import {takeLatest, call, put} from 'redux-saga/effects';
-import {USER} from "../actions/constants";
+import {PRODUCT} from "../actions/constants";
+import axios from "axios/index";
 
-export default function* loginWatcher() {
-    yield takeLatest(USER.LOGIN.REQUEST, loginWorker);
+export default function* fetchWatcher() {
+    yield takeLatest(PRODUCT.FETCH.REQUEST, fetchWorker);
 }
 
-function loginUser(action) {
-    return fetch('http://localhost/wordpress/wp-json/jwt-auth/v1/token',
-        {
-            method: 'post',
-            body: JSON.stringify({
-                username: action.payload.unameField.value,
-                password: action.payload.pwdField.value
-            })
-        });
+function fetchProducts(action) {
+    return axios({
+        method: 'get',
+        url: 'http://localhost/wordpress/wp-json/wc/v2/products',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.get('jwt')
+        },
+        data: {
+            username: action.payload.unameField.value,
+            password: action.payload.pwdField.value
+        }
+    });
 }
 
-function* loginWorker(action) {
+function* fetchWorker(action) {
     try {
-        const response = yield call(loginUser, action);
-        const user = response.data;
-        localStorage.setItem('jwt', user.token);
-        yield put({type: USER.LOGIN.SUCCESS, user});
+        const response = yield call(fetchProducts, action);
+        const products = response.data;
+
+        yield put({type: PRODUCT.FETCH.SUCCESS, products});
     } catch (error) {
-        yield put({type: USER.LOGIN.FAILURE, error});
+        yield put({type: PRODUCT.FETCH.FAILURE, error});
     }
 }

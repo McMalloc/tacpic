@@ -9,12 +9,11 @@ import createSagaMiddleware from 'redux-saga';
 import './index.css';
 import App from './App';
 import rootReducer from './reducers';
-import watcherSaga from './sagas/user_saga';
+import rootSaga from './sagas';
 import registerServiceWorker from './registerServiceWorker';
 
-// setting up redux / saga
+// setting up redux and saga
 const sagaMiddleware = createSagaMiddleware();
-
 const store = createStore(
     rootReducer,
     undefined,
@@ -25,7 +24,7 @@ const store = createStore(
     )
 );
 
-sagaMiddleware.run(watcherSaga);
+sagaMiddleware.run(rootSaga);
 
 // bootstrapping the app
 ReactDOM.render(
