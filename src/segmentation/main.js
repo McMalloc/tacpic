@@ -1,29 +1,31 @@
-var width = 848;
-var height = 477;
+let width = 848;
+let height = 477;
 
-var imageData = new GrayImageData(5, 5);
+let imageData = new GrayImageData(5, 5);
 console.dir(imageData);
 console.dir(imageData.getNeighbors(2,2,3));
 
-
+$(() => {
+   init();
+});
 
 function init() {
 	drawMask();
 	console.log("start segmentation");
 	// PFSegmentation(
-	slicSegment()
+	slicSegment();
 	$("#rerender-edges").click(function() {
 		detectEdges('target', 'edges');
-	})
+	});
 	$("#pf-segment").click(function() {
 		pfSegment();
-	})
+	});
 	$("#slic-rerender").click(function() {
 		slicSegment();
 	})
 }
 
-var slicSegment = function() {
+let slicSegment = function() {
 	SLICSegmentation(
 		getImageData(), 
 		null,
@@ -36,7 +38,7 @@ var slicSegment = function() {
 				drawIndexMap(result);
 				drawSegments(result);
 				updateClusters(result, document.getElementById('mask').getContext('2d').getImageData(0,0,width,height));
-				labelUnknown(result)
+				labelUnknown(result);
 				renderResults(result);
 				console.log("finished");
 				detectEdges('target', 'edges');
@@ -44,7 +46,7 @@ var slicSegment = function() {
     });
 }
 
-var pfSegment = function() {
+let pfSegment = function() {
 	PFSegmentation(
 		getImageData(), 
 		document.getElementById('mask').getContext('2d').getImageData(0,0,width,height),
@@ -57,7 +59,7 @@ var pfSegment = function() {
 				drawIndexMap(result);
 				drawSegments(result);
 				updateClusters(result, document.getElementById('mask').getContext('2d').getImageData(0,0,width,height));
-				labelUnknown(result)
+				labelUnknown(result);
 				renderResults(result);
 				console.log("finished");
 				// detectEdges('target', 'edges');
@@ -65,34 +67,34 @@ var pfSegment = function() {
     });
 }
 
-var detectEdges = function(source, target, ht, lt, sigma, kernelSize) {
-	var srcCanvas = document.getElementById('target');
-	var targetCanvas = document.getElementById('edges');
+let detectEdges = function(source, target, ht, lt, sigma, kernelSize) {
+	let srcCanvas = document.getElementById('target');
+	let targetCanvas = document.getElementById('edges');
 	
-	// var canny = CannyJS.canny(
-		// srcCanvas,
-		// $("#ht-input").val(),
-		// $("#lt-input").val(),
-		// $("#sigma-input").val(),
-		// $("#kernelsize-input").val()
-	// );
+	let canny = CannyJS.canny(
+		srcCanvas,
+		$("#ht-input").val(),
+		$("#lt-input").val(),
+		$("#sigma-input").val(),
+		$("#kernelsize-input").val()
+	);
 	
-	var imageData = new GrayImageData(width, height)
+	let imageData = new GrayImageData(width, height)
 	// load image data from canvas
 	imageData.loadCanvas(srcCanvas);
 	
-	// var blurred = CannyJS.gaussianBlur(imageData, $("#sigma-input").val(), $("#kernelsize-input").val());
-	// var sobel = CannyJS.sobel(blurred);
-	// var nms = CannyJS.nonMaximumSuppression(sobel);
-	var hysteresis = CannyJS.hysteresis(imageData, $("#ht-input").val(), $("#lt-input").val());
+	let blurred = CannyJS.gaussianBlur(imageData, $("#sigma-input").val(), $("#kernelsize-input").val());
+	let sobel = CannyJS.sobel(blurred);
+	let nms = CannyJS.nonMaximumSuppression(sobel);
+	let hysteresis = CannyJS.hysteresis(nms, $("#ht-input").val(), $("#lt-input").val());
 	hysteresis.drawOn(targetCanvas);
 }
 
-var drawSegments = function(result) {
-	var canvas = document.getElementById("segments");
-    var context = canvas.getContext('2d');
+let drawSegments = function(result) {
+	let canvas = document.getElementById("segments");
+    let context = canvas.getContext('2d');
 	_.each(result.segments, function(segment, index) {
-		var colorString = "#"
+		let colorString = "#"
 			+ parseInt(segment.mp[0])
 			+ parseInt(segment.mp[1])
 			+ parseInt(segment.mp[2]);
@@ -105,42 +107,42 @@ var drawSegments = function(result) {
 	})
 }
 
-var drawIndexMap = function(result) {
-	var maxIndex = d3.max(result.indexMap);
-	var minIndex = d3.min(result.indexMap);
+let drawIndexMap = function(result) {
+	let maxIndex = d3.max(result.indexMap);
+	let minIndex = d3.min(result.indexMap);
 	
-	var mapGrey = d3.scaleLinear()
+	let mapGrey = d3.scaleLinear()
 		.domain([minIndex, maxIndex])
 		.range([0, 255]);
 
-	var rgbArray = [];
+	let rgbArray = [];
 	result.indexMap.forEach(function(index) {
-		for (var i = 0; i < 4; i++) {
+		for (let i = 0; i < 4; i++) {
 			rgbArray.push(mapGrey(index));
 		}
-	})
+	});
 	
-	var indexMapGrey = new Uint8ClampedArray(rgbArray);
-	var indexImageData = new ImageData(indexMapGrey, width, height);
+	let indexMapGrey = new Uint8ClampedArray(rgbArray);
+	let indexImageData = new ImageData(indexMapGrey, width, height);
 	
 	drawOnCanvas("indexmap", indexImageData);
-}
+};
 
-var drawOnCanvas = function(id, data) {
-	var output_canvas = document.getElementById(id);
-    var context = output_canvas.getContext('2d');
+let drawOnCanvas = function(id, data) {
+	let output_canvas = document.getElementById(id);
+    let context = output_canvas.getContext('2d');
 	context.putImageData(data, 0, 0);
 }
 
-var callbackSegmentation = function(results) {
+let callbackSegmentation = function(results) {
         results.segments = {};
 
-        var w = width,
+        let w = width,
             h = height;
             l = results.indexMap.length;
 			
-        for (var i = 0; i < l; ++i) {
-            var current = results.indexMap[i];
+        for (let i = 0; i < l; ++i) {
+            let current = results.indexMap[i];
             if (!results.segments.hasOwnProperty(current))
             {
                 results.segments[current] = {
@@ -158,7 +160,7 @@ var callbackSegmentation = function(results) {
                     'hblue':new Uint32Array(256)
                     }
             }
-            var y = Math.floor(i/w), x = (i % w);
+            let y = Math.floor(i/w), x = (i % w);
             if (i != x + y*w)
             {
                 console.log(["Error?",i,x + y*w])
@@ -184,12 +186,12 @@ var callbackSegmentation = function(results) {
                 results.segments[current].min_y = y
             }
         }
-        for(var s in results.segments){
+        for(let s in results.segments){
             results.segments[s].mp[0] =  results.segments[s].mp[0] /results.segments[s].count;
             results.segments[s].mp[1] =  results.segments[s].mp[1] /results.segments[s].count;
             results.segments[s].mp[2] =  results.segments[s].mp[2] /results.segments[s].count;
             results.segments[s].edges = {};
-            for(var k in results.segments){
+            for(let k in results.segments){
                 if (s != k){
                     results.segments[s].edges[k] = 1.0;
                 }
@@ -198,12 +200,12 @@ var callbackSegmentation = function(results) {
         // renderResults(results);
 };
 
-var renderResults = function(results){
-	var output_canvas = document.getElementById('target');
-    var context = output_canvas.getContext('2d');
-    var imageData = context.createImageData(output_canvas.width, output_canvas.height);
-    var data = imageData.data;
-    for (var i = 0; i < results.indexMap.length; ++i) {
+let renderResults = function(results){
+	let output_canvas = document.getElementById('target');
+    let context = output_canvas.getContext('2d');
+    let imageData = context.createImageData(output_canvas.width, output_canvas.height);
+    let data = imageData.data;
+    for (let i = 0; i < results.indexMap.length; ++i) {
         if (results.segments[results.indexMap[i]].foreground)
         {
             data[4 * i + 0] = results.rgbData[4 * i + 0];
@@ -218,14 +220,14 @@ var renderResults = function(results){
     drawOnCanvas("target", imageData);
 };
 
-var updateClusters = function(results, mask){
-    var segments = results.segments,
+let updateClusters = function(results, mask){
+    let segments = results.segments,
         indexMap = results.indexMap;
     results.unknown = [];
     results.mixed = [];
     results.foreground = [];
     results.background = [];
-    for(var s in segments) {
+    for(let s in segments) {
         seg = segments[s];
         seg.mask = { 'f':0,'b':0};
         seg.foreground = false;
@@ -234,8 +236,8 @@ var updateClusters = function(results, mask){
         seg.mixed = false;
     }
 
-    for (var i = 0; i < indexMap.length; ++i) {
-        var value = indexMap[i];
+    for (let i = 0; i < indexMap.length; ++i) {
+        let value = indexMap[i];
 			// console.log(mask[4*i]);
             if (mask.data[4 * i] == 0)
             {
@@ -248,7 +250,7 @@ var updateClusters = function(results, mask){
                 segments[value].mask.b++;
             }
     }
-    for(var s in segments){
+    for(let s in segments){
         seg = segments[s];
         if (seg.mask.f > 0 && seg.mask.b == 0){
             seg.foreground = true;
@@ -279,27 +281,27 @@ var updateClusters = function(results, mask){
     // $scope.labelUnknown();
 };
 
-var labelUnknown = function(results){
-    var segments = results.segments;
+let labelUnknown = function(results){
+    let segments = results.segments;
     if(!results.background.length||!results.background.length ) {
         console.log("Please mark both Background and Foreground");
         _.each(results.unknown,function(k){segments[k].foreground = true});
         return
     }
-    for(var index = 0; index < results.unknown.length; index++) {
+    for(let index = 0; index < results.unknown.length; index++) {
 
         seg = segments[results.unknown[index]];
         seg.foreground = true;
-        var fgList = _.map(results.foreground,function(e){
+        let fgList = _.map(results.foreground,function(e){
             return seg.edges[e] * (Math.abs(segments[e].mp[0] - seg.mp[0])
                 + Math.abs(segments[e].mp[1] - seg.mp[1])
                 + Math.abs(segments[e].mp[2] - seg.mp[2]))});
-        var bgList = _.map(results.background,function(e){
+        let bgList = _.map(results.background,function(e){
             return seg.edges[e] * (Math.abs(segments[e].mp[0] - seg.mp[0])
                 + Math.abs(segments[e].mp[1] - seg.mp[1])
                 + Math.abs(segments[e].mp[2] - seg.mp[2]))});
-        var fgDist = Math.min.apply(null, fgList); // _.reduce(fgList, function(memo, num){ return memo + num; }, 0) / fgList.length;
-        var bgDist = Math.min.apply(null, bgList); //_.reduce(bgList, function(memo, num){ return memo + num; }, 0) / bgList.length;
+        let fgDist = Math.min.apply(null, fgList); // _.reduce(fgList, function(memo, num){ return memo + num; }, 0) / fgList.length;
+        let bgDist = Math.min.apply(null, bgList); //_.reduce(bgList, function(memo, num){ return memo + num; }, 0) / bgList.length;
         if (fgDist > bgDist){
             seg.foreground = false;
             seg.background = true
@@ -309,11 +311,11 @@ var labelUnknown = function(results){
 };
 
 function getImageData() {
-	var canvas = document.getElementById('transfer');
-	var ctx    = canvas.getContext('2d');
+	let canvas = document.getElementById('transfer');
+	let ctx    = canvas.getContext('2d');
 
 	// 2) Copy your image data into the canvas
-	var source = document.getElementById('source');
+	let source = document.getElementById('source');
 	ctx.drawImage( source, 0, 0 );
 
 	// 3) Read your image data
@@ -321,8 +323,8 @@ function getImageData() {
 }
 
 function drawMask() {
-    var canvas = document.getElementById('mask');
-	var ctx    = canvas.getContext('2d');
+    let canvas = document.getElementById('mask');
+	let ctx    = canvas.getContext('2d');
 	ctx.fillStyle = "#000000";
 	ctx.fillRect(0,0,width,height);
 	ctx.fillStyle = "#FFFFFF";

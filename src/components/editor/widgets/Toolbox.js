@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import { connect } from 'react-redux'
-import { switchCursorMode } from '../../actions/index'
+import { switchCursorMode } from '../../../actions/index'
 
 class Toolbox extends Component {
     // constructor(props, context) {
@@ -9,13 +9,13 @@ class Toolbox extends Component {
 
     render() {
         return (
-            <div>
+            <Fragment>
                 <span>{this.props.mode}</span>
                 <button onClick={() => { this.props.switchCursorMode("rect"); }}>Rechteck</button>
                 <button onClick={() => { this.props.switchCursorMode("circle"); }}>Kreis</button>
-                <button onClick={() => { this.props.undo(); this.props.triggerRedraw();}}>Undo</button>
-                <button onClick={() => { this.props.redo(); this.props.triggerRedraw();}}>Redo</button>
-            </div>
+                <button onClick={() => { this.props.undo(); /*this.props.triggerRedraw();*/}}>Undo</button>
+                <button onClick={() => { this.props.redo(); /*this.props.triggerRedraw();*/}}>Redo</button>
+            </Fragment>
         )
     }
 

@@ -1,11 +1,13 @@
 import undoable from './undoable'
 
-const editor = (state = {mode: 'rect'}, action) => {
+const editor = (state = {mode: 'rect', width: 0, height: 0}, action) => {
     switch (action.type) {
         case 'SWITCH_CURSOR_MODE':
             return {...state, mode: action.mode};
         case 'CANVAS_UPDATED':
             return {...state, canvas: action.serializedCanvas};
+        case 'CANVAS_RESIZED':
+            return {...state, width: action.width, height: action.height};
         default:
             return state;
     }

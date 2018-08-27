@@ -41,12 +41,13 @@ class App extends Component {
                         <Route path="/login" component={Login}/>
                         <Route path="/editor" component={Editor}/>
                     </ErrorBoundary>
-                    <button onClick={() => {
-                        this.props.fetch()
-                    }}>Fetch!
-                    </button>
-                    <Page pageId={2} />
-                    <Page pageId={11} />
+
+                    {/*<button onClick={() => {*/}
+                        {/*this.props.fetch()*/}
+                    {/*}}>Fetch!*/}
+                    {/*</button>*/}
+                    {/*<Page pageId={2} />*/}
+                    {/*<Page pageId={11} />*/}
                 </div>
             </Router>
         );

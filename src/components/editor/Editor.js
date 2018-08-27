@@ -1,104 +1,102 @@
-/*global fabric*/
-
 import React, {Component} from 'react';
-import 'fabric'
-import Toolbox from "./Toolbox";
+import {Responsive, WidthProvider} from "react-grid-layout";
 import {connect} from "react-redux";
-import {canvasUpdated} from "../../actions/index";
+
+import Widget from "./WidgetContainer";
+import Widgets from "./widgets/Widgets"
+import {canvasResized} from "../../actions";
+
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class Editor extends Component {
-    mouseDownHandler(event) {
-        // target is null if the actual canvas is clicked, not an object already attached to it
-        if (event.target !== null) return;
-        let object;
 
-        function getRandomColor() {
-            let letters = '0123456789ABCDEF';
-            let color = '#';
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
-
-        switch (this.props.editorState.mode) {
-            case 'rect':
-                object = new fabric.Rect({
-                    left: event.pointer.x,
-                    top: event.pointer.y,
-                    fill: getRandomColor(),
-                    width: 200,
-                    height: 200
-                });
-                break;
-            case 'circle':
-                object = new fabric.Circle({
-                    left: event.pointer.x,
-                    top: event.pointer.y,
-                    fill: getRandomColor(),
-                    radius: 20
-                });
-                break;
-            default: break;
-        }
-
-        object.set('fill', new fabric.Pattern({
-            source: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAIklEQVQYlWNgQID/SBgnoJ4iBiIV/WcgUhHRttHJg5QpAgDEGh3jokNvkAAAAABJRU5ErkJggg==',
-            repeat: 'repeat'
-        }));
-
-        // "add" object onto canvas
-        this.canvas.add(object);
-        this.props.updateCanvas(this.canvas.toObject());
-    };
-
-    // constructor(props, context) {
-    //     // context contains global variables, like angulars $rootScope
-    //     super(props, context);
-    // };
 
     componentDidMount() {
-        //registering events
-        this.canvas = new fabric.Canvas('editor')
-            .on('mouse:down', event => {
-                this.mouseDownHandler(event);
-            })
-            .on('object:modified', event => {
-                // console.dir(event);
-            })
-            .on('object:added', event => {
-                // console.dir(event);
-            });
+
     };
 
-    redrawCanvas() {
-        setTimeout(() => {
-            this.canvas.loadFromJSON(this.props.editorState.canvas);
-        }, 100); // gibt es eine andere lösung?
-    }
+    widgetResized(widgets, oldState, newState) {
+        // this.canvasWidth = 300;
+        // this.canvasHeight = 200;
+    };
 
     render() {
+        let configuration = [
+            {
+                i: "Canvas",
+                x: 0,
+                y: 0,
+                w: 8,
+                h: 15
+            }, {
+                i: "Toolbox",
+                x: 0,
+                y: 0,
+                w: 2,
+                h: 3
+            },
+            {
+                i: "Navigator",
+                x: 0,
+                y: 0,
+                w: 3,
+                h: 3
+            }
+        ];
+
+        let widgets = [];
+
+        let layouts = {
+            lg: configuration,
+            sm: configuration
+        };
+
+        let canvasWidth = 0;
+        let canvasHeight = 0;
+
+        configuration.forEach(element => {
+            widgets.push(
+                <div key={element.i}
+                     data-grid={{
+                         x: element.x || 0,
+                         y: element.y || 0,
+                         w: element.w || 2,
+                         h: element.h || 2,
+                         static: false
+                     }
+                     }>
+                    <Widget
+                        title={element.i}
+                        component={Widgets[element.i]}/>
+                </div>
+            )
+        });
+
         return (
-            <div>
-                <Toolbox triggerRedraw={this.redrawCanvas.bind(this)}/>
-                <canvas width={1000} height={1000} style={{border: "1px solid black"}} id="editor">Canvas not
-                    supported.
-                </canvas>
-            </div>
+            <ResponsiveReactGridLayout
+                className="layout"
+                draggableHandle={'.drag-handle'}
+                cols={{lg: 12, sm: 8}}
+                breakpoints={{lg: 1200, sm: 768}}
+                layouts={layouts}
+                onResizeStop={this.props.canvasResized}
+                rowHeight={30}>
+                {widgets}
+            </ResponsiveReactGridLayout>
         );
     }
 }
 
 const mapStateToProps = state => {
-    return {
-        editorState: state.editor.present
-    }
+    return {}
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateCanvas: (serializedCanvas) => {
-            dispatch(canvasUpdated(serializedCanvas));
+        canvasResized: (widgets, oldState, newState) => {
+            if (newState.i !== 'Canvas') return;
+            // TODO richtige Größe ausrechnen
+            dispatch(canvasResized(newState.w * 176, newState.h * 32));
         }
     }
 };
