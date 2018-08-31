@@ -3,6 +3,11 @@ export const switchCursorMode = mode => ({
     mode
 });
 
+export const createTextureModeAction = mode => ({
+    type: 'SWITCH_TEXTURE_MODE',
+    mode
+});
+
 export const canvasUpdated = serializedCanvas => ({
     type: "CANVAS_UPDATED",
     serializedCanvas

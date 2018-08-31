@@ -52,11 +52,6 @@
     border-bottom: 2px solid rgba(0, 0, 0, 0.4);
 }
 
-.react-grid-item {
-    border: 1px solid #35da35;
-    background-color: #abf9be;
-}
-
 .react-grid-placeholder {
     opacity: .2;
 }

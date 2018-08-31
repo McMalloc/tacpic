@@ -9,18 +9,7 @@ import {canvasResized} from "../../actions";
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class Editor extends Component {
-
-
     componentDidMount() {
-
-    };
-
-    widgetResized(widgets, oldState, newState) {
-        // this.canvasWidth = 300;
-        // this.canvasHeight = 200;
-    };
-
-    render() {
         let configuration = [
             {
                 i: "Canvas",
@@ -41,21 +30,29 @@ class Editor extends Component {
                 y: 0,
                 w: 3,
                 h: 3
+            },
+            {
+                i: "Context",
+                x: 0,
+                y: 0,
+                w: 3,
+                h: 3
             }
         ];
 
         let widgets = [];
 
-        let layouts = {
+        this.layouts = {
             lg: configuration,
             sm: configuration
         };
 
         let canvasWidth = 0;
         let canvasHeight = 0;
+        this.widgets = [];
 
         configuration.forEach(element => {
-            widgets.push(
+            this.widgets.push(
                 <div key={element.i}
                      data-grid={{
                          x: element.x || 0,
@@ -71,24 +68,35 @@ class Editor extends Component {
                 </div>
             )
         });
+    };
 
-        return (
-            <ResponsiveReactGridLayout
-                className="layout"
-                draggableHandle={'.drag-handle'}
-                cols={{lg: 12, sm: 8}}
-                breakpoints={{lg: 1200, sm: 768}}
-                layouts={layouts}
-                onResizeStop={this.props.canvasResized}
-                rowHeight={30}>
-                {widgets}
-            </ResponsiveReactGridLayout>
-        );
+    widgetResized(widgets, oldState, newState) {
+        // this.canvasWidth = 300;
+        // this.canvasHeight = 200;
+    };
+
+    render() {
+        if (this.props.initialized) {
+            return (
+                <ResponsiveReactGridLayout
+                    className="layout"
+                    draggableHandle={'.drag-handle'}
+                    cols={{lg: 12, sm: 8}}
+                    breakpoints={{lg: 1200, sm: 768}}
+                    layouts={this.layouts}
+                    onResizeStop={this.props.canvasResized}
+                    rowHeight={30}>
+                    {this.widgets}
+                </ResponsiveReactGridLayout>
+            );
+        } else {
+            return (<div>Bitte warten.</div>)
+        }
     }
 }
 
 const mapStateToProps = state => {
-    return {}
+    return {...state.editor.present}
 };
 
 const mapDispatchToProps = dispatch => {

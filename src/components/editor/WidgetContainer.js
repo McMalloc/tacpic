@@ -17,6 +17,8 @@ const TitleBar = styled.div`
 
 const Content = styled.div`
   flex: 1 1 100%;
+  background-color: #fafafa;
+  border: 1px solid #ccc;
   overflow: auto;
 `;
 

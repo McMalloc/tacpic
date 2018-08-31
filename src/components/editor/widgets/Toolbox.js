@@ -15,6 +15,7 @@ class Toolbox extends Component {
                 <button onClick={() => { this.props.switchCursorMode("circle"); }}>Kreis</button>
                 <button onClick={() => { this.props.undo(); /*this.props.triggerRedraw();*/}}>Undo</button>
                 <button onClick={() => { this.props.redo(); /*this.props.triggerRedraw();*/}}>Redo</button>
+                <button onClick={() => { this.props.switchCursorMode("label"); /*this.props.triggerRedraw();*/}}>Label</button>
             </Fragment>
         )
     }
