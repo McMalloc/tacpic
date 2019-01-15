@@ -5,9 +5,16 @@ class Navigator extends Component {
 
     render() {
         return (
-            <div>
-
-            </div>
+            <React.Fragment>
+                <img alt={'map'}/>
+                <button className="fa fa-plus"></button>
+                <select>
+                    <option>50%</option>
+                    <option>100%</option>
+                    <option>150%</option>
+                </select>
+                <button className="fa fa-minus"></button>
+            </React.Fragment>
         );
     }
 }

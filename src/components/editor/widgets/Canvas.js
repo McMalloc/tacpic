@@ -1,102 +1,71 @@
-/*global fabric*/
-
 import React, {Component} from 'react';
-import 'fabric'
 import {connect} from "react-redux";
 import {canvasUpdated} from "../../../actions/index";
+import styled from 'styled-components';
+import {updatePatternClipping} from "../Patterns";
+import FabricCanvas from "./FabricCanvas";
 
-import {generatePatterns, updatePatternClipping} from "../Patterns";
+const CanvasWrapper = styled.div`
+  display: ${props => props.active ? "block" : "none"};
+  backgroundColor: 'lightyellow'
+`;
 
-let mouseDownX, mouseDownY;
-
-class Canvas extends Component {
-    mouseDownHandler(event) {
-        // target is null if the actual canvas is clicked, not an object already attached to it
-        if (event.target !== null) return;
-
-        // was the canvas just clicked? if yes, don't draw something really small
-        if (Math.abs(event.pointer.x - mouseDownX) < 5 || Math.abs(event.pointer.y - mouseDownY) < 5) return;
-        let object;
-
-        switch (this.props.mode) {
-            case 'rect':
-                object = new fabric.Rect({
-                    left: mouseDownX,
-                    top: mouseDownY,
-                    width: event.pointer.x - mouseDownX,
-                    fill: 'rgba(255,0,0,0.2)',
-                    stroke: "#000",
-                    strokeWidth: 2,
-                    height: event.pointer.y - mouseDownY,
-                    setByUser: true,
-                    pattern: this.props.texture
-                });
-                break;
-            case 'circle':
-                object = new fabric.Circle({
-                    left: event.pointer.x,
-                    top: event.pointer.y,
-                    radius: 20
-                });
-                break;
-            case 'label':
-                object = new fabric.Textbox('', {
-                    left: mouseDownX,
-                    top: mouseDownY,
-                    width: event.pointer.x - mouseDownX,
-                    height: event.pointer.y - mouseDownY,
-                    setByUser: true,
-                    fontSize: 16
-                });
-                object.setControlsVisibility({
-                    bl: false, mb: false, br: false, tr: false, mt:false, tl: false
-                });
-                break;
-            default:
-                break;
-        }
-
-        this.canvas.add(object);
-        this.canvas.setActiveObject(object);
-    };
-
-
+class CanvasPage extends Component {
     componentDidMount() {
-        //registering events
-        // init('editor');
-        this.canvas = new fabric.Canvas('editor')
-            .on('mouse:up', event => {
-                this.mouseDownHandler(event);
-            })
-            .on('mouse:down', event => {
-                mouseDownX = event.pointer.x;
-                mouseDownY = event.pointer.y;
-            })
-            .on('object:modified', event => {
-                updatePatternClipping(this.canvas.getObjects());
-            })
-            .on('object:added', event => {
-                updatePatternClipping(this.canvas.getObjects());
-            });
-
-        generatePatterns(this.canvas);
-        console.info('Canvas mounted.');
+        this.Canvas = new FabricCanvas('editor-page-' + this.props.index, this.getProps.bind(this));
     };
+
+    getProps() {
+        return this.props;
+    }
+
+    // reverse(action) {
+    //     switch (action.type) {
+    //         case CANVAS_OBJECT_ADDED:
+    //             this.canvas.remove(action.event.target);
+    //             break;
+    //         case CANVAS_OBJECT_REMOVED:
+    //             this.canvas.add(action.event.target);
+    //             break;
+    //         default: break;
+    //     }
+    // };
 
     render() {
+        if (this.Canvas) this.Canvas.setDimensions(this.props.width, this.props.height);
         return (
             <canvas
-                width={500}
-                height={500}
-                style={{border: "3px solid rgba(0, 0, 0, 0.1)", width: "100%", height: "100%"}}
-                id="editor"> Browser not supported. / Browser wird nicht unterstützt. <br/> :(
+                width={this.props.width}
+                height={this.props.height}
+                id={'editor-page-' + this.props.index}> Browser not supported. / Browser wird nicht unterstützt. <br/> :(
             </canvas>
         );
     }
 }
 
+class Canvas extends Component {
+    render() {
+        return (
+            <div>
+                {this.props.editorProps.openedFile.pages
+                    .map((page, i) =>
+                        <CanvasWrapper key={i} active={i === this.props.editorProps.currentPage}>
+                            <CanvasPage width={this.props.canvasWidth} height={this.props.canvasHeight} index={i} page={page} editorProps={this.props.editorProps}/>
+                        </CanvasWrapper>
+
+                    )}
+            </div>
+        )
+    }
+}
+
 const mapStateToProps = state => {
-    return {...state.editor.present}
+    return {
+        ...state.canvas.present,
+        editorProps: state.editor,
+        canvasWidth: state.canvas.width,
+        canvasHeight: state.canvas.height
+    }
 };
 
 const mapDispatchToProps = dispatch => {

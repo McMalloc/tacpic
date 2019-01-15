@@ -39,20 +39,32 @@ class Login extends Component {
     }
 
     render() {
-        return (
-            <form onSubmit={(event) => {event.preventDefault(); this.props.submitUserLogin(this.state)}}>
+        let form =
+            <form onSubmit={(event) => {
+                event.preventDefault();
+                this.props.submitUserLogin(this.state)
+            }}>
                 <label>Nutzername</label>
                 <input value={this.state.unameField.value} onChange={this.handleChange} name={'uname'}/>
                 <label>Passwort</label>
                 <input value={this.state.pwdField.value} onChange={this.handleChange} type={'password'} name={'pwd'}/>
-                <button type={'submit'}>Anmelden</button>
-            </form>
-        );
+                {this.props.login_pending ? (<span>Warte kurz, Brudi</span>) : (<button type={'submit'}>Anmelden</button>)}
+            </form>;
+
+        return (
+            <React.Fragment>
+                {this.props.logged_in ? (
+                    <span>Angemeldet!</span>
+                ) : (form)}
+            </React.Fragment>
+        )
     }
 }
 
 const mapStateToProps = state => {
-    return {}
+    return {
+        ...state.user.user
+    }
 };
 
 const mapDispatchToProps = dispatch => {

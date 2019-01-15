@@ -4,7 +4,8 @@ import Editor from './components/editor/Editor';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 import Login from "./components/Login";
-import Page from "./components/cms/Page";
+import InteractiveSVG from "./components/editor/widgets/ReactSVG/InteractiveSVG";
+// import Page from "./components/cms/Page";
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -30,6 +31,8 @@ class ErrorBoundary extends React.Component {
 
 class App extends Component {
     render() {
+        return (<InteractiveSVG state={this.props}></InteractiveSVG>);
+
         return (
             <Router>
                 <div className="App">
@@ -41,13 +44,6 @@ class App extends Component {
                         <Route path="/login" component={Login}/>
                         <Route path="/editor" component={Editor}/>
                     </ErrorBoundary>
-
-                    {/*<button onClick={() => {*/}
-                        {/*this.props.fetch()*/}
-                    {/*}}>Fetch!*/}
-                    {/*</button>*/}
-                    {/*<Page pageId={2} />*/}
-                    {/*<Page pageId={11} />*/}
                 </div>
             </Router>
         );
@@ -61,7 +57,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         fetch: () => {
-            console.log("fetch!");
             dispatch({type: 'API_CALL_REQUEST'});
         },
     }

@@ -9,7 +9,7 @@ const Wrapper = styled.div`
 `;
 
 const TitleBar = styled.div`
-  height: 15px;
+  height: 20px;
   background-color: #6f42c1;
   color: white; 
   flex: 0 0 0;
@@ -19,18 +19,18 @@ const Content = styled.div`
   flex: 1 1 100%;
   background-color: #fafafa;
   border: 1px solid #ccc;
-  overflow: auto;
+  overflow: hidden;
 `;
 
 class WidgetContainer extends Component {
     render() {
         const Component = this.props.component;
         return (
-            <Wrapper>
+            <Wrapper id={'widget-container-' + this.props.title}>
                 <TitleBar className="drag-handle">
                     {this.props.title}
                 </TitleBar>
-                <Content>
+                <Content className={'widget-content'}>
                     <Component/>
                 </Content>
             </Wrapper>

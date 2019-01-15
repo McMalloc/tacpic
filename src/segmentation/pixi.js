@@ -1629,12 +1629,12 @@ module.exports = function parseURI (str, opts) {
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-// resolves . and .. elements in a path array with directory names there
+// resolves . and .. elements in a path.js array with directory names there
 // must be no slashes, empty elements, or device names (c:\) in the array
 // (so also no leading and trailing slashes - it does not distinguish
 // relative and absolute paths)
 function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
+  // if the path.js tries to go above the root, `up` ends up > 0
   var up = 0;
   for (var i = parts.length - 1; i >= 0; i--) {
     var last = parts[i];
@@ -1649,7 +1649,7 @@ function normalizeArray(parts, allowAboveRoot) {
     }
   }
 
-  // if the path is allowed to go above the root, restore leading ..s
+  // if the path.js is allowed to go above the root, restore leading ..s
   if (allowAboveRoot) {
     for (; up--; up) {
       parts.unshift('..');
@@ -1667,7 +1667,7 @@ var splitPath = function(filename) {
   return splitPathRe.exec(filename).slice(1);
 };
 
-// path.resolve([from ...], to)
+// path.js.resolve([from ...], to)
 // posix version
 exports.resolve = function() {
   var resolvedPath = '',
@@ -1678,7 +1678,7 @@ exports.resolve = function() {
 
     // Skip empty and invalid entries
     if (typeof path !== 'string') {
-      throw new TypeError('Arguments to path.resolve must be strings');
+      throw new TypeError('Arguments to path.js.resolve must be strings');
     } else if (!path) {
       continue;
     }
@@ -1687,10 +1687,10 @@ exports.resolve = function() {
     resolvedAbsolute = path.charAt(0) === '/';
   }
 
-  // At this point the path should be resolved to a full absolute path, but
+  // At this point the path.js should be resolved to a full absolute path.js, but
   // handle relative paths to be safe (might happen when process.cwd() fails)
 
-  // Normalize the path
+  // Normalize the path.js
   resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
     return !!p;
   }), !resolvedAbsolute).join('/');
@@ -1698,13 +1698,13 @@ exports.resolve = function() {
   return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
 };
 
-// path.normalize(path)
+// path.js.normalize(path.js)
 // posix version
 exports.normalize = function(path) {
   var isAbsolute = exports.isAbsolute(path),
       trailingSlash = substr(path, -1) === '/';
 
-  // Normalize the path
+  // Normalize the path.js
   path = normalizeArray(filter(path.split('/'), function(p) {
     return !!p;
   }), !isAbsolute).join('/');
@@ -1729,14 +1729,14 @@ exports.join = function() {
   var paths = Array.prototype.slice.call(arguments, 0);
   return exports.normalize(filter(paths, function(p, index) {
     if (typeof p !== 'string') {
-      throw new TypeError('Arguments to path.join must be strings');
+      throw new TypeError('Arguments to path.js.join must be strings');
     }
     return p;
   }).join('/'));
 };
 
 
-// path.relative(from, to)
+// path.js.relative(from, to)
 // posix version
 exports.relative = function(from, to) {
   from = exports.resolve(from).substr(1);
@@ -1966,8 +1966,8 @@ var Texture = require('./GLTexture');
  * @class
  * @memberof PIXI.glCore
  * @param gl {WebGLRenderingContext} The current WebGL rendering context
- * @param width {Number} the width of the drawing area of the frame buffer
- * @param height {Number} the height of the drawing area of the frame buffer
+ * @param width {Number} the width of the ReactSVG area of the frame buffer
+ * @param height {Number} the height of the ReactSVG area of the frame buffer
  */
 var Framebuffer = function(gl, width, height)
 {
@@ -2000,13 +2000,13 @@ var Framebuffer = function(gl, width, height)
     this.texture = null;
 
     /**
-     * The width of the drawing area of the buffer
+     * The width of the ReactSVG area of the buffer
      *
      * @member {Number}
      */
     this.width = width || 100;
     /**
-     * The height of the drawing area of the buffer
+     * The height of the ReactSVG area of the buffer
      *
      * @member {Number}
      */
@@ -2053,7 +2053,7 @@ Framebuffer.prototype.enableStencil = function()
 };
 
 /**
- * Erases the drawing area and fills it with a colour
+ * Erases the ReactSVG area and fills it with a colour
  * @param  r {Number} the red value of the clearing colour
  * @param  g {Number} the green value of the clearing colour
  * @param  b {Number} the blue value of the clearing colour
@@ -2087,7 +2087,7 @@ Framebuffer.prototype.unbind = function()
     gl.bindFramebuffer(gl.FRAMEBUFFER, null );
 };
 /**
- * Resizes the drawing area of the buffer to the given width and height
+ * Resizes the ReactSVG area of the buffer to the given width and height
  * @param  width  {Number} the new width
  * @param  height {Number} the new height
  */
@@ -2136,8 +2136,8 @@ Framebuffer.prototype.destroy = function()
  * Creates a frame buffer with a texture containing the given data
  * @static
  * @param gl {WebGLRenderingContext} The current WebGL rendering context
- * @param width {Number} the width of the drawing area of the frame buffer
- * @param height {Number} the height of the drawing area of the frame buffer
+ * @param width {Number} the width of the ReactSVG area of the frame buffer
+ * @param height {Number} the height of the ReactSVG area of the frame buffer
  * @param data {ArrayBuffer| SharedArrayBuffer|ArrayBufferView} an array of data
  */
 Framebuffer.createRGBA = function(gl, width, height, data)
@@ -2162,8 +2162,8 @@ Framebuffer.createRGBA = function(gl, width, height, data)
  * Creates a frame buffer with a texture containing the given data
  * @static
  * @param gl {WebGLRenderingContext} The current WebGL rendering context
- * @param width {Number} the width of the drawing area of the frame buffer
- * @param height {Number} the height of the drawing area of the frame buffer
+ * @param width {Number} the width of the ReactSVG area of the frame buffer
+ * @param height {Number} the height of the ReactSVG area of the frame buffer
  * @param data {ArrayBuffer| SharedArrayBuffer|ArrayBufferView} an array of data
  */
 Framebuffer.createFloat32 = function(gl, width, height, data)
@@ -6664,7 +6664,7 @@ function Url() {
 var protocolPattern = /^([a-z0-9.+-]+:)/i,
     portPattern = /:[0-9]*$/,
 
-    // Special case for a simple path URL
+    // Special case for a simple path.js URL
     simplePathPattern = /^(\/\/?(?!\/)[^\?\s]*)(\?[^\s]*)?$/,
 
     // RFC 2396: characters reserved for delimiting URLs.
@@ -6678,7 +6678,7 @@ var protocolPattern = /^([a-z0-9.+-]+:)/i,
     autoEscape = ['\''].concat(unwise),
     // Characters that are never ever allowed in a hostname.
     // Note that any invalid chars are also handled, but these
-    // are the ones that are *expected* to be seen, so we fast-path
+    // are the ones that are *expected* to be seen, so we fast-path.js
     // them.
     nonHostChars = ['%', '/', '?', ';', '#'].concat(autoEscape),
     hostEndingChars = ['/', '?', '#'],
@@ -6741,7 +6741,7 @@ Url.prototype.parse = function(url, parseQueryString, slashesDenoteHost) {
   rest = rest.trim();
 
   if (!slashesDenoteHost && url.split('#').length === 1) {
-    // Try fast path regexp
+    // Try fast path.js regexp
     var simplePath = simplePathPattern.exec(rest);
     if (simplePath) {
       this.path = rest;
@@ -6772,7 +6772,7 @@ Url.prototype.parse = function(url, parseQueryString, slashesDenoteHost) {
 
   // figure out if it's got a host
   // user@server is *always* interpreted as a hostname, and url
-  // resolution will treat //foo/bar as host=foo,path=bar because that's
+  // resolution will treat //foo/bar as host=foo,path.js=bar because that's
   // how the browser resolves relative URLs.
   if (slashesDenoteHost || proto || rest.match(/^\/\/[^@\/]+@[^@\/]+/)) {
     var slashes = rest.substr(0, 2) === '//';
@@ -6795,7 +6795,7 @@ Url.prototype.parse = function(url, parseQueryString, slashesDenoteHost) {
     //
     // ex:
     // http://a@b@c/ => user:a@b host:c
-    // http://a@b?@c => user:a host:c path:/?@c
+    // http://a@b?@c => user:a host:c path.js:/?@c
 
     // v0.12 TODO(isaacs): This is not quite how Chrome does things.
     // Review our test case against browsers more comprehensively.
@@ -6816,7 +6816,7 @@ Url.prototype.parse = function(url, parseQueryString, slashesDenoteHost) {
       atSign = rest.lastIndexOf('@');
     } else {
       // atSign must be in auth portion.
-      // http://a@b/c@d => host:b auth:a path:/c@d
+      // http://a@b/c@d => host:b auth:a path.js:/c@d
       atSign = rest.lastIndexOf('@', hostEnd);
     }
 
@@ -7107,8 +7107,8 @@ Url.prototype.resolveObject = function(relative) {
     // if it's a known url protocol, then changing
     // the protocol does weird things
     // first, if it's not file:, then we MUST have a host,
-    // and if there was a path
-    // to begin with, then we MUST have a path.
+    // and if there was a path.js
+    // to begin with, then we MUST have a path.js.
     // if it is file:, then the host is dropped,
     // because that's known to be hostless.
     // anything else is assumed to be absolute.
@@ -7167,7 +7167,7 @@ Url.prototype.resolveObject = function(relative) {
   // links like ../.. should be able
   // to crawl up to the hostname, as well.  This is strange.
   // result.protocol has already been set by now.
-  // Later on, put the first path part into the host field.
+  // Later on, put the first path.js part into the host field.
   if (psychotic) {
     result.hostname = '';
     result.port = null;
@@ -7200,7 +7200,7 @@ Url.prototype.resolveObject = function(relative) {
     // fall through to the dot-handling below.
   } else if (relPath.length) {
     // it's relative
-    // throw away the existing file, and take the new path instead.
+    // throw away the existing file, and take the new path.js instead.
     if (!srcPath) srcPath = [];
     srcPath.pop();
     srcPath = srcPath.concat(relPath);
@@ -7234,7 +7234,7 @@ Url.prototype.resolveObject = function(relative) {
   }
 
   if (!srcPath.length) {
-    // no path at all.  easy.
+    // no path.js at all.  easy.
     // we've already handled the other stuff above.
     result.pathname = null;
     //to support http.request
@@ -7256,7 +7256,7 @@ Url.prototype.resolveObject = function(relative) {
       (last === '.' || last === '..') || last === '');
 
   // strip single dots, resolve double dots to parent dir
-  // if the path tries to go above the root, `up` ends up > 0
+  // if the path.js tries to go above the root, `up` ends up > 0
   var up = 0;
   for (var i = srcPath.length; i >= 0; i--) {
     last = srcPath[i];
@@ -7271,7 +7271,7 @@ Url.prototype.resolveObject = function(relative) {
     }
   }
 
-  // if the path is allowed to go above the root, restore leading ..s
+  // if the path.js is allowed to go above the root, restore leading ..s
   if (!mustEndAbs && !removeAllDots) {
     for (; up--; up) {
       srcPath.unshift('..');
@@ -7992,7 +7992,7 @@ var Application = function () {
      * @param {HTMLCanvasElement} [options.view] - the canvas to use as a view, optional
      * @param {boolean} [options.transparent=false] - If the render view is transparent, default false
      * @param {boolean} [options.antialias=false] - sets antialias (only applicable in chrome at the moment)
-     * @param {boolean} [options.preserveDrawingBuffer=false] - enables drawing buffer preservation, enable this if you
+     * @param {boolean} [options.preserveDrawingBuffer=false] - enables ReactSVG buffer preservation, enable this if you
      *  need to call toDataUrl on the webgl context
      * @param {number} [options.resolution=1] - The resolution / device pixel ratio of the renderer, retina would be 2
      * @param {boolean} [options.forceCanvas=false] - prevents selection of WebGL renderer, even if such is present
@@ -8264,7 +8264,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  * @param {HTMLCanvasElement} [options.view] - the canvas to use as a view, optional
  * @param {boolean} [options.transparent=false] - If the render view is transparent, default false
  * @param {boolean} [options.antialias=false] - sets antialias (only applicable in chrome at the moment)
- * @param {boolean} [options.preserveDrawingBuffer=false] - enables drawing buffer preservation, enable this if you
+ * @param {boolean} [options.preserveDrawingBuffer=false] - enables ReactSVG buffer preservation, enable this if you
  *  need to call toDataUrl on the webgl context
  * @param {number} [options.backgroundColor=0x000000] - The background color of the rendered area
  *  (shown if not transparent).
@@ -10922,7 +10922,7 @@ var Graphics = function (_Container) {
         _this.blendMode = _const.BLEND_MODES.NORMAL;
 
         /**
-         * Current path
+         * Current path.js
          *
          * @member {PIXI.GraphicsData}
          * @private
@@ -11087,7 +11087,7 @@ var Graphics = function (_Container) {
     };
 
     /**
-     * Moves the current drawing position to x, y.
+     * Moves the current ReactSVG position to x, y.
      *
      * @param {number} x - the X coordinate to move to
      * @param {number} y - the Y coordinate to move to
@@ -11105,8 +11105,8 @@ var Graphics = function (_Container) {
     };
 
     /**
-     * Draws a line using the current line style from the current drawing position to (x, y);
-     * The current drawing position is then set to (x, y).
+     * Draws a line using the current line style from the current ReactSVG position to (x, y);
+     * The current ReactSVG position is then set to (x, y).
      *
      * @param {number} x - the X coordinate to draw to
      * @param {number} y - the Y coordinate to draw to
@@ -11274,7 +11274,7 @@ var Graphics = function (_Container) {
      * @param {number} startAngle - The starting angle, in radians (0 is at the 3 o'clock position
      *  of the arc's circle)
      * @param {number} endAngle - The ending angle, in radians
-     * @param {boolean} [anticlockwise=false] - Specifies whether the drawing should be
+     * @param {boolean} [anticlockwise=false] - Specifies whether the ReactSVG should be
      *  counter-clockwise or clockwise. False is default, and indicates clockwise, while true
      *  indicates counter-clockwise.
      * @return {PIXI.Graphics} This Graphics object. Good for chaining method calls
@@ -11304,7 +11304,7 @@ var Graphics = function (_Container) {
         var startX = cx + Math.cos(startAngle) * radius;
         var startY = cy + Math.sin(startAngle) * radius;
 
-        // If the currentPath exists, take its points. Otherwise call `moveTo` to start a path.
+        // If the currentPath exists, take its points. Otherwise call `moveTo` to start a path.js.
         var points = this.currentPath ? this.currentPath.shape.points : null;
 
         if (points) {
@@ -11344,7 +11344,7 @@ var Graphics = function (_Container) {
 
     /**
      * Specifies a simple one-color fill that subsequent calls to other Graphics methods
-     * (such as lineTo() or drawCircle()) use when drawing.
+     * (such as lineTo() or drawCircle()) use when ReactSVG.
      *
      * @param {number} [color=0] - the color of the fill
      * @param {number} [alpha=1] - the alpha of the fill
@@ -11453,9 +11453,9 @@ var Graphics = function (_Container) {
     };
 
     /**
-     * Draws a polygon using the given path.
+     * Draws a polygon using the given path.js.
      *
-     * @param {number[]|PIXI.Point[]|PIXI.Polygon} path - The path data used to construct the polygon.
+     * @param {number[]|PIXI.Point[]|PIXI.Polygon} path - The path.js data used to construct the polygon.
      * @return {PIXI.Graphics} This Graphics object. Good for chaining method calls
      */
 
@@ -11833,7 +11833,7 @@ var Graphics = function (_Container) {
 
     Graphics.prototype.drawShape = function drawShape(shape) {
         if (this.currentPath) {
-            // check current path!
+            // check current path.js!
             if (this.currentPath.shape.points.length <= 2) {
                 this.graphicsData.pop();
             }
@@ -11894,14 +11894,14 @@ var Graphics = function (_Container) {
     };
 
     /**
-     * Closes the current path.
+     * Closes the current path.js.
      *
      * @return {PIXI.Graphics} Returns itself.
      */
 
 
     Graphics.prototype.closePath = function closePath() {
-        // ok so close path assumes next one is a hole!
+        // ok so close path.js assumes next one is a hole!
         var currentPath = this.currentPath;
 
         if (currentPath && currentPath.shape) {
@@ -11912,7 +11912,7 @@ var Graphics = function (_Container) {
     };
 
     /**
-     * Adds a hole in the current path.
+     * Adds a hole in the current path.js.
      *
      * @return {PIXI.Graphics} Returns itself.
      */
@@ -12000,7 +12000,7 @@ var GraphicsData = function () {
    * @param {number} fillColor - the color of the fill
    * @param {number} fillAlpha - the alpha of the fill
    * @param {boolean} fill - whether or not the shape is filled with a colour
-   * @param {boolean} nativeLines - the method for drawing lines
+   * @param {boolean} nativeLines - the method for ReactSVG lines
    * @param {PIXI.Circle|PIXI.Rectangle|PIXI.Ellipse|PIXI.Polygon} shape - The shape object to draw.
    */
   function GraphicsData(lineWidth, lineColor, lineAlpha, fillColor, fillAlpha, fill, nativeLines, shape) {
@@ -12142,7 +12142,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 
 /**
- * Renderer dedicated to drawing and batching graphics objects.
+ * Renderer dedicated to ReactSVG and batching graphics objects.
  *
  * @class
  * @private
@@ -12668,7 +12668,7 @@ var GraphicsRenderer = function (_ObjectRenderer) {
     /**
      *
      * @private
-     * @param {WebGLRenderingContext} gl - the current WebGL drawing context
+     * @param {WebGLRenderingContext} gl - the current WebGL ReactSVG context
      * @param {number} type - TODO @Alvin
      * @param {number} nativeLines - indicate whether the webGLData use for nativeLines.
      * @return {*} TODO
@@ -12720,7 +12720,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var WebGLGraphicsData = function () {
   /**
-   * @param {WebGLRenderingContext} gl - The current WebGL drawing context
+   * @param {WebGLRenderingContext} gl - The current WebGL ReactSVG context
    * @param {PIXI.Shader} shader - The shader
    * @param {object} attribsState - The state for the VAO
    */
@@ -12728,7 +12728,7 @@ var WebGLGraphicsData = function () {
     _classCallCheck(this, WebGLGraphicsData);
 
     /**
-     * The current WebGL drawing context
+     * The current WebGL ReactSVG context
      *
      * @member {WebGLRenderingContext}
      */
@@ -15791,7 +15791,7 @@ var SystemRenderer = function (_EventEmitter) {
    * @param {boolean} [options.antialias=false] - sets antialias (only applicable in chrome at the moment)
    * @param {number} [options.resolution=1] - The resolution / device pixel ratio of the renderer. The
    *  resolution of the renderer retina would be 2.
-   * @param {boolean} [options.preserveDrawingBuffer=false] - enables drawing buffer preservation,
+   * @param {boolean} [options.preserveDrawingBuffer=false] - enables ReactSVG buffer preservation,
    *  enable this if you need to call toDataUrl on the webgl context.
    * @param {boolean} [options.clearBeforeRender=true] - This sets if the renderer will clear the canvas or
    *      not before the new render pass.
@@ -16152,7 +16152,7 @@ var CanvasRenderer = function (_SystemRenderer) {
      * @param {boolean} [options.antialias=false] - sets antialias (only applicable in chrome at the moment)
      * @param {number} [options.resolution=1] - The resolution / device pixel ratio of the renderer. The
      *  resolution of the renderer retina would be 2.
-     * @param {boolean} [options.preserveDrawingBuffer=false] - enables drawing buffer preservation,
+     * @param {boolean} [options.preserveDrawingBuffer=false] - enables ReactSVG buffer preservation,
      *  enable this if you need to call toDataUrl on the webgl context.
      * @param {boolean} [options.clearBeforeRender=true] - This sets if the renderer will clear the canvas or
      *      not before the new render pass.
@@ -16244,7 +16244,7 @@ var CanvasRenderer = function (_SystemRenderer) {
      * @param {PIXI.DisplayObject} displayObject - The object to be rendered
      * @param {PIXI.RenderTexture} [renderTexture] - A render texture to be rendered to.
      *  If unset, it will render to the root context.
-     * @param {boolean} [clear=false] - Whether to clear the canvas before drawing
+     * @param {boolean} [clear=false] - Whether to clear the canvas before ReactSVG
      * @param {PIXI.Transform} [transform] - A transformation to be applied
      * @param {boolean} [skipUpdateTransform=false] - Whether to skip the update transform
      */
@@ -16540,7 +16540,7 @@ var CanvasMaskManager = function () {
                     context.lineTo(points[j * 2], points[j * 2 + 1]);
                 }
 
-                // if the first and last point are the same close the path - much neater :)
+                // if the first and last point are the same close the path.js - much neater :)
                 if (points[0] === points[points.length - 2] && points[1] === points[points.length - 1]) {
                     context.closePath();
                 }
@@ -16600,7 +16600,7 @@ var CanvasMaskManager = function () {
     };
 
     /**
-     * Restores the current drawing context to the state it was before the mask was applied.
+     * Restores the current ReactSVG context to the state it was before the mask was applied.
      *
      * @param {PIXI.CanvasRenderer} renderer - The renderer context to use.
      */
@@ -17362,7 +17362,7 @@ var WebGLRenderer = function (_SystemRenderer) {
      * @param {boolean} [options.clearBeforeRender=true] - This sets if the renderer will clear
      *  the canvas or not before the new render pass. If you wish to set this to false, you *must* set
      *  preserveDrawingBuffer to `true`.
-     * @param {boolean} [options.preserveDrawingBuffer=false] - enables drawing buffer preservation,
+     * @param {boolean} [options.preserveDrawingBuffer=false] - enables ReactSVG buffer preservation,
      *  enable this if you need to call toDataUrl on the webgl context.
      * @param {boolean} [options.roundPixels=false] - If true PixiJS will Math.floor() x/y values when
      *  rendering, stopping pixel interpolation.
@@ -17714,7 +17714,7 @@ var WebGLRenderer = function (_SystemRenderer) {
     };
 
     /**
-     * Erases the active render target and fills the drawing area with a colour
+     * Erases the active render target and fills the ReactSVG area with a colour
      *
      * @param {number} [clearColor] - The colour
      */
@@ -17736,7 +17736,7 @@ var WebGLRenderer = function (_SystemRenderer) {
     };
 
     /**
-     * Erases the render texture and fills the drawing area with a colour
+     * Erases the render texture and fills the ReactSVG area with a colour
      *
      * @param {PIXI.RenderTexture} renderTexture - The render texture to clear
      * @param {number} [clearColor] - The colour
@@ -18685,7 +18685,7 @@ var _Filter3 = _interopRequireDefault(_Filter2);
 
 var _math = require('../../../../math');
 
-var _path = require('path');
+var _path = require('path.js');
 
 var _TextureMatrix = require('../../../../textures/TextureMatrix');
 
@@ -18972,7 +18972,7 @@ var FilterManager = function (_WebGLManager) {
 
             flop.setFrame(currentState.destinationFrame, currentState.sourceFrame);
 
-            // finally lets clear the render target before drawing to it..
+            // finally lets clear the render target before ReactSVG to it..
             flop.clear();
 
             var i = 0;
@@ -19930,7 +19930,7 @@ var Quad = function () {
     _classCallCheck(this, Quad);
 
     /**
-     * the current WebGL drawing context
+     * the current WebGL ReactSVG context
      *
      * @member {WebGLRenderingContext}
      */
@@ -20104,7 +20104,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var RenderTarget = function () {
   /**
-   * @param {WebGLRenderingContext} gl - The current WebGL drawing context
+   * @param {WebGLRenderingContext} gl - The current WebGL ReactSVG context
    * @param {number} [width=0] - the horizontal range of the filter
    * @param {number} [height=0] - the vertical range of the filter
    * @param {number} [scaleMode=PIXI.settings.SCALE_MODE] - See {@link PIXI.SCALE_MODES} for possible values
@@ -20117,7 +20117,7 @@ var RenderTarget = function () {
     // TODO Resolution could go here ( eg low res blurs )
 
     /**
-     * The current WebGL drawing context.
+     * The current WebGL ReactSVG context.
      *
      * @member {WebGLRenderingContext}
      */
@@ -20542,7 +20542,7 @@ var _const = require('../../../const');
  * @memberof PIXI
  * @function mapWebGLDrawModesToPixi
  * @private
- * @param {WebGLRenderingContext} gl - The current WebGL drawing context
+ * @param {WebGLRenderingContext} gl - The current WebGL ReactSVG context
  * @param {object} [object={}] - The object to map into
  * @return {object} The mapped draw modes.
  */
@@ -21480,7 +21480,7 @@ var canvasRenderWorldTransform = new _math.Matrix();
  */
 
 /**
- * Renderer dedicated to drawing and batching sprites.
+ * Renderer dedicated to ReactSVG and batching sprites.
  *
  * @class
  * @private
@@ -21956,7 +21956,7 @@ var TICK = 0;
 var TEXTURE_TICK = 0;
 
 /**
- * Renderer dedicated to drawing and batching sprites.
+ * Renderer dedicated to ReactSVG and batching sprites.
  *
  * @class
  * @private
@@ -22462,7 +22462,7 @@ var _Shader = require('../../Shader');
 
 var _Shader2 = _interopRequireDefault(_Shader);
 
-var _path = require('path');
+var _path = require('path.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22588,7 +22588,7 @@ var Text = function (_Sprite) {
     /**
      * @param {string} text - The string that you would like the text to display
      * @param {object|PIXI.TextStyle} [style] - The style parameters
-     * @param {HTMLCanvasElement} [canvas] - The canvas element for drawing text
+     * @param {HTMLCanvasElement} [canvas] - The canvas element for ReactSVG text
      */
     function Text(text, style, canvas) {
         _classCallCheck(this, Text);
@@ -22785,7 +22785,7 @@ var Text = function (_Sprite) {
      * @param {string} text - The text to draw
      * @param {number} x - Horizontal position to draw the text
      * @param {number} y - Vertical position to draw the text
-     * @param {boolean} [isStroke=false] - Is this drawing for the outside stroke of the
+     * @param {boolean} [isStroke=false] - Is this ReactSVG for the outside stroke of the
      *  text? If not, it's for the inside fill
      * @private
      */
@@ -25164,7 +25164,7 @@ var BaseTexture = function (_EventEmitter) {
      * Changes the source image of the texture.
      * The original source must be an Image element.
      *
-     * @param {string} newSrc - the path of the image
+     * @param {string} newSrc - the path.js of the image
      */
 
 
@@ -28063,7 +28063,7 @@ function rgb2hex(rgb) {
  *
  * @memberof PIXI.utils
  * @function getResolutionOfUrl
- * @param {string} url - the image path
+ * @param {string} url - the image path.js
  * @param {number} [defaultValue=1] - the defaultValue if no filename prefix is set.
  * @return {number} resolution / device pixel ratio of an asset
  */
@@ -28116,7 +28116,7 @@ function decomposeDataUri(dataUri) {
  *
  * @memberof PIXI.utils
  * @function getUrlFileExtension
- * @param {string} url - the image path
+ * @param {string} url - the image path.js
  * @return {string|undefined} image extension
  */
 function getUrlFileExtension(url) {
@@ -32238,7 +32238,7 @@ var core = _interopRequireWildcard(_core);
 
 var _const = require('../../core/const');
 
-var _path = require('path');
+var _path = require('path.js');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -32400,7 +32400,7 @@ var _core = require('../../core');
 
 var core = _interopRequireWildcard(_core);
 
-var _path = require('path');
+var _path = require('path.js');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -33096,7 +33096,7 @@ var _core = require('../../core');
 
 var core = _interopRequireWildcard(_core);
 
-var _path = require('path');
+var _path = require('path.js');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -33647,7 +33647,7 @@ var _core = require('../../core');
 
 var core = _interopRequireWildcard(_core);
 
-var _path = require('path');
+var _path = require('path.js');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -33753,7 +33753,7 @@ var _core = require('../../core');
 
 var core = _interopRequireWildcard(_core);
 
-var _path = require('path');
+var _path = require('path.js');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -33888,7 +33888,7 @@ var _core = require('../../core');
 
 var core = _interopRequireWildcard(_core);
 
-var _path = require('path');
+var _path = require('path.js');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -36464,7 +36464,7 @@ exports.default = function () {
     };
 };
 
-var _path = require('path');
+var _path = require('path.js');
 
 var path = _interopRequireWildcard(_path);
 
@@ -36843,7 +36843,7 @@ var _core = require('../core');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function getResourcePath(resource, baseUrl) {
-    // Prepend url path unless the resource image is a data url
+    // Prepend url path.js unless the resource image is a data url
     if (resource.isDataUrl) {
         return resource.data.meta.image;
     }
@@ -37227,7 +37227,7 @@ var Mesh = function (_core$Container) {
 }(core.Container);
 
 /**
- * Different drawing buffer modes supported
+ * Different ReactSVG buffer modes supported
  *
  * @static
  * @constant
@@ -37441,7 +37441,7 @@ var NineSlicePlane = function (_Plane) {
 
     /**
      * Renders one segment of the plane.
-     * to mimic the exact drawing behavior of stretching the image like WebGL does, we need to make sure
+     * to mimic the exact ReactSVG behavior of stretching the image like WebGL does, we need to make sure
      * that the source area is at least 1 pixel in size, otherwise nothing gets drawn when a slice size of 0 is used.
      *
      * @private
@@ -37902,7 +37902,7 @@ var Rope = function (_Mesh) {
         var total = points.length;
 
         for (var i = 1; i < total; i++) {
-            // time to do some smart drawing!
+            // time to do some smart ReactSVG!
             var index = i * 4;
             var amount = i / (total - 1);
 
@@ -38371,7 +38371,7 @@ var _Mesh = require('../Mesh');
 
 var _Mesh2 = _interopRequireDefault(_Mesh);
 
-var _path = require('path');
+var _path = require('path.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38967,7 +38967,7 @@ var ParticleBuffer = function () {
         _classCallCheck(this, ParticleBuffer);
 
         /**
-         * The current WebGL drawing context.
+         * The current WebGL ReactSVG context.
          *
          * @member {WebGLRenderingContext}
          */
@@ -40358,7 +40358,7 @@ var CANVAS_START_SIZE = 16;
 
 /**
  * The prepare manager provides functionality to upload content to the GPU
- * This cannot be done directly for Canvas like in WebGL, but the effect can be achieved by drawing
+ * This cannot be done directly for Canvas like in WebGL, but the effect can be achieved by ReactSVG
  * textures to an offline canvas.
  * This draw call will force the texture to be moved onto the GPU.
  *

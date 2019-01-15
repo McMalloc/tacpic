@@ -4,70 +4,28 @@ import {connect} from "react-redux";
 
 import Widget from "./WidgetContainer";
 import Widgets from "./widgets/Widgets"
-import {canvasResized} from "../../actions";
+import {canvasResized, layoutChanged, widgetVisibilityToggled} from "../../actions";
+
+import './Editor.css';
+import styled from 'styled-components';
+import InteractiveSVG from "./widgets/ReactSVG/InteractiveSVG";
+
+const Menu = styled.div`
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+`;
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
+const rowHeight = 30;
+const widgetPadding = 6;
 
 class Editor extends Component {
     componentDidMount() {
-        let configuration = [
-            {
-                i: "Canvas",
-                x: 0,
-                y: 0,
-                w: 8,
-                h: 15
-            }, {
-                i: "Toolbox",
-                x: 0,
-                y: 0,
-                w: 2,
-                h: 3
-            },
-            {
-                i: "Navigator",
-                x: 0,
-                y: 0,
-                w: 3,
-                h: 3
-            },
-            {
-                i: "Context",
-                x: 0,
-                y: 0,
-                w: 3,
-                h: 3
-            }
-        ];
-
-        let widgets = [];
-
         this.layouts = {
-            lg: configuration,
-            sm: configuration
+            lg: this.props.widgetConfig,
+            sm: this.props.widgetConfig
         };
-
-        let canvasWidth = 0;
-        let canvasHeight = 0;
-        this.widgets = [];
-
-        configuration.forEach(element => {
-            this.widgets.push(
-                <div key={element.i}
-                     data-grid={{
-                         x: element.x || 0,
-                         y: element.y || 0,
-                         w: element.w || 2,
-                         h: element.h || 2,
-                         static: false
-                     }
-                     }>
-                    <Widget
-                        title={element.i}
-                        component={Widgets[element.i]}/>
-                </div>
-            )
-        });
     };
 
     widgetResized(widgets, oldState, newState) {
@@ -78,16 +36,53 @@ class Editor extends Component {
     render() {
         if (this.props.initialized) {
             return (
-                <ResponsiveReactGridLayout
-                    className="layout"
-                    draggableHandle={'.drag-handle'}
-                    cols={{lg: 12, sm: 8}}
-                    breakpoints={{lg: 1200, sm: 768}}
-                    layouts={this.layouts}
-                    onResizeStop={this.props.canvasResized}
-                    rowHeight={30}>
-                    {this.widgets}
-                </ResponsiveReactGridLayout>
+                <React.Fragment>
+                    <Menu>
+                        {this.props.widgetConfig.map((widgetDefinition, i) =>
+                            <label key={i}>
+                                <input
+                                    name="isGoing"
+                                    checked={widgetDefinition.visible}
+                                    onChange={(event) => this.props.widgetVisibilityToggled(widgetDefinition.i, event.target.checked)}
+                                    type="checkbox"/>
+                                {widgetDefinition.i}
+                            </label>
+                        )}
+                    </Menu>
+                    <ResponsiveReactGridLayout
+                        className="layout"
+                        draggableHandle={'.drag-handle'}
+                        cols={{lg: 12, sm: 8}}
+                        id={'widget-grid'}
+                        breakpoints={{lg: 1200, sm: 768}}
+                        layouts={this.layouts}
+                        margin={[widgetPadding, widgetPadding]}
+                        onResizeStop={this.props.canvasResized}
+                        onLayoutChange={this.props.layoutChanged}
+                        rowHeight={rowHeight}>
+
+                        {/*{this.widgets}*/}
+                        {this.props.widgetConfig
+                            .filter(widget => { return widget.visible })
+                            .map(widget => {
+                                return (
+                                    <div key={widget.i}
+                                         data-grid={{
+                                             x: widget.x || 0,
+                                             y: widget.y || 0,
+                                             w: widget.w || 2,
+                                             h: widget.h || 2,
+                                             static: false
+                                         }
+                                         }>
+                                        <Widget
+                                            title={widget.i}
+                                            component={Widgets[widget.i]}/>
+                                    </div>
+                                )
+                            })}
+                    </ResponsiveReactGridLayout>
+                </React.Fragment>
             );
         } else {
             return (<div>Bitte warten.</div>)
@@ -96,15 +91,25 @@ class Editor extends Component {
 }
 
 const mapStateToProps = state => {
-    return {...state.editor.present}
+    return {...state.editor}
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        widgetVisibilityToggled: (id, value) => {
+            dispatch(widgetVisibilityToggled(id, value));
+        },
         canvasResized: (widgets, oldState, newState) => {
             if (newState.i !== 'Canvas') return;
-            // TODO richtige Größe ausrechnen
-            dispatch(canvasResized(newState.w * 176, newState.h * 32));
+            dispatch(canvasResized(
+                document.querySelector("#widget-container-Canvas .widget-content").offsetWidth - 6, //width of two borders
+                document.querySelector("#widget-container-Canvas .widget-content").offsetHeight - 6) //(rowHeight + widgetPadding)-35)
+            );
+
+            // 8 ist die spaltenzahl für den schmalen breakpoint. @todo layout und breakpoints nicht mehr hardcoden
+        },
+        layoutChanged: (layout) => {
+            dispatch(layoutChanged(layout));
         }
     }
 };

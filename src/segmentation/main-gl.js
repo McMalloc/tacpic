@@ -236,7 +236,7 @@ $("#source")[0].onload = (function() {
 			// start with the original image
 			gl.bindTexture(gl.TEXTURE_2D, originalImageTexture);
 
-			// don't y flip images while drawing to the textures
+			// don't y flip images while ReactSVG to the textures
 			gl.uniform1f(flipYLocation, 1);
 
 			// loop through each effect we want to apply.

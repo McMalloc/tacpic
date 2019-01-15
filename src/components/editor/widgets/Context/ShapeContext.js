@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
-import {createTextureModeAction} from "../../../../actions";
+import {createFillModeAction, createTextureModeAction} from "../../../../actions";
 
 class ShapeContext extends Component {
 
@@ -9,6 +9,9 @@ class ShapeContext extends Component {
             <Fragment>
                 <button onClick={() => { this.props.switchTextureMode("striped"); }}>gestreift</button>
                 <button onClick={() => { this.props.switchTextureMode("dashed"); }}>gestrichelt</button>
+
+                <button onClick={() => { this.props.switchFillMode("rgba(255,0,0,0.4)"); }}>rot</button>
+                <button onClick={() => { this.props.switchFillMode("rgba(0,255,0,0.4)"); }}>grün</button>
             </Fragment>
         );
     }
@@ -24,6 +27,9 @@ const mapDispatchToProps = dispatch => {
     return {
         switchTextureMode: (mode) => {
             dispatch(createTextureModeAction(mode));
+        },
+        switchFillMode: (fill) => {
+            dispatch(createFillModeAction(fill));
         }
     }
 };

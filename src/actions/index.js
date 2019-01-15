@@ -1,3 +1,5 @@
+import {USER} from './constants'
+
 export const switchCursorMode = mode => ({
     type: 'SWITCH_CURSOR_MODE',
     mode
@@ -8,8 +10,13 @@ export const createTextureModeAction = mode => ({
     mode
 });
 
-export const canvasUpdated = serializedCanvas => ({
-    type: "CANVAS_UPDATED",
+export const createFillModeAction = colour => ({
+    type: 'SWITCH_FILL_MODE',
+    colour
+});
+
+export const canvasUpdated = (serializedCanvas) => ({
+    type: 'CANVAS_UPDATED',
     serializedCanvas
 });
 
@@ -17,5 +24,16 @@ export const canvasResized = (width, height) => ({
     type: "CANVAS_RESIZED",
     width,
     height
+});
+
+export const layoutChanged = layout => ({
+    type: USER.SAVE_LAYOUT.REQUEST,
+    layout
+});
+
+export const widgetVisibilityToggled = (id, value) => ({
+    type: "WIDGET_VISIBILITY_TOGGLED",
+    id,
+    value
 });
 
