@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import connect from "react-redux/es/connect/connect";
 import Manipulator from "./Manipulator";
-import transform from "./Transform";
+
 import Rect from "./Rect";
+import {OBJECT} from "../../constants";
+import Label from "./Label";
 
 function uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -35,33 +37,55 @@ class InteractiveSVG extends Component {
         this.mouseIsDown = true;
     }
 
-    mouseUpHandler(event) {
+    mouseUpHandler() {
         this.mouseIsDown = false;
-
+        let uuid = uuidv4();
         if (this.dragging) {
             switch (this.props.mode) {
-                case "rect":
-                    let uuid = uuidv4();
-                    this.props.addObject(
+                case OBJECT.RECT:
+                    this.props.addObject( // TODO named Prototypes nutzen für proptypes?
                         // Hash, der key ist die UUID, darunter ist ein Objekt (oder ein ein weiteres Hash), dass die Daten enthält. Daraus werden in den Objektkomponenten die Elemente erstellt
                         // Oder: React-Komponenten für Objekte so lassen wie sie sind und immer wieder in dieser Rendermethode neu aufrufen
                         {
-                            type: 'rect', // TODO Konstanten nutzen
+                            type: OBJECT.RECT,
                             uuid: uuid,
+                            x: this.mouseXDown,
+                            y: this.mouseYDown,
+                            angle: 0,
+                            pattern: {
+                                template: 'striped',
+                                angle: 0,
+                                scaleX: 1,
+                                scaleY: 1
+                            },
+                            width: this.state.mouseXDrag - this.mouseXDown,
+                            height: this.state.mouseYDrag - this.mouseYDown
+                        },
+                    );
+                    break;
+                case OBJECT.LABEL:
+                    this.props.addObject( // TODO named Prototypes nutzen für proptypes?
+                        // Hash, der key ist die UUID, darunter ist ein Objekt (oder ein ein weiteres Hash), dass die Daten enthält. Daraus werden in den Objektkomponenten die Elemente erstellt
+                        // Oder: React-Komponenten für Objekte so lassen wie sie sind und immer wieder in dieser Rendermethode neu aufrufen
+                        {
+                            type: OBJECT.LABEL, // TODO Konstanten nutzen
+                            uuid: uuid,
+                            text: "Guten Tag, ich bin ein Label.",
                             x: this.mouseXDown,
                             y: this.mouseYDown,
                             angle: 0,
                             width: this.state.mouseXDrag - this.mouseXDown,
                             height: this.state.mouseYDrag - this.mouseYDown
-                        }
+                        },
                     );
                     break;
-                case "transform":
-                    this.props.transformEnd();
+                default:
                     break;
             }
         }
-
+        if (this.props.transform.hasOwnProperty(this.props.mode)) {
+            this.props.transformEnd();
+        }
         this.dragging = false;
     }
 
@@ -74,8 +98,8 @@ class InteractiveSVG extends Component {
             })
         }
 
-        if (this.dragging && this.props.mode === 'transform') {
-            this.props.rotate({
+        if (this.dragging && this.props.transform.hasOwnProperty(this.props.mode)) {
+            this.props.transform[this.props.mode]({
                 x0: this.mouseXDown, // TODO muss nur einmal bei transform_start mitgegeben werden
                 y0: this.mouseYDown, // dito
                 x1: this.state.mouseXDrag,
@@ -84,13 +108,15 @@ class InteractiveSVG extends Component {
         }
     }
 
-    static OBJECTS = ({ uuid, width, height, x, y, angle }, index) => ({
-        rect: <Rect key={index} uuid={uuid} width={width} angle={angle} height={height} x={x} y={y} />
+    static OBJECTS = ({ uuid, width, height, x, y, angle, pattern, text }, index) => ({
+        //TODO drüber nachdenken: onClick zur Selektion hier implementieren? Dann müssen Objekte in Gruppen das Event nicht abdelegieren um zu überprüfen, dass nicht sie alleine sondern ihre Gruppe ausgewählt worden ist.
+        [OBJECT.RECT]: <Rect pattern={pattern} key={index} uuid={uuid} width={width} angle={angle} height={height} x={x} y={y} />,
+        [OBJECT.LABEL]: <Label key={index} uuid={uuid} width={width} text={text} angle={angle} height={height} x={x} y={y} />,
     });
 
     render() {
-        let objects = this.props.objects.map((object, uuid) => {
-            return InteractiveSVG.OBJECTS(object, uuid)[object.type];
+        let objects = this.props.openedFile.pages[this.props.currentPage].objects.map((object, index) => {
+            return InteractiveSVG.OBJECTS(object, index)[object.type];
         });
 
         return (
@@ -114,7 +140,7 @@ class InteractiveSVG extends Component {
                     mouseYDrag={this.state.mouseYDrag}
                 />
 
-                {this.dragging && this.props.mode !== 'transform' &&
+                {this.dragging && !this.props.transform.hasOwnProperty(this.props.mode) &&
                     <rect
                         x={this.mouseXDown}
                         y={this.mouseYDown}
@@ -135,17 +161,26 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addObject: (object) => {
+        addObject: (object, pattern) => {
             dispatch({
                 type: 'OBJECT_ADDED',
-                object
+                object,
+                pattern
             });
         },
-        rotate: coords => {
-            dispatch({
-                type: 'OBJECT_ROTATED',
-                coords
-            });
+        transform: {
+            rotate: coords => {
+                dispatch({
+                    type: 'OBJECT_ROTATED',
+                    coords
+                });
+            },
+            translate: coords => {
+                dispatch({
+                    type: 'OBJECT_TRANSLATED',
+                    coords
+                });
+            }
         },
         transformEnd: () => {
             dispatch({

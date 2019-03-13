@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {createApiAction} from "../actions/api_actions";
 import {USER} from "../actions/constants";
+import {Button} from "./gui/Button";
+import {Modal} from "./gui/Modal";
 
 class Login extends Component {
     constructor(props) {
@@ -12,7 +14,8 @@ class Login extends Component {
             },
             pwdField: {
                 value: ''
-            }
+            },
+            showModal: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -56,6 +59,14 @@ class Login extends Component {
                 {this.props.logged_in ? (
                     <span>Angemeldet!</span>
                 ) : (form)}
+                <p>
+                    <Button onClick={() => this.setState({showModal: true})}>Öffne Modal</Button>
+                    {this.state.showModal &&
+                        <Modal title={"Modalfenster"} dismiss={() => {this.setState({showModal: false})}} actions={[
+                            {label: "OK", action: () => {this.setState({showModal: false})}}
+                        ]}>Hi</Modal>
+                    }
+                </p>
             </React.Fragment>
         )
     }

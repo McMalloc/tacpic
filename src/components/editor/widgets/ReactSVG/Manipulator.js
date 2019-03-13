@@ -1,9 +1,14 @@
 import React, {Component} from 'react'
 import connect from "react-redux/es/connect/connect";
+import transform from "./Transform";
 
 class Manipulator extends Component {
-    mouseDownHandler(event) {
-        this.props.transformStart('transform');
+    onClickHandler(event) {
+        this.props.transformStart('translate');
+        console.log(this.props.selected);
+        // TODO wenn ein Label selektiert ist, sollte ein DOppelclick auf den manipulator
+        // den focus auf das editierbare Label verschieben (mit $(id).focus(), wenn tabindex gesetzt und der debugger könnte interferieren)
+        // Ein Umsetzen des des Cursors würde aber wieder den Manipulator auswählen und die Cursorposition zurücksetzen
     }
 
     render() {
@@ -11,19 +16,19 @@ class Manipulator extends Component {
         // Manipulator hört auf Events (delegiert vom SVG?) und verändert entsprechend per dispatch die Werte
 
         return ( this.props.selected.length > 0 &&
-            <g>
+            <g transform={transform(this.props.bbox.x, this.props.bbox.y, this.props.selected[0].angle)}>
                 <rect
                     fill={"transparent"}
-                    stroke={'blue'}
-                    strokeWidth={2}
-                    strokeDasharray={[5,5]}
+                    stroke={'rgba(100,50,255,0.4)'}
+                    strokeWidth={1}
+                    onMouseDown={ (event) => { this.onClickHandler(event)}}
                     width={this.props.bbox.width}
                     height={this.props.bbox.height}
-                    transform={`translate(${this.props.bbox.x}, ${this.props.bbox.y})`}/>
+                    />
                 <rect
-                    x={this.props.bbox.x + this.props.bbox.width/2 - 5}
-                    onMouseDown={ event => {this.mouseDownHandler(event)}}
-                    y={this.props.bbox.y - 10}
+                    x={this.props.bbox.width/2 - 5}
+                    onMouseDown={ () => {this.props.transformStart('rotate')}}
+                    y={ -10}
                     width={10} height={10} />
             </g>
 
@@ -33,7 +38,7 @@ class Manipulator extends Component {
 
 const mapStateToProps = state => {
     let selected = state.editor.selectedObjects.map(uuid => {
-        return state.editor.objects.filter(obj => {return obj.uuid === uuid})[0]
+        return state.editor.openedFile.pages[state.editor.currentPage].objects.find(obj => {return obj.uuid === uuid})
     });
 
     return {
@@ -41,8 +46,8 @@ const mapStateToProps = state => {
         bbox: (() => {
             if (state.editor.selectedObjects.length === 0) return 0;
             let svgbbox = document.getElementById(state.editor.selectedObjects[0]).getBBox();
-                // TODO: alle ausgewählten Elemente berücksichtigen und bessere Methode finden als ID-Selektor
-                // versuchen, irgendwie den eigentlich DOMNode mit im STate zu speichern, um Zugriff auf Props als auch auf getBBox() zu haben
+            // TODO: alle ausgewählten Elemente berücksichtigen und bessere Methode finden als ID-Selektor
+            // versuchen, irgendwie den eigentlich DOMNode mit im STate zu speichern, um Zugriff auf Props als auch auf getBBox() zu haben
             return {
                 x: svgbbox.x + selected[0].x,
                 y: svgbbox.y + selected[0].y,
@@ -55,24 +60,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        // rotate: angle => {
-        //     dispatch({
-        //         type: 'OBJECT_ROTATED',
-        //         angle
-        //     });
-        // },
         transformStart: transform => {
+            console.log("click in Manipulator");
             dispatch({
                 type: 'TRANSFORM_START',
                 transform
             })
-        },
-        // transformEnd: () => {
-        //     console.log('end');
-        //     dispatch({
-        //         type: 'TRANSFORM_END'
-        //     })
-        // }
+        }
     }
 };
 

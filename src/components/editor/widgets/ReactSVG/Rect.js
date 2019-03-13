@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import connect from "react-redux/es/connect/connect";
 import transform from "./Transform";
+import patternTemplates from "./Patterns";
 
 class Rect extends Component {
     render() {
@@ -10,14 +11,20 @@ class Rect extends Component {
         });
 
         return (
-            <rect
-                id={this.props.uuid}
-                transform={transform(this.props.x, this.props.y, this.props.angle)}
-                style={{fill: selected ? 'rgba(50,200,0,0.4)' : 'rgba(0,0,0,0.4)'}}
-                width={this.props.width}
-                height={this.props.height}
-                onClick={ () => this.props.select(this.props.uuid)}
-            />
+            <g>
+                <rect
+                    id={this.props.uuid}
+                    transform={transform(this.props.x, this.props.y, this.props.angle)}
+                    // style={{fill: selected ? 'rgba(50,200,0,0.4)' : 'rgba(0,0,0,0.4)'}}
+                    fill={'url(#pattern-' + this.props.uuid + ''}
+                    strokeWidth={2}
+                    stroke={'rgba(0,50,100,0.2)'}
+                    width={this.props.width}
+                    height={this.props.height}
+                    onClick={ () => this.props.select(this.props.uuid)}
+                />
+                {patternTemplates[this.props.pattern.template](this.props.pattern, this.props.uuid)}
+            </g>
         )
     }
 }

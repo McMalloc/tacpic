@@ -2,69 +2,51 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {canvasUpdated} from "../../../actions/index";
 import styled from 'styled-components';
-import {updatePatternClipping} from "../Patterns";
-import FabricCanvas from "./FabricCanvas";
+import InteractiveSVG from "./ReactSVG/InteractiveSVG";
+import {FlyoutButton} from "../../gui/Button";
 
-const CanvasWrapper = styled.div`
-  display: ${props => props.active ? "block" : "none"};
-  backgroundColor: 'lightyellow'
+const Widget = styled.div`
+  position: relative;
+  height: 300px;
 `;
 
-class CanvasPage extends Component {
-    componentDidMount() {
-        this.Canvas = new FabricCanvas('editor-page-' + this.props.index, this.getProps.bind(this));
-    };
-
-    getProps() {
-        return this.props;
-    }
-
-    // reverse(action) {
-    //     switch (action.type) {
-    //         case CANVAS_OBJECT_ADDED:
-    //             this.canvas.remove(action.event.target);
-    //             break;
-    //         case CANVAS_OBJECT_REMOVED:
-    //             this.canvas.add(action.event.target);
-    //             break;
-    //         default: break;
-    //     }
-    // };
-
-    render() {
-        if (this.Canvas) this.Canvas.setDimensions(this.props.width, this.props.height);
-        return (
-            <canvas
-                width={this.props.width}
-                height={this.props.height}
-                id={'editor-page-' + this.props.index}> Browser not supported. / Browser wird nicht unterstützt. <br/> :(
-            </canvas>
-        );
-    }
-}
+const Wrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: 0 -50% 0 0;
+  transform: translate(-50%, -50%);
+`;
 
 class Canvas extends Component {
     render() {
-        return (
-            <div>
-                {this.props.editorProps.openedFile.pages
-                    .map((page, i) =>
-                        <CanvasWrapper key={i} active={i === this.props.editorProps.currentPage}>
-                            <CanvasPage width={this.props.canvasWidth} height={this.props.canvasHeight} index={i} page={page} editorProps={this.props.editorProps}/>
-                        </CanvasWrapper>
-
-                    )}
-            </div>
-        )
+        // let currentPage = <InteractiveSVG />;
+        return (<Widget>
+            <FlyoutButton label={'Titel des Buttons'}>
+                <label><input type="checkbox" /> Check me</label>
+                <p><button>Klick mich</button></p>
+            </FlyoutButton>
+            <FlyoutButton label={'Und noch einer!'}>
+                <pre>In the above examples, it is important to read the scrollHeight property in getSnapshotBeforeUpdate because there may be delays between “render” phase lifecycles (like render) and “commit” phase lifecycles (like getSnapshotBeforeUpdate and componentDidUpdate).</pre>
+            </FlyoutButton>
+            <Wrapper>
+                <InteractiveSVG style={{margin: 0,
+                    background: 'yellow',
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    marginRight: '-50%',
+                    transform: 'translate(-50%, -50%)'}}/>
+            </Wrapper>
+            </Widget>)
     }
 }
 
 const mapStateToProps = state => {
     return {
-        ...state.canvas.present,
-        editorProps: state.editor,
-        canvasWidth: state.canvas.width,
-        canvasHeight: state.canvas.height
+        ...state.editor,
+        canvasWidth: state.editor.width,
+        canvasHeight: state.editor.height
     }
 };
 

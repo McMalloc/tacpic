@@ -28,7 +28,7 @@ class Objects extends Component {
 
 const mapStateToProps = state => {
     return {
-        objects: state.canvas.objects
+        objects: state.editor.openedFile.pages[state.editor.currentPage].objects
     }
 };
 

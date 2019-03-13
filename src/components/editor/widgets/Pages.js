@@ -1,20 +1,20 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
+import {Button} from "../../gui/Button";
 
 class Pages extends Component {
 
     render() {
-        console.log(this.props.openedFile.pages);
         return (
             <React.Fragment>
                 {this.props.openedFile.pages.map((page, i) =>
-                    <button key={i} onClick={() => this.props.changePage(i)}>
+                    <Button key={i} onClick={() => this.props.changePage(i)}>
                         {page.name}
-                    </button>
+                    </Button>
                 )}
-                <button onClick={() => this.props.addPage()}>
+                <Button onClick={() => this.props.addPage()}>
                     +
-                </button>
+                </Button>
             </React.Fragment>
         );
     }

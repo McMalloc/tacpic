@@ -2,13 +2,12 @@ import React, {Component} from 'react';
 import {Responsive, WidthProvider} from "react-grid-layout";
 import {connect} from "react-redux";
 
-import Widget from "./WidgetContainer";
+import Widget from "../gui/WidgetContainer";
 import Widgets from "./widgets/Widgets"
 import {canvasResized, layoutChanged, widgetVisibilityToggled} from "../../actions";
 
 import './Editor.css';
 import styled from 'styled-components';
-import InteractiveSVG from "./widgets/ReactSVG/InteractiveSVG";
 
 const Menu = styled.div`
   display: flex;
@@ -28,10 +27,10 @@ class Editor extends Component {
         };
     };
 
-    widgetResized(widgets, oldState, newState) {
-        // this.canvasWidth = 300;
-        // this.canvasHeight = 200;
-    };
+    // widgetResized(widgets, oldState, newState) {
+    //     // this.canvasWidth = 300;
+    //     // this.canvasHeight = 200;
+    // };
 
     render() {
         if (this.props.initialized) {

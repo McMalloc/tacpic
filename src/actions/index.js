@@ -27,7 +27,8 @@ export const canvasResized = (width, height) => ({
 });
 
 export const layoutChanged = layout => ({
-    type: USER.SAVE_LAYOUT.REQUEST,
+    // type: USER.SAVE_LAYOUT.REQUEST, // das Ändern des Layouts alleine sollte noch nichts zum Server persistieren
+    type: "LAYOUT_CHANGED",
     layout
 });
 

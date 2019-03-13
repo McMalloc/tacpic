@@ -1,5 +1,21 @@
 /*global fabric*/
 
+// DEPRECATED!
+// -----------
+// -----------
+// -----------
+// -----------
+// -----------
+// -----------
+// -----------
+// -----------
+// -----------
+// -----------
+// -----------
+// -----------
+// -----------
+// +++++++++++
+
 import 'fabric'
 import {store} from '../../store'
 
@@ -40,10 +56,6 @@ const createPattern = function (pattern) {
         offsetX: 0,
         offsetY: 0
     });
-};
-
-export const generatePatterns = function(fabricCanvas, pageWidth, pageHeight) {
-
 };
 
 // todo: make less dirty, more redux-saga-y

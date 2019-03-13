@@ -38,6 +38,7 @@ const userApi = (state = initialState, action) => {
                     }
             };
         case USER.SAVE_LAYOUT.REQUEST:
+            console.log(action.layout);
             return {...state};
         default:
             return state;

@@ -1,0 +1,14 @@
+@import 'styles/_typography.scss';
+@import 'styles/_grid-layout.scss';
+@import 'styles/flexboxgrid.css';
+
+// resets not covered by normalized
+body {
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}

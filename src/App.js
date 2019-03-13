@@ -1,11 +1,9 @@
-import React, {Component} from 'react';
-import './App.css';
+import React from 'react';
+import './styles/_theme.scss';
 import Editor from './components/editor/Editor';
-import {connect} from 'react-redux';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 import Login from "./components/Login";
-import InteractiveSVG from "./components/editor/widgets/ReactSVG/InteractiveSVG";
-// import Page from "./components/cms/Page";
+import {useTranslation} from 'react-i18next';
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -16,50 +14,44 @@ class ErrorBoundary extends React.Component {
     componentDidCatch(error, info) {
         // Display fallback UI
         this.setState({hasError: true});
-        console.dir(error);
-        console.dir(info);
     }
 
     render() {
         if (this.state.hasError) {
             // You can render any custom fallback UI
-            return <div><h1>Something went wrong.</h1></div>;
+            return <div><h1 style={{
+                textAlign: 'center',
+                fontSize: '72px',
+                backgroundColor: "#f06595",
+                color: "white",
+                padding: "12px"
+            }}>
+                So ein Mist!
+                <br/>
+                <span className={"fas fa-skull fa-xs fa-pulse"}></span>
+            </h1></div>;
         }
         return this.props.children;
     }
 }
 
-class App extends Component {
-    render() {
-        return (<InteractiveSVG state={this.props}></InteractiveSVG>);
-
-        return (
-            <Router>
-                <div className="App">
-                    <nav>
-                        <Link to="/login">Login</Link>
-                        <Link to="/editor">Editor</Link>
-                    </nav>
-                    <ErrorBoundary>
-                        <Route path="/login" component={Login}/>
-                        <Route path="/editor" component={Editor}/>
-                    </ErrorBoundary>
-                </div>
-            </Router>
-        );
-    }
-}
-
-const mapStateToProps = state => {
-    return {}
+const App = () => {
+    const t = useTranslation().t;
+    return (
+        <Router>
+            <div className="App">
+                <small>{t("tacpic:welcome")}</small>
+                <nav>
+                    <Link to="/login">Login</Link>
+                    <Link to="/editor">Editor</Link>
+                </nav>
+                <ErrorBoundary>
+                    <Route path="/login" component={Login}/>
+                    <Route path="/editor" component={Editor}/>
+                </ErrorBoundary>
+            </div>
+        </Router>
+    );
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        fetch: () => {
-            dispatch({type: 'API_CALL_REQUEST'});
-        },
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

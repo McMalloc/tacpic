@@ -1,124 +1,61 @@
-import _ from "lodash"
+import {cloneDeep, filter, every, find} from "lodash"
 
-const initialState = {
-    mode: 'rect',
-    texture: 'striped',
-    width: 500,
-    fill: '#ccc',
-    height: 500,
-    mouseOffset: {
-      x0: 0,
-      y0: 0,
-      x1: 0,
-      y1: 0
-    },
-    currentPage: 0,
-    objects: [],
-    selectedObjects: [],
-    openedFile: {
-        title: "Eine Datei",
-        pages: [
-            {
-                name: "Seite 1"
-            },
-            {
-                name: "Seite 2"
-            }
-        ]
-    },
-    initialized: false,
-    widgetConfig: [ //TODO aus config laden
-        {
-            i: "Canvas",
-            x: 0,
-            y: 0,
-            w: 8,
-            h: 15,
-            visible: true,
-            static: false
-        }, {
-            i: "Toolbox",
-            x: 0,
-            y: 0,
-            w: 2,
-            h: 3,
-            visible: true,
-            static: false
-        }, {
-            i: "History",
-            x: 0,
-            y: 0,
-            w: 2,
-            h: 3,
-            visible: true,
-            static: false
-        }, {
-            i: "Navigator",
-            x: 0,
-            y: 0,
-            w: 3,
-            h: 3,
-            visible: true,
-            static: false
-        },
-        {
-            i: "Objects",
-            x: 3,
-            y: 0,
-            w: 3,
-            h: 3,
-            visible: true,
-            static: false
-        },
-        {
-            i: "Context",
-            x: 0,
-            y: 0,
-            w: 3,
-            h: 3,
-            visible: true,
-            static: false
-        },
-        {
-            i: "Pages",
-            x: 5,
-            y: 0,
-            w: 3,
-            h: 3,
-            visible: true,
-            static: false
-        }
-    ]
-};
+let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so
+let lastObjectsProps = [];
 
-let lastMode = initialState.mode;
+// todo Monster-Reducer refaktorisieren
 
-const editor = (state = initialState, action) => {
-    let selectedObjects;
+const editor = (state = {}, action) => {
+    let objects, oldState;
+
     switch (action.type) {
-        case 'OBJECT_ADDED':
-            let objects = [...state.objects];
-            objects.push(action.object);
-            return {...state, objects};
-
-        case 'OBJECT_SELECTED':
-            selectedObjects = [action.uuid];
-            return {...state, selectedObjects};
-
-        case 'OBJECT_ROTATED':
-            // TODO für Mittwoch hier muss doch der angle für alle berechnet werden
-
-            var objects = [...state.objects];
-
-            _.filter(objects, {uuid: state.selectedObjects[0]}).forEach(object => {
-                object.angle = Math.sqrt(Math.pow(action.coords.x1 - action.coords.x0, 2) + Math.pow(action.coords.y1 - action.coords.y0, 2));
-            });
-            return {...state, objects};
         case 'TRANSFORM_START':
             lastMode = state.mode;
             return {...state, mode: action.transform};
 
+        case 'OBJECT_ADDED':
+            oldState = cloneDeep(state);
+            oldState.openedFile.pages[state.currentPage].objects.push(action.object);
+
+            return oldState;
+
+        case 'OBJECT_SELECTED':
+            let selectedObjects = [action.uuid];
+            return {...state, selectedObjects};
+
+        case 'OBJECT_ROTATED':
+            // TODO ordentliche Rotation
+            objects = [...state.openedFile.pages[state.currentPage].objects]; // TODO effizienter bei TRANSFORM_START
+
+            filter(objects, {uuid: state.selectedObjects[0]}).forEach(object => {
+                let angle = Math.sqrt(Math.pow(action.coords.x1 - action.coords.x0, 2) + Math.pow(action.coords.y1 - action.coords.y0, 2));
+                object.angle = angle;
+                object.pattern.angle = -angle; //todo Nur einmalig setzen und in der Komponenten weiterreichen bzw. umrechnen.
+            });
+            return {...state, objects};
+
+        case 'OBJECT_TRANSLATED':
+            // TODO sauberer für nested objects
+            oldState = {...state};
+            objects = oldState.openedFile.pages[state.currentPage].objects;
+
+            if (lastObjectsProps.length === 0) {
+                every(filter(objects, {uuid: state.selectedObjects[0]}), (object, index) => {
+                    // console.log(object);
+                    lastObjectsProps[index] = {};
+                    lastObjectsProps[index].x = object.x;
+                    lastObjectsProps[index].y = object.y;
+                });
+            }
+
+            filter(objects, {uuid: state.selectedObjects[0]}).forEach((object, index) => {
+                object.x = lastObjectsProps[index].x + action.coords.x1 - action.coords.x0;
+                object.y = lastObjectsProps[index].y + action.coords.y1 - action.coords.y0;
+            });
+
+            return oldState;
         case 'TRANSFORM_END':
+            lastObjectsProps = [];
             return {...state, mode: lastMode};
 
         case 'SWITCH_CURSOR_MODE':
@@ -130,11 +67,25 @@ const editor = (state = initialState, action) => {
         case 'PATTERNS_INIT_DONE':
             return {...state, initialized: true};
         case 'PAGE_CHANGE':
-            return {...state, currentPage: action.number};
+            return {...state, selectedObjects: [], currentPage: action.number};
         case 'PAGE_ADD':
             let openedFile = {...state.openedFile};
-            openedFile.pages.push({name: 'Seite ' + (openedFile.pages.length + 1)});
+            openedFile.pages.push({name: 'Seite ' + (openedFile.pages.length + 1), objects: []});
             return {...state, openedFile};
+        case 'LAYOUT_CHANGED':
+            return {
+                ...state,
+                // TODO: muss selbe Anzahl Widgets zurückgeben, sonst verschwinden Widget-Optionen
+                widgetConfig: action.layout.map(widget => {
+                    let layoutedWidget = find(state.widgetConfig, {i: widget.i});
+                    return {...layoutedWidget,
+                        x: widget.x,
+                        y: widget.y,
+                        w: widget.w,
+                        h: widget.h,
+                    }
+                })
+            };
         case 'WIDGET_VISIBILITY_TOGGLED':
             return {
                 ...state,
