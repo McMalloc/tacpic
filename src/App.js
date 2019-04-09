@@ -1,5 +1,4 @@
 import React from 'react';
-import './styles/_theme.scss';
 import Editor from './components/editor/Editor';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 import Login from "./components/Login";
@@ -37,10 +36,12 @@ class ErrorBoundary extends React.Component {
 
 const App = () => {
     const t = useTranslation().t;
+    // Hook. https://react.i18next.com/latest/usetranslation-hook
+    // Alternative withTranslation HOC
     return (
         <Router>
             <div className="App">
-                <small>{t("tacpic:welcome")}</small>
+                {/*<small>{t("tacpic:welcome")}</small>*/}
                 <nav>
                     <Link to="/login">Login</Link>
                     <Link to="/editor">Editor</Link>

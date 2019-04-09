@@ -3,7 +3,8 @@ import createSagaMiddleware from "redux-saga";
 import {applyMiddleware, compose, createStore} from "redux";
 import rootReducer from "./reducers";
 import rootSaga from "./sagas";
-import throttle from 'lodash/throttle'
+import throttle from 'lodash/throttle';
+import layouts from "./components/editor/widgets/layouts.js";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -43,68 +44,8 @@ const initialEditor = {
         ]
     },
     initialized: true,
-    widgetConfig: JSON.parse(localStorage.getItem('user_layout')) || [ //TODO default aus config laden
-        {
-            i: "Canvas",
-            x: 0,
-            y: 0,
-            w: 8,
-            h: 15,
-            visible: true,
-            static: false
-        }, {
-            i: "Toolbox",
-            x: 0,
-            y: 1,
-            w: 2,
-            h: 3,
-            visible: true,
-            static: false
-        }, {
-            i: "History",
-            x: 0,
-            y: 0,
-            w: 2,
-            h: 3,
-            visible: true,
-            static: false
-        }, {
-            i: "Navigator",
-            x: 2,
-            y: 0,
-            w: 3,
-            h: 3,
-            visible: true,
-            static: false
-        },
-        {
-            i: "Objects",
-            x: 2,
-            y: 0,
-            w: 3,
-            h: 3,
-            visible: true,
-            static: false
-        },
-        {
-            i: "Context",
-            x: 5,
-            y: 1,
-            w: 3,
-            h: 3,
-            visible: true,
-            static: false
-        },
-        {
-            i: "Pages",
-            x: 5,
-            y: 0,
-            w: 3,
-            h: 3,
-            visible: true,
-            static: false
-        }
-    ]
+    widgetConfig: layouts.key
+    // widgetConfig: JSON.parse(localStorage.getItem('user_layout')) || categorise
 };
 
 export const store = createStore(

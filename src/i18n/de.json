@@ -4,5 +4,13 @@
   },
   "tacpic": {
     "welcome": "Willkommen bei Tacpic!"
+  },
+  "editor": {
+    "Context": "Eigenschaften",
+    "Canvas": "Leinwand",
+    "Key": "Legende"
+  },
+  "categories": {
+    "illustration": "(beschriftete) Illustration"
   }
 }

@@ -2,6 +2,7 @@ import {storiesOf} from "@storybook/react";
 import React from "react";
 
 import typographie_notes from "./elemente_typographie_notes.md";
+import TexturePreview from "../components/gui/TexturePreview";
 
 storiesOf('Elemente', module)
     .add('Typographie', () =>
@@ -31,5 +32,11 @@ storiesOf('Elemente', module)
     )
     .add('Farben, Icons und Kontexte', () =>
         <section>
+        </section>
+    )
+    .add('Voransichten', () =>
+        <section>
+            <TexturePreview template={"striped"}/>&nbsp;
+            <TexturePreview template={"bigdots"}/>
         </section>
     );

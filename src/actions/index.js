@@ -1,5 +1,3 @@
-import {USER} from './constants'
-
 export const switchCursorMode = mode => ({
     type: 'SWITCH_CURSOR_MODE',
     mode
@@ -30,6 +28,12 @@ export const layoutChanged = layout => ({
     // type: USER.SAVE_LAYOUT.REQUEST, // das Ändern des Layouts alleine sollte noch nichts zum Server persistieren
     type: "LAYOUT_CHANGED",
     layout
+});
+
+export const layoutSet = layoutName => ({
+    // type: USER.SAVE_LAYOUT.REQUEST, // das Ändern des Layouts alleine sollte noch nichts zum Server persistieren
+    type: "LAYOUT_SET",
+    layoutName
 });
 
 export const widgetVisibilityToggled = (id, value) => ({

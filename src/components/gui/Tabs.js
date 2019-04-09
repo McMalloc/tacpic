@@ -9,13 +9,16 @@ const TabBar = styled.div`
   background-color: ${props => props.theme.accent_1_light};
 `;
 
-const TabItem = styled.span`
+const TabItem = styled.button`
   background-color: ${props => props.active ? props.theme.background : "transparent"};
   cursor: pointer;
   font-size: ${props => props.theme.font_size_ui};
+  color: ${props => props.active ? props.theme.accent_1 : "inherit"};
+  font-weight: ${props => props.active ? "700" : "inherit"};
   padding: ${props => props.theme.large_padding};
   display: inline-block;
   position: relative;
+  border: none;
   border-right: 1px solid ${props => props.theme.midlight};
   box-shadow: ${props => props.active ? props.theme.middle_shadow : "none"};
   transition: background-color 0.15s;
@@ -52,10 +55,10 @@ class TabPane extends Component {
     render() {
         // let currentPage = <InteractiveSVG />;
         return <Fragment>
-            <TabBar>
+            <TabBar role={"tablist"}>
                 {this.props.tabs.map((tab, index) => {
                     return (
-                        <TabItem active={this.state.active === index} key={index} onClick={() => this.clickHandler(index)}>
+                        <TabItem tabIndex={1} role={"tab"} active={this.state.active === index} key={index} onClick={() => this.clickHandler(index)}>
                             <Icon icon={tab.icon} />
                             {tab.label}
                         </TabItem>);

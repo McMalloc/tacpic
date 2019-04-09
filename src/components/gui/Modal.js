@@ -59,7 +59,8 @@ const ModalContent = styled.div`
   padding: ${props => props.theme.large_padding};
   overflow-y: scroll;
   overflow-x: auto;
-  flex: 1 100% auto;
+  //box-shadow: inset 0 0 8px rgba(0,0,0,0.4);
+  //flex: 1 100% auto;
 `;
 
 const ModalFooter = styled.div`

@@ -3,19 +3,24 @@ import {Responsive, WidthProvider} from "react-grid-layout";
 import {connect} from "react-redux";
 
 import Widget from "../gui/WidgetContainer";
-import Widgets from "./widgets/Widgets"
-import {canvasResized, layoutChanged, widgetVisibilityToggled} from "../../actions";
+import Widgets from "./widgets"
+import {canvasResized, layoutChanged, layoutSet, widgetVisibilityToggled} from "../../actions";
 
 import './Editor.css';
 import styled from 'styled-components';
+import {Ribbon} from "../gui/Ribbon";
+import {withTranslation} from "react-i18next";
+import {Tile} from "../gui/Tile";
 
-const Menu = styled.div`
+const Wrapper = styled.div`
   display: flex;
   height: 100%;
-  flex-direction: column;
+  //flex-direction: column;
 `;
 
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
+const ResponsiveReactGridLayout = styled(WidthProvider(Responsive))`
+  flex: 1 1 100%;
+`;
 const rowHeight = 30;
 const widgetPadding = 6;
 
@@ -27,27 +32,16 @@ class Editor extends Component {
         };
     };
 
-    // widgetResized(widgets, oldState, newState) {
-    //     // this.canvasWidth = 300;
-    //     // this.canvasHeight = 200;
-    // };
-
     render() {
         if (this.props.initialized) {
             return (
-                <React.Fragment>
-                    <Menu>
-                        {this.props.widgetConfig.map((widgetDefinition, i) =>
-                            <label key={i}>
-                                <input
-                                    name="isGoing"
-                                    checked={widgetDefinition.visible}
-                                    onChange={(event) => this.props.widgetVisibilityToggled(widgetDefinition.i, event.target.checked)}
-                                    type="checkbox"/>
-                                {widgetDefinition.i}
-                            </label>
-                        )}
-                    </Menu>
+                <Wrapper>
+                    <Tile title={"hjdhs"} imgUrl={"fhdgsf"} />
+                    <Ribbon menus={[
+                        {label: "Zeichnen", icon: "pen", action: () => {this.props.layoutSet("categorise")}},
+                        {label: "Überprüfen", icon: "search", action: () => {this.props.layoutSet("proofing")}},
+                        {label: "Legende", icon: "search", action: () => {this.props.layoutSet("key")}}
+                    ]}/>
                     <ResponsiveReactGridLayout
                         className="layout"
                         draggableHandle={'.drag-handle'}
@@ -60,7 +54,6 @@ class Editor extends Component {
                         onLayoutChange={this.props.layoutChanged}
                         rowHeight={rowHeight}>
 
-                        {/*{this.widgets}*/}
                         {this.props.widgetConfig
                             .filter(widget => { return widget.visible })
                             .map(widget => {
@@ -75,13 +68,13 @@ class Editor extends Component {
                                          }
                                          }>
                                         <Widget
-                                            title={widget.i}
+                                            title={this.props.t("editor:" + widget.i)}
                                             component={Widgets[widget.i]}/>
                                     </div>
                                 )
                             })}
                     </ResponsiveReactGridLayout>
-                </React.Fragment>
+                </Wrapper>
             );
         } else {
             return (<div>Bitte warten.</div>)
@@ -95,9 +88,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        widgetVisibilityToggled: (id, value) => {
-            dispatch(widgetVisibilityToggled(id, value));
-        },
+        // widgetVisibilityToggled: (id, value) => {
+        //     dispatch(widgetVisibilityToggled(id, value));
+        // },
         canvasResized: (widgets, oldState, newState) => {
             if (newState.i !== 'Canvas') return;
             dispatch(canvasResized(
@@ -109,8 +102,11 @@ const mapDispatchToProps = dispatch => {
         },
         layoutChanged: (layout) => {
             dispatch(layoutChanged(layout));
+        },
+        layoutSet: (layoutName) => {
+            dispatch(layoutSet(layoutName));
         }
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Editor);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Editor));

@@ -1,11 +1,19 @@
 @import 'styles/_typography.scss';
 @import 'styles/_grid-layout.scss';
 @import 'styles/flexboxgrid.css';
+@import 'styles/_animations.scss';
 
 // resets not covered by normalized
+//TODO: flexbox vendor-prefixen für IE10 https://caniuse.com/#feat=flexbox
 body {
   margin: 0;
   padding: 0;
+  hyphens: auto;
+  height: 100%;
+}
+
+html {
+  height: 100%;
 }
 
 img {

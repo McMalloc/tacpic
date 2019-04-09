@@ -22,13 +22,6 @@ class Canvas extends Component {
     render() {
         // let currentPage = <InteractiveSVG />;
         return (<Widget>
-            <FlyoutButton label={'Titel des Buttons'}>
-                <label><input type="checkbox" /> Check me</label>
-                <p><button>Klick mich</button></p>
-            </FlyoutButton>
-            <FlyoutButton label={'Und noch einer!'}>
-                <pre>In the above examples, it is important to read the scrollHeight property in getSnapshotBeforeUpdate because there may be delays between “render” phase lifecycles (like render) and “commit” phase lifecycles (like getSnapshotBeforeUpdate and componentDidUpdate).</pre>
-            </FlyoutButton>
             <Wrapper>
                 <InteractiveSVG style={{margin: 0,
                     background: 'yellow',

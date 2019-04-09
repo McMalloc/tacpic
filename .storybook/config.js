@@ -10,13 +10,20 @@ import { withA11y } from '@storybook/addon-a11y';
 
 
 function loadStories() {
+    require('../src/stories/einleitung.js');
+    require('../src/stories/navigation.js');
     require('../src/stories/elemente.js');
     require('../src/stories/button.js');
     require('../src/stories/layout.js');
     require('../src/stories/modal.js');
     require('../src/stories/form.js');
+    require('../src/stories/auswahl.js');
+    require('../src/stories/menus.js');
     require('../src/stories/feedback.js');
-  require('../src/stories');
+    require('../src/stories/kategorisieren.js');
+
+    // der andere shizzle
+    require('../src/stories');
 }
 
 addDecorator(story => (
@@ -25,7 +32,5 @@ addDecorator(story => (
     </ThemeProvider>
 ));
 
-// addDecorator(withInfo({inline: false}));
 addDecorator(withA11y);
-
 configure(loadStories, module);

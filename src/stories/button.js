@@ -11,7 +11,7 @@ storiesOf('Button', module)
             <hr/>
             <Button>Ein sehr langer Button, der einfach kein Ende nimmt!</Button>
             <hr/>
-            <Button primary>Primärer Button</Button>
+            <Button onClick={() => {alert("klick!")}} primary>Primärer Button</Button>
         </section>
     )
     .add('Flyout', () =>

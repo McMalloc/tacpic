@@ -1,4 +1,5 @@
 import {cloneDeep, filter, every, find} from "lodash"
+import layouts from "../components/editor/widgets/layouts.js"
 
 let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so
 let lastObjectsProps = [];
@@ -72,7 +73,12 @@ const editor = (state = {}, action) => {
             let openedFile = {...state.openedFile};
             openedFile.pages.push({name: 'Seite ' + (openedFile.pages.length + 1), objects: []});
             return {...state, openedFile};
-        case 'LAYOUT_CHANGED':
+        case 'LAYOUT_SET':
+            return {
+                ...state,
+                widgetConfig: layouts[action.layoutName]
+            };
+        case 'LAYOUT_CHANGED': // TODO: wird das noch benutzt?
             return {
                 ...state,
                 // TODO: muss selbe Anzahl Widgets zurückgeben, sonst verschwinden Widget-Optionen

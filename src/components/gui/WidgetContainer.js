@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import styled from 'styled-components';
 import {Button, FlyoutButton} from "./Button";
 
+// TODO: Minimieren-Button
 const Wrapper = styled.div`
   display: flex;
   height: 100%;
   flex-direction: column;
   box-sizing: border-box;
-  font-size: 0.9em;
+  //font-size: 0.9em;
   //border: 3px solid ${props => props.theme.accent_1_light};
   // border-radius: ${props => props.theme.border_radius};
   box-shadow: ${props => props.theme.middle_shadow};
@@ -19,6 +20,7 @@ const TitleBar = styled.div`
   flex: 1.6em 0 0;
   border-bottom: 2px solid ${props => props.theme.accent_1};
   cursor: move;
+  font-size: 0.9em;
   align-items: stretch;
  
   display: flex;
@@ -93,7 +95,6 @@ const TitleFlyout = styled(FlyoutButton)`
 
 class WidgetContainer extends Component {
     render() {
-        // debugger;
         const Component = this.props.component;
         const Menu = this.props.menu || null;
         return (

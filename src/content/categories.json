@@ -1,0 +1,79 @@
+[
+  {
+    "title": "chart",
+    "id": 0,
+    "sub_of": -2,
+    "imgUrl": "images/sample_Balkendiagramm.svg",
+    "description": "...",
+    "guides": [
+      "Tu dies",
+      "Tu jenes"
+    ]
+  },
+  {
+    "title": "barchart",
+    "id": 1,
+    "sub_of": 0,
+    "imgUrl": "images/sample_Balkendiagramm.svg",
+    "description": "...",
+    "guides": [
+      "Tu dies",
+      "Tu jenes"
+    ]
+  },
+
+  {
+    "title": "illustration",
+    "id": 2,
+    "sub_of": -1,
+    "imgUrl": "images/sample_Schema.svg",
+    "description": "illustration.description",
+    "guides": [
+      "illustration.guide1",
+      "illustration.guide2"
+    ],
+    "query": "illustration.query"
+  },
+  {
+    "title": "illustration-2d",
+    "id": 3,
+    "sub_of": 2,
+    "imgUrl": "images/sample_Schema.svg",
+    "description": "...",
+    "guides": [
+      "Tu dies 2d",
+      "Tu jenes 3d"
+    ]
+  },
+  {
+    "title": "illustration-3d",
+    "id": 4,
+    "sub_of": 2,
+    "imgUrl": "images/sample_Schema3d.svg",
+    "description": "...",
+    "guides": [
+      "Tu dies 2d",
+      "Tu jenes 3d"
+    ]
+  },
+  {
+    "title": "illustration-few",
+    "id": 5,
+    "sub_of": [4,3],
+    "imgUrl": "images/sample_Illustration-few.svg",
+    "description": "...",
+    "guides": [
+      "Tu dies few"
+    ]
+  },
+  {
+    "title": "illustration-many",
+    "id": 6,
+    "sub_of": [4,3],
+    "imgUrl": "images/sample_Illustration-many.svg",
+    "description": "...",
+    "guides": [
+      "Tu dies many"
+    ]
+  }
+]

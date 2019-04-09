@@ -11,7 +11,7 @@ const Wrapper = styled.span`
 
 const Icon = props => {
     return (
-        typeof props.icon !== 'undefined' ?
+        typeof props.icon !== 'undefined' && props.icon !== null ?
                 <Wrapper><i className={"fas fa-" + props.icon}/></Wrapper> : null
     )
 

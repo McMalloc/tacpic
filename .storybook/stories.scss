@@ -2,7 +2,7 @@ html, body, #root {
   height: 100%;
 }
 
-section {
+#root>section {
   background-color: white;
   border: 1px solid lightgrey;
   border-radius: 3px;

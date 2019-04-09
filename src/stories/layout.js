@@ -11,6 +11,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const widgetA = props => {
     return <p>Widget A</p>;
 };
+
 const widgetB = props => {
     return <p>Widget B</p>;
 };
@@ -63,9 +64,9 @@ const gridExamples = [
                 </div>
                 <div className={"col-xs-8"}>
                     <div className={"row " + row[1]}>
-                        {row.slice(2).map(column => {
+                        {row.slice(2).map((column, index) => {
                             return (
-                                <Column className={column}>
+                                <Column className={column} key={index}>
                                     <Gridbox className={"column-content"}><code>{column}</code></Gridbox>
                                 </Column>
                             )
@@ -105,7 +106,16 @@ storiesOf('Layout', module)
                          w: 4,
                          h: 5,
                          static: false}}>
-                    <Widget component={widgetA} title={'widget-b'}/>
+                    <Widget component={widgetA} title={'Werkzeuge'}/>
+                </div>
+                <div key={'widget-c'}
+                     data-grid={{
+                         x: 0,
+                         y: 0,
+                         w: 4,
+                         h: 5,
+                         static: false}}>
+                    <Widget component={() => {return <div></div>}} title={'Canvas'}/>
                 </div>
                 <div key={'widget-b'}
                      data-grid={{
@@ -114,7 +124,7 @@ storiesOf('Layout', module)
                          w: 6,
                          h: 5,
                          static: false}}>
-                    <Widget component={widgetB} title={'widget-b'} menu={menu}/>
+                    <Widget component={widgetB} title={'Details'} menu={menu}/>
                 </div>
             </ResponsiveReactGridLayout>
         </section>,

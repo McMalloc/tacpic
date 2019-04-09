@@ -5,15 +5,15 @@ export default {
     striped: ({scaleX, scaleY, angle}, uuid) => {
         return (
             <pattern patternUnits="userSpaceOnUse" id={'pattern-' + uuid} patternTransform={transform(0, 0, angle)} width="20" height="20">
-                <line style={{stroke: 'rgb(255,0,0)', strokeWidth:2}} x1="0" y1="15" x2="5" y2="20" />
-                <line style={{stroke: 'rgb(255,0,0)', strokeWidth:2}} x1="5" y1="0" x2="20" y2="15" />
+                <line style={{stroke: 'rgb(0,0,0)', strokeWidth:2}} x1="0" y1="15" x2="5" y2="20" />
+                <line style={{stroke: 'rgb(0,0,0)', strokeWidth:2}} x1="5" y1="0" x2="20" y2="15" />
             </pattern>
         )
     },
     bigdots: ({scaleX, scaleY, angle}, uuid) => {
         return (
-            <pattern patternUnits="userSpaceOnUse" id={'pattern-' + uuid} patternTransform={transform(0, 0, angle)} width="40" height="40">
-                <circle cx="20" cy="20" r="20" />
+            <pattern patternUnits="userSpaceOnUse" id={'pattern-' + uuid} patternTransform={transform(0, 0, angle)} width="20" height="20">
+                <circle cx="11" cy="11" r="8" />
             </pattern>
         )
     }

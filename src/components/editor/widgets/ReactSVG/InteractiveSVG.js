@@ -68,13 +68,15 @@ class InteractiveSVG extends Component {
                         // Hash, der key ist die UUID, darunter ist ein Objekt (oder ein ein weiteres Hash), dass die Daten enthält. Daraus werden in den Objektkomponenten die Elemente erstellt
                         // Oder: React-Komponenten für Objekte so lassen wie sie sind und immer wieder in dieser Rendermethode neu aufrufen
                         {
-                            type: OBJECT.LABEL, // TODO Konstanten nutzen
-                            uuid: uuid,
-                            text: "Guten Tag, ich bin ein Label.",
-                            x: this.mouseXDown,
-                            y: this.mouseYDown,
-                            angle: 0,
-                            width: this.state.mouseXDrag - this.mouseXDown,
+                            type:   OBJECT.LABEL,
+                            uuid:   uuid,
+                            text:   "Guten Tag, ich bin ein Label.",
+                            x:      this.mouseXDown,
+                            y:      this.mouseYDown,
+                            angle:  0,
+                            isKey:  false,
+                            key:    null,
+                            width:  this.state.mouseXDrag - this.mouseXDown,
                             height: this.state.mouseYDrag - this.mouseYDown
                         },
                     );
