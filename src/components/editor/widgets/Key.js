@@ -5,8 +5,8 @@ import {connect} from "react-redux";
 import {OBJECT} from "../constants";
 import {Button, FlyoutButton} from "../../gui/Button";
 import TexturePreview from "../../gui/TexturePreview";
-import Grid from "styled-components-grid";
 import {Textinput} from "../../gui/Input";
+import {Row} from "../../gui/Grid";
 
 const ListHeading = styled.span` // TODO: eigentlich nur ein Label
   font-weight: 700;
@@ -82,18 +82,18 @@ class Key extends Component {
                     </Table>
                 </Padding>
                 <Padding vertical={2}>
-                    <FlyoutButton icon={"plus"} label={"Eintrag hinzufügen"}>
-                        Menü
-                    </FlyoutButton>
+                    {/*<FlyoutButton icon={"plus"} label={"Eintrag hinzufügen"}>*/}
+                        {/*Menü*/}
+                    {/*</FlyoutButton>*/}
                 </Padding>
-                <Grid>
-                    <Grid.Unit size={1/2}>
+                <Row padded>
+                    <div className={"col-sm-6"}>
                         <Button icon={"redo-alt"} fullWidth>Aktualisieren</Button>
-                    </Grid.Unit>
-                    <Grid.Unit size={1/2}>
+                    </div>
+                    <div className={"col-sm-6"}>
                         <Button icon={"arrow-alt-circle-right"} primary fullWidth>Erstellen</Button>
-                    </Grid.Unit>
-                </Grid>
+                    </div>
+                </Row>
             </React.Fragment>
         );
     }

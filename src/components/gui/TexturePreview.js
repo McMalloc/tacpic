@@ -1,35 +1,59 @@
 import React from 'react';
 import styled from 'styled-components';
 import patternTemplates from "../editor/widgets/ReactSVG/Patterns.js";
+import {useTranslation} from "react-i18next";
 
 // TODO: Minimieren-Button
 const Wrapper = styled.div`
   display: inline-block;
   line-height: 0;
-  width: ${props => (props.width || 50) + "px"};
-  border: 2px solid ${props => props.active ? props.theme.accent_1 : props.theme.background};
-  height: ${props => (props.height || 50) + "px"};
-  transition: border-color 0.2s;
-  background-color: ${props => props.theme.background};
+  cursor: pointer;
+  width: ${props => props.width};
+  border: 2px solid ${props => props.active ? props.theme.accent_1 : "transparent"};
+  height: ${props => props.height};
+  transition: border-color 0.2s, background-color 0.1s;
+  background-color: ${props => props.active ? props.theme.background : props.theme.accent_1_light};
+  padding: 2px;
+  border-radius: ${props => props.theme.border_radius};
   
   &:hover {
-     border-color: ${props => props.theme.accent_1};
-     background-color: ${props => props.theme.accent_1_light};
+     //border-color: ${props => props.theme.accent_1};
+     background-color: ${props => props.theme.background};
   }
 `;
 
 const TexturePreview = props => {
+    const { t } = useTranslation();
+    const label = props.template === null ? t("gui:none") : t(props.label);
     return (
-        <Wrapper height={props.height || 50} width={props.width || 50}>
-            <svg width={props.width || 50}
-                 height={props.height || 50}>
-                <rect
-                    fill={'url(#pattern-preview-' + props.template}
-                    width={props.width || 50}
-                    height={props.height || 50}
-                />
-                {patternTemplates[props.template]({scaleX: 1, scaleY: 1, angle: 0}, "preview-" + props.template)}
+        <Wrapper role={"button"}
+                 active={props.active}
+                 title={label}
+                 aria-label={label} onClick={props.onClick} height={props.height || 50} width={props.width || 50}>
+
+            <svg width={props.width || 42}
+                 height={props.height || 42}>
+                {props.template !== null ?
+                <>
+                    <rect
+                        fill={'url(#pattern-preview-' + props.template}
+                        width={props.width || 42}
+                        height={props.height || 42}
+                    />
+                    {patternTemplates[props.template]({scaleX: 1, scaleY: 1, angle: 0}, "preview-" + props.template)}
+                    </>
+                    :
+                    <>
+                        <rect
+                            fill={"#e9f5f7"}
+                            width={props.width || 42}
+                            height={props.height || 42}
+                        /><text style={{fontSize: 15,}} x={0} y={25}>{label}</text>
+                    </>
+                }
+
             </svg>
+
         </Wrapper>
     )
 };

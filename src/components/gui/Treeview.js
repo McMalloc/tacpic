@@ -45,24 +45,12 @@ const TreeIcon = styled.span`
 `;
 
 class Treeview extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {expandedValues: [], selected: null};
+    state = {
+        expandedValues: [],
+        selected: null
+    };
 
-        this.collapse = this.collapse.bind(this);
-        this.expand = this.expand.bind(this);
-        this.toggle = this.toggle.bind(this);
-    }
-
-    expand(value) {
-        // this.setState({expandedValues: uniq([...this.state.expandedValues, value])});
-    }
-
-    collapse(value) {
-        // this.setState({expandedValues: without([...this.state.expandedValues], value)});
-    }
-
-    toggle(value) {
+    toggle = (value) => {
         let position = indexOf(this.state.expandedValues, value);
         if (position < 0) {
             this.setState({expandedValues: uniq([...this.state.expandedValues, value])});
@@ -71,7 +59,7 @@ class Treeview extends Component {
             newExpanded.splice(position, 1);
             this.setState({expandedValues: newExpanded});
         }
-    }
+    };
 
     renderNode(nodes, depth) {
         if (typeof depth === 'number')
@@ -79,11 +67,9 @@ class Treeview extends Component {
         else
             depth = 0;
         return nodes.map((node, index) => {
-            let expanded = (indexOf(this.state.expandedValues, node.value) >= 0);
+            let expanded = !(indexOf(this.state.expandedValues, node.value) >= 0);
             return (
                 <TreeItem depth={depth} key={index}>
-
-                    {/*{depth}&ensp;*/}
 
                     <TreeLabel tabIndex={0} onClick={() => this.toggle(node.value)}>
                         {node.children && node.children.length > 0 &&
@@ -92,7 +78,7 @@ class Treeview extends Component {
                         {node.label}
                     </TreeLabel>
 
-                    {node.children && node.children.length > 0 && indexOf(this.state.expandedValues, node.value) !== -1 &&
+                    {node.children && node.children.length > 0 && expanded &&
                     <Tree>
                         {this.renderNode(node.children, depth)}
                     </Tree>

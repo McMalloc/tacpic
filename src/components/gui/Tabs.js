@@ -1,30 +1,34 @@
 import styled from 'styled-components';
 import React, {Component, Fragment} from "react";
 import {Icon} from "./_Icon";
+import {withTranslation} from "react-i18next";
 
 const TabBar = styled.div`
-  border-bottom: 2px solid ${props => props.theme.accent_1};
+  border-bottom: 1px solid ${props => props.theme.midlight};
   box-sizing: content-box;
-  margin-bottom: ${props => props.theme.large_padding}
-  background-color: ${props => props.theme.accent_1_light};
+  display: flex;
+  margin-bottom: ${props => props.theme.spacing[3]};
+  //background-color: ${props => props.theme.accent_1_light};
 `;
 
 const TabItem = styled.button`
-  background-color: ${props => props.active ? props.theme.background : "transparent"};
+  
+  background-color: transparent;
+  // background-color: ${props => props.active ? props.theme.background : "transparent"};
   cursor: pointer;
   font-size: ${props => props.theme.font_size_ui};
   color: ${props => props.active ? props.theme.accent_1 : "inherit"};
   font-weight: ${props => props.active ? "700" : "inherit"};
-  padding: ${props => props.theme.large_padding};
-  display: inline-block;
+  padding: ${props => props.theme.spacing[2]};
   position: relative;
-  border: none;
-  border-right: 1px solid ${props => props.theme.midlight};
+  border: 1px solid ${props => props.active ? props.theme.midlight : "transparent"};
+  border-bottom: none;
+  //border-right: 1px solid ${props => props.theme.midlight};
   box-shadow: ${props => props.active ? props.theme.middle_shadow : "none"};
   transition: background-color 0.15s;
   
   &:hover {
-      background-color: ${props => props.theme.light};
+      background-color: ${props => props.active ? "inherit" : props.theme.light};
   }
   
   &:after {
@@ -35,13 +39,9 @@ const TabItem = styled.button`
     left: 0;
     right: 0;
     bottom: -3px;
-    background-color: ${props => props.active ? props.theme.background : "transparent"};
+    background-color: ${props => props.active ? props.theme.accent_1_light : "transparent"};
   }
 `;
-
-// const TabContent = styled.div`
-//
-// `;
 
 class TabPane extends Component {
     state = {
@@ -60,7 +60,7 @@ class TabPane extends Component {
                     return (
                         <TabItem tabIndex={1} role={"tab"} active={this.state.active === index} key={index} onClick={() => this.clickHandler(index)}>
                             <Icon icon={tab.icon} />
-                            {tab.label}
+                            {this.props.t(tab.label)}
                         </TabItem>);
                 })}
             </TabBar>
@@ -71,4 +71,4 @@ class TabPane extends Component {
     }
 }
 
-export {TabPane}
+export default withTranslation()(TabPane)

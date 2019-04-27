@@ -33,7 +33,7 @@ storiesOf('Formular', module)
                 <div className={"col-xs-6"}>
                     <Textinput validator={/\w+/} label={"Vorname"}/>
                     <Textinput validator={/\w+/} label={"Nachname"}/>
-                    <Numberinput unit={"mm"} label={"Länge"}/>
+                    <Numberinput unit={"mm"} label={"Länge"} sublabel={"des zu bearbeitenden Materials"}/>
                 </div>
             </div>
         </section>

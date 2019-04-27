@@ -21,7 +21,7 @@ const editor = (state = {}, action) => {
             return oldState;
 
         case 'OBJECT_SELECTED':
-            let selectedObjects = [action.uuid];
+            let selectedObjects = action.uuid === null ? [] : [action.uuid];
             return {...state, selectedObjects};
 
         case 'OBJECT_ROTATED':
@@ -37,6 +37,7 @@ const editor = (state = {}, action) => {
 
         case 'OBJECT_TRANSLATED':
             // TODO sauberer für nested objects
+            // TODO Idee: statt tatsächliches Objekt immer wieder während des Verschiebens neu zu rendern, die Browser-native <img> drag and drop Vorschau anzeigen
             oldState = {...state};
             objects = oldState.openedFile.pages[state.currentPage].objects;
 
@@ -59,6 +60,18 @@ const editor = (state = {}, action) => {
             lastObjectsProps = [];
             return {...state, mode: lastMode};
 
+        case 'OBJECT_PROP_CHANGED':
+            oldState = cloneDeep(state);
+            console.log(action.value);
+            filter(oldState.openedFile.pages[oldState.currentPage].objects, {uuid: action.uuid}).forEach(object => {
+                object[action.prop] = action.value;
+            });
+            return oldState;
+        case 'VERTICAL_SPACING_SET':
+            return {...state, verticalGridSpacing: action.spacing};
+        case 'HORIZONTAL_SPACING_SET':
+            return {...state, horizontalGridSpacing: action.spacing};
+
         case 'SWITCH_CURSOR_MODE':
             return {...state, mode: action.mode};
         case 'SWITCH_TEXTURE_MODE':
@@ -76,7 +89,8 @@ const editor = (state = {}, action) => {
         case 'LAYOUT_SET':
             return {
                 ...state,
-                widgetConfig: layouts[action.layoutName]
+                currentLayout: action.layoutIndex,
+                widgetConfig: layouts[action.layoutIndex]
             };
         case 'LAYOUT_CHANGED': // TODO: wird das noch benutzt?
             return {
@@ -101,6 +115,13 @@ const editor = (state = {}, action) => {
                         return widget;
                     }
                 })
+            };
+        case 'CACHE_SVG':
+            let file = {...state.openedFile};
+            file.pages[action.pageNumber].cache = action.markup;
+            return {
+                ...state,
+                openedFile: file
             };
         default:
             return state;

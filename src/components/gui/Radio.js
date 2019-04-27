@@ -26,9 +26,29 @@ const Label = styled.label`
       box-sizing: border-box;
       content: "";
       border-radius: 100%;
-      border: 2px solid ${props => props.active ? props.theme.accent_1 : props.theme.dark};
-      background-color: ${props => props.active ? props.theme.accent_1 : "transparent"};
+      border: 1px solid ${props => props.active ? props.theme.accent_1 : props.theme.midlight};
+      background-color: ${props => props.theme.background};
+      // background-color: ${props => props.active ? props.theme.accent_1 : props.theme.background};
       transition: background-color 0.1s;
+  }  
+  
+  &:after {
+      width: 0.5em;
+      height: 0.5em;
+      left: 0.25em;
+      position: absolute;
+      margin-right: 0.5em;
+      align-self: center;
+      box-sizing: border-box;
+      content: "";
+      border-radius: 100%;
+      opacity: ${props => props.active ? 1 : 0};
+      background-color: ${props => props.theme.accent_1};
+      transition: opacity 0.1s;
+  }
+  
+  &:hover {
+    text-decoration: underline;
   }
 `;
 
@@ -47,7 +67,7 @@ const Input = styled.input`
   }  
   
   &:focus + label {
-    box-shadow: 0 0 0 2px rgba(0,0,0,0.4);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
   }
 `;
 
@@ -64,7 +84,7 @@ class Radio extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange() {
+    handleChange(event) {
         this.setState({value: event.target.value});
     }
 

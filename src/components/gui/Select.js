@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import React, {Component} from "react";
-import _Select from 'react-select'
+import AtlSelect from 'react-select'
+import {withTranslation} from "react-i18next";
+import Label from "./_Label";
 // import {Icon} from "./_Icon";
 
 const Wrapper = styled.div`
@@ -14,29 +16,15 @@ const customStyles = {
 };
 
 class Select extends Component {
-    constructor(props) {
-        super(props);
-        // this.state = {activeItem: 0, collapsed: false};
-        // this.collapse = this.collapse.bind(this);
-        // this.expand = this.expand.bind(this);
-    }
-
-    // collapse() {
-    //     this.setState({collapsed: true});
-    // }
-    //
-    // expand() {
-    //     this.setState({collapsed: false});
-    // }
-
     render() {
-        // Use a portal to render the children into the element
         return (
             <Wrapper>
-                <_Select
+                <Label label={this.props.label} sublabel={this.props.sublabel}>
+                <AtlSelect
                     styles={customStyles}
+                    placeholder={this.props.t(this.props.placeholder)}
                     menuPortalTarget={document.body}
-                    options={this.props.options} />
+                    options={this.props.options} /></Label>
             </Wrapper>
 
 
@@ -44,4 +32,4 @@ class Select extends Component {
     }
 }
 
-export {Select}
+export default withTranslation()(Select)

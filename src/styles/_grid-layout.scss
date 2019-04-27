@@ -20,18 +20,20 @@
   }
 
   &.react-draggable-dragging {
-    transition: none;
     z-index: 3;
     will-change: transform;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    //opacity: 0.9;
     transition: box-shadow 0.2s;
   }
 
   &.react-grid-placeholder {
-    //background: rgba(255,0,0,0.2);
-    border: 3px dashed #999;
+    background:url(
+    data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAALUlEQVQYV3XJQQ4AAAQDQf3/oyuVEIQ97sCeSBKXBaiNCfoDOwzcUHhB4AdCBxt6HATN4t5WAAAAAElFTkSuQmCC
+    ) repeat;
+    //border: 3px dashed #999;
     transition-duration: 100ms;
-    z-index: 2;
+    //z-index: 2;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -43,19 +45,25 @@
     position: absolute;
     width: 20px;
     height: 20px;
-    bottom: 3px;
-    right: 3px;
+    bottom: 0;
+    right: 0;
     cursor: se-resize;
+    //background-color: yellow;
 
     &:after {
       content: "";
       position: absolute;
-      right: 3px;
-      bottom: 3px;
-      width: 5px;
-      height: 5px;
-      border-right: 2px solid rgba(0, 0, 0, 0.4);
-      border-bottom: 2px solid rgba(0, 0, 0, 0.4);
+      right: 2px;
+      bottom: 2px;
+      width: 0;
+      height: 0;
+      //border-image: url(
+      //data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAJUlEQVQYV2NkYGD4z8DAwMiABFA4UPH/6IJgXciCcGNggijmAgAAYwUFA9AfCQAAAABJRU5ErkJggg==
+      //  ) repeat;
+      border-right: 4px solid rgba(0, 0, 0, 0.4);
+      border-bottom: 4px solid rgba(0, 0, 0, 0.4);
+      border-top: 4px solid transparent;
+      border-left: 4px solid transparent;
     }
   }
 }

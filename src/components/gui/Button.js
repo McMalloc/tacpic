@@ -1,40 +1,35 @@
 import styled from 'styled-components';
 import React, {Component} from "react";
 import {fadeIn, slideFromAbove} from "./Animations";
+import {useTranslation} from 'react-i18next';
 
 const Label = styled.span`
-  padding: ${props => props.noPad ? 0 : props.theme.large_padding} ${props => props.noPad ? 0 : props.primary ? "16px" : props.theme.large_padding};
+  // padding: ${props => props.noPad ? 0 : props.theme.large_padding} ${props => props.noPad ? 0 : props.primary ? "16px" : props.theme.large_padding};
+  padding-left: ${props => props.icon ? props.theme.spacing[2] : 0};
   display: inline-block;
-  //border-left: 1px solid ${props => props.showDivider ? "rgba(0,0,0,0.1)" : 'transparent'}};
 `;
 
 const Icon = styled.span`
-  padding: ${props => props.noPad ? 0 : props.theme.spacing[2]};
+  //padding: ${props => props.theme.spacing[2]};
   display: inline-block;
 `;
 
 const ButtonBase = styled.button`
-  background-color: ${props => props.primary ? props.theme.brand_secondary : props.theme.accent_1_light};
-   //border: 1px solid ${props => props.primary ? props.theme.brand_primary_light : props.theme.midlight};
+  background-color: ${props => props.primary ? props.theme.brand_secondary : "transparent"};
   color: ${props => props.primary ? props.theme.background : "inherit"};
-  border: none;
-  padding: 0;
-  //box-sizing: content-box;
+  border: 1px solid ${props => props.theme.middark};
+  padding: ${props => props.theme.spacing[2]};
   border-radius: 3px;
-  // padding: ${props => props.theme.large_padding} ${props => props.theme.base_padding};
   cursor: pointer;
   margin-top: 0;
   position: relative;
   font-size: 0.9em;
   width: ${props => props.fullWidth ? "100%" : "auto"};
-  //font-weight: ${props => props.primary ? '700' : 'inherit'};
   transition: box-shadow 0.15s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.15s;
-  //box-shadow: 2px 2px 3px rgba(0,0,0,0.15);
-  box-shadow: ${props => props.theme.middle_shadow};
-  //box-shadow: inset 0 -3px rgba(0,0,0,0.2), 0 1px 4px rgba(0,0,0,0.15);
   
   &:hover {
       background-color: ${props => props.primary ? props.theme.accent_1 : props.theme.light};
+      box-shadow: ${props => props.theme.middle_shadow};
       ${Label} {
         text-decoration: underline;
       }
@@ -51,16 +46,17 @@ const ButtonBase = styled.button`
 
 // die ref muss heruntergereicht werden, da noch ein styled-component dazwischen steht
 const Button = React.forwardRef((props, ref) => {
+    const { t } = useTranslation();
     return (
-        <ButtonBase ref={ref} {...props}>
+        <ButtonBase type={"button"} ref={ref} {...props}>
             {props.icon &&
-            <Icon noPad={props.noPad} primary={props.primary}>
+            <Icon primary={props.primary}>
                 <i className={"fas fa-" + props.icon}/>
             </Icon>
             }
             {props.children &&
-            <Label noPad={props.noPad} primary={props.primary} showDivider={props.icon && props.icon.length > 0}>
-                {props.children}
+            <Label icon={props.icon}>
+                {t(props.children)}
             </Label>
             }
         </ButtonBase>
@@ -143,7 +139,7 @@ class FlyoutButton extends Component {
         } {
             this.state.out ? this.close() : this.open();
             // the timer will fire after the current render cycle, so the ref is actually in the dom after the flag went true
-            setTimeout(() => {this.flyoutRef.current.focus()}, 0);
+            setTimeout(() => this.flyoutRef.current.focus(), 0);
         }
     };
 
@@ -178,4 +174,4 @@ class FlyoutButton extends Component {
     }
 }
 
-export {FlyoutButton, Button}
+export {FlyoutButton, Button, ButtonBase}

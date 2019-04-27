@@ -1,18 +1,25 @@
 import React from "react";
 import transform from "./Transform";
 
+const filledRect = (colour) => {
+    if (colour === undefined) return null;
+    return <rect x="0" y="0" width="20" height="20" fill={colour}/>
+};
+
 export default {
-    striped: ({scaleX, scaleY, angle}, uuid) => {
+    striped: ({scaleX, scaleY, angle}, uuid, fill) => {
         return (
             <pattern patternUnits="userSpaceOnUse" id={'pattern-' + uuid} patternTransform={transform(0, 0, angle)} width="20" height="20">
+                {filledRect(fill)}
                 <line style={{stroke: 'rgb(0,0,0)', strokeWidth:2}} x1="0" y1="15" x2="5" y2="20" />
                 <line style={{stroke: 'rgb(0,0,0)', strokeWidth:2}} x1="5" y1="0" x2="20" y2="15" />
             </pattern>
         )
     },
-    bigdots: ({scaleX, scaleY, angle}, uuid) => {
+    bigdots: ({scaleX, scaleY, angle}, uuid, fill) => {
         return (
             <pattern patternUnits="userSpaceOnUse" id={'pattern-' + uuid} patternTransform={transform(0, 0, angle)} width="20" height="20">
+                {filledRect(fill)}
                 <circle cx="11" cy="11" r="8" />
             </pattern>
         )

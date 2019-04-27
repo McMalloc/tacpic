@@ -11,7 +11,7 @@ $(() => {
 
 function init() {
 	drawMask();
-	console.log("start segmentation");
+	console.log("start processing");
 	// PFSegmentation(
 	slicSegment();
 	$("#rerender-edges").click(function() {

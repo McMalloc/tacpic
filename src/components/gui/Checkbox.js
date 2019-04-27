@@ -3,26 +3,31 @@ import React, {Component, Fragment} from "react";
 
 const Label = styled.label`
   font-size: 0.9em;
-  display: flex;
+  //display: flex;
   margin-bottom: 0.5em;
+  padding-left: 1.4em;
   transition: font-weight 0.1s, color 0.1s;
   position: relative;
   align-items: center;
+  color: ${props => props.disabled ? props.theme.middark : "inherit"};
   
   &:last-child {
   margin-bottom: inherit;
   }
   
   &:before {
+      left: 0.1em;
+      top: 0.1em;
       width: 1em;
       height: 1em;
-      position: relative;
+      position: absolute;
       margin-right: 0.5em;
       align-self: center;
       box-sizing: border-box;
       content: "";
-      border: 2px solid ${props => props.active ? props.theme.accent_1 : props.theme.dark};
-      background-color: ${props => props.active ? props.theme.accent_1 : "transparent"};
+      border-radius: ${props => props.theme.border_radius};
+      border: 1px solid ${props => props.disabled ? props.theme.middark : props.active ? props.theme.accent_1 : props.theme.midlight};
+      background-color: ${props => props.disabled ? "transparent" : props.active ? props.theme.accent_1 : "white"};
       transition: background-color 0.1s;
   }
   
@@ -33,8 +38,12 @@ const Label = styled.label`
     color: white;
     height: 0;
     font-size: 14px;
-    left: 0.2em;
-    top: 0.2em;
+    left: 0.3em;
+    top: 0;
+  }
+  
+  &:hover {
+    text-decoration: ${props => props.disabled ? "none" : "underline"};
   }
 `;
 
@@ -53,14 +62,15 @@ const Input = styled.input`
   }  
   
   &:focus + label {
-    box-shadow: 0 0 0 2px rgba(0,0,0,0.4);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
   }
 `;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  height: 26px;
+  margin-bottom: ${props => props.theme.spacing[1]};
+  //height: 26px;
 `;
 
 class Checkbox extends Component {
@@ -70,23 +80,24 @@ class Checkbox extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(event) {
+    handleChange(event) { // TODO: Soll sich der Parent Container um den State kümmern? Ja: für alles andere gibt es 0 use cases
         this.setState({checked: event.target.checked});
-        this.props.onChange(this.props.name, event.target.checked)
+        if (this.props.onChange) this.props.onChange(this.props.name, event.target.checked);
     }
 
     render() {
-        // Use a portal to render the children into the element
         return (
             <Wrapper>
                  <Input
                      onChange={this.handleChange}
                      name={this.props.name}
+                     disabled={this.props.disabled}
+                     aria-disabled={this.props.disabled}
                      id={this.props.name + "-cb"}
                      // tabIndex={0}
                      checked={this.state.checked}
                      type={"checkbox"} />
-                 <Label active={this.state.checked} htmlFor={this.props.name + "-cb"}>
+                 <Label disabled={this.props.disabled} active={this.state.checked} htmlFor={this.props.name + "-cb"}>
                      {this.props.label}
                  </Label>
             </Wrapper>

@@ -1,76 +1,81 @@
 import styled from 'styled-components';
 import React, {Component} from "react";
-
-const Label = styled.label`
-  font-size: 0.9em;
-`;
+// import {debounce} from 'lodash';
+import Label from "./_Label";
 
 const Unit = styled.span`
   font-size: 0.9em;
   align-self: center;
-  padding-left: 1em;
+  padding-left: ${props => props.theme.spacing[1]};
 `;
 
 const Numberwrapper = styled.div`
   display: flex;
+  
+  input {
+    text-align: right;
+  }
 `;
 
 const Input = styled.input`
   font-size: 1em;
   font-weight: 700;
-  color: ${props => props.theme.accent_1};
-  display: ${props => props.inline? "inline" : "block"};
-  width: ${props => props.inline? "inherit" : "100%"};
+  color: ${props => props.disabled ? props.theme.middark : props.theme.accent_1};;
+  display: ${props => props.inline ? "inline" : "block"};
+  width: ${props => props.inline ? "inherit" : "100%"};
   box-sizing: border-box;
-  border: none;
-  border-bottom: 1px solid ${props => props.theme.accent_1};
-  background-color: ${props => props.theme.accent_1_light};
-  padding: ${props => props.theme.base_padding};
+  border: 1px solid ${props => props.theme.midlight};
+  border-radius: 3px;
+  background-color: ${props => props.disabled ? "transparent" : props.theme.background};
+  padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[1]};
+  cursor: ${props => props.disabled ? "not-allowed" : "text"};
   
   &:after {
     content: "mm";
-    display: block;
-    
+    display: block; 
   }
 `;
 
-class Textinput extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {value: ''};
+const Textarea = styled.textarea`
+  font-size: 1em;
+  font-weight: 700;
+  color: ${props => props.theme.accent_1};
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: 1px solid ${props => props.theme.midlight};
+  border-radius: 3px;
+  background-color: white;
+  padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[1]};
+`;
 
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(event) {
-        this.setState({value: event.target.value});
-    }
-
-    render() {
-        return (
-            <Label>{this.props.label}
-                <Input inline={this.props.inline} type="text" name={this.props.name} value={this.state.value} onChange={this.handleChange}/>
-            </Label>
-        )
-    }
-}
+const Textinput = props => {
+    return (
+        <Label {...props}>
+            <Input
+                disabled={props.disabled}
+                inline={props.inline}
+                type={"text"}
+                name={props.name}
+                value={props.value}
+                onChange={props.onChange}/>
+        </Label>
+    )
+};
 
 class Numberinput extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {value: ''};
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(event) {
+    handleChange = (event) => {
         this.setState({value: event.target.value});
-    }
+    };
+
+    state = {value: ''};
 
     render() {
         return (
-            <Label>{this.props.label}
+            <Label {...this.props}>
                 <Numberwrapper inline={this.props.inline}>
-                    <Input inline={this.props.inline} type="number" name={this.props.name} value={this.state.value} onChange={this.handleChange} />
+                    <Input disabled={this.props.disabled} inline={this.props.inline} type="number"
+                           name={this.props.name} value={this.state.value} onChange={this.handleChange}/>
                     <Unit>{this.props.unit}</Unit>
                 </Numberwrapper>
             </Label>
@@ -78,4 +83,24 @@ class Numberinput extends Component {
     }
 }
 
-export {Textinput, Numberinput}
+class Multiline extends Component {
+    handleChange = (event) => {
+        this.setState({value: event.target.value});
+    };
+
+    state = {value: ''};
+
+    render() {
+        return (
+            <Label {...this.props}>
+                <Textarea
+                    rows={this.props.rows || 3}
+                    name={this.props.name}
+                    value={this.state.value}
+                    onChange={this.handleChange}/>
+            </Label>
+        )
+    }
+}
+
+export {Textinput, Numberinput, Multiline}

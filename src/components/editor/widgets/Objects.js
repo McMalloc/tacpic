@@ -1,27 +1,57 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
+import styled from 'styled-components';
+import {Treeview} from "../../gui/Treeview";
+import {Button} from "../../gui/Button";
+import {Row} from "../../gui/Grid";
+
+const Wrapper = styled.div`
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-content: space-between;
+`;
+
+const Upper = styled.div`
+  flex: 1 1 auto;
+`;
+
+const Lower = styled.div`
+  //align-self: ;
+`;
 
 class Objects extends Component {
-
     render() {
         return (
-            <React.Fragment>
-                <select multiple={true}>
-                {this.props.objects.map((object, i) =>
-                    <option key={i}>
-                        {/*<i className="fa fa-eye"></i> */}
-                        {object.type}
-                        {/*<i className="fas fa-lock-open"></i>*/}
-                    </option>
-                )}
-                </select>
-                <label>
-                    <input checked onChange={() => {}} type={'checkbox'} /> Zeige Druck
-                </label>
-                <label>
-                    <input checked onChange={() => {}} type={'checkbox'} /> Zeige Relief
-                </label>
-            </React.Fragment>
+            <Wrapper>
+                <Upper>
+                    <Treeview options={
+                        [
+                            {label: "Vordergrund", value: "FG", children: this.props.objects.map((object, i) =>{
+                                    return {
+                                        label: object.moniker,
+                                        value: object.uuid
+                                    }
+                                })}]
+                    }/>
+                </Upper>
+                <Lower>
+                    <Row padded={2}>
+                        <div className={"col-md-6 col-md-offset-6"}>
+
+                            <Button fullWidth icon={"long-arrow-alt-up"}>nach vorne</Button>
+                        </div>
+                    </Row>
+                    <Row>
+                        <div className={"col-md-6"}>
+                            <Button icon={"folder-open"} fullWidth>Neue Gruppe</Button>
+                        </div>
+                        <div className={"col-md-6"}>
+                            <Button fullWidth icon={"long-arrow-alt-down"}>nach hinten</Button>
+                        </div>
+                    </Row>
+                </Lower>
+            </Wrapper>
         );
     }
 }

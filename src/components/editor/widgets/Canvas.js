@@ -5,33 +5,27 @@ import styled from 'styled-components';
 import InteractiveSVG from "./ReactSVG/InteractiveSVG";
 import {FlyoutButton} from "../../gui/Button";
 
-const Widget = styled.div`
-  position: relative;
-  height: 300px;
-`;
+// const Widget = styled.div`
+//   position: relative;
+//   height: 300px;
+// `;
 
 const Wrapper = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-right: 0 -50% 0 0;
   transform: translate(-50%, -50%);
+  box-sizing: content-box;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 `;
 
 class Canvas extends Component {
     render() {
-        // let currentPage = <InteractiveSVG />;
-        return (<Widget>
+        return (
             <Wrapper>
-                <InteractiveSVG style={{margin: 0,
-                    background: 'yellow',
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    marginRight: '-50%',
-                    transform: 'translate(-50%, -50%)'}}/>
+                <InteractiveSVG />
             </Wrapper>
-            </Widget>)
+        )
     }
 }
 

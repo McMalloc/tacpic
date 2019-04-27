@@ -1,6 +1,6 @@
 import React from 'react';
 import Editor from './components/editor/Editor';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
+import {BrowserRouter, Route, Link, Switch} from 'react-router-dom'
 import Login from "./components/Login";
 import {useTranslation} from 'react-i18next';
 
@@ -39,19 +39,21 @@ const App = () => {
     // Hook. https://react.i18next.com/latest/usetranslation-hook
     // Alternative withTranslation HOC
     return (
-        <Router>
+        <BrowserRouter>
             <div className="App">
-                {/*<small>{t("tacpic:welcome")}</small>*/}
-                <nav>
-                    <Link to="/login">Login</Link>
-                    <Link to="/editor">Editor</Link>
-                </nav>
+                {/*<nav>*/}
+                    {/*<Link to="/login">Login</Link>*/}
+                    {/*<Link to="/editor">Editor</Link>*/}
+                {/*</nav>*/}
                 <ErrorBoundary>
-                    <Route path="/login" component={Login}/>
-                    <Route path="/editor" component={Editor}/>
+                    <Switch>
+                        {/*Renders exclusivly*/}
+                        <Route path="/login" component={Login}/>
+                        <Route path="/editor" component={Editor}/>
+                    </Switch>
                 </ErrorBoundary>
             </div>
-        </Router>
+        </BrowserRouter>
     );
 };
 

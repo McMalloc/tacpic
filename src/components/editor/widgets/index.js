@@ -7,6 +7,14 @@ import Objects from "./Objects";
 import Pages from "./Pages";
 import Proofing from "./Proofing";
 import Key from "./Key";
+import Category from "./Category";
+import Importer from "./Importer";
+import Document from "./Document";
+import Verbalizer from "./Verbalizer";
+import Simulator from "./Simulator";
+import Comments from "./Comments";
+import Metadata from "./Metadata";
+import Order from "./Order";
 
 
 const index = {
@@ -15,10 +23,18 @@ const index = {
     // Navigator,
     Context,
     Objects,
+    Document,
     // History,
     Proofing,
     Pages,
-    Key
+    Key,
+    Category,
+    Importer,
+    Verbalizer,
+    Simulator,
+    Comments,
+    Metadata,
+    Order
 };
 
 export default index;

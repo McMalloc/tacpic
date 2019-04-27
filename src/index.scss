@@ -12,11 +12,19 @@ body {
   height: 100%;
 }
 
-html {
+
+
+html, #root, .App {
   height: 100%;
 }
 
 img {
   width: 100%;
   height: auto;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
 }

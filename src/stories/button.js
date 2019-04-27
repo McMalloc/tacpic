@@ -2,6 +2,7 @@ import {storiesOf} from "@storybook/react";
 import {Button, FlyoutButton} from "../components/gui/Button";
 import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
 import React from "react";
+import Toggle from "../components/gui/Toggle";
 
 storiesOf('Button', module)
     .addDecorator(withKnobs)
@@ -31,6 +32,17 @@ storiesOf('Button', module)
             <hr/>
             <Button icon={'cog'}>Mit Label</Button> <br /><br />
             <Button icon={'skull fa-spin'} primary>Wichtig mit Label</Button>
+        </section>
+    )
+    .add('Toggle', () =>
+        <section>
+            <p>The parent component needs to handle state.</p>
+            <p>Not toggled</p>
+            <Toggle toggled={false} label={"Schalter"} />
+
+            <p>Toogled</p>
+            <Toggle toggled={true} label={"Schalter"} />
+
         </section>
     )
     .add('Gruppen', () =>

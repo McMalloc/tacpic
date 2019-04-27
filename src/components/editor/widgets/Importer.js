@@ -1,0 +1,166 @@
+import React, {Component, Fragment} from 'react';
+import {connect} from "react-redux";
+import styled from 'styled-components';
+import Divider from "../../gui/Divider";
+import {Button} from "../../gui/Button";
+import {Padding} from "styled-components-spacing";
+import {Icon} from "../../gui/_Icon";
+
+const Dropzone = styled.div`
+  width: 100%;
+  height: 100%;
+  border: 5px dashed ${props => props.theme.background};
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding: ${props => props.theme.spacing[3]};
+  background-color: ${props => props.hovering ? props.theme.background : "inherit"};
+  cursor: ${props => props.hovering ? "copy" : "inherit"}
+  position: relative;
+  text-align: center;
+  
+  transition: background-color 0.2s;
+  
+  &:hover {
+    &:after {
+      bottom: ${props => props.theme.spacing[3]};
+    }
+  }
+  
+  &:after {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-family: FontAwesome;
+    content: "\\f063";
+    color: ${props => props.hovering ? props.theme.accent_1 : "transparent"};
+    font-size: 6em;
+    
+    transition: bottom 2s;
+  }
+`;
+
+const Fileinput = styled.input`
+  position: absolute;
+  left: -9999px;
+`;
+
+const Preview = styled.img`
+  width: 300px;
+  height: auto;
+`;
+
+const Wrapper = styled.div`
+  padding: ${props => props.theme.spacing[4]};
+  height: 100%;
+  box-sizing: border-box;
+`;
+
+class Importer extends Component {
+    constructor(props) {
+        super(props);
+        this.fileRef = React.createRef();
+        this.state = {
+            preview: null,
+            hoverWithFile: false
+        }
+    }
+
+    previewFile = (file, state) => {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        let _this = this;
+        reader.onloadend = function() {
+            _this.setState({
+                preview: reader.result
+            });
+            // let img = document.createElement('img');
+            // img.src =
+            // document.getElementById('gallery').appendChild(img);
+        }
+    };
+
+    onDropHandler = event => {
+        event.preventDefault();
+        let dt = event.dataTransfer;
+        let files = dt.files;
+        this.previewFile(files[0], this.state);
+        this.setState({
+            hoverWithFile: false
+        })
+    };
+
+    openDialog = () => {
+        console.log(this.fileRef);
+        this.fileRef.current.click();
+    };
+
+    onDragoverHandler = event => {
+        event.preventDefault();
+        this.setState({
+            hoverWithFile: true
+        })
+    };
+
+    onDragLeave = event => {
+        event.preventDefault();
+        this.setState({
+            hoverWithFile: false
+        })
+    };
+
+    reset = event => {
+        this.setState({
+            preview: null
+        })
+    };
+
+    render() {
+        return (
+            <Fragment>
+                {this.state.preview === null ?
+                <Wrapper>
+                    <Dropzone
+                        onDragOver={this.onDragoverHandler}
+                        onDragLeave={this.onDragLeave}
+                        hovering={this.state.hoverWithFile}
+                        onDrop={this.onDropHandler}>
+                        <Fileinput ref={this.fileRef} type={"file"}/>
+
+                        <Padding top={4}>
+                            <Icon icon={"arrow-down"}/> Vorlage hierher ziehen
+                        </Padding>
+
+                        <Padding vertical={3}>
+                            <Divider label={"gui:or"}/>
+                        </Padding>
+
+                        <Button primary icon={"upload"} onClick={this.openDialog}>Datei wählen</Button>
+                    </Dropzone>
+
+                </Wrapper>
+                :
+                    <Fragment>
+                        <Preview src={this.state.preview}/>
+                        <Button onClick={this.reset}>Neu wählen</Button>
+                    </Fragment>
+                }
+
+            </Fragment>
+
+        );
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Importer);

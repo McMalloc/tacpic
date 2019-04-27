@@ -51,6 +51,7 @@
     "csv-loader": "^3.0.2",
     "faker": "^4.1.0",
     "papaparse": "^4.6.3",
+    "react-axe": "^3.1.0",
     "react-select": "^2.4.2"
   }
 }

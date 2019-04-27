@@ -8,9 +8,13 @@ export const standard = {
     dark: "#231F20",
     light: "#fcfcfc",
     midlight: "#ccc",
-    accent_1: "#037171",
+    middark: "#777",
+    accent_1: "#b8155b",
+    // accent_1: "#037171",
+    // accent_1: "#1b5585",
     accent_1_light: "#e9f5f7",
     accent_2: "#a5d0a8",
+    accent_2_light: "#bbf1d1",
     accent_3: "#b9d6f2",
     background: "#fff",
     middle_shadow: "1px 1px 2px rgba(0,0,0,0.2)",
@@ -18,8 +22,8 @@ export const standard = {
     divider_line: "1px solid #e9f5f7", // accent_1
     // middle_shadow: "0 3px 8px rgba(0,0,0,0.2)",
 
-    success: "#397631",
-    info: "#007eb2",
+    success: "#4c9b42",
+    info: "#1792b2",
     warning: "#ea9800",
     danger: "#911422",
 
@@ -27,7 +31,7 @@ export const standard = {
 
     base_padding: '3px',
     large_padding: '8px',
-    border_radius: '6px',
+    border_radius: '3px',
 
     breakpoints: {
         xs: 0,

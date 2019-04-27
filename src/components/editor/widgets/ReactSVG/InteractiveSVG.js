@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import connect from "react-redux/es/connect/connect";
 import Manipulator from "./Manipulator";
 
+import {debounce} from "lodash";
+
 import Rect from "./Rect";
 import {OBJECT} from "../../constants";
 import Label from "./Label";
@@ -14,30 +16,27 @@ function uuidv4() {
 }
 
 class InteractiveSVG extends Component {
-    constructor(props) {
-        super(props);
-        this.svgElement = React.createRef();
-        this.state = {
-            mouseXDrag: 0,
-            mouseYDrag: 0,
-        }
-    }
+    svgElement = React.createRef();
+    state = {
+        mouseXDrag: 0,
+        mouseYDrag: 0,
+    };
 
     mouseXDown = null; // in den state packen
     mouseYDown = null;
     dragging = false;
     mouseIsDown = false;
 
-    currentX(eventX) {        return eventX - this.svgElement.current.getBoundingClientRect().left;    }
-    currentY(eventY) {        return eventY - this.svgElement.current.getBoundingClientRect().top;    }
+    currentX = eventX => {        return eventX - this.svgElement.current.getBoundingClientRect().left;    };
+    currentY = eventY => {        return eventY - this.svgElement.current.getBoundingClientRect().top;    };
 
-    mouseDownHandler(event) {
+    mouseDownHandler = (event) => {
         this.mouseXDown = this.currentX(event.clientX); // todo zum State machen
         this.mouseYDown = this.currentY(event.clientY);
         this.mouseIsDown = true;
-    }
+    };
 
-    mouseUpHandler() {
+    mouseUpHandler = () => {
         this.mouseIsDown = false;
         let uuid = uuidv4();
         if (this.dragging) {
@@ -49,15 +48,17 @@ class InteractiveSVG extends Component {
                         {
                             type: OBJECT.RECT,
                             uuid: uuid,
+                            moniker: "Rechteck",
                             x: this.mouseXDown,
                             y: this.mouseYDown,
                             angle: 0,
                             pattern: {
-                                template: 'striped',
+                                template: this.props.texture,
                                 angle: 0,
                                 scaleX: 1,
                                 scaleY: 1
                             },
+                            fill: this.props.fill,
                             width: this.state.mouseXDrag - this.mouseXDown,
                             height: this.state.mouseYDrag - this.mouseYDown
                         },
@@ -84,14 +85,18 @@ class InteractiveSVG extends Component {
                 default:
                     break;
             }
+        } else {
+            this.props.unselect();
         }
         if (this.props.transform.hasOwnProperty(this.props.mode)) {
             this.props.transformEnd();
         }
         this.dragging = false;
-    }
 
-    mouseMoveHandler(event) {
+        this.triggerCache();
+    };
+
+    mouseMoveHandler = (event) => {
         if (this.mouseIsDown) {
             this.dragging = true;
             this.setState({
@@ -108,13 +113,19 @@ class InteractiveSVG extends Component {
                 y1: this.state.mouseYDrag
             });
         }
-    }
+    };
 
-    static OBJECTS = ({ uuid, width, height, x, y, angle, pattern, text }, index) => ({
-        //TODO drüber nachdenken: onClick zur Selektion hier implementieren? Dann müssen Objekte in Gruppen das Event nicht abdelegieren um zu überprüfen, dass nicht sie alleine sondern ihre Gruppe ausgewählt worden ist.
-        [OBJECT.RECT]: <Rect pattern={pattern} key={index} uuid={uuid} width={width} angle={angle} height={height} x={x} y={y} />,
+    static OBJECTS = ({ uuid, width, height, x, y, angle, pattern, text, fill }, index) => ({
+        //TODO drüber nachdenken: onClick zur Selektion hier implementieren?
+        // Dann müssen Objekte in Gruppen das Event nicht abdelegieren um zu überprüfen,
+        // dass nicht sie alleine sondern ihre Gruppe ausgewählt worden ist.
+        [OBJECT.RECT]: <Rect pattern={pattern} fill={fill} key={index} uuid={uuid} width={width} angle={angle} height={height} x={x} y={y} />,
         [OBJECT.LABEL]: <Label key={index} uuid={uuid} width={width} text={text} angle={angle} height={height} x={x} y={y} />,
     });
+
+    triggerCache = debounce(() => {
+        this.props.cacheSVG(this.svgElement.current.innerHTML, this.props.currentPage);
+    }, 500);
 
     render() {
         let objects = this.props.openedFile.pages[this.props.currentPage].objects.map((object, index) => {
@@ -123,13 +134,14 @@ class InteractiveSVG extends Component {
 
         return (
             <svg
+                xmlns={"http://www.w3.org/2000/svg"}
                 width={this.props.width}
                 height={this.props.height}
                 onMouseDown={ event => {this.mouseDownHandler(event)}}
                 onMouseUp={ event => {this.mouseUpHandler(event)}}
                 onMouseMove={ event => {this.mouseMoveHandler(event)}}
                 ref={this.svgElement}
-                style={{'border': '1px solid red'}}>
+                style={{backgroundColor: "white"}}>
 
                 {objects}
 
@@ -188,6 +200,19 @@ const mapDispatchToProps = dispatch => {
             dispatch({
                 type: 'TRANSFORM_END'
             })
+        },
+        cacheSVG: (markup, pageNumber) => {
+            dispatch({
+                type: 'CACHE_SVG',
+                markup,
+                pageNumber
+            });
+        },
+        unselect: () => {
+            dispatch({
+                type: 'OBJECT_SELECTED',
+                uuid: null
+            });
         }
     }
 };

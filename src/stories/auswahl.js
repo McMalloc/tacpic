@@ -1,6 +1,6 @@
 import {storiesOf} from "@storybook/react";
 import React from "react";
-import {Select} from "../components/gui/Select";
+import Select from "../components/gui/Select";
 import {Treeview} from "../components/gui/Treeview";
 
 storiesOf('Auswahl', module)

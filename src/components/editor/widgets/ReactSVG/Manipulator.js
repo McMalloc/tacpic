@@ -6,7 +6,7 @@ class Manipulator extends Component {
     onClickHandler(event) {
         this.props.transformStart('translate');
         console.log(this.props.selected);
-        // TODO wenn ein Label selektiert ist, sollte ein DOppelclick auf den manipulator
+        // TODO wenn ein Label selektiert ist, sollte ein Doppelclick auf den manipulator
         // den focus auf das editierbare Label verschieben (mit $(id).focus(), wenn tabindex gesetzt und der debugger könnte interferieren)
         // Ein Umsetzen des des Cursors würde aber wieder den Manipulator auswählen und die Cursorposition zurücksetzen
     }
@@ -18,9 +18,9 @@ class Manipulator extends Component {
         return ( this.props.selected.length > 0 &&
             <g transform={transform(this.props.bbox.x, this.props.bbox.y, this.props.selected[0].angle)}>
                 <rect
-                    fill={"transparent"}
-                    stroke={'rgba(100,50,255,0.4)'}
-                    strokeWidth={1}
+                    fill={"rgba(255,255,255,0.2)"}
+                    stroke={'rgba(255,255,255,0.7)'}
+                    strokeWidth={6}
                     onMouseDown={ (event) => { this.onClickHandler(event)}}
                     width={this.props.bbox.width}
                     height={this.props.bbox.height}

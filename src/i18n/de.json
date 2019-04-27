@@ -1,6 +1,8 @@
 {
   "gui": {
-    "close": "Schließen"
+    "close": "Schließen",
+    "or": "oder",
+    "none": "keines"
   },
   "tacpic": {
     "welcome": "Willkommen bei Tacpic!"
@@ -8,9 +10,55 @@
   "editor": {
     "Context": "Eigenschaften",
     "Canvas": "Leinwand",
-    "Key": "Legende"
+    "Key": "Legende",
+    "Category": "Einordnen",
+    "Importer": "Vorlage wählen",
+    "Simulator": "Fühlen simulieren",
+    "Proofing": "Fehler",
+    "Comments": "Kommentare",
+    "Metadata": "Eckdaten für den Katalog",
+    "Order": "Bestellen",
+    "Pages": "Seiten",
+    "Objects": "Objekte auf ausgewählter Seite",
+
+    "label_choose_category": "Sie wissen bereits, um welche Art Grafik es sich handelt?",
+    "placeholder_choose_category": "Kategorie wählen",
+
+    "input_catalogue-title": "Titel im Katalog",
+    "input_catalogue-title-sub": "Bezeichnung, unter der die Grafik im Katalog gelistet ist",
+    "input_catalogue-tags": "Schlagwörter",
+    "input_catalogue-tags-sub": "Schlagwörter helfen anderen Nutzenden bei der Suche nach der passenden Grafik",
+    "input_catalogue-desc": "Beschreibung",
+    "input_catalogue-desc-sub": "Kurze Beschreibung für den Katalog.",
+    "input_catalogue-publish": "Veröffentlichen",
+    "catalogue-state-0": "Entwurf",
+
+    "toggle_tools-rect": "Rechteck",
+    "toggle_tools-ellipse": "Ellipse",
+    "toggle_tools-line": "Linie",
+    "toggle_tools-curve": "Kurve",
+    "toggle_tools-label": "Beschriftung",
+    "button_tools-diagram": "Diagramm",
+
+    "tablist_shape-fill": "Füllung",
+    "tablist_shape-contour": "Kontur",
+
+    "category": "Kategorie",
+    "original": "Vorlage",
+    "layout": "Layout",
+    "draw": "Zeichnen",
+    "legend": "Beschriftung",
+    "verbalise": "Beschreiben",
+    "proofing": "Überprüfen",
+    "finish": "Abschließen",
+
+    "preview_texture-striped": "Schmale Streifen"
   },
   "categories": {
     "illustration": "(beschriftete) Illustration"
+  },
+  "colour": {
+    "#a6cee3": "Sanftes Blau",
+    "null": "keine Farbe"
   }
 }

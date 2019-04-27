@@ -30,10 +30,10 @@ export const layoutChanged = layout => ({
     layout
 });
 
-export const layoutSet = layoutName => ({
+export const layoutSet = layoutIndex => ({
     // type: USER.SAVE_LAYOUT.REQUEST, // das Ändern des Layouts alleine sollte noch nichts zum Server persistieren
     type: "LAYOUT_SET",
-    layoutName
+    layoutIndex
 });
 
 export const widgetVisibilityToggled = (id, value) => ({

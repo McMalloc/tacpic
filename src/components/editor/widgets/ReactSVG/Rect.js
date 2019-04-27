@@ -10,20 +10,29 @@ class Rect extends Component {
             if (this.props.uuid === uuid) selected = true
         });
 
+        console.log("rerender rect ", this.props.pattern.template);
         return (
             <g>
                 <rect
                     id={this.props.uuid}
                     transform={transform(this.props.x, this.props.y, this.props.angle)}
                     // style={{fill: selected ? 'rgba(50,200,0,0.4)' : 'rgba(0,0,0,0.4)'}}
-                    fill={'url(#pattern-' + this.props.uuid + ''}
+
+                    style={{fill: 'url(#pattern-' + this.props.uuid + ''}}
                     strokeWidth={2}
                     stroke={'rgba(0,50,100,0.2)'}
                     width={this.props.width}
                     height={this.props.height}
-                    onClick={ () => this.props.select(this.props.uuid)}
+                    onMouseDown={ event => {
+                        event.stopPropagation();
+                    }}
+                    onMouseUp={ event => {
+                        event.stopPropagation();
+                        console.log("select rect");
+                        this.props.select(this.props.uuid)
+                    }}
                 />
-                {patternTemplates[this.props.pattern.template](this.props.pattern, this.props.uuid)}
+                {patternTemplates[this.props.pattern.template](this.props.pattern, this.props.uuid, this.props.fill)}
             </g>
         )
     }

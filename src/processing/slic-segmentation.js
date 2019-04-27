@@ -1,5 +1,5 @@
 /**
- * Javascript implementation of an image segmentation algorithm of
+ * Javascript implementation of an image processing algorithm of
  *
  *    SLIC Superpixels
  *    Radhakrishna Achanta, Appu Shaji, Kevin Smith, Aurelien Lucchi, Pascal
@@ -197,7 +197,7 @@
         xp,
         yp,
         direction;
-    //console.log(segmentation)
+    //console.log(processing)
     for (pixel = 0; pixel < numPixels; pixel++) {
       if (cleaned[pixel]) continue;
       label = segmentation[pixel];
@@ -427,7 +427,7 @@
     return index;
   }
 
-  // Compute segmentation.
+  // Compute processing.
   function computeSegmentation(imageData, options) {
     var segmentation = computeSLICSegmentation(imageData, options),
         numSegments = remapLabels(segmentation);

@@ -59,7 +59,7 @@ const Title = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  height: 250px;
+  height: 200px;
   overflow: hidden;
   position: relative;
   background-color: ${props => props.theme.brand_secondary};

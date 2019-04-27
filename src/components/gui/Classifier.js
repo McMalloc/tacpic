@@ -65,7 +65,7 @@ class Classifier extends Component {
                     }
                 })
                 .map(cat => {
-                    return (<div className={"col-sm-3"}>
+                    return (<div className={"col-sm-2"}>
                         <Tile
                             onClick={() => this.progress(cat.id)}
                             title={cat.title} imgUrl={cat.imgUrl}/>
@@ -80,7 +80,7 @@ class Classifier extends Component {
             {this.props.categories.map((cat, index) => {
                 if (cat.sub_of < 0) {
                     return (
-                        <div className={"col-sm-3"}>
+                        <div className={"col-sm-2"}>
                             <Tile title={this.props.t("categories:" + cat.title)}
                                   onClick={() => this.progress(cat.id)}
                                   imgUrl={cat.imgUrl}/>
@@ -119,7 +119,6 @@ class Classifier extends Component {
         return (
             <Container>
                 {this.state.progress.length === 0 && this.renderInitialSelection()}
-
                 {this.state.progress.map(step => {
                     let category = find(this.props.categories, {id: step});
                     return (

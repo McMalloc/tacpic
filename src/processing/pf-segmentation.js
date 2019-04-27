@@ -1,5 +1,5 @@
 /**
- * Javascript implementation of an image segmentation algorithm of
+ * Javascript implementation of an image processing algorithm of
  *
  *    Efficient Graph-Based Image Segmentation
  *    Pedro F. Felzenszwalb and Daniel P. Huttenlocher
@@ -358,7 +358,7 @@
     return indexMap;
   }
 
-  // Compute segmentation.
+  // Compute processing.
   function computeSegmentation(imageData,maskData, options) {
     smoothImage(imageData, options.sigma);
     var universe = segmentGraph(imageData,maskData, options),

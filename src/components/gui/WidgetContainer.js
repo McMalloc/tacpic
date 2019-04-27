@@ -8,34 +8,32 @@ const Wrapper = styled.div`
   height: 100%;
   flex-direction: column;
   box-sizing: border-box;
-  //font-size: 0.9em;
-  //border: 3px solid ${props => props.theme.accent_1_light};
-  // border-radius: ${props => props.theme.border_radius};
-  box-shadow: ${props => props.theme.middle_shadow};
+  box-shadow: 1px 1px 1px rgba(0,0,0,0.4);
 `;
 
 const TitleBar = styled.div`
-  //height: 1.5em;
-  background-color: ${props => props.theme.accent_1_light};
+  background-color: ${props => props.theme.background};
   flex: 1.6em 0 0;
-  border-bottom: 2px solid ${props => props.theme.accent_1};
+  border-bottom: 1px solid ${props => props.theme.accent_1};;
   cursor: move;
-  font-size: 0.9em;
+  font-size: 0.8em;
   align-items: stretch;
- 
+  font-weight: 700;
+  color: ${props => props.theme.accent_1};
+  z-index: 0;
   display: flex;
-  //justify-content: flex-start;
-  //align-items: center;
+  
+  box-shadow: ${props => props.showShadow ? "0 8px 8px -8px rgba(0,0,0,0.3);" : "none"};
+  transition: box-shadow 0.2s;
 `;
 
 const Content = styled.div`
   flex: 1 1 100%;
-  background-color: ${props => props.theme.background};
-  padding: ${props => props.theme.base_padding} ${props => props.theme.large_padding};
-  overflow: hidden;
-  border: 2px solid ${props => props.theme.accent_1_light};
-  
-  // border: ${props => props.theme.base_padding} solid ${props => props.theme.accent_1_light};
+  position: relative;
+  background-color: ${props => props.theme.accent_1_light};
+  padding: ${props => props.theme.spacing[2]};
+  overflow-x: auto; // eigentlich hidden, aber für das Canvas ganz gut
+  overflow-y: auto; 
   border-top: none;
 `;
 
@@ -58,7 +56,7 @@ const Content = styled.div`
 
 const Title = styled.div`
   flex: 1 1 0;
-  padding: ${props => props.theme.base_padding} 0 ${props => props.theme.base_padding} ${props => props.theme.large_padding};
+  padding: ${props => props.theme.spacing[1]} 0 ${props => props.theme.spacing[1]} ${props => props.theme.spacing[2]};
   // padding: ${props => props.theme.base_padding} ${props => props.theme.large_padding};
 `;
 
@@ -94,26 +92,48 @@ const TitleFlyout = styled(FlyoutButton)`
 `;
 
 class WidgetContainer extends Component {
+    state = {
+        scrolled: false
+    };
+
+    containerRef = React.createRef();
+
+    scrollCallback = () => {
+        if (this.containerRef.current.scrollTop > 5 && !this.state.scrolled) {
+            this.setState({
+                scrolled: true
+            })
+        }
+        if (this.containerRef.current.scrollTop === 0) {
+            this.setState({
+                scrolled: false
+            })
+        }
+    };
+
+
     render() {
         const Component = this.props.component;
         const Menu = this.props.menu || null;
         return (
             <Wrapper id={'widget-container-' + this.props.title}>
-                <TitleBar className="drag-handle">
+                <TitleBar showShadow={this.state.scrolled} className="drag-handle">
                     <Title>{this.props.title}</Title>
                     {/*<TitleButtons>*/}
-                        {/*{Menu !== null &&*/}
-                        {/*<MenuButton className={'no-drag'} rightAlign={true} label={<i className="fas fa-bars"></i>}><Menu /></MenuButton>*/}
-                        {/*}*/}
-                        {/*<ClosingButton className={'no-drag'} icon={"times"} />*/}
+                    {/*{Menu !== null &&*/}
+                    {/*<MenuButton className={'no-drag'} rightAlign={true} label={<i className="fas fa-bars"></i>}><Menu /></MenuButton>*/}
+                    {/*}*/}
+                    {/*<ClosingButton className={'no-drag'} icon={"times"} />*/}
                     {/*</TitleButtons>*/}
 
                     {Menu !== null &&
-                        <TitleFlyout className={'no-drag'} noPad rightAlign={true} label={<i className="fas fa-bars" />}><Menu /></TitleFlyout>
+                    <TitleFlyout className={'no-drag'} noPad rightAlign={true}
+                                 label={<i className="fas fa-bars"/>}><Menu/></TitleFlyout>
                     }
-                        <TitleButton className={'no-drag'} noPad icon={"times"} />
+                    {/*<TitleButton className={'no-drag'} noPad icon={"times"}/>*/}
                 </TitleBar>
-                <Content className={'widget-content'}>
+                <Content ref={this.containerRef} onScroll={this.scrollCallback}
+                         className={'widget-content'}>
                     {/*{this.props.menu}*/}
                     <Component/>
                 </Content>
