@@ -6,12 +6,8 @@ import {Button} from "../../gui/Button";
 import styled from 'styled-components';
 import Select from "../../gui/Select";
 import Divider from "../../gui/Divider";
-import {Row} from "../../gui/Grid"; //TODO aus Datenbank laden
-
-const Wrapper = styled.div`
-  display: flex;
-  height: 100%;
-`;
+import {Row} from "../../gui/Grid";
+import {Upper} from "../../gui/WidgetContainer"; //TODO aus Datenbank laden
 
 class Category extends Component {
     constructor(props) {
@@ -24,12 +20,22 @@ class Category extends Component {
 
     render() {
         return (
-            <React.Fragment>
+            <Upper>
                 {this.state.assistant ?
                     <Classifier categories={cats}/>
                 :
-                    <Wrapper>
-                        <Row modifier={"center-sm middle-sm"} fullHeight>
+                    <>
+                        <Row modifier={"middle-sm"}>
+                            <div className={"col-sm-4 col-sm-offset-1"}>
+                            <p>
+                                Dieser Grafikeditor bietet spezifische Hilfestellungen für bestimmte Arten von Grafiken. Hier können Sie die Art der Grafik festlegen und sich bei der Einordnung helfen lassen.
+                            </p>
+                            </div>
+                        </Row>
+                        <br />
+                        <br />
+                        <br />
+                        <Row modifier={"middle-sm"} fullHeight>
                             <div style={{textAlign: "left"}} className={"col-sm-4 col-sm-offset-1"}>
                                 <Select placeholder={"editor:placeholder_choose_category"}
                                         label={"editor:label_choose_category"} />
@@ -40,8 +46,7 @@ class Category extends Component {
 
                             {/*<Divider vertical label={"gui:or"} />*/}
                         </Row>
-                    </Wrapper>
-
+                    </>
                 }
 
 
@@ -54,7 +59,7 @@ class Category extends Component {
                         {/**/}
                     {/*</Modal>*/}
                 {/*}*/}
-            </React.Fragment>
+            </Upper>
         );
     }
 }

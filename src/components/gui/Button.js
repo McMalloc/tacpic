@@ -18,7 +18,7 @@ const ButtonBase = styled.button`
   background-color: ${props => props.primary ? props.theme.brand_secondary : "transparent"};
   color: ${props => props.primary ? props.theme.background : "inherit"};
   border: 1px solid ${props => props.theme.middark};
-  padding: ${props => props.theme.spacing[2]};
+  padding: 4px ${props => props.theme.spacing[3]};
   border-radius: 3px;
   cursor: pointer;
   margin-top: 0;
@@ -26,6 +26,17 @@ const ButtonBase = styled.button`
   font-size: 0.9em;
   width: ${props => props.fullWidth ? "100%" : "auto"};
   transition: box-shadow 0.15s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.15s;
+  
+  // & + button {
+  //   margin-left: ${props => props.theme.spacing[2]};
+  // }
+  
+  &:disabled {
+    color: ${props => props.theme.middark};
+    background-color: ${props => props.theme.midlight};
+    border-color: ${props => props.theme.midlight};
+    cursor: not-allowed;
+  }
   
   &:hover {
       background-color: ${props => props.primary ? props.theme.accent_1 : props.theme.light};
@@ -57,6 +68,9 @@ const Button = React.forwardRef((props, ref) => {
             {props.children &&
             <Label icon={props.icon}>
                 {t(props.children)}
+                {props.isDropdown &&
+                <Caret><i className={"fas fa-caret-down"} /></Caret>
+                }
             </Label>
             }
         </ButtonBase>
@@ -73,9 +87,9 @@ const Caret = styled.span`
 `;
 
 const Flyout = styled.div`
-  background-color: ${props => props.theme.background};
+  background-color: ${props => props.theme.accent_1_light};
   border-radius: ${props => props.theme.border_radius};
-  box-shadow: ${props => props.theme.middle_shadow};
+  box-shadow: 1px 1px 8px rgba(0,0,0,0.3);
   padding: 1em;
   border: 1px solid ${props => props.theme.accent_1_light};
   width: auto;
@@ -139,7 +153,7 @@ class FlyoutButton extends Component {
         } {
             this.state.out ? this.close() : this.open();
             // the timer will fire after the current render cycle, so the ref is actually in the dom after the flag went true
-            setTimeout(() => this.flyoutRef.current.focus(), 0);
+            setTimeout(() => this.flyoutRef.current !== null && this.flyoutRef.current.focus(), 0);
         }
     };
 
@@ -154,9 +168,14 @@ class FlyoutButton extends Component {
     render() {
         return (
             <span className={this.props.className} style={{position: "relative"}}>
-                <Button noPad={this.props.noPad} onBlur={this.onBlurHandler} onFocus={this.onFocusHandler} ref={this.buttonRef} onClick={this.toggle}>
+                <Button isDropdown={true}
+                        icon={this.props.icon}
+                        noPad={this.props.noPad}
+                        onBlur={this.onBlurHandler}
+                        onFocus={this.onFocusHandler}
+                        ref={this.buttonRef}
+                        onClick={this.toggle}>
                     {this.props.label}
-                    <Caret down={this.state.out}><i className={"fas fa-caret-down"} /></Caret>
                 </Button>
                 {this.state.out &&
                     <Flyout

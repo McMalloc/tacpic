@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import React, {Component, Fragment} from "react";
+import {useTranslation} from "react-i18next";
 
 const Label = styled.label`
   font-size: 0.9em;
@@ -26,8 +27,8 @@ const Label = styled.label`
       box-sizing: border-box;
       content: "";
       border-radius: ${props => props.theme.border_radius};
-      border: 1px solid ${props => props.disabled ? props.theme.middark : props.active ? props.theme.accent_1 : props.theme.midlight};
-      background-color: ${props => props.disabled ? "transparent" : props.active ? props.theme.accent_1 : "white"};
+      border: 1px solid ${props => props.disabled ? props.theme.middark : props.checked ? props.theme.accent_1 : props.theme.midlight};
+      background-color: ${props => props.disabled ? "transparent" : props.checked ? props.theme.accent_1 : "white"};
       transition: background-color 0.1s;
   }
   
@@ -73,38 +74,24 @@ const Wrapper = styled.div`
   //height: 26px;
 `;
 
-class Checkbox extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {checked: props.default ? props.default : false};
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(event) { // TODO: Soll sich der Parent Container um den State kümmern? Ja: für alles andere gibt es 0 use cases
-        this.setState({checked: event.target.checked});
-        if (this.props.onChange) this.props.onChange(this.props.name, event.target.checked);
-    }
-
-    render() {
+const Checkbox = props => {
+    const { t } = useTranslation();
         return (
             <Wrapper>
                  <Input
-                     onChange={this.handleChange}
-                     name={this.props.name}
-                     disabled={this.props.disabled}
-                     aria-disabled={this.props.disabled}
-                     id={this.props.name + "-cb"}
+                     onChange={props.onChange}
+                     name={props.name}
+                     disabled={props.disabled}
+                     aria-disabled={props.disabled}
+                     id={props.name + "-cb"}
                      // tabIndex={0}
-                     checked={this.state.checked}
+                     checked={props.checked}
                      type={"checkbox"} />
-                 <Label disabled={this.props.disabled} active={this.state.checked} htmlFor={this.props.name + "-cb"}>
-                     {this.props.label}
+                 <Label disabled={props.disabled} checked={props.checked} htmlFor={props.name + "-cb"}>
+                     {t(props.label)}
                  </Label>
             </Wrapper>
-
-
         )
-    }
-}
+};
 
 export {Checkbox}

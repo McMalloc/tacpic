@@ -2,8 +2,13 @@
   position: relative;
   transition: height 200ms ease;
 }
+
+@keyframes widgetEnter {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
 .react-grid-item {
-  transition: all 200ms ease;
   transition-property: left, top;
 
   &.cssTransforms {
@@ -11,7 +16,10 @@
   }
 
   &.react-draggable {
-    transition: box-shadow 0.2s;
+    transition: box-shadow 0.2s, transform 0.2s;
+    animation-name: widgetEnter;
+    animation-duration: 0.3s;
+    animation-iteration-count: 1;
   }
 
   &.resizing {
@@ -29,7 +37,7 @@
 
   &.react-grid-placeholder {
     background:url(
-    data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAALUlEQVQYV3XJQQ4AAAQDQf3/oyuVEIQ97sCeSBKXBaiNCfoDOwzcUHhB4AdCBxt6HATN4t5WAAAAAElFTkSuQmCC
+      data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAALUlEQVQYV3XJQQ4AAAQDQf3/oyuVEIQ97sCeSBKXBaiNCfoDOwzcUHhB4AdCBxt6HATN4t5WAAAAAElFTkSuQmCC
     ) repeat;
     //border: 3px dashed #999;
     transition-duration: 100ms;

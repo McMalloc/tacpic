@@ -15,6 +15,7 @@ import Simulator from "./Simulator";
 import Comments from "./Comments";
 import Metadata from "./Metadata";
 import Order from "./Order";
+import Intro from "./Intro";
 
 
 const index = {
@@ -34,7 +35,8 @@ const index = {
     Simulator,
     Comments,
     Metadata,
-    Order
+    Order,
+    Intro
 };
 
 export default index;

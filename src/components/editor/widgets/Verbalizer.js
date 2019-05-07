@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import styled from 'styled-components';
 import {Qid} from "../../gui/Qid";
+import {Upper} from "../../gui/WidgetContainer";
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,9 +20,9 @@ class Verbalizer extends Component {
 
     render() {
         return (
-            <React.Fragment>
+            <Upper>
                <Qid/>
-            </React.Fragment>
+            </Upper>
         );
     }
 }

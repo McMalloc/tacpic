@@ -14,7 +14,7 @@ import {withTranslation} from "react-i18next";
 const Wrapper = styled.div`
   display: flex;
   position: relative;
-  height: 100%;
+  min-height: 100%;
   background-color: ${props => props.theme.accent_1};
 `;
 
@@ -41,14 +41,15 @@ class Editor extends Component {
             return (
                 <Wrapper>
                     <Ribbon activeItem={this.props.currentLayout} menus={[
-                        {label: "editor:original",  icon: "file-image", action: () => {this.props.layoutSet(0)}},
-                        {label: "editor:category",  icon: "tags",       action: () => {this.props.layoutSet(1)}},
-                        {label: "editor:layout",    icon: "columns",    action: () => {this.props.layoutSet(2)}},
-                        {label: "editor:draw",      icon: "pen",        action: () => {this.props.layoutSet(3)}},
-                        {label: "editor:legend",    icon: "braille",    action: () => {this.props.layoutSet(4)}},
-                        {label: "editor:verbalise", icon: "book-open",  action: () => {this.props.layoutSet(5)}},
-                        {label: "editor:proofing",  icon: "glasses",    action: () => {this.props.layoutSet(6)}},
-                        {label: "editor:finish",    icon: "check-square",action: () => {this.props.layoutSet(7)}},
+                        {label: "editor:intro",  icon: "flag-checkered", action: () => {this.props.layoutSet(0)}},
+                        {label: "editor:original",  icon: "file-image", action: () => {this.props.layoutSet(1)}},
+                        {label: "editor:category",  icon: "tags",       action: () => {this.props.layoutSet(2)}},
+                        {label: "editor:layout",    icon: "columns",    action: () => {this.props.layoutSet(3)}},
+                        {label: "editor:draw",      icon: "pen",        action: () => {this.props.layoutSet(4)}},
+                        {label: "editor:legend",    icon: "braille",    action: () => {this.props.layoutSet(5)}},
+                        {label: "editor:verbalise", icon: "book-open",  action: () => {this.props.layoutSet(6)}},
+                        {label: "editor:proofing",  icon: "glasses",    action: () => {this.props.layoutSet(7)}},
+                        {label: "editor:finish",    icon: "check-square",action: () => {this.props.layoutSet(8)}},
                     ]} />
 
                     <Logo />
@@ -59,17 +60,20 @@ class Editor extends Component {
                         cols={{lg: 12, sm: 12}}
                         id={'widget-grid'}
                         breakpoints={{lg: 1200, sm: 768}}
+                        preventCollision={false}
                         layouts={{
                             lg: this.props.widgetConfig,
                             sm: this.props.widgetConfig
                         }}
                         margin={[widgetPadding, widgetPadding]}
-                        onResizeStop={this.props.canvasResized}
+                        // onResizeStop={this.props.canvasResized}
                         onLayoutChange={this.props.layoutChanged}
                         rowHeight={rowHeight}>
 
                         {this.props.widgetConfig
-                            .filter(widget => { return widget.visible })
+                        // TODO: layoutChanged event-Callback gibt das aktuelle Layout ohne visible property zurück (und werden demnach ohne diese im LS gespeichert);
+                            // wenn diese fehlt werden natürlich sämtliche Widgets ausgefiltert
+                            // .filter(widget => { return widget.visible })
                             .map((widget, index) => {
                                 return (
                                     <div key={widget.i}>
@@ -106,10 +110,10 @@ const mapDispatchToProps = dispatch => {
 
             // 8 ist die spaltenzahl für den schmalen breakpoint. @todo layout und breakpoints nicht mehr hardcoden
         },
-        layoutChanged: (layout) => {
+        layoutChanged: layout => {
             dispatch(layoutChanged(layout));
         },
-        layoutSet: (layoutIndex) => {
+        layoutSet: layoutIndex => {
             dispatch(layoutSet(layoutIndex));
         }
     }

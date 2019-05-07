@@ -18,6 +18,7 @@ const Toggle = props => {
     return (
         <ToggleButton aria-pressed={props.toggled}
                       onClick={props.onClick}
+                      disabled={props.disabled}
                       fullWidth={props.fullWidth}
                       aria-label={t(props.label)}>
             {t(props.label)}

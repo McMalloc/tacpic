@@ -24,20 +24,24 @@ class ShapeContext extends Component {
             scaleY: 1
         });
     };
+
+    changeFill = fill => {
+        this.props.changeProp(this.props.uuid, "fill", fill);
+    };
     
     render() {
         const fill = <div>
 
             <Row>
                 <div className={"col-md-6"}>
-                    <Select label={"editor:presets"} options={
+                    <Select placeholder={"Keine Vorgabe gewählt"} options={
                         [
                             {label: "Aubergine", value: "A", children: []}
                         ]
                     }/>
                 </div>
                 <div className={"col-md-6"}>
-                    <Button>Neue Vorgabe</Button>
+                    <Button icon={"star"}>Neue Vorgabe</Button>
                 </div>
             </Row>
 
@@ -47,7 +51,7 @@ class ShapeContext extends Component {
 
                 <TexturePalette
                     disabled={this.props.nothingSelected}
-                    textures={[null, "striped", "bigdots"]}
+                    textures={[null, "striped", "bigdots", "dashed"]}
                     selected={this.props.selectedTexture}
                     onChange={this.changeTexture}/>
 
@@ -62,7 +66,7 @@ class ShapeContext extends Component {
                 <Checkbox name={"texture"} label={"Textur sichtbar drucken"}/>
 
                 <Palette selected={this.props.selectedFill}
-                         onChange={this.props.switchFillMode}
+                         onChange={this.changeFill}
                          colours={
                             [null, '#000000', '#1f78b4', '#b2df8a', '#e31a1c', '#ff7f00', '#cab2d6', '#b15928']
                         } extendedColours={
@@ -71,7 +75,7 @@ class ShapeContext extends Component {
             </fieldset>
         </div>;
 
-        const border = <div>
+        const _border = <div>
             <button onClick={() => {
                 this.props.switchFillMode("rgba(255,0,0,0.4)");
             }}>rot
@@ -80,6 +84,10 @@ class ShapeContext extends Component {
                 this.props.switchFillMode("rgba(0,255,0,0.4)");
             }}>grün
             </button>
+        </div>;
+
+        const border = <div>
+            to do
         </div>;
 
         return (

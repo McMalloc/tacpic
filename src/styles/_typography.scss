@@ -23,7 +23,7 @@ legend {
   &:after {
     background: #ccc;
     margin-left: 0.5em;
-    height: 1px;
+    height: 2px;
     flex: 1;
     content: '';
   }
@@ -39,6 +39,15 @@ p {
 
   &:last-child {
     margin-bottom: 0;
+  }
+
+  &.disabled {
+    color: #4a4a4a;
+    border-radius: 3px;
+    padding: 8px;
+    text-shadow: 1px 1px white;
+    font-style: italic;
+    font-size: 0.9em;
   }
 }
 

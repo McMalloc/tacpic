@@ -77,6 +77,8 @@ const Wrapper = styled.div`
   height: 26px;
 `;
 
+
+// TODO: wie checkbox neu machen
 class Radio extends Component {
     constructor(props) {
         super(props);

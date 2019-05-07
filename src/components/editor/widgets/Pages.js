@@ -3,29 +3,31 @@ import {connect} from "react-redux";
 import {Button} from "../../gui/Button";
 import PagePreview from "../../gui/PagePreview";
 import styled from 'styled-components';
+import {Lower, Upper} from "../../gui/WidgetContainer";
 
-const Wrapper = styled.div`
-  display: flex;
-  //align-items: flex-start;
-  flex-direction: column;
-  height: 100%;
-`;
-
-const Upper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  flex: 1 1 auto;
-`;
-
-const Lower = styled.div`
-  align-self: flex-end;
-`;
+// const Wrapper = styled.div`
+//   display: flex;
+//   //align-items: flex-start;
+//   flex-direction: column;
+//   height: 100%;
+// `;
+//
+// const Upper = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   flex: 1 1 auto;
+// `;
+//
+// const Lower = styled.div`
+//   align-self: flex-end;
+//   display: flex;
+// `;
 
 class Pages extends Component {
 
     render() {
         return (
-            <Wrapper>
+            <>
                 <Upper>
                     {this.props.openedFile.pages.map((page, i) =>
                         <PagePreview
@@ -41,10 +43,10 @@ class Pages extends Component {
                 </Upper>
 
                 <Lower>
-                    <Button primary icon={"plus"} onClick={() => this.props.addPage()}>Neue Seite</Button>&ensp;
-                    <Button icon={"trash-alt"} onClick={() => {}}>Entfernen</Button>
+                    <Button icon={"trash-alt"} onClick={() => {}}>Entfernen</Button> &ensp;
+                    <Button primary icon={"plus"} onClick={() => this.props.addPage()}>Neue Seite</Button>
                 </Lower>
-            </Wrapper>
+            </>
         );
     }
 }

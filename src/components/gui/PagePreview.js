@@ -24,8 +24,8 @@ const Title = styled.label`
 `;
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: inline-block;
+  //flex-direction: column;
   margin-right: ${props => props.theme.spacing[2]};
   margin-bottom: ${props => props.theme.spacing[2]}
    

@@ -1,24 +1,24 @@
 [
   {
-    "title": "chart",
+    "title": "Diagramm",
     "id": 0,
     "sub_of": -2,
     "imgUrl": "images/sample_Balkendiagramm.svg",
-    "description": "...",
+    "description": "Diagramme visualisieren quantitative Sachverhalte, also Zahlen und ihre Beziehungen zueinander.",
     "guides": [
-      "Tu dies",
-      "Tu jenes"
-    ]
+      "Wie bei allen taktilen Grafiken gilt auch bei Diagrammen, dass dreidimensionale Abbildungen schwer zu interpretieren sind. So sollten beispielsweise die beliebten 3D-Säulendiagramme besser mit flachen Flächen dargestellt werden.",
+      "Wägen Sie ab, ob die darzustellenden Zahlen einer Aufbereitung benötigen oder doch schneller in einem kurzen Text oder einer Tabelle vermittelt werden können"
+    ],
+    "query": "Können Sie die Art des Diagramms näher bestimmen?"
   },
   {
-    "title": "barchart",
+    "title": "Säulen-/ Balkendiagramm",
     "id": 1,
     "sub_of": 0,
     "imgUrl": "images/sample_Balkendiagramm.svg",
-    "description": "...",
+    "description": "Säulendiagramme oder ihre waagerechten Verwandten die Balkendiagramme vermitteln Unterschiede zwischen Zahlwerte und sind gut dafür geeignet, eine Ordnung oder Reihenfolge im Datensatz zu erkennen, sowie Ausreißen mit besonders hohen oder niedrigen Werten.",
     "guides": [
-      "Tu dies",
-      "Tu jenes"
+      "Nutzen Sie das Diagrammwerkzeug."
     ]
   },
 
@@ -27,53 +27,53 @@
     "id": 2,
     "sub_of": -1,
     "imgUrl": "images/sample_Schema.svg",
-    "description": "illustration.description",
+    "description": "Illustration, schematische Darstellungen (oder Schemata) sollen realweltiche Sachverhalte, meist aus Natur und Technik, vereinfacht darstellen und wichtige Aspekte hervorheben.",
     "guides": [
-      "illustration.guide1",
-      "illustration.guide2"
+      "Entscheiden Sie, welch Bestandteile wesentlich sind. In Illustrationen sind häufig graphische Elemente wie Schattierungen oder künstlerische Deatils, die in einer taktilen Grafik irritieren würden."
     ],
-    "query": "illustration.query"
+    "query": "Handelt es sich um eine zweidimensionale, flache Abbildung oder wird eine dreidimensionale, räumliche Abbildung zumindest angedeutet?"
   },
   {
-    "title": "illustration-2d",
+    "title": "Flache Illustration",
     "id": 3,
     "sub_of": 2,
     "imgUrl": "images/sample_Schema.svg",
-    "description": "...",
+    "description": "Flache Illustration sind in aller Regel bereits auf das Wesentliche reduziert und lassen sich gut taktil abbilden.",
     "guides": [
-      "Tu dies 2d",
-      "Tu jenes 3d"
-    ]
+    ],
+    "query": "Sind mehr als 12 Bestandteile beschriftet?"
   },
   {
-    "title": "illustration-3d",
+    "title": "Räumliche Illustration",
     "id": 4,
     "sub_of": 2,
     "imgUrl": "images/sample_Schema3d.svg",
-    "description": "...",
+    "description": "Perspektive ist eine Eigenheit der visuellen Wahrnehmung und ist taktil auf der Ebene nur schwer zu erfassen.",
     "guides": [
-      "Tu dies 2d",
-      "Tu jenes 3d"
-    ]
+      "Versuchen Sie, den Sachverhalt ohne Perspektive abzubilden.",
+      "Sie können den Sachverhalt auch in zwei oder mehr Blickwinkeln abbilden. Das erhöht zwar den benötigten Platz, verbessert aber die Leserlichkeit ungemein."
+    ],
+    "query": "Sind mehr als 12 Bestandteile beschriftet?"
   },
   {
-    "title": "illustration-few",
+    "title": "Weniger als 12",
     "id": 5,
     "sub_of": [4,3],
     "imgUrl": "images/sample_Illustration-few.svg",
-    "description": "...",
+    "description": "Illustrationen mit wenigen Beschriftungen lassen sich in der Regel gut leserlich umsetzen.",
     "guides": [
-      "Tu dies few"
+
     ]
   },
   {
-    "title": "illustration-many",
+    "title": "Mehr als 12",
     "id": 6,
     "sub_of": [4,3],
     "imgUrl": "images/sample_Illustration-many.svg",
-    "description": "...",
+    "description": "Zu viele Beschriftungen können eine taktile Grafik schwer leserlich machen.",
     "guides": [
-      "Tu dies many"
+      "Versuchen Sie, für den Sachverhalt unwesentliche Bestandteile zu kürzen.",
+      "Sie können die Illustration auch auf mehreren Seiten verteilen, um so die Anzahl der Beschriftungen pro Seite niedrig und so insgesamt leserlicher zu halten."
     ]
   }
 ]

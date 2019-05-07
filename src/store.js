@@ -16,13 +16,14 @@ const sagaMiddleware = createSagaMiddleware();
 // };
 
 
-const initialLayout = 3;
+const initialLayout = 0;
+const fromLS = JSON.parse(localStorage.getItem("custom_layout_" + initialLayout));
 const initialEditor = {
     mode: 'rect',
     texture: 'striped',
-    width: 500,
+    width: 800,
     fill: "#1f78b4",
-    height: 250,
+    height: 600,
     mouseOffset: {
         x0: 0,
         y0: 0,
@@ -35,6 +36,7 @@ const initialEditor = {
     selectedObjects: [],
     openedFile: {
         title: "Eine Datei",
+        keyedTextures: {},
         pages: [
             {
                 name: "Seite 1",
@@ -48,7 +50,7 @@ const initialEditor = {
     },
     initialized: true,
     currentLayout: initialLayout,
-    widgetConfig: layouts[initialLayout]
+    widgetConfig: fromLS !== null ? fromLS : layouts[initialLayout]
     // widgetConfig: JSON.parse(localStorage.getItem('user_layout')) || categorise
 };
 

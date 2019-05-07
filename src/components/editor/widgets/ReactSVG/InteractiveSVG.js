@@ -7,6 +7,7 @@ import {debounce} from "lodash";
 import Rect from "./Rect";
 import {OBJECT} from "../../constants";
 import Label from "./Label";
+import patternTemplates from "./Patterns";
 
 function uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -31,12 +32,14 @@ class InteractiveSVG extends Component {
     currentY = eventY => {        return eventY - this.svgElement.current.getBoundingClientRect().top;    };
 
     mouseDownHandler = (event) => {
+        console.log("down");
         this.mouseXDown = this.currentX(event.clientX); // todo zum State machen
         this.mouseYDown = this.currentY(event.clientY);
         this.mouseIsDown = true;
     };
 
     mouseUpHandler = () => {
+        console.log("up");
         this.mouseIsDown = false;
         let uuid = uuidv4();
         if (this.dragging) {
@@ -71,12 +74,15 @@ class InteractiveSVG extends Component {
                         {
                             type:   OBJECT.LABEL,
                             uuid:   uuid,
-                            text:   "Guten Tag, ich bin ein Label.",
+                            text:   "Beschriftung",
                             x:      this.mouseXDown,
                             y:      this.mouseYDown,
                             angle:  0,
-                            isKey:  false,
-                            key:    null,
+                            position: "left-top",
+                            isKey:  false, // false
+                            displayDots: true,
+                            displayLetters: true,
+                            keyVal: 'Bschr', // ''
                             width:  this.state.mouseXDrag - this.mouseXDown,
                             height: this.state.mouseYDrag - this.mouseYDown
                         },
@@ -97,11 +103,14 @@ class InteractiveSVG extends Component {
     };
 
     mouseMoveHandler = (event) => {
-        if (this.mouseIsDown) {
+        const currentX = this.currentX(event.clientX);
+        const currentY = this.currentY(event.clientY);
+        const moved = Math.abs(this.mouseXDown - currentX) > 5 || Math.abs(this.mouseYDown - currentY) > 5;
+        if (this.mouseIsDown && moved) {
             this.dragging = true;
             this.setState({
-                mouseXDrag: this.currentX(event.clientX),
-                mouseYDrag: this.currentY(event.clientY)
+                mouseXDrag: currentX,
+                mouseYDrag: currentY
             })
         }
 
@@ -115,12 +124,12 @@ class InteractiveSVG extends Component {
         }
     };
 
-    static OBJECTS = ({ uuid, width, height, x, y, angle, pattern, text, fill }, index) => ({
+    static OBJECTS = (props, index) => ({
         //TODO drüber nachdenken: onClick zur Selektion hier implementieren?
         // Dann müssen Objekte in Gruppen das Event nicht abdelegieren um zu überprüfen,
         // dass nicht sie alleine sondern ihre Gruppe ausgewählt worden ist.
-        [OBJECT.RECT]: <Rect pattern={pattern} fill={fill} key={index} uuid={uuid} width={width} angle={angle} height={height} x={x} y={y} />,
-        [OBJECT.LABEL]: <Label key={index} uuid={uuid} width={width} text={text} angle={angle} height={height} x={x} y={y} />,
+        [OBJECT.RECT]: <Rect key={index} {...props} />,
+        [OBJECT.LABEL]: <Label key={index} {...props} />,
     });
 
     triggerCache = debounce(() => {

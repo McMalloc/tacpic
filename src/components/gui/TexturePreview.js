@@ -30,13 +30,12 @@ const TexturePreview = props => {
                  active={props.active}
                  title={label}
                  aria-label={label} onClick={props.onClick} height={props.height || 50} width={props.width || 50}>
-
             <svg width={props.width || 42}
                  height={props.height || 42}>
                 {props.template !== null ?
                 <>
                     <rect
-                        fill={'url(#pattern-preview-' + props.template}
+                        fill={'url(#pattern-'+props.template+'-preview-' + props.template}
                         width={props.width || 42}
                         height={props.height || 42}
                     />

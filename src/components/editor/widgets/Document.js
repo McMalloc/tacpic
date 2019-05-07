@@ -6,6 +6,7 @@ import Select from "../../gui/Select";
 import {Row} from "../../gui/Grid";
 import {Checkbox} from "../../gui/Checkbox";
 import {Numberinput} from "../../gui/Input";
+import {Upper} from "../../gui/WidgetContainer";
 
 class Document extends Component {
     state = {
@@ -27,10 +28,10 @@ class Document extends Component {
 
     render() {
         return (
-            <React.Fragment>
+            <Upper>
 
                 <Row>
-                    <div className={"col-md-6"}>
+                    <div className={"col-sm-6"}>
 
                         <Select options={
                             [
@@ -38,7 +39,7 @@ class Document extends Component {
                             ]
                         }/>
                     </div>
-                    <div className={"col-md-6"}>
+                    <div className={"col-sm-6"}>
                         <Button icon={"star"}>Neue Vorgabe</Button>
                     </div>
                 </Row>
@@ -55,11 +56,23 @@ class Document extends Component {
                                 ]}
                             />
 
+                            <Select label={"editor:select_braille-system"} options={
+                                [
+                                    {label: "Braille DE Kurzschrift", value: "A"},
+                                    {label: "Braille DE Langschrift", value: "A"},
+                                    {label: "Braille DE Vollschrift", value: "A"},
+                                    {label: "Computerbraille 8-Punkt DE Kurzschrift", value: "A"}
+                                ]
+                            }/>
+
                         </div>
                         <div className={"col-sm-6"}>
+                            {/*<Radio name={"orientation"} options={[*/}
+                                {/*{label: "editor:portrait", value: "portrait"},*/}
+                                {/*{label: "editor:landscape", value: "landscape"}]}/>*/}
                             <Radio name={"orientation"} options={[
-                                {label: "editor:portrait", value: "portrait"},
-                                {label: "editor:landscape", value: "landscape"}]}/>
+                                {label: "Hochformat", value: "portrait"},
+                                {label: "Querformat", value: "landscape"}]}/>
                         </div>
                     </Row>
                 </fieldset>
@@ -133,7 +146,7 @@ class Document extends Component {
                         </div>
                     </Row>
                 </fieldset>
-            </React.Fragment>
+            </Upper>
         );
     }
 }

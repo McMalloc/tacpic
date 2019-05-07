@@ -27,7 +27,7 @@ const Input = styled.input`
   border: 1px solid ${props => props.theme.midlight};
   border-radius: 3px;
   background-color: ${props => props.disabled ? "transparent" : props.theme.background};
-  padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[1]};
+  padding: 5px ${props => props.theme.spacing[1]};
   cursor: ${props => props.disabled ? "not-allowed" : "text"};
   
   &:after {
@@ -51,14 +51,16 @@ const Textarea = styled.textarea`
 
 const Textinput = props => {
     return (
-        <Label {...props}>
+        <Label sublabel={props.sublabel} label={props.label} disabled={props.disabled} inline={props.inline}>
             <Input
                 disabled={props.disabled}
                 inline={props.inline}
                 type={"text"}
                 name={props.name}
                 value={props.value}
-                onChange={props.onChange}/>
+                // onChange={console.log}
+                onChange={props.onChange}
+            />
         </Label>
     )
 };
@@ -83,24 +85,17 @@ class Numberinput extends Component {
     }
 }
 
-class Multiline extends Component {
-    handleChange = (event) => {
-        this.setState({value: event.target.value});
-    };
-
-    state = {value: ''};
-
-    render() {
-        return (
-            <Label {...this.props}>
+const Multiline = props => {
+    return (
+        <Label sublabel={props.sublabel} disabled={props.disabled} label={props.label}>
                 <Textarea
-                    rows={this.props.rows || 3}
-                    name={this.props.name}
-                    value={this.state.value}
-                    onChange={this.handleChange}/>
-            </Label>
-        )
-    }
-}
+                    rows={props.rows || 3}
+                    disabled={props.disabled}
+                    name={props.name}
+                    value={props.value}
+                    onChange={props.onChange}/>
+        </Label>
+    )
+};
 
 export {Textinput, Numberinput, Multiline}

@@ -5,13 +5,7 @@ import {Multiline, Textinput} from "../../gui/Input";
 import Select from "../../gui/Select";
 import {Button} from "../../gui/Button";
 import {Checkbox} from "../../gui/Checkbox";
-
-const Wrapper = styled.div`
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  justify-content: space-between;
-`;
+import {Upper} from "../../gui/WidgetContainer";
 
 const Status = styled.div`
   display: flex;
@@ -46,7 +40,7 @@ const Indicator = styled.span`
 class Metadata extends Component {
     render() {
         return (
-            <Wrapper>
+            <Upper>
                 <div>
                     <Textinput label={"editor:input_catalogue-title"} sublabel={"editor:input_catalogue-title-sub"}/>
                     <Select label={"editor:input_catalogue-tags"} sublabel={"editor:input_catalogue-tags-sub"}/>
@@ -66,7 +60,7 @@ class Metadata extends Component {
                     <p>Ich stimme der Veröffentlichung unter der liberalen CC-BY-SA 3.0 Lizenz zu.</p>
                     <Button primary fullWidth>editor:input_catalogue-publish</Button>
                 </div>
-            </Wrapper>
+            </Upper>
         );
     }
 }

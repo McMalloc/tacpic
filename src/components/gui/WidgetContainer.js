@@ -11,6 +11,24 @@ const Wrapper = styled.div`
   box-shadow: 1px 1px 1px rgba(0,0,0,0.4);
 `;
 
+export const Lower = styled.div`
+  display: flex;
+  //align-items: flex-end;
+  align-self: flex-end;
+  justify-content: flex-end;
+  flex: 0 0 auto;
+  padding: ${props => props.theme.spacing[2]};
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 0 10px #00000021;
+`;
+
+export const Upper = styled.div`
+  flex: 1 1 auto;
+  padding: ${props => props.theme.spacing[2]};
+  overflow: auto;
+`;
+
 const TitleBar = styled.div`
   background-color: ${props => props.theme.background};
   flex: 1.6em 0 0;
@@ -20,7 +38,7 @@ const TitleBar = styled.div`
   align-items: stretch;
   font-weight: 700;
   color: ${props => props.theme.accent_1};
-  z-index: 0;
+  z-index: 1;
   display: flex;
   
   box-shadow: ${props => props.showShadow ? "0 8px 8px -8px rgba(0,0,0,0.3);" : "none"};
@@ -29,9 +47,11 @@ const TitleBar = styled.div`
 
 const Content = styled.div`
   flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
   position: relative;
   background-color: ${props => props.theme.accent_1_light};
-  padding: ${props => props.theme.spacing[2]};
+  // padding: ${props => props.theme.spacing[2]};
   overflow-x: auto; // eigentlich hidden, aber für das Canvas ganz gut
   overflow-y: auto; 
   border-top: none;
@@ -93,31 +113,54 @@ const TitleFlyout = styled(FlyoutButton)`
 
 class WidgetContainer extends Component {
     state = {
-        scrolled: false
+        detachedTop: false,
+        detachedBottom: false
     };
 
     containerRef = React.createRef();
 
-    scrollCallback = () => {
-        if (this.containerRef.current.scrollTop > 5 && !this.state.scrolled) {
+    scrollCallback = event => {
+        let container = event.currentTarget;
+        // let container = this.containerRef.current;
+
+        // shadow from titlebar
+        if (container.scrollTop > 5 && !this.state.detachedTop) {
             this.setState({
-                scrolled: true
+                detachedTop: true
             })
         }
-        if (this.containerRef.current.scrollTop === 0) {
+        if (container.scrollTop === 0) {
             this.setState({
-                scrolled: false
+                detachedTop: false
             })
         }
+
+        // offsetHeight + scrollTop = scrollHeight
+        // shadow from bottom button bar
+        if (container.scrollTop + container.offsetHeight < container.scrollHeight - 5 && !this.state.detachedBottom) {
+            this.setState({
+                detachedBottom: true
+            })
+        }
+        if (container.scrollTop === 0) {
+            this.setState({
+                detachedBottom: false
+            })
+        }
+        console.log("container.scrollTop " + container.scrollTop);
+        console.log("container.offsetHeight " + container.offsetHeight);
+        console.log("offsetHeight + scrollTop " + (container.offsetHeight + container.scrollTop));
+        console.log("container.scrollHeight " + container.scrollHeight);
+        console.log(this.state.detachedTop, this.state.detachedBottom);
     };
 
 
     render() {
         const Component = this.props.component;
-        const Menu = this.props.menu || null;
+        // const Menu = this.props.menu || null;
         return (
             <Wrapper id={'widget-container-' + this.props.title}>
-                <TitleBar showShadow={this.state.scrolled} className="drag-handle">
+                <TitleBar showShadow={this.state.detachedTop} className="drag-handle">
                     <Title>{this.props.title}</Title>
                     {/*<TitleButtons>*/}
                     {/*{Menu !== null &&*/}
@@ -126,13 +169,13 @@ class WidgetContainer extends Component {
                     {/*<ClosingButton className={'no-drag'} icon={"times"} />*/}
                     {/*</TitleButtons>*/}
 
-                    {Menu !== null &&
-                    <TitleFlyout className={'no-drag'} noPad rightAlign={true}
-                                 label={<i className="fas fa-bars"/>}><Menu/></TitleFlyout>
-                    }
+                    {/*{Menu !== null &&*/}
+                    {/*<TitleFlyout className={'no-drag'} noPad rightAlign={true}*/}
+                                 {/*label={<i className="fas fa-bars"/>}><Menu/></TitleFlyout>*/}
+                    {/*}*/}
                     {/*<TitleButton className={'no-drag'} noPad icon={"times"}/>*/}
                 </TitleBar>
-                <Content ref={this.containerRef} onScroll={this.scrollCallback}
+                <Content ref={this.containerRef} //onScroll={this.scrollCallback}
                          className={'widget-content'}>
                     {/*{this.props.menu}*/}
                     <Component/>

@@ -31,9 +31,7 @@ class Canvas extends Component {
 
 const mapStateToProps = state => {
     return {
-        ...state.editor,
-        canvasWidth: state.editor.width,
-        canvasHeight: state.editor.height
+        ...state.editor
     }
 };
 

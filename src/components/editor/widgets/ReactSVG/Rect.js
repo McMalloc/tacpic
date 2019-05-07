@@ -10,29 +10,27 @@ class Rect extends Component {
             if (this.props.uuid === uuid) selected = true
         });
 
-        console.log("rerender rect ", this.props.pattern.template);
+        // TODO: wenn Farbe mit Textur geändert wird, aktualisiert sich das Objekt trotz anderem Pattern nicht. Irgendwas muss sich daher auch im style-String ändern
+        const template = this.props.pattern.template;
         return (
             <g>
                 <rect
                     id={this.props.uuid}
                     transform={transform(this.props.x, this.props.y, this.props.angle)}
-                    // style={{fill: selected ? 'rgba(50,200,0,0.4)' : 'rgba(0,0,0,0.4)'}}
-
-                    style={{fill: 'url(#pattern-' + this.props.uuid + ''}}
+                    style={{fill: template !== null ? 'url(#pattern-' + template + '-' + this.props.uuid + '' : this.props.fill}}
                     strokeWidth={2}
                     stroke={'rgba(0,50,100,0.2)'}
                     width={this.props.width}
                     height={this.props.height}
                     onMouseDown={ event => {
-                        event.stopPropagation();
+                        // event.stopPropagation();
                     }}
                     onMouseUp={ event => {
                         event.stopPropagation();
-                        console.log("select rect");
                         this.props.select(this.props.uuid)
                     }}
                 />
-                {patternTemplates[this.props.pattern.template](this.props.pattern, this.props.uuid, this.props.fill)}
+                {template !== null && patternTemplates[template](this.props.pattern, this.props.uuid, this.props.fill)}
             </g>
         )
     }

@@ -1,148 +1,267 @@
-const original = [
-    {i: "Canvas",       x: 0, y: 0, w: 12, h: 12,    visible: true,  static: false},
-    {i: "Importer",     x: 0, y: 0, w: 12, h: 12,     visible: true,  static: false}
-];
-
-const categorise = [ //TODO default aus config laden
-    // {i: "Canvas",       x: 5, y: 0, w: 6, h: 25,    visible: true,  static: false},
-    {i: "Category",     x: 0, y: 0, w: 12, h: 25,     visible: true,  static: false}
-];
-
-const layout = [
-    {i: "Pages",        x: 0, y: 0, w: 6, h: 10,     visible: true,  static: false},
-    {i: "Canvas",       x: 0, y: 0, w: 6, h: 10,     visible: true,  static: false},
-    {i: "Document",     x: 6, y: 0, w: 6, h: 20,     visible: true,  static: false}
-];
-
-const drawing = [
+const intro = [
     {
-        i: 'Pages',
-        x: 9,
-        y: 0,
-        w: 3,
-        h: 5,
-        visible: true,
-        'static': false
-    },
-    {
-        i: 'Objects',
+        w: 12,
+        h: 12,
         x: 0,
         y: 0,
-        w: 4,
-        h: 11,
-        visible: true,
-        'static': false
-    },
-    {
-        i: 'Toolbox',
-        x: 4,
-        y: 0,
-        w: 5,
-        h: 5,
-        visible: true,
-        'static': false
-    },
-    {
-        i: 'Context',
-        x: 0,
-        y: 0,
-        w: 4,
-        h: 17,
-        visible: true,
-        'static': false
-    },
-    {
-        i: 'Canvas',
-        x: 4,
-        y: 0,
-        w: 8,
-        h: 23,
-        visible: true,
+        i: 'Intro',
+        moved: false,
         'static': false
     }
 ];
 
+const original = [
+    {
+        w: 8,
+        h: 28,
+        x: 0,
+        y: 0,
+        i: 'Canvas',
+        moved: false,
+        'static': false
+    },
+    {
+        w: 4,
+        h: 13,
+        x: 8,
+        y: 0,
+        i: 'Importer',
+        moved: false,
+        'static': false
+    }
+];
+
+const categorise = [
+    {
+        w: 12,
+        h: 28,
+        x: 0,
+        y: 0,
+        i: 'Category',
+        moved: false,
+        'static': false
+    }
+];
+
+const layout = [
+    {
+        w: 4,
+        h: 7,
+        x: 8,
+        y: 0,
+        i: 'Pages',
+        moved: false,
+        'static': false
+    },
+    {
+        w: 8,
+        h: 28,
+        x: 0,
+        y: 0,
+        i: 'Canvas',
+        moved: false,
+        'static': false
+    },
+    {
+        w: 4,
+        h: 21,
+        x: 8,
+        y: 7,
+        i: 'Document',
+        moved: false,
+        'static': false
+    }
+];
+
+const drawing = [
+    {
+        w: 8,
+        h: 23,
+        x: 0,
+        y: 0,
+        i: 'Canvas',
+        moved: false,
+        'static': false
+    },
+    {
+        w: 4,
+        h: 13,
+        x: 8,
+        y: 16,
+        i: 'Context',
+        moved: false,
+        'static': false
+    },
+    {
+        w: 8,
+        h: 6,
+        x: 0,
+        y: 23,
+        i: 'Toolbox',
+        moved: false,
+        'static': false
+    },
+    {
+        w: 4,
+        h: 5,
+        x: 8,
+        y: 0,
+        i: 'Pages',
+        moved: false,
+        'static': false
+    },
+    {
+        w: 4,
+        h: 11,
+        x: 8,
+        y: 5,
+        i: 'Objects',
+        moved: false,
+        'static': false
+    }
+];
+
+// index 4
 const key = [
-    {i: "Canvas",       x: 0, y: 0, w: 5, h: 20,    visible: true,  static: false},
-    {i: "Key",          x: 6, y: 0, w: 3, h: 14,    visible: true,  static: false},
-    {i: "Context",      x: 0, y: 1, w: 4, h: 5,     visible: false, static: false}
+    {
+        w: 8,
+        h: 23,
+        x: 0,
+        y: 0,
+        i: 'Canvas',
+        moved: false,
+        'static': false
+    },
+    {
+        w: 4,
+        h: 12,
+        x: 8,
+        y: 16,
+        i: 'Context',
+        moved: false,
+        'static': false
+    },
+    {
+        w: 8,
+        h: 5,
+        x: 0,
+        y: 23,
+        i: 'Toolbox',
+        moved: false,
+        'static': false
+    },
+    {
+        w: 4,
+        h: 5,
+        x: 8,
+        y: 0,
+        i: 'Pages',
+        moved: false,
+        'static': false
+    },
+    {
+        w: 4,
+        h: 11,
+        x: 8,
+        y: 5,
+        i: 'Key',
+        moved: false,
+        'static': false
+    }
 ];
 
 const verbalizing = [
-    {i: "Canvas",       x: 0, y: 0, w: 5, h: 20,    visible: true,  static: false},
-    {i: "Verbalizer",          x: 6, y: 0, w: 3, h: 14,    visible: true,  static: false}
+    {
+        w: 7,
+        h: 28,
+        x: 0,
+        y: 0,
+        i: 'Canvas',
+        moved: false,
+        'static': false
+    },
+    {
+        w: 5,
+        h: 28,
+        x: 7,
+        y: 0,
+        i: 'Verbalizer',
+        moved: false,
+        'static': false
+    }
 ];
 
 const proofing = [
     {
-        i: 'Canvas',
-        x: 3,
-        y: 0,
         w: 8,
-        h: 23,
-        visible: true,
+        h: 28,
+        x: 0,
+        y: 0,
+        i: 'Canvas',
+        moved: false,
         'static': false
     },
     {
-        i: 'Proofing',
-        x: 0,
-        y: 0,
-        w: 3,
+        w: 4,
         h: 9,
-        visible: true,
+        x: 8,
+        y: 0,
+        i: 'Proofing',
+        moved: false,
         'static': false
     },
     {
+        w: 4,
+        h: 9,
+        x: 8,
+        y: 9,
         i: 'Simulator',
-        x: 0,
-        y: 0,
-        w: 3,
-        h: 8,
-        visible: true,
+        moved: false,
         'static': false
     },
     {
+        w: 4,
+        h: 10,
+        x: 8,
+        y: 18,
         i: 'Comments',
-        x: 0,
-        y: 0,
-        w: 3,
-        h: 6,
-        visible: true,
+        moved: false,
         'static': false
     }
 ];
 
 const finishing = [
     {
-        i: 'Canvas',
-        x: 4,
-        y: 0,
         w: 8,
-        h: 23,
-        visible: true,
+        h: 28,
+        x: 0,
+        y: 0,
+        i: 'Canvas',
+        moved: false,
         'static': false
     },
     {
-        i: 'Metadata',
-        x: 0,
-        y: 0,
         w: 4,
-        h: 13,
-        visible: true,
+        h: 18,
+        x: 8,
+        y: 0,
+        i: 'Metadata',
+        moved: false,
         'static': false
     },
     {
-        i: 'Order',
-        x: 0,
-        y: 0,
         w: 4,
         h: 10,
-        visible: true,
+        x: 8,
+        y: 18,
+        i: 'Order',
+        moved: false,
         'static': false
     }
 ];
 
 const layouts = [
+    intro,
     original,
     categorise,
     layout,

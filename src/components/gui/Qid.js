@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import React, {Component} from "react";
-import {Numberinput, Textinput} from "./Input";
+import {Numberinput, Textinput, Multiline} from "./Input";
 import {Checkbox} from "./Checkbox";
+import {Button} from "./Button";
 
 const Wrapper = styled.div`
   // color: ${props => props.theme.accent_1_light};
@@ -44,24 +45,28 @@ class Qid extends Component {
 
         return (
             <Wrapper>
-                <p>
-                    Die Grafik ist übertitelt mit <Textinput inline name={"title"}/>.
-                </p>
-                <p>
-                    Die horizontale Achse ist beschriftet mit <Textinput inline name={"horizontal"}/>.
-                </p>
-                {!this.state.withUnits &&
-                <p>
-                    gemessen in <Textinput inline name={"unit"}/>
-                </p>
-                }
-                <p>
-                    und reicht von <Textinput inline name={"min"}/>
-                </p>
-                <p>
-                    bis <Textinput inline name={"max"}/>.
-                </p>
-                <Checkbox name={"withUnits"} onChange={this.toggle} label={"Keine Einheiten angegeben."}/>
+                {/*<p>*/}
+                    {/*Die Grafik ist übertitelt mit <Textinput style={{display: "inline"}} inline name={"title"}/>.*/}
+                {/*</p>*/}
+                {/*<p>*/}
+                    {/*Die horizontale Achse ist beschriftet mit <Textinput inline name={"horizontal"}/>.*/}
+                {/*</p>*/}
+                {/*{!this.state.withUnits &&*/}
+                {/*<p>*/}
+                    {/*gemessen in <Textinput inline name={"unit"}/>*/}
+                {/*</p>*/}
+                {/*}*/}
+                {/*<p>*/}
+                    {/*und reicht von <Textinput inline name={"min"}/>*/}
+                {/*</p>*/}
+                {/*<p>*/}
+                    {/*bis <Textinput inline name={"max"}/>.*/}
+                {/*</p>*/}
+                {/*<Checkbox name={"withUnits"} onChange={this.toggle} label={"Keine Einheiten angegeben."}/>*/}
+                <Textinput label={"Aussagekräftiger Titel"} />
+                <Multiline rows={2} label={"Zusammenfassende Beschreibung"} />
+                <Multiline rows={4} label={"Detaillierte Beschreibung"} />
+                <Button primary>Einfügen</Button>
             </Wrapper>
         )
     }

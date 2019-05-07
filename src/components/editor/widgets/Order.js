@@ -6,12 +6,7 @@ import {Row} from "../../gui/Grid";
 import {Numberinput} from "../../gui/Input";
 import Label from "../../gui/_Label";
 import {Button} from "../../gui/Button";
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-`;
+import {Lower, Upper} from "../../gui/WidgetContainer";
 
 class Order extends Component {
     constructor(props) {
@@ -20,41 +15,38 @@ class Order extends Component {
 
     render() {
         return (
-            <Wrapper>
-                <Row padded>
-                    <div className={"col-md-6"}>
-                        <Numberinput label={"Anzahl"} unit={"Stck."}/>
-                    </div>
-                    <div className={"col-md-6"}>
-                        Preis <br />
-                        12,30€
-                    </div>
-                </Row>
-                <Row>
-                    <div className={"col-md-6"} style={{textAlign: "right"}}>
-                        ≙ 12 Bögen
-                    </div>
-                </Row>
-                <Row>
-                    <div className={"col-md-12"}>
-                        <Button fullWidth primary>Zur Bestellübersicht & Editor verlassen</Button>
-                    </div>
-
-                </Row>
-            </Wrapper>
+            <>
+                <Upper>
+                    <Row padded>
+                        <div className={"col-md-6"}>
+                            <Numberinput label={"Anzahl"} unit={"Stck."}/>
+                        </div>
+                        <div className={"col-md-6"}>
+                            Preis <br/>
+                            -,--€
+                        </div>
+                    </Row>
+                    <Row>
+                        <div className={"col-md-6"} style={{textAlign: "right"}}>
+                            ≙ - Bögen
+                        </div>
+                    </Row>
+                </Upper>
+                <Lower>
+                    <Button>In den Warenkorb</Button>&ensp;
+                    <Button primary>Bestellen</Button>
+                </Lower>
+            </>
         );
     }
 }
 
 const mapStateToProps = state => {
-    return {
-
-    }
+    return {}
 };
 
 const mapDispatchToProps = dispatch => {
-    return {
-    }
+    return {}
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Order);

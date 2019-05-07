@@ -8,6 +8,7 @@ const Braille = styled.div`
   font-family: "Braille29 DE";
   position: absolute;
   top: 0;
+  color: lightgray;
   font-size: 24pt;
 `;
 
@@ -30,7 +31,7 @@ class Label extends Component {
         // this.props.selectedObjects.forEach(uuid => {
         //     if (this.props.uuid === uuid) selected = true
         // });
-
+        console.log(this.props);
         return (
             <g>
                 <rect onClick={(event) => this.onClickHandler(event)}
@@ -45,17 +46,22 @@ class Label extends Component {
                                id={this.props.uuid}>
                     {/*Bug in WebKit mach die relative Positionierung nötig*/}
                     <div style={{position: 'relative'}}>
-                        <div xmlns="http://www.w3.org/1999/xhtml"
-                           suppressContentEditableWarning
-                           id={'editable_' + this.props.uuid}
-                           contentEditable={true}
-                           style={{border: '1px dotted lightgrey', margin: 0, height: this.props.height}}>
-                            {this.props.text}
-                        </div>
+                        {this.props.displayDots &&
                         <Braille xmlns="http://www.w3.org/1999/xhtml"
-                             id={'braille_' + this.props.uuid}>
-                            {this.props.text}
+                                 id={'braille_' + this.props.uuid}>
+                            {this.props.isKey ? this.props.keyVal : this.props.text}
                         </Braille>
+                        }
+
+                        {this.props.displayLetters &&
+                        <div xmlns="http://www.w3.org/1999/xhtml"
+                             suppressContentEditableWarning
+                             id={'editable_' + this.props.uuid}
+                             contentEditable={true}
+                             style={{border: '1px dotted lightgrey', margin: 0, height: this.props.height}}>
+                            {this.props.isKey ? this.props.keyVal : this.props.text}
+                        </div>
+                        }
                     </div>
                 </foreignObject>
 

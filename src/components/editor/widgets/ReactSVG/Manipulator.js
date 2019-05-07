@@ -19,8 +19,9 @@ class Manipulator extends Component {
             <g transform={transform(this.props.bbox.x, this.props.bbox.y, this.props.selected[0].angle)}>
                 <rect
                     fill={"rgba(255,255,255,0.2)"}
-                    stroke={'rgba(255,255,255,0.7)'}
-                    strokeWidth={6}
+                    stroke={'rgba(0,0,255,0.7)'}
+                    strokeWidth={3}
+                    stroke-dasharray={"5,5"}
                     onMouseDown={ (event) => { this.onClickHandler(event)}}
                     width={this.props.bbox.width}
                     height={this.props.bbox.height}
@@ -44,7 +45,7 @@ const mapStateToProps = state => {
     return {
         selected,
         bbox: (() => {
-            if (state.editor.selectedObjects.length === 0) return 0;
+            if (state.editor.selectedObjects.length === 0 || state.editor.selectedObjects[0] === "FG") return 0;
             let svgbbox = document.getElementById(state.editor.selectedObjects[0]).getBBox();
             // TODO: alle ausgewählten Elemente berücksichtigen und bessere Methode finden als ID-Selektor
             // versuchen, irgendwie den eigentlich DOMNode mit im STate zu speichern, um Zugriff auf Props als auch auf getBBox() zu haben

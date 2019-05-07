@@ -62,10 +62,14 @@ const editor = (state = {}, action) => {
 
         case 'OBJECT_PROP_CHANGED':
             oldState = cloneDeep(state);
-            console.log(action.value);
             filter(oldState.openedFile.pages[oldState.currentPage].objects, {uuid: action.uuid}).forEach(object => {
                 object[action.prop] = action.value;
+
+                if (action.prop === "isKey" && object.keyVal === '') {
+                    object.keyVal = object.text.slice(0, 3);
+                }
             });
+
             return oldState;
         case 'VERTICAL_SPACING_SET':
             return {...state, verticalGridSpacing: action.spacing};
@@ -87,24 +91,28 @@ const editor = (state = {}, action) => {
             openedFile.pages.push({name: 'Seite ' + (openedFile.pages.length + 1), objects: []});
             return {...state, openedFile};
         case 'LAYOUT_SET':
+            //TODO da es ein Nebeneffekt ist und sogar blockt, sollte es auch eine Saga werden, die dann wiederum die eigentlich Action,
+            // die die render props beeinflusst abfeuert
+            const fromLS = JSON.parse(localStorage.getItem("custom_layout_" + action.layoutIndex));
             return {
                 ...state,
                 currentLayout: action.layoutIndex,
-                widgetConfig: layouts[action.layoutIndex]
+                widgetConfig: fromLS !== null ? fromLS : layouts[action.layoutIndex]
             };
         case 'LAYOUT_CHANGED': // TODO: wird das noch benutzt?
+            // löst einen Effekt aus
             return {
                 ...state,
                 // TODO: muss selbe Anzahl Widgets zurückgeben, sonst verschwinden Widget-Optionen
-                widgetConfig: action.layout.map(widget => {
-                    let layoutedWidget = find(state.widgetConfig, {i: widget.i});
-                    return {...layoutedWidget,
-                        x: widget.x,
-                        y: widget.y,
-                        w: widget.w,
-                        h: widget.h,
-                    }
-                })
+                // widgetConfig: action.layout.map(widget => {
+                //     let layoutedWidget = find(state.widgetConfig, {i: widget.i});
+                //     return {...layoutedWidget,
+                //         x: widget.x,
+                //         y: widget.y,
+                //         w: widget.w,
+                //         h: widget.h,
+                //     }
+                // })
             };
         case 'WIDGET_VISIBILITY_TOGGLED':
             return {
@@ -116,6 +124,11 @@ const editor = (state = {}, action) => {
                     }
                 })
             };
+        case 'KEY_TEXTURE_ADDED':
+            oldState = cloneDeep(state);
+            console.log(action.label);
+            oldState.openedFile.keyedTextures[action.texture] = action.label;
+            return oldState;
         case 'CACHE_SVG':
             let file = {...state.openedFile};
             file.pages[action.pageNumber].cache = action.markup;

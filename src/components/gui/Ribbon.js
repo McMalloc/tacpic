@@ -46,7 +46,7 @@ const RibbonItem = styled.button`
   cursor: pointer;
   
   &:hover {
-    background-color: ${props => props.active ? "#d82f78" : props.theme.background};
+    background-color: ${props => props.active ? props.theme.accent_1 : props.theme.background};
   }  
   
   &:focus {
