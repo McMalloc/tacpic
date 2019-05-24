@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import {Multiline, Textinput} from "../../gui/Input";
 import Select from "../../gui/Select";
 import {Button} from "../../gui/Button";
-import {Checkbox} from "../../gui/Checkbox";
 import {Upper} from "../../gui/WidgetContainer";
+import Tooltip from "../../gui/Tooltip";
 
 const Status = styled.div`
   display: flex;
@@ -41,9 +41,27 @@ class Metadata extends Component {
     render() {
         return (
             <Upper>
+                <Tooltip/>
                 <div>
-                    <Textinput label={"editor:input_catalogue-title"} sublabel={"editor:input_catalogue-title-sub"}/>
-                    <Select label={"editor:input_catalogue-tags"} sublabel={"editor:input_catalogue-tags-sub"}/>
+                    <Textinput
+                        value={this.props.catalogueTitle || this.props.title}
+                        onChange={event => {this.props.changeCatalogueTitle(event.currentTarget.value)}}
+                        tip={"help:input_catalogue-title"}
+                        label={"editor:input_catalogue-title"}
+                        sublabel={"editor:input_catalogue-title-sub"}/>
+                    {/*todo @mock*/}
+                    <Select
+                        label={"editor:input_catalogue-tags"}
+                        tip={"help:input_catalogue-tags"}
+                        isMulti
+                        creatable
+                        options={[
+                            {label: "Sek 1", value: 0}, // value entspricht id
+                            {label: "Sek 2", value: 1},
+                            {label: "Biologie", value: 2},
+                            {label: "Physik", value: 3},
+                            {label: "Geographie", value: 4}]}
+                        sublabel={"editor:input_catalogue-tags-sub"}/>
                     <Multiline label={"editor:input_catalogue-desc"} sublabel={"editor:input_catalogue-desc-sub"}/>
 
                 </div>
@@ -67,12 +85,21 @@ class Metadata extends Component {
 
 const mapStateToProps = state => {
     return {
-        documentState: 0 // 0 = draft, 1 = published, 2 = published with new draft
+        documentState: 0, // 0 = draft, 1 = published, 2 = published with new draft
+        title: state.editor.openedFile.title,
+        catalogueTitle: state.editor.openedFile.catalogueTitle,
     }
 };
 
 const mapDispatchToProps = dispatch => {
-    return {}
+    return {
+        changeCatalogueTitle: title => {
+            dispatch({
+                type: "CHANGE_CATALOGUE_TITLE",
+                title
+            })
+        }
+    }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Metadata);

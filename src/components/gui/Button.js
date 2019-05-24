@@ -23,7 +23,7 @@ const ButtonBase = styled.button`
   cursor: pointer;
   margin-top: 0;
   position: relative;
-  font-size: 0.9em;
+  font-size: 1em;
   width: ${props => props.fullWidth ? "100%" : "auto"};
   transition: box-shadow 0.15s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.15s;
   
@@ -150,7 +150,7 @@ class FlyoutButton extends Component {
     toggle = () => {
         if (this.state.out) {
             this.state.out ? this.close() : this.open();
-        } {
+        } else { // TODO else war vorher weg, könnte jetzt einen Fehler beherbergen
             this.state.out ? this.close() : this.open();
             // the timer will fire after the current render cycle, so the ref is actually in the dom after the flag went true
             setTimeout(() => this.flyoutRef.current !== null && this.flyoutRef.current.focus(), 0);

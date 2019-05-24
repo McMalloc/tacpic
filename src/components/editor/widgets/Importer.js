@@ -55,11 +55,15 @@ const Wrapper = styled.div`
   box-sizing: border-box;
 `;
 
+/* TODO
+* Leinwand erst zeigen, wenn etwas importiert worden ist
+* */
+
 class Importer extends Component {
     constructor(props) {
         super(props);
         this.fileRef = React.createRef();
-        this.state = {
+        this.state = { // TODO send to server, do not save in memory
             preview: null,
             hoverWithFile: false
         }
@@ -73,9 +77,7 @@ class Importer extends Component {
             _this.setState({
                 preview: reader.result
             });
-            // let img = document.createElement('img');
-            // img.src =
-            // document.getElementById('gallery').appendChild(img);
+            _this.props.toggleCanvas(true);
         }
     };
 
@@ -117,14 +119,13 @@ class Importer extends Component {
     render() {
         return (
             <Fragment>
-                {this.state.preview === null ?
                 <Wrapper>
                     <Dropzone
                         onDragOver={this.onDragoverHandler}
                         onDragLeave={this.onDragLeave}
                         hovering={this.state.hoverWithFile}
                         onDrop={this.onDropHandler}>
-                        <Fileinput ref={this.fileRef} type={"file"}/>
+                        <Fileinput onChange={event => this.previewFile(event.currentTarget.files[0])} ref={this.fileRef} type={"file"}/>
 
                         <Padding top={4}>
                             <Icon icon={"arrow-down"}/> Vorlage hierher ziehen
@@ -134,17 +135,14 @@ class Importer extends Component {
                             <Divider label={"gui:or"}/>
                         </Padding>
 
-                        <Button primary icon={"upload"} onClick={this.openDialog}>Datei wählen</Button>
+                        {this.state.preview === null ?
+                            <Button primary icon={"upload"} onClick={this.openDialog}>Datei wählen</Button>
+                            :
+                            <Button primary icon={"upload"} onClick={this.openDialog}>Neu wählen</Button>
+                        }
                     </Dropzone>
 
                 </Wrapper>
-                :
-                    <Fragment>
-                        <Preview src={this.state.preview}/>
-                        <Button onClick={this.reset}>Neu wählen</Button>
-                    </Fragment>
-                }
-
             </Fragment>
 
         );
@@ -159,7 +157,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        toggleCanvas: state => {
+            dispatch({
+                type: "WIDGET_VISIBILITY_TOGGLED",
+                state,
+                id: "Canvas"
+            })
+        }
     }
 };
 

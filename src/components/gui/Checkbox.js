@@ -3,7 +3,7 @@ import React, {Component, Fragment} from "react";
 import {useTranslation} from "react-i18next";
 
 const Label = styled.label`
-  font-size: 0.9em;
+  //font-size: 0.9em;
   //display: flex;
   margin-bottom: 0.5em;
   padding-left: 1.4em;
@@ -52,16 +52,16 @@ const Input = styled.input`
   opacity: 0;
   width: 0;
   margin: 0;
-  
+
   &:checked+label {
     font-weight: 700;
     color: ${props => props.theme.accent_1};
   }  
-  
+
   &:checked + label:after {
     content: "✔";
   }  
-  
+
   &:focus + label {
     box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
   }

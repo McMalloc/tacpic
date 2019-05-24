@@ -14,6 +14,11 @@ const editor = (state = {}, action) => {
             lastMode = state.mode;
             return {...state, mode: action.transform};
 
+        case 'CLAMP_START':
+            return {...state, clamping: true};
+        case 'CLAMP_END':
+            return {...state, clamping: false};
+
         case 'OBJECT_ADDED':
             oldState = cloneDeep(state);
             oldState.openedFile.pages[state.currentPage].objects.push(action.object);
@@ -61,6 +66,7 @@ const editor = (state = {}, action) => {
             return {...state, mode: lastMode};
 
         case 'OBJECT_PROP_CHANGED':
+            console.log(action);
             oldState = cloneDeep(state);
             filter(oldState.openedFile.pages[oldState.currentPage].objects, {uuid: action.uuid}).forEach(object => {
                 object[action.prop] = action.value;
@@ -75,7 +81,23 @@ const editor = (state = {}, action) => {
             return {...state, verticalGridSpacing: action.spacing};
         case 'HORIZONTAL_SPACING_SET':
             return {...state, horizontalGridSpacing: action.spacing};
-
+        case 'VERTICAL_SPACING_TOGGLE':
+            console.log(action.payload);
+            return {...state, showVerticalGrid: action.payload};
+        case 'HORIZONTAL_SPACING_TOGGLE':
+            return {...state, showHorizontalGrid: action.state};
+        case 'DEFAULT_TITLE_TOGGLE':
+            return {...state, defaultTitle: action.state};
+        case 'CHANGE_TITLE':
+            return {...state, openedFile: {
+                    ...state.openedFile,
+                    title: action.title
+                }};
+        case 'CHANGE_CATALOGUE_TITLE':
+            return {...state, openedFile: {
+                    ...state.openedFile,
+                    catalogueTitle: action.title
+                }};
         case 'SWITCH_CURSOR_MODE':
             return {...state, mode: action.mode};
         case 'SWITCH_TEXTURE_MODE':
@@ -102,27 +124,21 @@ const editor = (state = {}, action) => {
         case 'LAYOUT_CHANGED': // TODO: wird das noch benutzt?
             // löst einen Effekt aus
             return {
-                ...state,
-                // TODO: muss selbe Anzahl Widgets zurückgeben, sonst verschwinden Widget-Optionen
-                // widgetConfig: action.layout.map(widget => {
-                //     let layoutedWidget = find(state.widgetConfig, {i: widget.i});
-                //     return {...layoutedWidget,
-                //         x: widget.x,
-                //         y: widget.y,
-                //         w: widget.w,
-                //         h: widget.h,
-                //     }
-                // })
+                ...state
             };
         case 'WIDGET_VISIBILITY_TOGGLED':
             return {
                 ...state,
                 widgetConfig: state.widgetConfig.map(widget => {
-                    if (widget.i !== action.id) { return widget; } else {
-                        widget.visible = action.value;
+                    console.log(widget);
+                    if (widget.i !== action.id) {
+                        return widget;
+                    } else {
+                        widget.visible = action.state;
                         return widget;
                     }
                 })
+
             };
         case 'KEY_TEXTURE_ADDED':
             oldState = cloneDeep(state);

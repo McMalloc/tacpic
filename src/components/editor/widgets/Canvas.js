@@ -19,10 +19,13 @@ const Wrapper = styled.div`
   box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 `;
 
+const Ruler = styled.div``;
+
 class Canvas extends Component {
     render() {
         return (
             <Wrapper>
+                <Ruler />
                 <InteractiveSVG />
             </Wrapper>
         )

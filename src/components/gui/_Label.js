@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {Icon} from "./_Icon";
 
 const Main = styled.label`
-  font-size: 0.9em;
+  //font-size: 0.9em;
   display: ${props => props.inline ? "inline" : "block"};
   color: ${props => props.disabled ? props.theme.middark : "inherit"};
   margin-bottom: ${props => props.theme.spacing[3]};
@@ -29,7 +29,7 @@ const Sub = styled.span`
 const Label = props => {
     const { t } = useTranslation();
     return (
-        <Main {...props}>{t(props.label)}
+        <Main data-tip={t(props.tip)} {...props}>{t(props.label)}
             {props.sublabel &&
             <><br/><Sub>{t(props.sublabel)}</Sub></>
             }

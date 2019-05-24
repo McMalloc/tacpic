@@ -6,6 +6,7 @@ const intro = [
         y: 0,
         i: 'Intro',
         moved: false,
+        visible: true,
         'static': false
     }
 ];
@@ -18,6 +19,7 @@ const original = [
         y: 0,
         i: 'Canvas',
         moved: false,
+        visible: false,
         'static': false
     },
     {
@@ -27,6 +29,7 @@ const original = [
         y: 0,
         i: 'Importer',
         moved: false,
+        visible: true,
         'static': false
     }
 ];
@@ -39,6 +42,7 @@ const categorise = [
         y: 0,
         i: 'Category',
         moved: false,
+        visible: true,
         'static': false
     }
 ];
@@ -51,6 +55,7 @@ const layout = [
         y: 0,
         i: 'Pages',
         moved: false,
+        visible:false,
         'static': false
     },
     {
@@ -60,15 +65,17 @@ const layout = [
         y: 0,
         i: 'Canvas',
         moved: false,
+visible:false,
         'static': false
     },
     {
-        w: 4,
+        w: 8,
         h: 21,
-        x: 8,
+        x: 0,
         y: 7,
         i: 'Document',
         moved: false,
+        visible: true,
         'static': false
     }
 ];
@@ -81,6 +88,7 @@ const drawing = [
         y: 0,
         i: 'Canvas',
         moved: false,
+        visible: true,
         'static': false
     },
     {
@@ -90,6 +98,7 @@ const drawing = [
         y: 16,
         i: 'Context',
         moved: false,
+        visible: true,
         'static': false
     },
     {
@@ -99,6 +108,7 @@ const drawing = [
         y: 23,
         i: 'Toolbox',
         moved: false,
+        visible: true,
         'static': false
     },
     {
@@ -108,6 +118,7 @@ const drawing = [
         y: 0,
         i: 'Pages',
         moved: false,
+        visible: true,
         'static': false
     },
     {
@@ -117,6 +128,7 @@ const drawing = [
         y: 5,
         i: 'Objects',
         moved: false,
+        visible: true,
         'static': false
     }
 ];
@@ -130,6 +142,7 @@ const key = [
         y: 0,
         i: 'Canvas',
         moved: false,
+        visible: true,
         'static': false
     },
     {
@@ -139,6 +152,7 @@ const key = [
         y: 16,
         i: 'Context',
         moved: false,
+        visible: true,
         'static': false
     },
     {
@@ -148,6 +162,7 @@ const key = [
         y: 23,
         i: 'Toolbox',
         moved: false,
+        visible: true,
         'static': false
     },
     {
@@ -157,6 +172,7 @@ const key = [
         y: 0,
         i: 'Pages',
         moved: false,
+        visible: true,
         'static': false
     },
     {
@@ -166,6 +182,7 @@ const key = [
         y: 5,
         i: 'Key',
         moved: false,
+        visible: true,
         'static': false
     }
 ];
@@ -178,6 +195,7 @@ const verbalizing = [
         y: 0,
         i: 'Canvas',
         moved: false,
+        visible: true,
         'static': false
     },
     {
@@ -187,6 +205,7 @@ const verbalizing = [
         y: 0,
         i: 'Verbalizer',
         moved: false,
+        visible: true,
         'static': false
     }
 ];
@@ -199,6 +218,7 @@ const proofing = [
         y: 0,
         i: 'Canvas',
         moved: false,
+        visible: true,
         'static': false
     },
     {
@@ -208,6 +228,7 @@ const proofing = [
         y: 0,
         i: 'Proofing',
         moved: false,
+        visible: true,
         'static': false
     },
     {
@@ -217,6 +238,7 @@ const proofing = [
         y: 9,
         i: 'Simulator',
         moved: false,
+        visible: true,
         'static': false
     },
     {
@@ -226,6 +248,7 @@ const proofing = [
         y: 18,
         i: 'Comments',
         moved: false,
+        visible: true,
         'static': false
     }
 ];
@@ -238,6 +261,7 @@ const finishing = [
         y: 0,
         i: 'Canvas',
         moved: false,
+        visible: true,
         'static': false
     },
     {
@@ -247,6 +271,7 @@ const finishing = [
         y: 0,
         i: 'Metadata',
         moved: false,
+        visible: true,
         'static': false
     },
     {
@@ -256,6 +281,7 @@ const finishing = [
         y: 18,
         i: 'Order',
         moved: false,
+        visible: true,
         'static': false
     }
 ];

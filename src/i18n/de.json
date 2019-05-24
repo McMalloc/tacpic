@@ -7,6 +7,9 @@
   "tacpic": {
     "welcome": "Willkommen bei Tacpic!"
   },
+  "help": {
+    "select_braille-system": "<strong>The aria-describedby attribute</strong><br /> is used to indicate the IDs of the elements that describe the object. It is used to establish a relationship between widgets or groups and text that described them. This is very similar to aria-labelledby: a label describes the essence of an object, while a description provides more information that the user might need."
+  },
   "editor": {
     "Context": "Eigenschaften",
     "Intro": "Willkommen!",
@@ -16,8 +19,8 @@
     "Document": "Eigenschaften des Dokuments",
     "Importer": "Vorlage wählen",
     "Simulator": "Fühlen simulieren",
-    "Proofing": "Überprüfen",
-    "Comments": "Kommentare",
+    "Proofing": "Mögliche Fehler",
+    "Comments": "Kommentieren",
     "Metadata": "Eckdaten für den Katalog",
     "Toolbox": "Werkzeuge",
     "Verbalizer": "Grafik beschreiben",
@@ -58,13 +61,13 @@
     "label_page-binding": "Schutzraum für Bindung",
 
     "intro": "Einführung",
-    "category": "Kategorie",
-    "original": "Vorlage",
-    "layout": "Dokument",
+    "category": "Einordnen",
+    "original": "Vorlage wählen",
+    "layout": "Einrichten",
     "draw": "Zeichnen",
     "legend": "Legende",
     "verbalise": "Beschreiben",
-    "proofing": "Überprüfen",
+    "proofing": "Prüfen lassen",
     "finish": "Abschließen",
 
     "preview_texture-striped": "Schmale Streifen"

@@ -4,7 +4,7 @@ import {times, uniq, without, indexOf} from 'lodash';
 import {Icon} from "./_Icon";
 
 const Wrapper = styled.div`
-  font-size: 0.9em;
+  //font-size: 0.9em;
   
   &>ul { // top-level node
     margin: 0;
@@ -81,7 +81,7 @@ class Treeview extends Component {
             return (
                 <TreeItem depth={depth} key={index}>
 
-                    <TreeLabel selected={this.props.selected === node.value} tabIndex={0} onClick={() => this.props.onSelect(node.value)}>
+                    <TreeLabel selected={this.props.selected === node.value} tabIndex={0} onClick={() => this.props.onSelect && this.props.onSelect(node.value)}>
                         {node.children && node.children.length > 0 &&
                         <TreeIcon onClick={() => this.toggle(node.value)} expanded={expanded}><Icon icon={expanded ? "caret-down" : "caret-right"} /></TreeIcon>
                         }

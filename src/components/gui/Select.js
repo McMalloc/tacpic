@@ -1,9 +1,11 @@
 import styled from 'styled-components';
-import React, {Component} from "react";
+import React from "react";
 import AtlSelect from 'react-select'
-import {withTranslation} from "react-i18next";
+import AtlCrSelect from 'react-select/lib/Creatable'
 import Label from "./_Label";
+import {useTranslation} from 'react-i18next';
 import {standard} from "../../styles/themes";
+import {find} from "lodash";
 
 const customStyles = {
     control: (provided, state) => ({
@@ -27,16 +29,18 @@ const customStyles = {
     })
 };
 
-class Select extends Component {
-    render() {
-        return (
-            <>
-                <Label label={this.props.label} sublabel={this.props.sublabel}>
+const Select = props => {
+    const { t } = useTranslation();
+    const Component = props.creatable ? AtlCrSelect : AtlSelect;
+    let dflt = props.default ? find(props.options, {value: props.default}) : null;
+    return (
+            <div data-tip={t(props.tip)}>
+                <Label label={props.label} sublabel={props.sublabel}>
                     {/*TODO: hack beseitigen*/}
-                    {this.props.label &&
+                    {props.label &&
                         <div style={{height: 2}} />
                     }
-                    <AtlSelect
+                    <Component
                         styles={customStyles}
                         theme={(theme) => ({
                                 ...theme,
@@ -48,14 +52,14 @@ class Select extends Component {
                                 }
 
                         })}
-                        placeholder={this.props.t(this.props.placeholder)}
+                        isMulti={props.isMulti}
+                        placeholder={t(props.placeholder)}
+                        defaultValue={dflt}
                         menuPortalTarget={document.body}
-                        options={this.props.options}/></Label>
-            </>
+                        options={props.options}/></Label>
+            </div>
+    )
+    
+};
 
-
-        )
-    }
-}
-
-export default withTranslation()(Select)
+export default Select

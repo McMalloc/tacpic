@@ -2,6 +2,8 @@ import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import styled from 'styled-components';
 import {Qid} from "../../gui/Qid";
+import {Lower, Upper} from "../../gui/WidgetContainer";
+import {Button} from "../../gui/Button";
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,9 +20,18 @@ class Comments extends Component {
 
     render() {
         return (
-            <React.Fragment>
-               Comments
-            </React.Fragment>
+            <>
+                <Upper>
+                    <p className={"disabled"}>
+                        Noch keine Kommentare.
+                    </p>
+                </Upper>
+                <Lower>
+                    <Button disabled icon={"trash-alt"} onClick={() => {}}>Entfernen</Button> &ensp;
+                    <Button primary icon={"plus"} onClick={() => this.props.addPage()}>Kommentar verfassen</Button>
+                </Lower>
+            </>
+
         );
     }
 }

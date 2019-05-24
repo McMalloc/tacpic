@@ -1,13 +1,17 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
+import {Treeview} from "../../gui/Treeview";
+import {Upper} from "../../gui/WidgetContainer";
 
 class Navigator extends Component {
 
     render() {
         return (
-            <React.Fragment>
-               Überprüfen
-            </React.Fragment>
+            <Upper>
+                <p className={"disabled"}>
+                    Keine Fehler im Dokument gefunden.
+                </p>
+            </Upper>
         );
     }
 }

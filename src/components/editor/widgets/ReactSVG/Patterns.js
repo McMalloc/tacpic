@@ -2,8 +2,9 @@ import React from "react";
 import transform from "./Transform";
 
 const filledRect = (colour) => {
+    console.log(colour);
     if (colour === undefined) return null;
-    if (colour === null) colour = "#ffffff";
+    if (colour === null) colour = "transparent";
     return <rect x="0" y="0" width="20" height="20" fill={colour}/>
 };
 

@@ -39,7 +39,7 @@ class Objects extends Component {
                     }/>
                     }
                 </Upper>
-                {/*Für Test entfernt*/}
+                {/* todo Für Test entfernt*/}
                 {/*<Lower>*/}
                     {/*<Button icon={"object-group"}>Neue Gruppe</Button>*/}
 

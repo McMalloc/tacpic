@@ -10,6 +10,7 @@ import {createFillModeAction, createTextureModeAction} from "../../../actions";
 import TexturePalette from "../../gui/TexturePalette";
 import {Row} from "../../gui/Grid";
 import {Upper} from "../../gui/WidgetContainer";
+import ContextOptions from "./ReactSVG/ContextOptions";
 
 class Toolbox extends Component {
     render() {
@@ -41,22 +42,20 @@ class Toolbox extends Component {
 
                 {/*<hr />*/}
 
-                <Row>
-                    <div className={"col-sm-6"}>
-                        <legend>Farbe</legend>
-                    <Palette selected={this.props.fill} onChange={this.props.switchFillMode} colours={
-                        [null, '#000000', '#1f78b4', '#b2df8a', '#e31a1c', '#ff7f00', '#cab2d6', '#b15928']
-                    } extendedColours={
-                        ['#a6cee3', '#33a02c', '#fb9a99', '#fdbf6f', '#6a3d9a', '#ffff99']
-                    }/></div>
+                {/*<Row>*/}
+                    {/*<div className={"col-sm-6"}>*/}
+                        {/*<legend>Farbe</legend>*/}
+                    {/*<Palette selected={this.props.fill} onChange={this.props.switchFillMode} colours={*/}
+                        {/*[null, '#000000', '#1f78b4', '#b2df8a', '#e31a1c', '#ff7f00', '#cab2d6', '#b15928']*/}
+                    {/*} extendedColours={*/}
+                        {/*['#a6cee3', '#33a02c', '#fb9a99', '#fdbf6f', '#6a3d9a', '#ffff99']*/}
+                    {/*}/></div>*/}
 
-                    <div className={"col-sm-6"}>
-                        <legend>Relief</legend>
-                    <TexturePalette textures={[null, "striped", "bigdots", "dashed"]} selected={this.props.texture}
-                                    onChange={this.props.switchTextureMode}/></div>
-                </Row>
-
-
+                    {/*<div className={"col-sm-6"}>*/}
+                        {/*<legend>Relief</legend>*/}
+                    {/*<TexturePalette textures={[null, "striped", "bigdots", "dashed"]} selected={this.props.texture}*/}
+                                    {/*onChange={this.props.switchTextureMode}/></div>*/}
+                {/*</Row>*/}
             </Upper>
         )
     }

@@ -147,17 +147,11 @@ class WidgetContainer extends Component {
                 detachedBottom: false
             })
         }
-        console.log("container.scrollTop " + container.scrollTop);
-        console.log("container.offsetHeight " + container.offsetHeight);
-        console.log("offsetHeight + scrollTop " + (container.offsetHeight + container.scrollTop));
-        console.log("container.scrollHeight " + container.scrollHeight);
-        console.log(this.state.detachedTop, this.state.detachedBottom);
     };
 
 
     render() {
         const Component = this.props.component;
-        // const Menu = this.props.menu || null;
         return (
             <Wrapper id={'widget-container-' + this.props.title}>
                 <TitleBar showShadow={this.state.detachedTop} className="drag-handle">

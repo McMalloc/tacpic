@@ -17,17 +17,18 @@ class Rect extends Component {
                 <rect
                     id={this.props.uuid}
                     transform={transform(this.props.x, this.props.y, this.props.angle)}
-                    style={{fill: template !== null ? 'url(#pattern-' + template + '-' + this.props.uuid + '' : this.props.fill}}
+                    style={{fill: template !== null ? 'url(#pattern-' + template + '-' + this.props.uuid + '' : this.props.fill || "transparent"}}
                     strokeWidth={2}
                     stroke={'rgba(0,50,100,0.2)'}
                     width={this.props.width}
                     height={this.props.height}
-                    onMouseDown={ event => {
+                    onMouseUp={ event => {
                         // event.stopPropagation();
                     }}
-                    onMouseUp={ event => {
-                        event.stopPropagation();
-                        this.props.select(this.props.uuid)
+                    onMouseDown={ event => {
+                        // console.log("rect mouse down");
+                        // event.stopPropagation();
+                        // selected ? this.props.transformStart('translate') : this.props.select(this.props.uuid);
                     }}
                 />
                 {template !== null && patternTemplates[template](this.props.pattern, this.props.uuid, this.props.fill)}
@@ -49,6 +50,12 @@ const mapDispatchToProps = dispatch => {
                 type: 'OBJECT_SELECTED',
                 uuid
             });
+        },
+        transformStart: transform => {
+            dispatch({
+                type: 'TRANSFORM_START',
+                transform
+            })
         }
     }
 };

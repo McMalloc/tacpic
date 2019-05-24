@@ -18,7 +18,7 @@ export const standard = {
     accent_2_light: "#bbf1d1",
     accent_3: "#b9d6f2",
     background: "#fff",
-    middle_shadow: "1px 1px 2px rgba(0,0,0,0.2)",
+    middle_shadow: "0 1px 2px rgba(0,0,0,0.2)",
     distant_shadow: "2px 2px 5px rgba(0,0,0,0.2)",
     divider_line: "1px solid #e9f5f7", // accent_1
     // middle_shadow: "0 3px 8px rgba(0,0,0,0.2)",

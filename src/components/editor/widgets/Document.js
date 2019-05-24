@@ -5,42 +5,29 @@ import {Radio} from "../../gui/Radio";
 import Select from "../../gui/Select";
 import {Row} from "../../gui/Grid";
 import {Checkbox} from "../../gui/Checkbox";
-import {Numberinput} from "../../gui/Input";
+import {Numberinput, Textinput} from "../../gui/Input";
 import {Upper} from "../../gui/WidgetContainer";
+import Tooltip from "../../gui/Tooltip";
+import {Alert} from "../../gui/Alert";
 
 class Document extends Component {
-    state = {
-        verticalGridDisabled: false,
-        horizontalGridDisabled: false
-    };
-
-    toggleVerticalGrid = (name, checked) => {
-        this.setState({
-            verticalGridDisabled: !checked
-        })
-    };
-
-    toggleHorizontalGrid = (name, checked) => {
-        this.setState({
-            horizontalGridDisabled: !checked
-        })
-    };
-
     render() {
         return (
             <Upper>
-
+                <Tooltip/>
                 <Row>
-                    <div className={"col-sm-6"}>
-
-                        <Select options={
-                            [
-
-                            ]
-                        }/>
+                    <div className={"col-sm-8"}>
+                        <Textinput
+                            onChange={event => {
+                                this.props.changeTitle(event.currentTarget.value)
+                            }}
+                            value={this.props.title}
+                            label={"Titel"}/>
                     </div>
-                    <div className={"col-sm-6"}>
-                        <Button icon={"star"}>Neue Vorgabe</Button>
+                    <div className={"col-sm-4"}>
+                        <Select label={"Vorlagen"} creatable options={
+                            []
+                        }/>
                     </div>
                 </Row>
 
@@ -48,7 +35,7 @@ class Document extends Component {
                     <legend>Format</legend>
                     <Row>
                         <div className={"col-sm-6"}>
-                            <Select label={"editor:label_page-format"} options={
+                            <Select label={"editor:label_page-format"} default={"a4"} options={
                                 [
                                     {label: "A4", value: "a4"},
                                     {label: "A3", value: "a3"},
@@ -56,23 +43,44 @@ class Document extends Component {
                                 ]}
                             />
 
-                            <Select label={"editor:select_braille-system"} options={
+                            <Select tip={"help:select_braille-system"} default={"de_k"}
+                                    label={"editor:select_braille-system"} options={
                                 [
-                                    {label: "Braille DE Kurzschrift", value: "A"},
-                                    {label: "Braille DE Langschrift", value: "A"},
-                                    {label: "Braille DE Vollschrift", value: "A"},
-                                    {label: "Computerbraille 8-Punkt DE Kurzschrift", value: "A"}
+                                    {label: "Braille DE Kurzschrift", value: "de_k"},
+                                    {label: "Braille DE Langschrift", value: "de_l"},
+                                    {label: "Braille DE Vollschrift", value: "de_v"},
+                                    {label: "Computerbraille 8-Punkt DE Kurzschrift", value: "cb"}
                                 ]
                             }/>
+
 
                         </div>
                         <div className={"col-sm-6"}>
                             {/*<Radio name={"orientation"} options={[*/}
-                                {/*{label: "editor:portrait", value: "portrait"},*/}
-                                {/*{label: "editor:landscape", value: "landscape"}]}/>*/}
-                            <Radio name={"orientation"} options={[
+                            {/*{label: "editor:portrait", value: "portrait"},*/}
+                            {/*{label: "editor:landscape", value: "landscape"}]}/>*/}
+                            <Radio name={"orientation"} default={"landscape"} options={[
                                 {label: "Hochformat", value: "portrait"},
                                 {label: "Querformat", value: "landscape"}]}/>
+                        </div>
+                    </Row>
+                    <Row>
+                        <div className={"col-sm-6"}>
+                            <Select tip={"help:select_medium"} label={"editor:select_medium"} options={
+                                [
+                                    {label: "Schwellpapier", value: "swell"},
+                                    {label: "3D-Druck", value: "3d", isDisabled: true},
+                                    {label: "Thermoform", value: "thermo", isDisabled: true},
+                                    {label: "Schnittcollage", value: "cut", isDisabled: true}
+                                ]
+                            } default={"swell"}/>
+                        </div>
+                        <div className={"col-sm-6"}>
+                            {/*todo: erst zeigen, nachdem etwas anderes als Schwellpapier ausgewählt worden ist*/}
+                            <Alert info>
+                                Die Wahl des Mediums hat einen Einfluss auf die angebotenen Bearbeitungsfunktionen des
+                                Editors. <a href={"#"}>Mehr erfahren</a>
+                            </Alert>
                         </div>
                     </Row>
                 </fieldset>
@@ -83,34 +91,48 @@ class Document extends Component {
                         <div className={"col-sm-6"}>
                             <Checkbox
                                 name={"cb_vertical-grid"}
-                                default={!this.state.verticalGridDisabled}
-                                onChange={this.toggleVerticalGrid}
-                                label={"Vertikale Hilfslinien zeigen"} />
+                                checked={this.props.showVerticalGrid}
+                                onChange={event => {
+                                    this.props.toggleVerticalGrid(!this.props.showVerticalGrid)
+                                }}
+                                label={"Vertikale Hilfslinien zeigen"}/>
 
                         </div>
 
                         <div className={"col-sm-6"}>
                             <Numberinput
-                                disabled={this.state.verticalGridDisabled}
+                                disabled={!this.props.showVerticalGrid}
+                                onChange={event => {
+                                    this.props.setVerticalGrid(event.currentTarget.value)
+                                }}
+                                value={this.props.verticalGridSpacing}
                                 label={"Abstand"}
                                 sublabel={"vertikaler Hilfslinien"}
-                                unit={"mm"} />
+                                unit={"mm"}/>
                         </div>
                     </Row>
                     <Row>
                         <div className={"col-sm-6"}>
                             <Checkbox
                                 name={"cb_horizontal-grid"}
-                                default={!this.state.horizontalGridDisabled}
-                                onChange={this.toggleHorizontalGrid}
-                                label={"Horizontale Hilfslinien zeigen"} />
+                                checked={this.props.showHorizontalGrid}
+                                onChange={event => {
+                                    this.props.toggleHorizontalGrid(!this.props.showHorizontalGrid)
+                                }}
+                                label={"Horizontale Hilfslinien zeigen"}/>
+
                         </div>
+
                         <div className={"col-sm-6"}>
                             <Numberinput
-                                disabled={this.state.horizontalGridDisabled}
+                                disabled={!this.props.showHorizontalGrid}
+                                onChange={event => {
+                                    this.props.setHorizontalGrid(event.currentTarget.value)
+                                }}
+                                value={this.props.horizontalGridSpacing}
                                 label={"Abstand"}
                                 sublabel={"horizontaler Hilfslinien"}
-                                unit={"mm"} />
+                                unit={"mm"}/>
                         </div>
                     </Row>
                 </fieldset>
@@ -119,7 +141,7 @@ class Document extends Component {
                     <legend>Startelemente</legend>
                     <Row>
                         <div className={"col-sm-6"}>
-                            <Select label={"editor:label_page-binding"} options={
+                            <Select label={"editor:label_page-binding"} default={"none"} options={
                                 [
                                     {label: "Keine Bindung", value: "none"},
                                     {label: "Ringbindung oben", value: "ro"},
@@ -130,19 +152,21 @@ class Document extends Component {
                         <div className={"col-sm-6"}>
                             <Checkbox
                                 name={"cb_title"}
-                                default={true}
-                                onChange={this.toggleHorizontalGrid}
-                                label={"Titel"} />
+                                checked={this.props.defaultTitle}
+                                onChange={() => {
+                                    this.props.toggleDefaultTitle(!this.props.defaultTitle)
+                                }}
+                                label={"Titel"}/>
                             <Checkbox
                                 name={"cb_orientation"}
                                 default={true}
                                 onChange={this.toggleHorizontalGrid}
-                                label={"Markierung zur Orientierung"} />
+                                label={"Markierung zur Orientierung"}/>
                             <Checkbox
                                 name={"cb_pagenr"}
                                 default={true}
                                 onChange={this.toggleHorizontalGrid}
-                                label={"Seitenzahlen"} />
+                                label={"Seitenzahlen"}/>
                         </div>
                     </Row>
                 </fieldset>
@@ -154,11 +178,15 @@ class Document extends Component {
 const mapStateToProps = state => {
     return {
         verticalGridSpacing: state.editor.verticalGridSpacing,
-        horizontalGridSpacing: state.editor.horizontalGridSpacing
+        horizontalGridSpacing: state.editor.horizontalGridSpacing,
+        showVerticalGrid: state.editor.showVerticalGrid,
+        showHorizontalGrid: state.editor.showHorizontalGrid,
+        title: state.editor.openedFile.title,
+        defaultTitle: state.editor.defaultTitle
     }
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         setVerticalGrid: spacing => {
             dispatch({
@@ -170,6 +198,30 @@ const mapDispatchToProps = dispatch => {
             dispatch({
                 type: "HORIZONTAL_SPACING_SET",
                 spacing
+            })
+        },
+        toggleVerticalGrid: state => {
+            dispatch({
+                type: "VERTICAL_SPACING_TOGGLE",
+                payload: state
+            })
+        },
+        toggleHorizontalGrid: state => {
+            dispatch({
+                type: "HORIZONTAL_SPACING_TOGGLE",
+                state
+            })
+        },
+        toggleDefaultTitle: state => {
+            dispatch({
+                type: "DEFAULT_TITLE_TOGGLE",
+                state
+            })
+        },
+        changeTitle: title => {
+            dispatch({
+                type: "CHANGE_TITLE",
+                title
             })
         }
     }

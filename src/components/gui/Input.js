@@ -4,7 +4,7 @@ import React, {Component} from "react";
 import Label from "./_Label";
 
 const Unit = styled.span`
-  font-size: 0.9em;
+  //font-size: 0.9em;
   align-self: center;
   padding-left: ${props => props.theme.spacing[1]};
 `;
@@ -51,7 +51,7 @@ const Textarea = styled.textarea`
 
 const Textinput = props => {
     return (
-        <Label sublabel={props.sublabel} label={props.label} disabled={props.disabled} inline={props.inline}>
+        <Label tip={props.tip} sublabel={props.sublabel} label={props.label} disabled={props.disabled} inline={props.inline}>
             <Input
                 disabled={props.disabled}
                 inline={props.inline}
@@ -65,29 +65,27 @@ const Textinput = props => {
     )
 };
 
-class Numberinput extends Component {
-    handleChange = (event) => {
-        this.setState({value: event.target.value});
-    };
+const Numberinput = props => {
 
-    state = {value: ''};
+    return (
+        <Label tip={props.tip} inline={props.inline} disabled={props.disabled} label={props.label} sublabel={props.sublabel}>
+            <Numberwrapper inline={props.inline}>
+                <Input disabled={props.disabled}
+                       inline={props.inline}
+                       type={"number"}
+                       name={props.name}
+                       value={props.value}
+                       onChange={props.onChange}/>
+                <Unit>{props.unit}</Unit>
+            </Numberwrapper>
+        </Label>
+    )
 
-    render() {
-        return (
-            <Label {...this.props}>
-                <Numberwrapper inline={this.props.inline}>
-                    <Input disabled={this.props.disabled} inline={this.props.inline} type="number"
-                           name={this.props.name} value={this.state.value} onChange={this.handleChange}/>
-                    <Unit>{this.props.unit}</Unit>
-                </Numberwrapper>
-            </Label>
-        )
-    }
-}
+};
 
 const Multiline = props => {
     return (
-        <Label sublabel={props.sublabel} disabled={props.disabled} label={props.label}>
+        <Label tip={props.tip} sublabel={props.sublabel} disabled={props.disabled} label={props.label}>
                 <Textarea
                     rows={props.rows || 3}
                     disabled={props.disabled}

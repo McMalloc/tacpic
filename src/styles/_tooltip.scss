@@ -1,0 +1,15 @@
+.tooltip {
+  color: #111 !important;
+  font-size: 1em !important;
+  background-color: white !important;
+  opacity: 1 !important;
+  border: 1px solid #ccc !important;
+  text-align: left!important;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+  padding: 0.5em !important;
+  max-width: 400px!important;
+
+  &:after {
+    //border-color: white!important;
+  }
+}

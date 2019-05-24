@@ -10,6 +10,8 @@ import '../../styles/Editor.css';
 import styled from 'styled-components';
 import Ribbon from "../gui/Ribbon";
 import {withTranslation} from "react-i18next";
+import Tooltip from "../gui/Tooltip";
+import {find} from "lodash";
 
 const Wrapper = styled.div`
   display: flex;
@@ -40,11 +42,12 @@ class Editor extends Component {
         if (this.props.initialized) {
             return (
                 <Wrapper>
+                    <Tooltip />
                     <Ribbon activeItem={this.props.currentLayout} menus={[
                         {label: "editor:intro",  icon: "flag-checkered", action: () => {this.props.layoutSet(0)}},
                         {label: "editor:original",  icon: "file-image", action: () => {this.props.layoutSet(1)}},
                         {label: "editor:category",  icon: "tags",       action: () => {this.props.layoutSet(2)}},
-                        {label: "editor:layout",    icon: "columns",    action: () => {this.props.layoutSet(3)}},
+                        {label: "editor:layout",    icon: "sticky-note",    action: () => {this.props.layoutSet(3)}},
                         {label: "editor:draw",      icon: "pen",        action: () => {this.props.layoutSet(4)}},
                         {label: "editor:legend",    icon: "braille",    action: () => {this.props.layoutSet(5)}},
                         {label: "editor:verbalise", icon: "book-open",  action: () => {this.props.layoutSet(6)}},
@@ -67,13 +70,13 @@ class Editor extends Component {
                         }}
                         margin={[widgetPadding, widgetPadding]}
                         // onResizeStop={this.props.canvasResized}
-                        onLayoutChange={this.props.layoutChanged}
+                        onLayoutChange={layout => this.props.layoutChanged(layout, this.props.widgetConfig)}
                         rowHeight={rowHeight}>
 
                         {this.props.widgetConfig
                         // TODO: layoutChanged event-Callback gibt das aktuelle Layout ohne visible property zurück (und werden demnach ohne diese im LS gespeichert);
                             // wenn diese fehlt werden natürlich sämtliche Widgets ausgefiltert
-                            // .filter(widget => { return widget.visible })
+                            .filter(widget => { return widget.visible })
                             .map((widget, index) => {
                                 return (
                                     <div key={widget.i}>
@@ -98,19 +101,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        // widgetVisibilityToggled: (id, value) => {
-        //     dispatch(widgetVisibilityToggled(id, value));
-        // },
-        canvasResized: (widgets, oldState, newState) => {
-            if (newState.i !== 'Canvas') return;
-            // dispatch(canvasResized(
-            //     document.querySelector("#widget-container-Canvas .widget-content").offsetWidth - 6, //width of two borders
-            //     document.querySelector("#widget-container-Canvas .widget-content").offsetHeight - 6) //(rowHeight + widgetPadding)-35)
-            // );
-
-            // 8 ist die spaltenzahl für den schmalen breakpoint. @todo layout und breakpoints nicht mehr hardcoden
-        },
-        layoutChanged: layout => {
+        layoutChanged: (layout, config) => {
+            // react-grid-layout verschluckt die visible property, daher muss sie manuell mitgegeben werden
+            layout.forEach(widget => widget.visible = find(config, {i: widget.i}).visible);
             dispatch(layoutChanged(layout));
         },
         layoutSet: layoutIndex => {

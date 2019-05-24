@@ -7,42 +7,107 @@ import {debounce} from "lodash";
 import Rect from "./Rect";
 import {OBJECT} from "../../constants";
 import Label from "./Label";
-import patternTemplates from "./Patterns";
-
-function uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-}
+import uuidv4 from "../../../../utility/uuid";
+import ContextOptions from "./ContextOptions";
+import {find} from "lodash";
 
 class InteractiveSVG extends Component {
     svgElement = React.createRef();
     state = {
         mouseXDrag: 0,
         mouseYDrag: 0,
+        showContext: false
     };
 
     mouseXDown = null; // in den state packen
     mouseYDown = null;
     dragging = false;
     mouseIsDown = false;
+    lastUuid = null;
 
-    currentX = eventX => {        return eventX - this.svgElement.current.getBoundingClientRect().left;    };
-    currentY = eventY => {        return eventY - this.svgElement.current.getBoundingClientRect().top;    };
+    currentX = eventX => {
+        return eventX - this.svgElement.current.getBoundingClientRect().left;
+    };
+    currentY = eventY => {
+        return eventY - this.svgElement.current.getBoundingClientRect().top;
+    };
 
-    mouseDownHandler = (event) => {
-        console.log("down");
+    mouseDownHandler = event => {
         this.mouseXDown = this.currentX(event.clientX); // todo zum State machen
         this.mouseYDown = this.currentY(event.clientY);
         this.mouseIsDown = true;
+
+        this.setState({showContext: false});
+
+        switch (event.target.id) {
+            case '_SVG': // this.svgElement.current.id
+                this.props.unselect();
+                this.props.clampStart();
+                break;
+            case 'manipulator':
+                // hier kommt der code für die verschiedenen Manipulatorgriffe rein
+                break;
+            default:
+                this.props.select(event.target.id);
+                this.props.transformStart("translate");
+                // ein tatsächliches Objekt wurde geklickt
+                break;
+        }
+
     };
 
-    mouseUpHandler = () => {
-        console.log("up");
+    keyDownHandler = event => {
+        // const selectedObject = find(this.props.openedFile.pages[this.props.currentPage].objects, {uuid: this.props.selectedObjects[0]});
+
+        switch(event.which) {// TODO use constants instead of magic numbers
+            case 38: // up
+                this.props.transformStart("translate");
+                this.props.transform.translate({
+                    x0: 0,
+                    y0: 0,
+                    x1: 0,
+                    y1: -2
+                });
+                this.props.transformEnd();
+                break;
+            case 39: // right
+                this.props.transformStart("translate");
+                this.props.transform.translate({
+                    x0: 0,
+                    y0: 0,
+                    x1: 2,
+                    y1: 0
+                });
+                this.props.transformEnd();
+                break;
+            case 40: // down
+                this.props.transformStart("translate");
+                this.props.transform.translate({
+                    x0: 0,
+                    y0: 0,
+                    x1: 0,
+                    y1: 2
+                });
+                this.props.transformEnd();
+                break;
+            case 37: // left
+                this.props.transformStart("translate");
+                this.props.transform.translate({
+                    x0: 0,
+                    y0: 0,
+                    x1: -2,
+                    y1: 0
+                });
+                this.props.transformEnd();
+                break;
+        }
+    };
+
+    mouseUpHandler = event => {
         this.mouseIsDown = false;
         let uuid = uuidv4();
-        if (this.dragging) {
+        if (this.props.clamping && this.dragging) { // an object will be created TODO or selected
+            this.props.clampEnd();
             switch (this.props.mode) {
                 case OBJECT.RECT:
                     this.props.addObject( // TODO named Prototypes nutzen für proptypes?
@@ -66,24 +131,27 @@ class InteractiveSVG extends Component {
                             height: this.state.mouseYDrag - this.mouseYDown
                         },
                     );
+
+                    this.lastUuid = uuid; // TODO was besseres finden. oder ist etwas besseres notwendig?
+                    this.setState({showContext: true});
                     break;
                 case OBJECT.LABEL:
                     this.props.addObject( // TODO named Prototypes nutzen für proptypes?
                         // Hash, der key ist die UUID, darunter ist ein Objekt (oder ein ein weiteres Hash), dass die Daten enthält. Daraus werden in den Objektkomponenten die Elemente erstellt
                         // Oder: React-Komponenten für Objekte so lassen wie sie sind und immer wieder in dieser Rendermethode neu aufrufen
                         {
-                            type:   OBJECT.LABEL,
-                            uuid:   uuid,
-                            text:   "Beschriftung",
-                            x:      this.mouseXDown,
-                            y:      this.mouseYDown,
-                            angle:  0,
+                            type: OBJECT.LABEL,
+                            uuid: uuid,
+                            text: "Beschriftung",
+                            x: this.mouseXDown,
+                            y: this.mouseYDown,
+                            angle: 0,
                             position: "left-top",
-                            isKey:  false, // false
+                            isKey: false, // false
                             displayDots: true,
                             displayLetters: true,
                             keyVal: 'Bschr', // ''
-                            width:  this.state.mouseXDrag - this.mouseXDown,
+                            width: this.state.mouseXDrag - this.mouseXDown,
                             height: this.state.mouseYDrag - this.mouseYDown
                         },
                     );
@@ -91,21 +159,27 @@ class InteractiveSVG extends Component {
                 default:
                     break;
             }
-        } else {
-            this.props.unselect();
+
+            setTimeout(() => {
+                this.props.select(uuid);
+            }, 0);
         }
+
         if (this.props.transform.hasOwnProperty(this.props.mode)) {
             this.props.transformEnd();
         }
+
         this.dragging = false;
 
-        this.triggerCache();
+        // this.triggerCache();
     };
 
     mouseMoveHandler = (event) => {
+        // erst if (this.mouseIsDown) {}, dann spar ich mir die ganzen Funktionsaufrufe
+
         const currentX = this.currentX(event.clientX);
         const currentY = this.currentY(event.clientY);
-        const moved = Math.abs(this.mouseXDown - currentX) > 5 || Math.abs(this.mouseYDown - currentY) > 5;
+        const moved = Math.abs(this.mouseXDown - currentX) > 3 || Math.abs(this.mouseYDown - currentY) > 3;
         if (this.mouseIsDown && moved) {
             this.dragging = true;
             this.setState({
@@ -142,38 +216,58 @@ class InteractiveSVG extends Component {
         });
 
         return (
-            <svg
-                xmlns={"http://www.w3.org/2000/svg"}
-                width={this.props.width}
-                height={this.props.height}
-                onMouseDown={ event => {this.mouseDownHandler(event)}}
-                onMouseUp={ event => {this.mouseUpHandler(event)}}
-                onMouseMove={ event => {this.mouseMoveHandler(event)}}
-                ref={this.svgElement}
-                style={{backgroundColor: "white"}}>
+            <div style={{position: "relative"}}>
+                <svg
+                    xmlns={"http://www.w3.org/2000/svg"}
+                    width={this.props.width}
+                    id={"_SVG"}
+                    height={this.props.height}
+                    onMouseDown={event => {
+                        this.mouseDownHandler(event)
+                    }}
+                    onKeyDown={event => {
+                        this.keyDownHandler(event)
+                    }}
+                    onMouseUp={event => {
+                        this.mouseUpHandler(event)
+                    }}
+                    onMouseMove={event => {
+                        this.mouseMoveHandler(event)
+                    }}
+                    ref={this.svgElement}
+                    tabIndex={0}
+                    style={{backgroundColor: "white"}}>
 
-                {objects}
+                    {objects}
 
-                {/*<Manipulator> muss hier stehen, um immer über allen anderen Objekten zu sein.*/}
-                <Manipulator
-                    dragging={this.dragging}
-                    mouseXDown={this.mouseXDown}
-                    mouseXDrag={this.state.mouseXDrag}
-                    mouseYDown={this.mouseYDown}
-                    mouseYDrag={this.state.mouseYDrag}
-                />
+                    {/*<Manipulator> muss hier stehen, um immer über allen anderen Objekten zu sein.*/}
+                    <Manipulator
+                        dragging={this.dragging}
+                        mouseXDown={this.mouseXDown}
+                        mouseXDrag={this.state.mouseXDrag}
+                        mouseYDown={this.mouseYDown}
+                        mouseYDrag={this.state.mouseYDrag}
+                    />
 
-                {this.dragging && !this.props.transform.hasOwnProperty(this.props.mode) &&
+
+                    {this.dragging && !this.props.transform.hasOwnProperty(this.props.mode) &&
                     <rect
                         x={this.mouseXDown}
                         y={this.mouseYDown}
-                        fill={'rgba(0,0,255,0.01)'}
+                        fill={'rgba(0,0,255,0.1)'}
                         stroke={'rgba(0,0,255,0.2)'}
                         strokeWidth={'2px'}
                         width={this.state.mouseXDrag - this.mouseXDown}
-                        height={this.state.mouseYDrag - this.mouseYDown} />
+                        height={this.state.mouseYDrag - this.mouseYDown}/>
+                    }
+                </svg>
+                {this.state.showContext &&
+                <ContextOptions
+                    uuid={this.lastUuid}
+                    x={this.state.mouseXDrag}
+                    y={this.state.mouseYDrag} />
                 }
-            </svg>
+            </div>
         )
     }
 }
@@ -210,6 +304,12 @@ const mapDispatchToProps = dispatch => {
                 type: 'TRANSFORM_END'
             })
         },
+        transformStart: transform => {
+            dispatch({
+                type: 'TRANSFORM_START',
+                transform
+            })
+        },
         cacheSVG: (markup, pageNumber) => {
             dispatch({
                 type: 'CACHE_SVG',
@@ -221,6 +321,22 @@ const mapDispatchToProps = dispatch => {
             dispatch({
                 type: 'OBJECT_SELECTED',
                 uuid: null
+            });
+        },
+        select: uuid => {
+            dispatch({
+                type: 'OBJECT_SELECTED',
+                uuid: uuid
+            });
+        },
+        clampStart: () => {
+            dispatch({
+                type: 'CLAMP_START'
+            });
+        },
+        clampEnd: () => {
+            dispatch({
+                type: 'CLAMP_END'
             });
         }
     }

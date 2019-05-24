@@ -102,7 +102,7 @@ class Classifier extends Component {
                     onClick={() => this.back(category.id)}
                     fullWidth
                     icon={"arrow-up"}>
-                    Zurückspringen &middot; Ändern
+                    Ändern
                 </Button></p>
             </div>
             <div className={"col-sm-8"}>

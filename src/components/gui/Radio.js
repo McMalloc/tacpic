@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import React, {Component, Fragment} from "react";
 
 const Label = styled.label`
-  font-size: 0.9em;
+  //font-size: 0.9em;
   position: relative;
   display: flex;
   align-self: center;
