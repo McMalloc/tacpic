@@ -3,6 +3,7 @@ import React, {Component} from "react";
 import {Numberinput, Textinput, Multiline} from "./Input";
 import {Checkbox} from "./Checkbox";
 import {Button} from "./Button";
+import {Lower, Upper} from "./WidgetContainer";
 
 const Wrapper = styled.div`
   // color: ${props => props.theme.accent_1_light};
@@ -44,7 +45,7 @@ class Qid extends Component {
         // console.log("- - - - - - - - - - - ");
 
         return (
-            <Wrapper>
+            <>
                 {/*<p>*/}
                     {/*Die Grafik ist übertitelt mit <Textinput style={{display: "inline"}} inline name={"title"}/>.*/}
                 {/*</p>*/}
@@ -63,11 +64,10 @@ class Qid extends Component {
                     {/*bis <Textinput inline name={"max"}/>.*/}
                 {/*</p>*/}
                 {/*<Checkbox name={"withUnits"} onChange={this.toggle} label={"Keine Einheiten angegeben."}/>*/}
-                <Textinput label={"Aussagekräftiger Titel"} />
-                <Multiline rows={2} label={"Zusammenfassende Beschreibung"} />
-                <Multiline rows={4} label={"Detaillierte Beschreibung"} />
-                <Button primary>Einfügen</Button>
-            </Wrapper>
+                <Textinput value={this.props.title} onChange={this.props.onChange} label={"Aussagekräftiger Titel"} />
+                <Multiline rows={2} sublabel={"Welche Teile sind abgebildet? Wie ist der Lesefluss? Gibt es eine Legende? Gibt es Trends?"} label={"Zusammenfassende Beschreibung"} />
+                <Multiline rows={4} sublabel={"Gibt es Zahlen? Was ist alles beschriftet?"} label={"Detaillierte Beschreibung"} />
+            </>
         )
     }
 }

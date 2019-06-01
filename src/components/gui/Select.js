@@ -32,10 +32,11 @@ const customStyles = {
 const Select = props => {
     const { t } = useTranslation();
     const Component = props.creatable ? AtlCrSelect : AtlSelect;
+    // TODO: funktioniert noch nicht für gruppierte options-Arrays
     let dflt = props.default ? find(props.options, {value: props.default}) : null;
     return (
-            <div data-tip={t(props.tip)}>
-                <Label label={props.label} sublabel={props.sublabel}>
+            <div>
+                <Label data-tip={t(props.tip)} label={props.label} sublabel={props.sublabel}>
                     {/*TODO: hack beseitigen*/}
                     {props.label &&
                         <div style={{height: 2}} />

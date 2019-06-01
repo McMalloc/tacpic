@@ -10,6 +10,7 @@ import {Row} from "../../../gui/Grid";
 import Palette from "../../../gui/Palette";
 import {find, isUndefined, debounce} from 'lodash';
 import TexturePalette from "../../../gui/TexturePalette";
+import Tooltip from "../../../gui/Tooltip";
 
 class ShapeContext extends Component {
     changeMoniker = event => {
@@ -28,20 +29,18 @@ class ShapeContext extends Component {
     changeFill = fill => {
         this.props.changeProp(this.props.uuid, "fill", fill);
     };
-    
+
     render() {
         const fill = <div>
-
+            <Tooltip/>
             <Row>
-                <div className={"col-md-6"}>
-                    <Select placeholder={"Keine Vorgabe gewählt"} options={
+                <div className={"col-md-12"}>
+                    <Select label={"Vorlagen"} tip={"Tippen Sie hier, um eine neue Vorlage zu erstellen."} createable
+                            placeholder={"Keine gewählt"} options={
                         [
                             {label: "Aubergine", value: "A", children: []}
                         ]
                     }/>
-                </div>
-                <div className={"col-md-6"}>
-                    <Button icon={"star"}>Neue Vorgabe</Button>
                 </div>
             </Row>
 
@@ -68,10 +67,10 @@ class ShapeContext extends Component {
                 <Palette selected={this.props.selectedFill}
                          onChange={this.changeFill}
                          colours={
-                            [null, '#000000', '#1f78b4', '#b2df8a', '#e31a1c', '#ff7f00', '#cab2d6', '#b15928']
-                        } extendedColours={
-                            ['#a6cee3', '#33a02c', '#fb9a99', '#fdbf6f', '#6a3d9a', '#ffff99']
-                        }/>
+                             [null, '#000000', '#1f78b4', '#b2df8a', '#e31a1c', '#ff7f00', '#cab2d6', '#b15928']
+                         } extendedColours={
+                    ['#a6cee3', '#33a02c', '#fb9a99', '#fdbf6f', '#6a3d9a', '#ffff99']
+                }/>
             </fieldset>
         </div>;
 

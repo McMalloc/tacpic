@@ -32,6 +32,11 @@ class InteractiveSVG extends Component {
         return eventY - this.svgElement.current.getBoundingClientRect().top;
     };
 
+    onInputHandler = event => {
+        event.target.tagName === "TEXTAREA" && // oh look, it is an editable label!
+            this.props.changeProp(this.props.selectedObjects[0], 'text', event.target.value);
+    };
+
     mouseDownHandler = event => {
         this.mouseXDown = this.currentX(event.clientX); // todo zum State machen
         this.mouseYDown = this.currentY(event.clientY);
@@ -39,7 +44,8 @@ class InteractiveSVG extends Component {
 
         this.setState({showContext: false});
 
-        switch (event.target.id) {
+        let id = event.target.id;
+        switch (id) {
             case '_SVG': // this.svgElement.current.id
                 this.props.unselect();
                 this.props.clampStart();
@@ -48,7 +54,14 @@ class InteractiveSVG extends Component {
                 // hier kommt der code für die verschiedenen Manipulatorgriffe rein
                 break;
             default:
-                this.props.select(event.target.id);
+                if (id.includes("editable")) { // editable pane of label was clicked
+                    this.props.select(id.slice(9));
+                } else if (id.includes("braille")) { // braille of label was clicked
+                    this.props.select(id.slice(8));
+                } else {
+                    this.props.select(id);
+                }
+
                 this.props.transformStart("translate");
                 // ein tatsächliches Objekt wurde geklickt
                 break;
@@ -171,6 +184,7 @@ class InteractiveSVG extends Component {
 
         this.dragging = false;
 
+        // TODO: side effect, should be handled by a saga
         // this.triggerCache();
     };
 
@@ -234,9 +248,12 @@ class InteractiveSVG extends Component {
                     onMouseMove={event => {
                         this.mouseMoveHandler(event)
                     }}
+                    onInput={event => {
+                        this.onInputHandler(event)
+                    }}
                     ref={this.svgElement}
                     tabIndex={0}
-                    style={{backgroundColor: "white"}}>
+                    style={{backgroundColor: "transparent"}}>
 
                     {objects}
 
@@ -337,6 +354,14 @@ const mapDispatchToProps = dispatch => {
         clampEnd: () => {
             dispatch({
                 type: 'CLAMP_END'
+            });
+        },
+        changeProp: (uuid, prop, value) => {
+            dispatch({
+                type: 'OBJECT_PROP_CHANGED',
+                uuid,
+                prop,
+                value
             });
         }
     }

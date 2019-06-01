@@ -58,7 +58,7 @@ const mapStateToProps = state => {
         bbox: (() => {
             if (state.editor.selectedObjects.length === 0 || state.editor.selectedObjects[0] === "FG") return 0;
             let element = document.getElementById(state.editor.selectedObjects[0]);
-            if (element === null) return {x: 0, y: 0, width: 0, height: 0};
+            if (element === null || element === undefined) return {x: 0, y: 0, width: 0, height: 0};
             let svgbbox = element.getBBox();
             // TODO: alle ausgewählten Elemente berücksichtigen und bessere Methode finden als ID-Selektor
             // versuchen, irgendwie den eigentlich DOMNode mit im STate zu speichern, um Zugriff auf Props als auch auf getBBox() zu haben

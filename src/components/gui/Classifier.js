@@ -7,7 +7,6 @@ import {Row} from "./Grid";
 import {find, includes, findIndex} from 'lodash';
 
 import {withTranslation} from "react-i18next";
-import {Icon} from "./_Icon";
 
 
 const Container = styled.div`
@@ -23,14 +22,11 @@ const Query = styled.p`
 `;
 
 class Classifier extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            progress: [] // selected categories
-        };
-    }
+    state = {
+        progress: [] // selected categories
+    };
 
-    back = (catId) => {
+    back = catId => {
         console.log(catId);
         let newProgress = this.state.progress;
         let index = findIndex(newProgress, cat => cat === catId);
@@ -39,9 +35,10 @@ class Classifier extends Component {
         })
     };
 
-    progress = (catId) => {
+    progress = catId => {
         let newProgress = this.state.progress;
         newProgress.push(catId);
+        this.props.onChange(catId, newProgress);
         this.setState({
             progress: newProgress
         })

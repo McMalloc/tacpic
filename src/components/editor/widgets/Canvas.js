@@ -19,14 +19,26 @@ const Wrapper = styled.div`
   box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 `;
 
+const Background = styled.img`
+  position: absolute;
+  top: 0;
+  width: auto;   
+  max-height: 100%;
+  left: 0;
+  opacity: 0.6;
+`;
+
 const Ruler = styled.div``;
 
 class Canvas extends Component {
     render() {
         return (
             <Wrapper>
-                <Ruler />
-                <InteractiveSVG />
+                {/*<Ruler/>*/}
+                {this.props.openedFile.backgroundURL &&
+                    <Background src={"images/beispiele/" + this.props.openedFile.backgroundURL}/>
+                }
+                <InteractiveSVG/>
             </Wrapper>
         )
     }

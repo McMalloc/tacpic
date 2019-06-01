@@ -38,14 +38,20 @@ const Indicator = styled.span`
 `;
 
 class Metadata extends Component {
+    state = {
+        changedOnce: false
+    };
     render() {
         return (
             <Upper>
                 <Tooltip/>
                 <div>
                     <Textinput
-                        value={this.props.catalogueTitle || this.props.title}
-                        onChange={event => {this.props.changeCatalogueTitle(event.currentTarget.value)}}
+                        value={this.state.changedOnce ? this.props.catalogueTitle : (this.props.catalogueTitle || this.props.title)}
+                        onChange={event => {
+                            !this.state.changedOnce && this.setState({changedOnce: true});
+                            this.props.changeCatalogueTitle(event.currentTarget.value)
+                        }}
                         tip={"help:input_catalogue-title"}
                         label={"editor:input_catalogue-title"}
                         sublabel={"editor:input_catalogue-title-sub"}/>

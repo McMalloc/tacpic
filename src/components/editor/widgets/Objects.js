@@ -31,7 +31,7 @@ class Objects extends Component {
                             {
                                 label: "Vordergrund", value: "FG", children: this.props.objects.map((object, i) => {
                                     return {
-                                        label: object.moniker,
+                                        label: object.type === "label" ? `Beschriftung: "${object.text}"` : object.moniker,
                                         value: object.uuid
                                     }
                                 })

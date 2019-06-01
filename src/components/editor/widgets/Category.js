@@ -7,13 +7,38 @@ import styled from 'styled-components';
 import Select from "../../gui/Select";
 import Divider from "../../gui/Divider";
 import {Row} from "../../gui/Grid";
-import {Upper} from "../../gui/WidgetContainer"; //TODO aus Datenbank laden
+import {Upper} from "../../gui/WidgetContainer";
+import {Alert} from "../../gui/Alert"; //TODO aus Datenbank laden
+
+const groupedOptions = [
+    {
+        label: 'Illustrationen',
+        options: [
+            {label: "dreidimensionale", value: 4},
+            {label: "flache", value: 3}
+        ],
+    },
+    {
+        label: 'Diagramme',
+        options: [
+            {label: "Balkendiagramm", value: 1},
+            {label: "Liniendiagramm"}
+        ],
+    },
+];
 
 class Category extends Component {
     constructor(props) {
         super(props);
         this.state = {assistant: false};
     }
+
+    handleCategoryChange = (newCat, path) => {
+        //TODO mockup entfernen
+        if (newCat === 1 || newCat === 3 || newCat === 4 || newCat === 5 || newCat === 6) {
+            setTimeout(() => this.props.setCategory(newCat), 1000);
+        }
+    };
 
     showAssistent = () => this.setState({assistant: true});
     hideAssistant = () => this.setState({assistant: false});
@@ -22,43 +47,34 @@ class Category extends Component {
         return (
             <Upper>
                 {this.state.assistant ?
-                    <Classifier categories={cats}/>
+                    <Classifier onChange={this.handleCategoryChange} categories={cats}/>
                 :
                     <>
-                        <Row modifier={"middle-sm"}>
-                            <div className={"col-sm-4 col-sm-offset-1"}>
-                            <p>
+                        <Row>
+                            <div className={"col-sm-6 col-sm-offset-3"}>
+                            <Alert info>
                                 Dieser Grafikeditor bietet spezifische Hilfestellungen für bestimmte Arten von Grafiken. Hier können Sie die Art der Grafik festlegen und sich bei der Einordnung helfen lassen.
-                            </p>
+                            </Alert>
                             </div>
                         </Row>
                         <br />
                         <br />
                         <br />
-                        <Row modifier={"middle-sm"} fullHeight>
-                            <div style={{textAlign: "left"}} className={"col-sm-4 col-sm-offset-1"}>
+                        <Row>
+                            <div className={"col-sm-6 col-sm-offset-3"}>
                                 <Select placeholder={"editor:placeholder_choose_category"}
+                                        default={this.props.category}
+                                        options={groupedOptions}
                                         label={"editor:label_choose_category"} />
-                            </div>
-                            <div className={"col-sm-6"}>
-                                <Button onClick={this.showAssistent} primary>Hilfe erhalten</Button>
-                            </div>
+                                <Divider label={"gui:or"} /><br />
+                                <div style={{textAlign: "center"}}>
+                                    <Button onClick={this.showAssistent} primary>Hilfe erhalten</Button>
+                                </div>
 
-                            {/*<Divider vertical label={"gui:or"} />*/}
+                            </div>
                         </Row>
                     </>
                 }
-
-
-                {/*<Button onClick={this.openModal} primary>Hilfe erhalten</Button>*/}
-
-                {/*{this.state.showModal &&*/}
-                    {/*<Modal title={"editor:Category"} dismiss={this.closeModal} actions={[*/}
-                        {/*{label: "Ok", template: "primary", align: "right", action: this.closeModal}, {label: "Abbrechen"}*/}
-                    {/*]}>*/}
-                        {/**/}
-                    {/*</Modal>*/}
-                {/*}*/}
             </Upper>
         );
     }
@@ -66,12 +82,18 @@ class Category extends Component {
 
 const mapStateToProps = state => {
     return {
-
+        category: state.editor.openedFile.category
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        setCategory: catID => {
+            dispatch({
+                type: "CHANGE_CATEGORY",
+                catID
+            })
+        }
     }
 };
 

@@ -56,8 +56,12 @@ const Hint = styled.div`
   position: absolute;
   z-index: 1000;
   top: 0;
-  left: 150px;
-  background-color: ${props => props.theme.background};
+  left: 140px;
+  width: 250px;
+  border: 1px solid ${props => props.theme.accent_1};
+  box-shado: ${props => props.theme.distant_shadow};
+  border-radius: 3px;
+  background-color: ${props => props.theme.accent_1_light};
   padding: ${props => props.theme.spacing[2]};
 `;
 
@@ -70,7 +74,8 @@ position: relative;
 
 class Ribbon extends Component {
     state = {
-        collapsed: false
+        collapsed: false,
+        showHints: true, // TODO dirty
     };
 
     collapse = () => {
@@ -87,20 +92,20 @@ class Ribbon extends Component {
             <Wrapper collapsed={this.state.collapsed}>
                 {this.props.menus.map((item, index) => {
                     return (
-                        <ItemWrapper>
+                        <ItemWrapper key={index}>
                             <RibbonItem
                                 data-tip={"help:" + item.label}
-                                key={index}
                                 active={index === this.props.activeItem}
                                 onClick={() => {
+                                    this.props.showHint_layout && this.setState({showHints: false});
                                     item.action();
                                     this.setState({activeItem: index})
                                 }}>
                                 <Icon icon={item.icon}/> <Label
-                                show={!this.state.collapsed}>{this.props.t(item.label)}</Label>
+                                show={!this.state.collapsed}>{index+1}. | {this.props.t(item.label)}</Label>
                             </RibbonItem>
-                            {this.props["showHint_" + item.label.slice(7)] &&
-                                <Hint>hint! {item.label}</Hint>
+                            {this.props["showHint_" + item.label.slice(7)] && this.state.showHints &&
+                                <Hint><Icon icon={"caret-left"}/> {this.props.t(item.label + "_hint")}</Hint>
                             }
                         </ItemWrapper>
                     )

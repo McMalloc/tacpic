@@ -98,6 +98,16 @@ const editor = (state = {}, action) => {
                     ...state.openedFile,
                     catalogueTitle: action.title
                 }};
+        case 'CHANGE_CATEGORY':
+            return {...state, openedFile: {
+                    ...state.openedFile,
+                    category: action.catID
+                }};
+        case 'ADD_BACKGROUND':
+            return {...state, openedFile: {
+                    ...state.openedFile,
+                    backgroundURL: action.filename
+                }};
         case 'SWITCH_CURSOR_MODE':
             return {...state, mode: action.mode};
         case 'SWITCH_TEXTURE_MODE':
@@ -123,6 +133,10 @@ const editor = (state = {}, action) => {
             };
         case 'LAYOUT_CHANGED': // TODO: wird das noch benutzt?
             // löst einen Effekt aus
+            //TODO: muss sich state eigentlich auch hier ändern?
+            // die aktuelle ansicht wird durch react-grid-layout verwaltet. sobald sie
+            // neugeladen wird, wird der state im side effect aus dem localstorage oder dem
+            // default ausgelesen (switch case drüber)
             return {
                 ...state
             };
@@ -130,7 +144,6 @@ const editor = (state = {}, action) => {
             return {
                 ...state,
                 widgetConfig: state.widgetConfig.map(widget => {
-                    console.log(widget);
                     if (widget.i !== action.id) {
                         return widget;
                     } else {

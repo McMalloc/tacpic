@@ -104,6 +104,7 @@ const mapDispatchToProps = dispatch => {
         layoutChanged: (layout, config) => {
             // react-grid-layout verschluckt die visible property, daher muss sie manuell mitgegeben werden
             layout.forEach(widget => widget.visible = find(config, {i: widget.i}).visible);
+            console.log("component: ", layout);
             dispatch(layoutChanged(layout));
         },
         layoutSet: layoutIndex => {

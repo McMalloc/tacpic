@@ -12,14 +12,32 @@ const Braille = styled.div`
   font-size: 24pt;
 `;
 
+const Black = styled.textarea`
+  border: 1px dotted lightgrey; 
+  margin: 0;
+  width: 100%;
+  background-color: transparent;
+`;
+
+const Container = styled.div`
+  &:hover {
+    ${Braille} {
+      display: none;
+    }
+  }
+`;
+
+// TODO onChange for textarea obligatory if value is set (says react)
 class Label extends Component {
     onClickHandler(event) {
-        console.log("click!", event.currentTarget);
-        if (this.props.selected) {
-
-        } else {
-            this.props.select(this.props.uuid)
-        }
+        // not used anymore
+        // console.log(this.props.uuid);
+        // if (this.props.selected) {
+        //
+        // } else {
+        //
+        //     this.props.select(this.props.uuid)
+        // }
     }
 
     handleOnKeyPress(event) {
@@ -31,21 +49,20 @@ class Label extends Component {
         // this.props.selectedObjects.forEach(uuid => {
         //     if (this.props.uuid === uuid) selected = true
         // });
-        console.log(this.props);
         return (
             <g>
                 <rect onClick={(event) => this.onClickHandler(event)}
                       width={this.props.width}
                       fillOpacity={0}
+                      id={this.props.uuid}
                       transform={transform(this.props.x, this.props.y, this.props.angle)}
                       height={this.props.height}/>
                 <foreignObject width={this.props.width}
-                               onClick={(event) => this.onClickHandler(event)}
                                height={this.props.height}
                                transform={transform(this.props.x, this.props.y, this.props.angle)}
-                               id={this.props.uuid}>
+                >
                     {/*Bug in WebKit mach die relative Positionierung nötig*/}
-                    <div style={{position: 'relative'}}>
+                    <Container style={{position: 'relative'}}>
                         {this.props.displayDots &&
                         <Braille xmlns="http://www.w3.org/1999/xhtml"
                                  id={'braille_' + this.props.uuid}>
@@ -54,15 +71,13 @@ class Label extends Component {
                         }
 
                         {this.props.displayLetters &&
-                        <div xmlns="http://www.w3.org/1999/xhtml"
-                             suppressContentEditableWarning
-                             id={'editable_' + this.props.uuid}
-                             contentEditable={true}
-                             style={{border: '1px dotted lightgrey', margin: 0, height: this.props.height}}>
-                            {this.props.isKey ? this.props.keyVal : this.props.text}
-                        </div>
+                        <Black xmlns="http://www.w3.org/1999/xhtml"
+                               style={{height: this.props.height}}
+                               id={'editable_' + this.props.uuid}
+                               value={this.props.isKey ? this.props.keyVal : this.props.text}>
+                        </Black>
                         }
-                    </div>
+                    </Container>
                 </foreignObject>
 
             </g>

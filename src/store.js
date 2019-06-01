@@ -16,7 +16,7 @@ const sagaMiddleware = createSagaMiddleware();
 // };
 
 
-const initialLayout = 8;
+const initialLayout = 4;
 const fromLS = JSON.parse(localStorage.getItem("custom_layout_" + initialLayout));
 const initialEditor = {
     mode: 'rect',
@@ -41,6 +41,7 @@ const initialEditor = {
     openedFile: {
         title: "",
         tags: [],
+        backgroundURL: "",
         catalogueTitle: "",
         catalogueDescription: "",
         description: "",

@@ -60,23 +60,22 @@ const Wrapper = styled.div`
 * */
 
 class Importer extends Component {
-    constructor(props) {
-        super(props);
-        this.fileRef = React.createRef();
-        this.state = { // TODO send to server, do not save in memory
-            preview: null,
-            hoverWithFile: false
-        }
-    }
 
-    previewFile = (file, state) => {
+    fileRef = React.createRef();
+    state = {
+        preview: null,
+        hoverWithFile: false
+    };
+
+    previewFile = file => {
         let reader = new FileReader();
         reader.readAsDataURL(file);
         let _this = this;
-        reader.onloadend = function() {
+        reader.onloadend = event => {
             _this.setState({
                 preview: reader.result
             });
+            this.props.addOriginal(file.name); // TODO send to server, do not save in memory
             _this.props.toggleCanvas(true);
         }
     };
@@ -151,7 +150,7 @@ class Importer extends Component {
 
 const mapStateToProps = state => {
     return {
-
+        file: state.editor.openedFile.backgroundURL
     }
 };
 
@@ -162,6 +161,12 @@ const mapDispatchToProps = dispatch => {
                 type: "WIDGET_VISIBILITY_TOGGLED",
                 state,
                 id: "Canvas"
+            })
+        },
+        addOriginal: filename => {
+            dispatch({
+                type: "ADD_BACKGROUND",
+                filename
             })
         }
     }
