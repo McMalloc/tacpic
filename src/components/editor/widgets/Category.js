@@ -35,7 +35,7 @@ class Category extends Component {
 
     handleCategoryChange = (newCat, path) => {
         //TODO mockup entfernen
-        if (newCat === 1 || newCat === 3 || newCat === 4 || newCat === 5 || newCat === 6) {
+        if (newCat === 1 || newCat === 3 || newCat === 4 || newCat === 5 || newCat === 6 || newCat === 7) {
             setTimeout(() => this.props.setCategory(newCat), 1000);
         }
     };
@@ -53,7 +53,7 @@ class Category extends Component {
                         <Row>
                             <div className={"col-sm-6 col-sm-offset-3"}>
                             <Alert info>
-                                Dieser Grafikeditor bietet spezifische Hilfestellungen für bestimmte Arten von Grafiken. Hier können Sie die Art der Grafik festlegen und sich bei der Einordnung helfen lassen.
+                                Dieser Grafikeditor bietet spezifische Hilfestellungen für bestimmte Kategorien von Grafiken. Hier können Sie die Kategorie festlegen oder sich bei der Einordnung helfen lassen.
                             </Alert>
                             </div>
                         </Row>
@@ -64,6 +64,7 @@ class Category extends Component {
                             <div className={"col-sm-6 col-sm-offset-3"}>
                                 <Select placeholder={"editor:placeholder_choose_category"}
                                         default={this.props.category}
+                                        onChange={event => this.props.setCategory(event.value)}
                                         options={groupedOptions}
                                         label={"editor:label_choose_category"} />
                                 <Divider label={"gui:or"} /><br />

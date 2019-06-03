@@ -9,6 +9,7 @@ const IconContainer = styled.div`
   flex: ${props => props.theme.spacing[3]} 0 0;
   height: 100%;
   margin-top: ${props => props.theme.spacing[2]};
+  margin-right: ${props => props.theme.spacing[1]};
   color: ${props =>
     props.success ? props.theme.success :
         props.info ? props.theme.info :

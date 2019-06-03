@@ -25,7 +25,7 @@ class ErrorBoundary extends React.Component {
                 color: "white",
                 padding: "12px"
             }}>
-                So ein Mist!
+                Herrjemine!
                 <br/>
                 <span className={"fas fa-skull fa-xs fa-pulse"}></span>
             </h1></div>;

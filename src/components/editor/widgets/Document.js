@@ -77,10 +77,10 @@ class Document extends Component {
                         </div>
                         <div className={"col-sm-6"}>
                             {/*todo: erst zeigen, nachdem etwas anderes als Schwellpapier ausgewählt worden ist*/}
-                            <Alert info>
-                                Die Wahl des Mediums hat einen Einfluss auf die angebotenen Bearbeitungsfunktionen des
-                                Editors. <a href={"#"}>Mehr erfahren</a>
-                            </Alert>
+                            {/*<Alert info>*/}
+                            {/*    Die Wahl des Mediums hat einen Einfluss auf die angebotenen Bearbeitungsfunktionen des*/}
+                            {/*    Editors. <a href={"#"}>Mehr erfahren</a>*/}
+                            {/*</Alert>*/}
                         </div>
                     </Row>
                 </fieldset>
@@ -95,8 +95,9 @@ class Document extends Component {
                                 onChange={event => {
                                     this.props.toggleVerticalGrid(!this.props.showVerticalGrid)
                                 }}
-                                label={"Vertikale Hilfslinien zeigen"}/>
+                                label={"Vertikales Gitternetz zeigen"}/>
 
+                                <img style={{width: 80, height: "auto"}} src={"images/vertical_grid.svg"}/>
                         </div>
 
                         <div className={"col-sm-6"}>
@@ -107,7 +108,7 @@ class Document extends Component {
                                 }}
                                 value={this.props.verticalGridSpacing}
                                 label={"Abstand"}
-                                sublabel={"vertikaler Hilfslinien"}
+                                sublabel={"vertikaler Gitternetzlinien"}
                                 unit={"mm"}/>
                         </div>
                     </Row>
@@ -119,8 +120,9 @@ class Document extends Component {
                                 onChange={event => {
                                     this.props.toggleHorizontalGrid(!this.props.showHorizontalGrid)
                                 }}
-                                label={"Horizontale Hilfslinien zeigen"}/>
+                                label={"Horizontales Gitternetz zeigen"}/>
 
+                            <img style={{width: 80, height: "auto"}} src={"images/horizontal_grid.svg"}/>
                         </div>
 
                         <div className={"col-sm-6"}>
@@ -131,7 +133,7 @@ class Document extends Component {
                                 }}
                                 value={this.props.horizontalGridSpacing}
                                 label={"Abstand"}
-                                sublabel={"horizontaler Hilfslinien"}
+                                sublabel={"horizontaler Gitternetzlinien"}
                                 unit={"mm"}/>
                         </div>
                     </Row>

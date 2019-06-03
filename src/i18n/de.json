@@ -8,7 +8,8 @@
     "welcome": "Willkommen bei Tacpic!"
   },
   "help": {
-    "select_braille-system": "<strong>The aria-describedby attribute</strong><br /> is used to indicate the IDs of the elements that describe the object. It is used to establish a relationship between widgets or groups and text that described them. This is very similar to aria-labelledby: a label describes the essence of an object, while a description provides more information that the user might need."
+    "select_braille-system": "Pro Dokument sollte ein einheitliches Punktschriftsystem verwendet werden. Alle Beschriftungen werden in dem hier ausgewählten System angelegt und bestehende Beschriftungen werden umgewandelt.",
+    "select_medium": "Unterschiedliche Medien bieten unterschiedliche Möglichkeiten. Der Editor wird für bestimmte Produktionstechniken Funktionen einschränken, sodass Sie keine Vorlage gestalten, die z.B. mit Schwellpapier gar nicht produzierbar ist."
   },
   "editor": {
     "Context": "Eigenschaften",
@@ -16,6 +17,8 @@
     "Canvas": "Leinwand",
     "Key": "Legende",
     "Category": "Einordnen",
+    "category_hint": "Lassen Sie sich helfen, die Grafik in eine Kategorie einzuordnen. Dieser Editor kann Ihnen dann passgenaue Hilfestellungen geben.",
+
     "Document": "Eigenschaften des Dokuments",
     "Importer": "Vorlage wählen",
     "Simulator": "Fühlen simulieren",
@@ -62,15 +65,32 @@
     "label_page-binding": "Schutzraum für Bindung",
 
     "intro": "Einführung",
+    "intro_tooltip": "Beginnen Sie hier.",
+
     "category": "Einordnen",
+    "category_tooltip": "Erhalten Sie passgenaue Hilfestellungen, indem Sie ihre Grafik in eine Kategorie einordnen.",
+
     "original": "Vorlage wählen",
+    "original_tooltip": "Hier können Sie eine Vorlage hochladen, die bereits auf Ihrem Computer liegt.",
+
     "layout": "Einrichten",
+    "layout_tooltip": "Wie soll die Grafik am Ende aussehen? Stellen Sie hier Format, Medium, Gitternetzlinien und anderes ein.",
     "layout_hint": "Bevor es mit dem Zeichnen losgeht, sollten Sie noch einen Blick auf die Eigenschaften des Dokuments für Format und Medium werfen.",
+
     "draw": "Zeichnen",
+    "draw_tooltip": "Fertigen Sie die eigentliche Grafik mit ihren Formen, Linien und Beschriftungen an.",
+
     "legend": "Legende",
+    "legend_tooltip": "Fügen Sie eine Legende ein, damit Ihre Leser den Überblick behalten.",
+
     "verbalise": "Beschreiben",
+    "verbalise_tooltip": "Eine Bildbeschreibung gehört zu jeder taktilen Grafiken. Lassen Sie sich hier helfen, sie so konkret wie möglich zu formulieren.",
+
     "proofing": "Prüfen lassen",
+    "proofing_tooltip": "Manchmal entstehen unbeabsichtigt Fehler oder es fehlt etwas. Hier werden sie darauf hingewiesen.",
+
     "finish": "Abschließen",
+    "finish_tooltip": "Laden Sie die Grafik in den Katalog hoch oder bestellen Sie Abzüge.",
 
     "preview_texture-striped": "Schmale Streifen"
   },

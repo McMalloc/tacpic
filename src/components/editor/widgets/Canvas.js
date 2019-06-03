@@ -4,6 +4,8 @@ import {canvasUpdated} from "../../../actions/index";
 import styled from 'styled-components';
 import InteractiveSVG from "./ReactSVG/InteractiveSVG";
 import {FlyoutButton} from "../../gui/Button";
+import Popover from "react-popover";
+import Hint from "../../gui/Popover";
 
 // const Widget = styled.div`
 //   position: relative;
@@ -21,24 +23,42 @@ const Wrapper = styled.div`
 
 const Background = styled.img`
   position: absolute;
-  top: 0;
+  top: 12px;
+  bottom: 12px;
+  right: 12px;
   width: auto;   
-  max-height: 100%;
-  left: 0;
+  max-height: 95%;
+  left: 12px;
   opacity: 0.6;
 `;
 
 const Ruler = styled.div``;
 
 class Canvas extends Component {
+    hintTimer = null;
+    state = {showHint: false};
     render() {
+        if (this.props.currentLayout === 4 && this.hintTimer === null) {
+            this.hintTimer = setTimeout(
+                () => this.setState({showHint: true}),
+                2000
+            );
+        }
+
         return (
             <Wrapper>
                 {/*<Ruler/>*/}
                 {this.props.openedFile.backgroundURL &&
                     <Background src={"images/beispiele/" + this.props.openedFile.backgroundURL}/>
                 }
-                <InteractiveSVG/>
+                <Popover
+                    preferPlace={"above"}
+                    tipSize={12}
+                    onOuterAction={() => this.setState({showHint: false})}
+                    isOpen={this.state.showHint}
+                    body={<Hint>Ziehen Sie hier ein Rechteck mit der linken Maustaste auf, um zu beginnen.</Hint>}>
+                    <InteractiveSVG/>
+                </Popover>
             </Wrapper>
         )
     }

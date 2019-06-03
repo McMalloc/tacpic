@@ -2,15 +2,21 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {Treeview} from "../../gui/Treeview";
 import {Upper} from "../../gui/WidgetContainer";
+import {Alert} from "../../gui/Alert";
 
 class Navigator extends Component {
 
     render() {
         return (
             <Upper>
-                <p className={"disabled"}>
-                    Keine Fehler im Dokument gefunden.
-                </p>
+                {this.props.titleValid ?
+                    <p className={"disabled"}>
+                        Keine Fehler im Dokument gefunden.
+                    </p>
+                    :
+                    <Alert warning>
+                        Dem Dokument fehlt noch ein aussagekräftiger Titel.
+                    </Alert>}
             </Upper>
         );
     }
@@ -18,13 +24,12 @@ class Navigator extends Component {
 
 const mapStateToProps = state => {
     return {
-
+        titleValid: state.editor.openedFile.title.length !== 0
     }
 };
 
 const mapDispatchToProps = dispatch => {
-    return {
-    }
+    return {}
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigator);

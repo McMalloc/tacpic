@@ -4,6 +4,9 @@ import {Icon} from "./_Icon";
 import {withTranslation} from "react-i18next";
 import connect from "react-redux/es/connect/connect";
 import {layoutChanged, layoutSet} from "../../actions";
+import {Modal} from "./Modal";
+import Popover from "react-popover";
+import Hint from "./Popover";
 
 const Wrapper = styled.div`
   background-color: ${props => props.theme.accent_1_light};
@@ -28,8 +31,6 @@ const RibbonItem = styled.button`
   border: none;
   border-bottom: 1px solid ${props => props.theme.accent_1};
   
-
-  
   background-color: ${props => props.active ? props.theme.accent_1 : "transparent"};
   color: ${props => props.active ? props.theme.accent_1_light : props.theme.dark};
   height: 60px;
@@ -52,19 +53,6 @@ const RibbonItem = styled.button`
   }
 `;
 
-const Hint = styled.div`
-  position: absolute;
-  z-index: 1000;
-  top: 0;
-  left: 140px;
-  width: 250px;
-  border: 1px solid ${props => props.theme.accent_1};
-  box-shado: ${props => props.theme.distant_shadow};
-  border-radius: 3px;
-  background-color: ${props => props.theme.accent_1_light};
-  padding: ${props => props.theme.spacing[2]};
-`;
-
 const ItemWrapper = styled.div`
 position: relative;
     &:first-child {
@@ -75,38 +63,43 @@ position: relative;
 class Ribbon extends Component {
     state = {
         collapsed: false,
-        showHints: true, // TODO dirty
+        showHint_original: true,
+        showHint_category: true,
+        showHint_layout: true,
+        showHint_proofing: true
     };
 
-    collapse = () => {
-        this.setState({collapsed: true});
-    };
+    collapse = () => this.setState({collapsed: true});
+    expand = () => this.setState({collapsed: false});
 
-    expand = () => {
-        this.setState({collapsed: false});
-    };
+    hideHint = label => this.setState({["showHint_" + label]: false});
 
     render() {
-        // Use a portal to render the children into the element
+
         return (
             <Wrapper collapsed={this.state.collapsed}>
                 {this.props.menus.map((item, index) => {
+                    let simpleLabel = item.label.slice(7);
                     return (
                         <ItemWrapper key={index}>
-                            <RibbonItem
-                                data-tip={"help:" + item.label}
-                                active={index === this.props.activeItem}
-                                onClick={() => {
-                                    this.props.showHint_layout && this.setState({showHints: false});
-                                    item.action();
-                                    this.setState({activeItem: index})
-                                }}>
-                                <Icon icon={item.icon}/> <Label
-                                show={!this.state.collapsed}>{index+1}. | {this.props.t(item.label)}</Label>
-                            </RibbonItem>
-                            {this.props["showHint_" + item.label.slice(7)] && this.state.showHints &&
-                                <Hint><Icon icon={"caret-left"}/> {this.props.t(item.label + "_hint")}</Hint>
-                            }
+                            <Popover
+                                preferPlace={"right"}
+                                tipSize={12}
+                                onOuterAction={() => this.hideHint(simpleLabel)}
+                                isOpen={this.props["showHint_" + simpleLabel] && this.state["showHint_" + simpleLabel]}
+                                body={<Hint>{this.props.t(item.label + "_hint")}</Hint>}>
+                                <RibbonItem
+                                    // data-tip={this.props.t(item.label + "_tooltip")}
+                                    title={this.props.t(item.label + "_tooltip")}
+                                    active={index === this.props.activeItem}
+                                    onClick={() => {
+                                        item.action();
+                                    }}>
+
+                                    <Icon icon={item.icon}/> <Label
+                                    show={!this.state.collapsed}>{index+1}. | {this.props.t(item.label)}</Label>
+                                </RibbonItem>
+                            </Popover>
                         </ItemWrapper>
                     )
                 })}
@@ -128,7 +121,7 @@ class Ribbon extends Component {
 const mapStateToProps = state => {
     return {
         showHint_original: false,
-        showHint_category: false,
+        showHint_category: state.editor.openedFile.backgroundURL.length !== 0,
         showHint_layout: state.editor.openedFile.category !== null,
         showHint_proofing: false
     }

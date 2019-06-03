@@ -15,7 +15,8 @@ class Login extends Component {
             pwdField: {
                 value: ''
             },
-            showModal: false
+            showModalA: false,
+            showModalB: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -60,10 +61,16 @@ class Login extends Component {
                     <span>Angemeldet!</span>
                 ) : (form)}
                 <p>
-                    <Button onClick={() => this.setState({showModal: true})}>Öffne Modal</Button>
-                    {this.state.showModal &&
-                        <Modal title={"Modalfenster"} dismiss={() => {this.setState({showModal: false})}} actions={[
-                            {label: "OK", action: () => {this.setState({showModal: false})}}
+                    <Button onClick={() => this.setState({showModalA: true})}>Öffne Modal A</Button>
+                    {this.state.showModalA &&
+                        <Modal title={"Modalfenster"} dismiss={() => {this.setState({showModalA: false})}} actions={[
+                            {label: "OK", action: () => {this.setState({showModalA: false})}}
+                        ]}>Hi</Modal>
+                    }
+                    <Button onClick={() => this.setState({showModalB: true})}>Öffne Modal B</Button>
+                    {this.state.showModalB &&
+                        <Modal title={"Modalfenster"} dismiss={() => {this.setState({showModalB: false})}} actions={[
+                            {label: "OK", action: () => {this.setState({showModalB: false})}}
                         ]}>Hi</Modal>
                     }
                 </p>

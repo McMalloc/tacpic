@@ -44,7 +44,6 @@ class Metadata extends Component {
     render() {
         return (
             <Upper>
-                <Tooltip/>
                 <div>
                     <Textinput
                         value={this.state.changedOnce ? this.props.catalogueTitle : (this.props.catalogueTitle || this.props.title)}

@@ -56,6 +56,7 @@ const Select = props => {
                         isMulti={props.isMulti}
                         placeholder={t(props.placeholder)}
                         defaultValue={dflt}
+                        onChange={props.onChange}
                         menuPortalTarget={document.body}
                         options={props.options}/></Label>
             </div>

@@ -75,5 +75,17 @@
       "Versuchen Sie, für den Sachverhalt unwesentliche Bestandteile zu kürzen.",
       "Sie können die Illustration auch auf mehreren Seiten verteilen, um so die Anzahl der Beschriftungen pro Seite niedrig und so insgesamt leserlicher zu halten."
     ]
+  },
+  {
+    "title": "Karte oder Grundriss",
+    "id": 7,
+    "sub_of": -1,
+    "imgUrl": "images/sample_Karte.svg",
+    "description": "Karten oder Grundrisse können dabei helfen, einen Überblick über eine Gegend oder ein Gebäude zu bekommen, ohne dort gewesen zu sein.",
+    "guides": [
+      "Markieren Sie Bereiche, in denen Vorsicht herrschen muss, z.B. Straßenübergänge oder Treppen.",
+      "Markieren Sie Einstiegspunkte für ein mögliches Leitsystem.",
+      "Denken Sie an die Aufgabe, die die Karte oder der Grundriss erfüllen muss. Lassen Sie dafür unnötige Details weg, wie beispielsweise Gebäudegrundrisse, wenn ein bestimmter Weg durch die Straßen hervorzuheben ist."
+    ]
   }
 ]

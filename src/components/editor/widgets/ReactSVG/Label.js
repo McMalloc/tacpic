@@ -7,6 +7,7 @@ import styled from "styled-components";
 const Braille = styled.div`
   font-family: "Braille29 DE";
   position: absolute;
+  z-index: -1;
   top: 0;
   color: lightgray;
   font-size: 24pt;
@@ -15,6 +16,7 @@ const Braille = styled.div`
 const Black = styled.textarea`
   border: 1px dotted lightgrey; 
   margin: 0;
+  font-size: 16pt;
   width: 100%;
   background-color: transparent;
 `;
@@ -24,6 +26,8 @@ const Container = styled.div`
     ${Braille} {
       display: none;
     }
+    
+    background-color: rgba(255,255,255,.3);
   }
 `;
 

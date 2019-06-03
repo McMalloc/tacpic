@@ -5,6 +5,7 @@ import Divider from "../../gui/Divider";
 import {Button} from "../../gui/Button";
 import {Padding} from "styled-components-spacing";
 import {Icon} from "../../gui/_Icon";
+import ReactTooltip from 'react-tooltip'
 
 const Dropzone = styled.div`
   width: 100%;
@@ -76,6 +77,7 @@ class Importer extends Component {
                 preview: reader.result
             });
             this.props.addOriginal(file.name); // TODO send to server, do not save in memory
+
             _this.props.toggleCanvas(true);
         }
     };

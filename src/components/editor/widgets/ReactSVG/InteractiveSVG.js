@@ -253,7 +253,7 @@ class InteractiveSVG extends Component {
                     }}
                     ref={this.svgElement}
                     tabIndex={0}
-                    style={{backgroundColor: "transparent"}}>
+                    style={{backgroundColor: "rgba(255,255,255,.5)"}}>
 
                     {objects}
 

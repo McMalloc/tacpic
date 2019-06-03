@@ -80,6 +80,7 @@ class Editor extends Component {
                             .map((widget, index) => {
                                 return (
                                     <div key={widget.i}>
+                                        {/*<Tooltip />*/}
                                         <Widget
                                             title={this.props.t("editor:" + widget.i)}
                                             component={Widgets[widget.i]}/>
@@ -103,8 +104,15 @@ const mapDispatchToProps = dispatch => {
     return {
         layoutChanged: (layout, config) => {
             // react-grid-layout verschluckt die visible property, daher muss sie manuell mitgegeben werden
-            layout.forEach(widget => widget.visible = find(config, {i: widget.i}).visible);
-            console.log("component: ", layout);
+            layout.forEach(widget => {
+                let fromConfig = find(config, {i: widget.i});
+                widget.visible = fromConfig.visible;
+                if (widget.i === "Canvas") { // TODO nachhaltiger fixen. wenn die sichtbarkeit geändert wird, gibt rgl w=1/h=1 im callback zurück
+                    widget.w = widget.w === 1 ? fromConfig.w : widget.w;
+                    widget.h = widget.h === 1 ? fromConfig.h : widget.h;
+                }
+            });
+
             dispatch(layoutChanged(layout));
         },
         layoutSet: layoutIndex => {
