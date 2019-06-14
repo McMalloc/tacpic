@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-right: 1em;
-  padding-top: 15%;
+  padding-top: 5%;
   
   &:hover > button {
     opacity: 1;

@@ -42,8 +42,8 @@ const TexturePreview = props => {
                 <SVG
                     current={props.current}
                     viewBox={"0 0 " + props.width + " " + props.height}
-                    width={props.width > props.height ? 100 : parseInt(100 * props.width/props.height)}
-                    height={props.width < props.height ? 100 : parseInt(100 * props.height/props.width)}
+                    width={props.width > props.height ? 60 : parseInt(60 * props.width/props.height)}
+                    height={props.width < props.height ? 60 : parseInt(60 * props.height/props.width)}
                     dangerouslySetInnerHTML={{ __html: props.markup }} />
             <Title current={props.current}>{props.title}</Title>
         </Wrapper>

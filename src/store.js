@@ -24,7 +24,7 @@ const initialEditor = {
     texture: 'striped',
     width: 800,
     fill: "#1f78b4",
-    height: 600,
+    height: 800,
     mouseOffset: {
         x0: 0,
         y0: 0,

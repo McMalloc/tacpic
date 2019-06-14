@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {Treeview} from "../../gui/Treeview";
 import {Upper} from "../../gui/WidgetContainer";
 import {Alert} from "../../gui/Alert";
+import {Checkbox} from "../../gui/Checkbox";
 
 class Navigator extends Component {
 
@@ -17,6 +18,10 @@ class Navigator extends Component {
                     <Alert warning>
                         Dem Dokument fehlt noch ein aussagekräftiger Titel.
                     </Alert>}
+
+                    {/*<Checkbox label={"nur Relief"} />*/}
+                    {/*<Checkbox label={"nur Druck"} />*/}
+                    {/*<Checkbox label={"beides"} />*/}
             </Upper>
         );
     }

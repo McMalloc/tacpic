@@ -185,7 +185,7 @@ class InteractiveSVG extends Component {
         this.dragging = false;
 
         // TODO: side effect, should be handled by a saga
-        // this.triggerCache();
+        this.triggerCache();
     };
 
     mouseMoveHandler = (event) => {

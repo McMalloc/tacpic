@@ -28,7 +28,8 @@ class Comments extends Component {
                 </Upper>
                 <Lower>
                     <Button disabled icon={"trash-alt"} onClick={() => {}}>Entfernen</Button> &ensp;
-                    <Button primary icon={"plus"} onClick={() => this.props.addPage()}>Kommentar verfassen</Button>
+                    <Button primary icon={"plus"} onClick={() => {}}>Kommentar verfassen</Button>
+                    {/*<Button primary icon={"plus"} onClick={() => this.props.addPage()}>Kommentar verfassen</Button>*/}
                 </Lower>
             </>
 

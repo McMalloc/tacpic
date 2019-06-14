@@ -10,7 +10,7 @@ import {Row} from "../../gui/Grid";
 import {Upper} from "../../gui/WidgetContainer";
 import {Alert} from "../../gui/Alert"; //TODO aus Datenbank laden
 
-const groupedOptions = [
+const groupedOptions = [ // TODO auch aus DB
     {
         label: 'Illustrationen',
         options: [
@@ -25,6 +25,12 @@ const groupedOptions = [
             {label: "Liniendiagramm"}
         ],
     },
+    {
+        label: 'Karten',
+        options: [
+            {label: "Karten & Grundrisse", value: 7}
+        ],
+    }
 ];
 
 class Category extends Component {

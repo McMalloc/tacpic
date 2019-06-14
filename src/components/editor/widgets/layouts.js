@@ -1,7 +1,7 @@
 const intro = [
     {
-        w: 12,
-        h: 12,
+        w: 6,
+        h: 25,
         x: 0,
         y: 0,
         i: 'Intro',
@@ -14,7 +14,7 @@ const intro = [
 const original = [
     {
         w: 8,
-        h: 28,
+        h: 25,
         x: 0,
         y: 0,
         i: 'Canvas',
@@ -36,8 +36,8 @@ const original = [
 
 const categorise = [
     {
-        w: 12,
-        h: 28,
+        w: 6,
+        h: 25,
         x: 0,
         y: 0,
         i: 'Category',
@@ -50,7 +50,7 @@ const categorise = [
 const layout = [
     {
         w: 4,
-        h: 7,
+        h: 25,
         x: 8,
         y: 0,
         i: 'Pages',
@@ -60,7 +60,7 @@ const layout = [
     },
     {
         w: 8,
-        h: 28,
+        h: 15,
         x: 0,
         y: 0,
         i: 'Canvas',
@@ -70,7 +70,7 @@ visible:false,
     },
     {
         w: 8,
-        h: 21,
+        h: 25,
         x: 0,
         y: 7,
         i: 'Document',
@@ -93,7 +93,7 @@ const drawing = [
     },
     {
         w: 4,
-        h: 13,
+        h: 15,
         x: 8,
         y: 16,
         i: 'Context',
@@ -103,7 +103,7 @@ const drawing = [
     },
     {
         w: 8,
-        h: 6,
+        h: 2,
         x: 0,
         y: 23,
         i: 'Toolbox',
@@ -123,7 +123,7 @@ const drawing = [
     },
     {
         w: 4,
-        h: 11,
+        h: 5,
         x: 8,
         y: 5,
         i: 'Objects',
@@ -147,7 +147,7 @@ const key = [
     },
     {
         w: 4,
-        h: 12,
+        h: 10,
         x: 8,
         y: 16,
         i: 'Context',
@@ -157,7 +157,7 @@ const key = [
     },
     {
         w: 8,
-        h: 5,
+        h: 2,
         x: 0,
         y: 23,
         i: 'Toolbox',
@@ -177,7 +177,7 @@ const key = [
     },
     {
         w: 4,
-        h: 11,
+        h: 10,
         x: 8,
         y: 5,
         i: 'Key',
@@ -190,7 +190,7 @@ const key = [
 const verbalizing = [
     {
         w: 7,
-        h: 28,
+        h: 25,
         x: 0,
         y: 0,
         i: 'Canvas',
@@ -200,7 +200,7 @@ const verbalizing = [
     },
     {
         w: 5,
-        h: 28,
+        h: 15,
         x: 7,
         y: 0,
         i: 'Verbalizer',
@@ -213,7 +213,7 @@ const verbalizing = [
 const proofing = [
     {
         w: 8,
-        h: 28,
+        h: 25,
         x: 0,
         y: 0,
         i: 'Canvas',
@@ -223,7 +223,7 @@ const proofing = [
     },
     {
         w: 4,
-        h: 9,
+        h: 8,
         x: 8,
         y: 0,
         i: 'Proofing',
@@ -233,7 +233,7 @@ const proofing = [
     },
     {
         w: 4,
-        h: 9,
+        h: 8,
         x: 8,
         y: 9,
         i: 'Simulator',
@@ -243,7 +243,7 @@ const proofing = [
     },
     {
         w: 4,
-        h: 10,
+        h: 9,
         x: 8,
         y: 18,
         i: 'Comments',
@@ -256,7 +256,7 @@ const proofing = [
 const finishing = [
     {
         w: 8,
-        h: 28,
+        h: 25,
         x: 0,
         y: 0,
         i: 'Canvas',
@@ -266,7 +266,7 @@ const finishing = [
     },
     {
         w: 4,
-        h: 18,
+        h: 15,
         x: 8,
         y: 0,
         i: 'Metadata',
