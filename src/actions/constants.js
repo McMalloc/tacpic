@@ -10,6 +10,7 @@ function constants(domain, methods) {
 }
 
 export const USER       = constants('USER',     ['LOGIN', 'CREATE', 'SAVE_LAYOUT']);
+export const SEARCH     = constants('SEARCH',     ['QUERY']);
 export const PRODUCT    = constants('PRODUCT',  ['FETCH', 'GET']);
 export const PAGE       = constants('PAGE',     ['GET']);
 export const RESSOURCES = constants('RESSOURCES',   ['GET']);

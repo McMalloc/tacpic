@@ -60,12 +60,17 @@ const initialEditor = {
     // widgetConfig: JSON.parse(localStorage.getItem('user_layout')) || categorise
 };
 
+const initialCatalogue = {
+
+};
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 25 }) || compose;
 
 export const store = createStore(
     rootReducer,
     {
-        editor: initialEditor
+        editor: initialEditor,
+        catalogue: initialCatalogue
     },
     composeEnhancers(
         applyMiddleware(sagaMiddleware)

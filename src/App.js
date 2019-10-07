@@ -3,6 +3,7 @@ import Editor from './components/editor/Editor';
 import {BrowserRouter, Route, Link, Switch} from 'react-router-dom'
 import Login from "./components/Login";
 import {useTranslation} from 'react-i18next';
+import {Navbar, NavbarItem} from "./components/platform/Navbar";
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -41,10 +42,14 @@ const App = () => {
     return (
         <BrowserRouter>
             <div className="App">
-                {/*<nav>*/}
-                    {/*<Link to="/login">Login</Link>*/}
-                    {/*<Link to="/editor">Editor</Link>*/}
-                {/*</nav>*/}
+                <Navbar>
+                    <NavbarItem to={"home"}/>
+                    <NavbarItem to={"home"}/>
+                </Navbar>
+                <nav>
+                    <Link to="/login">Login</Link>
+                    <Link to="/editor">Editor</Link>
+                </nav>
                 <ErrorBoundary>
                     <Switch>
                         {/*Renders exclusivly*/}
