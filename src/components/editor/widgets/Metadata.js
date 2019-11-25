@@ -6,6 +6,7 @@ import Select from "../../gui/Select";
 import {Button} from "../../gui/Button";
 import {Upper} from "../../gui/WidgetContainer";
 import Tooltip from "../../gui/Tooltip";
+import {VERSION} from "../../../actions/constants";
 
 const Status = styled.div`
   display: flex;
@@ -81,7 +82,7 @@ class Metadata extends Component {
                             </Indicator>
                     </Status>
                     <p>Ich stimme der Veröffentlichung unter der liberalen CC-BY-SA 3.0 Lizenz zu.</p>
-                    <Button primary fullWidth>editor:input_catalogue-publish</Button>
+                    <Button onClick={this.props.uploadVersion(this.props.file)} primary fullWidth>editor:input_catalogue-publish</Button>
                 </div>
             </Upper>
         );
@@ -91,8 +92,9 @@ class Metadata extends Component {
 const mapStateToProps = state => {
     return {
         documentState: 0, // 0 = draft, 1 = published, 2 = published with new draft
-        title: state.editor.openedFile.title,
-        catalogueTitle: state.editor.openedFile.catalogueTitle,
+        title: state.editor.file.title,
+        catalogueTitle: state.editor.file.catalogueTitle,
+        file: state.editor.file
     }
 };
 
@@ -102,6 +104,12 @@ const mapDispatchToProps = dispatch => {
             dispatch({
                 type: "CHANGE_CATALOGUE_TITLE",
                 title
+            })
+        },
+        uploadVersion: file => {
+            dispatch({
+                type: VERSION.CREATE.REQUEST,
+                payload: file
             })
         }
     }

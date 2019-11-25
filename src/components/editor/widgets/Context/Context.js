@@ -34,7 +34,7 @@ class Context extends Component {
 // TODO: allen Kontexten changeProp() zur Verfügung stellen
 const mapStateToProps = state => {
     return {
-        selectedObject: find(state.editor.openedFile.pages[state.editor.currentPage].objects, {uuid: state.editor.selectedObjects[0]}) || {}
+        selectedObject: find(state.editor.file.pages[state.editor.ui.currentPage].objects, {uuid: state.editor.ui.selectedObjects[0]}) || {}
     }
 };
 

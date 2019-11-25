@@ -24,7 +24,7 @@ class Verbalizer extends Component {
             <>
                 <Upper>
                     <Qid
-                        title={this.props.title}
+                        title={this.props.uititle}
                         onChange={event => this.props.changeTitle(event.currentTarget.value)}
                     />
                 </Upper>
@@ -38,7 +38,7 @@ class Verbalizer extends Component {
 
 const mapStateToProps = state => {
     return {
-        title: state.editor.openedFile.title
+        title: state.editor.file.title
     }
 };
 

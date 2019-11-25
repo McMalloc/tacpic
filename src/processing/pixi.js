@@ -1803,7 +1803,7 @@ exports.dirname = function(path) {
 
 exports.basename = function(path, ext) {
   var f = splitPath(path)[2];
-  // TODO: make this comparison case-insensitive on windows?
+  // : make this comparison case-insensitive on windows?
   if (ext && f.substr(-1 * ext.length) === ext) {
     f = f.substr(0, f.length - ext.length);
   }
@@ -1902,7 +1902,7 @@ var Buffer = function(gl, type, data, drawType)
  */
 Buffer.prototype.upload = function(data, offset, dontBind)
 {
-	// todo - needed?
+	//  - needed?
 	if(!dontBind) this.bind();
 
 	var gl = this.gl;
@@ -2045,7 +2045,7 @@ Framebuffer.prototype.enableStencil = function()
 
     gl.bindRenderbuffer(gl.RENDERBUFFER, this.stencil);
 
-    // TODO.. this is depth AND stencil?
+    // .. this is depth AND stencil?
     gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDERBUFFER, this.stencil);
     gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_STENCIL,  this.width  , this.height );
 
@@ -2118,7 +2118,7 @@ Framebuffer.prototype.destroy = function()
 {
     var gl = this.gl;
 
-    //TODO
+    //
     if(this.texture)
     {
         this.texture.destroy();
@@ -2265,7 +2265,7 @@ Shader.prototype.bind = function()
 
 /**
  * Destroys this shader
- * TODO
+ * 
  */
 Shader.prototype.destroy = function()
 {
@@ -2422,7 +2422,7 @@ Texture.prototype.uploadData = function(data, width, height)
 	}
 	else
 	{
-		// TODO support for other types
+		//  support for other types
 		this.type = this.type || gl.UNSIGNED_BYTE;
 	}
 
@@ -2577,7 +2577,7 @@ Texture.prototype.enableWrapMirrorRepeat = function()
 Texture.prototype.destroy = function()
 {
 	var gl = this.gl;
-	//TODO
+	//
 	gl.deleteTexture(this.texture);
 };
 
@@ -2822,7 +2822,7 @@ VertexArrayObject.prototype.clear = function()
 {
     // var gl = this.gl;
 
-    // TODO - should this function unbind after clear?
+    //  - should this function unbind after clear?
     // for now, no but lets see what happens in the real world!
     if(this.nativeVao)
     {
@@ -2850,7 +2850,7 @@ VertexArrayObject.prototype.draw = function(type, size, start)
     }
     else
     {
-        // TODO need a better way to calculate size..
+        //  need a better way to calculate size..
         gl.drawArrays(type, start, size || this.getSize());
     }
 
@@ -3185,7 +3185,7 @@ var extractAttributes = function(gl, program)
             type:type,
             size:mapSize(type),
             location:gl.getAttribLocation(program, attribData.name),
-            //TODO - make an attribute object
+            // - make an attribute object
             pointer: pointer
         };
     }
@@ -5403,7 +5403,7 @@ var Resource = function () {
      *
      */
     Resource.prototype.complete = function complete() {
-        // TODO: Clean this up in a wrapper or something...gross....
+        // : Clean this up in a wrapper or something...gross....
         if (this.data && this.data.removeEventListener) {
             this.data.removeEventListener('error', this._boundOnError, false);
             this.data.removeEventListener('load', this._boundComplete, false);
@@ -6586,7 +6586,7 @@ function blobMiddlewareFactory() {
                         resource.type = _Resource2.default.TYPE.IMAGE;
 
                         // cleanup the no longer used blob after the image loads
-                        // TODO: Is this correct? Will the image be invalid after revoking?
+                        // : Is this correct? Will the image be invalid after revoking?
                         resource.data.onload = function () {
                             Url.revokeObjectURL(src);
                             resource.data.onload = null;
@@ -6797,7 +6797,7 @@ Url.prototype.parse = function(url, parseQueryString, slashesDenoteHost) {
     // http://a@b@c/ => user:a@b host:c
     // http://a@b?@c => user:a host:c path.js:/?@c
 
-    // v0.12 TODO(isaacs): This is not quite how Chrome does things.
+    // v0.12 (isaacs): This is not quite how Chrome does things.
     // Review our test case against browsers more comprehensively.
 
     // find the first instance of any hostEndingChars
@@ -7680,9 +7680,9 @@ var AccessibilityManager = function () {
     };
 
     /**
-     * TODO: docs.
+     * : docs.
      *
-     * @param {Rectangle} hitArea - TODO docs
+     * @param {Rectangle} hitArea -  docs
      */
 
 
@@ -7897,17 +7897,17 @@ exports.default = {
   accessibleHint: null,
 
   /**
-   * @todo Needs docs.
+   * @ Needs docs.
    */
   tabIndex: 0,
 
   /**
-   * @todo Needs docs.
+   * @ Needs docs.
    */
   _accessibleActive: false,
 
   /**
-   * @todo Needs docs.
+   * @ Needs docs.
    */
   _accessibleDiv: false
 };
@@ -8806,11 +8806,11 @@ var Bounds = function () {
     /**
      * Adds sprite frame, transformed.
      *
-     * @param {PIXI.TransformBase} transform - TODO
-     * @param {number} x0 - TODO
-     * @param {number} y0 - TODO
-     * @param {number} x1 - TODO
-     * @param {number} y1 - TODO
+     * @param {PIXI.TransformBase} transform - 
+     * @param {number} x0 - 
+     * @param {number} y0 - 
+     * @param {number} x1 - 
+     * @param {number} y1 - 
      */
 
 
@@ -8866,10 +8866,10 @@ var Bounds = function () {
     /**
      * Add an array of vertices
      *
-     * @param {PIXI.TransformBase} transform - TODO
-     * @param {Float32Array} vertices - TODO
-     * @param {number} beginOffset - TODO
-     * @param {number} endOffset - TODO
+     * @param {PIXI.TransformBase} transform - 
+     * @param {Float32Array} vertices - 
+     * @param {number} beginOffset - 
+     * @param {number} endOffset - 
      */
 
 
@@ -8908,7 +8908,7 @@ var Bounds = function () {
     /**
      * Adds other Bounds
      *
-     * @param {PIXI.Bounds} bounds - TODO
+     * @param {PIXI.Bounds} bounds - 
      */
 
 
@@ -8927,8 +8927,8 @@ var Bounds = function () {
     /**
      * Adds other Bounds, masked with Bounds
      *
-     * @param {PIXI.Bounds} bounds - TODO
-     * @param {PIXI.Bounds} mask - TODO
+     * @param {PIXI.Bounds} bounds - 
+     * @param {PIXI.Bounds} mask - 
      */
 
 
@@ -8954,8 +8954,8 @@ var Bounds = function () {
     /**
      * Adds other Bounds, masked with Rectangle
      *
-     * @param {PIXI.Bounds} bounds - TODO
-     * @param {PIXI.Rectangle} area - TODO
+     * @param {PIXI.Bounds} bounds - 
+     * @param {PIXI.Rectangle} area - 
      */
 
 
@@ -9084,7 +9084,7 @@ var Container = function (_DisplayObject) {
             // ensure bounds will be recalculated
             this._boundsID++;
 
-            // TODO - lets either do all callbacks or all events.. not both!
+            //  - lets either do all callbacks or all events.. not both!
             this.onChildrenChange(this.children.length - 1);
             child.emit('added', this);
         }
@@ -9119,7 +9119,7 @@ var Container = function (_DisplayObject) {
         // ensure bounds will be recalculated
         this._boundsID++;
 
-        // TODO - lets either do all callbacks or all events.. not both!
+        //  - lets either do all callbacks or all events.. not both!
         this.onChildrenChange(index);
         child.emit('added', this);
 
@@ -9233,7 +9233,7 @@ var Container = function (_DisplayObject) {
             // ensure bounds will be recalculated
             this._boundsID++;
 
-            // TODO - lets either do all callbacks or all events.. not both!
+            //  - lets either do all callbacks or all events.. not both!
             this.onChildrenChange(index);
             child.emit('removed', this);
         }
@@ -9260,7 +9260,7 @@ var Container = function (_DisplayObject) {
         // ensure bounds will be recalculated
         this._boundsID++;
 
-        // TODO - lets either do all callbacks or all events.. not both!
+        //  - lets either do all callbacks or all events.. not both!
         this.onChildrenChange(index);
         child.emit('removed', this);
 
@@ -9321,7 +9321,7 @@ var Container = function (_DisplayObject) {
 
         this.transform.updateTransform(this.parent.transform);
 
-        // TODO: check render flags, how to process stuff here
+        // : check render flags, how to process stuff here
         this.worldAlpha = this.alpha * this.parent.worldAlpha;
 
         for (var i = 0, j = this.children.length; i < j; ++i) {
@@ -9353,7 +9353,7 @@ var Container = function (_DisplayObject) {
 
             child.calculateBounds();
 
-            // TODO: filter+mask, need to mask both somehow
+            // : filter+mask, need to mask both somehow
             if (child._mask) {
                 child._mask.calculateBounds();
                 this._bounds.addBoundsMask(child._bounds, child._mask._bounds);
@@ -9665,7 +9665,7 @@ var DisplayObject = function (_EventEmitter) {
 
         _this.tempDisplayObjectParent = null;
 
-        // TODO: need to create Transform from factory
+        // : need to create Transform from factory
         /**
          * World transform and local transform of this object.
          * This will become read-only later, please do not assign anything there unless you know what are you doing
@@ -9784,7 +9784,7 @@ var DisplayObject = function (_EventEmitter) {
     /**
      * Updates the object transform for rendering
      *
-     * TODO - Optimization pass!
+     *  - Optimization pass!
      */
     DisplayObject.prototype.updateTransform = function updateTransform() {
         this.transform.updateTransform(this.parent.transform);
@@ -10242,7 +10242,7 @@ var DisplayObject = function (_EventEmitter) {
          * PIXI.Graphics or a PIXI.Sprite object. This allows for much faster masking in canvas as it
          * utilises shape clipping. To remove a mask, set this property to null.
          *
-         * @todo For the moment, PIXI.CanvasRenderer doesn't support PIXI.Sprite as mask.
+         * @ For the moment, PIXI.CanvasRenderer doesn't support PIXI.Sprite as mask.
          *
          * @member {PIXI.Graphics|PIXI.Sprite}
          */
@@ -10935,7 +10935,7 @@ var Graphics = function (_Container) {
          * @member {object<number, object>}
          * @private
          */
-        // TODO - _webgl should use a prototype object, not a random undocumented object...
+        //  - _webgl should use a prototype object, not a random undocumented object...
         _this._webGL = {};
 
         /**
@@ -11575,7 +11575,7 @@ var Graphics = function (_Container) {
             this._fastRect = this.isFastRect();
         }
 
-        // TODO this check can be moved to dirty?
+        //  this check can be moved to dirty?
         if (this._fastRect) {
             this._renderSpriteRect(renderer);
         } else {
@@ -12226,7 +12226,7 @@ var CanvasGraphicsRenderer = function () {
                     context.strokeRect(shape.x, shape.y, shape.width, shape.height);
                 }
             } else if (data.type === _const.SHAPES.CIRC) {
-                // TODO - need to be Undefined!
+                //  - need to be Undefined!
                 context.beginPath();
                 context.arc(shape.x, shape.y, shape.radius, 0, 2 * Math.PI);
                 context.closePath();
@@ -12631,7 +12631,7 @@ var GraphicsRenderer = function (_ObjectRenderer) {
         for (var _i = webGL.lastIndex; _i < graphics.graphicsData.length; _i++) {
             var data = graphics.graphicsData[_i];
 
-            // TODO - this can be simplified
+            //  - this can be simplified
             webGLData = this.getWebGLData(webGL, 0);
 
             if (data.nativeLines && data.lineWidth) {
@@ -12669,9 +12669,9 @@ var GraphicsRenderer = function (_ObjectRenderer) {
      *
      * @private
      * @param {WebGLRenderingContext} gl - the current WebGL ReactSVG context
-     * @param {number} type - TODO @Alvin
+     * @param {number} type -  @Alvin
      * @param {number} nativeLines - indicate whether the webGLData use for nativeLines.
-     * @return {*} TODO
+     * @return {*} 
      */
 
 
@@ -12734,7 +12734,7 @@ var WebGLGraphicsData = function () {
      */
     this.gl = gl;
 
-    // TODO does this need to be split before uploading??
+    //  does this need to be split before uploading??
     /**
      * An array of color components (r,g,b)
      * @member {number[]}
@@ -12921,7 +12921,7 @@ function buildCircle(graphicsData, webGLData, webGLDataNativeLines) {
     var width = void 0;
     var height = void 0;
 
-    // TODO - bit hacky??
+    //  - bit hacky??
     if (graphicsData.type === _const.SHAPES.CIRC) {
         width = circleData.radius;
         height = circleData.radius;
@@ -13007,7 +13007,7 @@ var _utils = require('../../../utils');
  * @param {object} webGLData - an object containing all the webGL-specific information to create this shape
  */
 function buildLine(graphicsData, webGLData) {
-    // TODO OPTIMISE!
+    //  OPTIMISE!
     var points = graphicsData.points;
 
     if (points.length === 0) {
@@ -13458,7 +13458,7 @@ function buildRoundedRectangle(graphicsData, webGLData, webGLDataNativeLines) {
     quadraticBezierCurve(x + radius, y, x, y, x, y + radius + 0.0000000001, recPoints);
 
     // this tiny number deals with the issue that occurs when points overlap and earcut fails to triangulate the item.
-    // TODO - fix this properly, this is not very elegant.. but it works for now.
+    //  - fix this properly, this is not very elegant.. but it works for now.
 
     if (graphicsData.fill) {
         var color = (0, _utils.hex2rgb)(graphicsData.fillColor);
@@ -14091,10 +14091,10 @@ var GroupD8 = {
 
     /**
      * @memberof PIXI.GroupD8
-     * @param {number} dx - TODO
-     * @param {number} dy - TODO
+     * @param {number} dx - 
+     * @param {number} dy - 
      *
-     * @return {number} TODO
+     * @return {number} 
      */
     byDirection: function byDirection(dx, dy) {
         if (Math.abs(dx) * 2 <= Math.abs(dy)) {
@@ -16301,7 +16301,7 @@ var CanvasRenderer = function (_SystemRenderer) {
 
             displayObject.updateTransform();
             displayObject.parent = cacheParent;
-            // displayObject.hitArea = //TODO add a temp hit area
+            // displayObject.hitArea = // add a temp hit area
         }
 
         context.save();
@@ -16324,11 +16324,11 @@ var CanvasRenderer = function (_SystemRenderer) {
                     context.fillRect(0, 0, this.width, this.height);
                 }
             } // else {
-            // TODO: implement background for CanvasRenderTarget or RenderTexture?
+            // : implement background for CanvasRenderTarget or RenderTexture?
             // }
         }
 
-        // TODO RENDER TARGET STUFF HERE..
+        //  RENDER TARGET STUFF HERE..
         var tempContext = this.context;
 
         this.context = context;
@@ -16500,7 +16500,7 @@ var CanvasMaskManager = function () {
 
         renderer.context.setTransform(transform.a * resolution, transform.b * resolution, transform.c * resolution, transform.d * resolution, transform.tx * resolution, transform.ty * resolution);
 
-        // TODO suport sprite alpha masks??
+        //  suport sprite alpha masks??
         // lots of effort required. If demand is great enough..
         if (!maskData._texture) {
             this.renderGraphicsShape(maskData);
@@ -16548,7 +16548,7 @@ var CanvasMaskManager = function () {
                 context.rect(shape.x, shape.y, shape.width, shape.height);
                 context.closePath();
             } else if (data.type === _const.SHAPES.CIRC) {
-                // TODO - need to be Undefined!
+                //  - need to be Undefined!
                 context.arc(shape.x, shape.y, shape.radius, 0, 2 * Math.PI);
                 context.closePath();
             } else if (data.type === _const.SHAPES.ELIP) {
@@ -17107,7 +17107,7 @@ var TextureManager = function () {
         if (location === undefined) {
             location = 0;
 
-            // TODO maybe we can use texture bound ids later on...
+            //  maybe we can use texture bound ids later on...
             // check if texture is already bound..
             for (var i = 0; i < boundTextures.length; ++i) {
                 if (boundTextures[i] === texture) {
@@ -17627,7 +17627,7 @@ var WebGLRenderer = function (_SystemRenderer) {
             displayObject.parent = this._tempDisplayObjectParent;
             displayObject.updateTransform();
             displayObject.parent = cacheParent;
-            // displayObject.hitArea = //TODO add a temp hit area
+            // displayObject.hitArea = // add a temp hit area
         }
 
         this.bindRenderTexture(renderTexture, transform);
@@ -17822,7 +17822,7 @@ var WebGLRenderer = function (_SystemRenderer) {
 
 
     WebGLRenderer.prototype.bindShader = function bindShader(shader, autoProject) {
-        // TODO cache
+        //  cache
         if (this._activeShader !== shader) {
             this._activeShader = shader;
             shader.bind();
@@ -17858,7 +17858,7 @@ var WebGLRenderer = function (_SystemRenderer) {
         texture.touched = this.textureGC.count;
 
         if (!forceLocation) {
-            // TODO - maybe look into adding boundIds.. save us the loop?
+            //  - maybe look into adding boundIds.. save us the loop?
             for (var i = 0; i < this.boundTextures.length; i++) {
                 if (this.boundTextures[i] === texture) {
                     return i;
@@ -17942,7 +17942,7 @@ var WebGLRenderer = function (_SystemRenderer) {
         if (vao) {
             vao.bind();
         } else if (this._activeVao) {
-            // TODO this should always be true i think?
+            //  this should always be true i think?
             this._activeVao.unbind();
         }
 
@@ -18432,7 +18432,7 @@ var Filter = function () {
     }
 
     // this is where we store shader references..
-    // TODO we could cache this!
+    //  we could cache this!
     this.glShaders = {};
 
     // used for cacheing.. sure there is a better way!
@@ -18631,13 +18631,13 @@ var _math = require('../../../math');
  * @param outputMatrix {Matrix} @alvin
  * @private
  */
-// TODO playing around here.. this is temporary - (will end up in the shader)
+//  playing around here.. this is temporary - (will end up in the shader)
 // this returns a matrix that will normalise map filter cords in the filter to screen space
 function calculateScreenSpaceMatrix(outputMatrix, filterArea, textureSize) {
     // let worldTransform = sprite.worldTransform.copy(Matrix.TEMP_MATRIX),
     // let texture = {width:1136, height:700};//sprite._texture.baseTexture;
 
-    // TODO unwrap?
+    //  unwrap?
     var mappedMatrix = outputMatrix.identity();
 
     mappedMatrix.translate(filterArea.x / textureSize.width, filterArea.y / textureSize.height);
@@ -18846,7 +18846,7 @@ var FilterManager = function (_WebGLManager) {
         _this.quad = new _Quad2.default(_this.gl, renderer.state.attribState);
 
         _this.shaderCache = {};
-        // todo add default!
+        //  add default!
         _this.pool = {};
 
         _this.filterData = null;
@@ -18915,7 +18915,7 @@ var FilterManager = function (_WebGLManager) {
         if (!fullScreen) {
             if (filterData.stack[0].renderTarget.transform) {//
 
-                // TODO we should fit the rect around the transform..
+                //  we should fit the rect around the transform..
             } else if (filters[0].autoFit) {
                 sourceFrame.fit(renderTargetFrame);
             }
@@ -19031,7 +19031,7 @@ var FilterManager = function (_WebGLManager) {
                 this.managedFilters.push(filter);
             }
 
-            // TODO - this only needs to be done once?
+            //  - this only needs to be done once?
             renderer.bindVao(null);
 
             this.quad.initVao(shader);
@@ -19120,7 +19120,7 @@ var FilterManager = function (_WebGLManager) {
             shader.uniforms.filterClamp = filterClamp;
         }
 
-        // TODO Cacheing layer..
+        //  Cacheing layer..
         for (var i in uniformData) {
             var type = uniformData[i].type;
 
@@ -19130,7 +19130,7 @@ var FilterManager = function (_WebGLManager) {
                 } else {
                     shader.uniforms[i] = textureCount;
 
-                    // TODO
+                    // 
                     // this is helpful as renderTargets can also be set.
                     // Although thinking about it, we could probably
                     // make the filter texture cache return a RenderTexture
@@ -19204,7 +19204,7 @@ var FilterManager = function (_WebGLManager) {
     /**
      * Calculates the mapped matrix.
      *
-     * TODO playing around here.. this is temporary - (will end up in the shader)
+     *  playing around here.. this is temporary - (will end up in the shader)
      * this returns a matrix that will normalise map filter cords in the filter to screen space
      *
      * @param {PIXI.Matrix} outputMatrix - the matrix to output to.
@@ -19281,7 +19281,7 @@ var FilterManager = function (_WebGLManager) {
     /**
      * Gets a Power-of-Two render texture.
      *
-     * TODO move to a seperate class could be on renderer?
+     *  move to a seperate class could be on renderer?
      * also - could cause issue with multiple contexts?
      *
      * @private
@@ -19300,7 +19300,7 @@ var FilterManager = function (_WebGLManager) {
         minHeight *= resolution;
 
         if (minWidth !== this._screenWidth || minHeight !== this._screenHeight) {
-            // TODO you could return a bigger texture if there is not one in the pool?
+            //  you could return a bigger texture if there is not one in the pool?
             minWidth = _bitTwiddle2.default.nextPow2(minWidth);
             minHeight = _bitTwiddle2.default.nextPow2(minHeight);
             key = (minWidth & 0xFFFF) << 16 | minHeight & 0xFFFF;
@@ -19437,7 +19437,7 @@ var MaskManager = function (_WebGLManager) {
     function MaskManager(renderer) {
         _classCallCheck(this, MaskManager);
 
-        // TODO - we don't need both!
+        //  - we don't need both!
         var _this = _possibleConstructorReturn(this, _WebGLManager.call(this, renderer));
 
         _this.scissor = false;
@@ -19460,7 +19460,7 @@ var MaskManager = function (_WebGLManager) {
 
 
     MaskManager.prototype.pushMask = function pushMask(target, maskData) {
-        // TODO the root check means scissor rect will not
+        //  the root check means scissor rect will not
         // be used on render textures more info here:
         // https://github.com/pixijs/pixi.js/pull/3545
 
@@ -19520,7 +19520,7 @@ var MaskManager = function (_WebGLManager) {
         alphaMaskFilter[0].resolution = this.renderer.resolution;
         alphaMaskFilter[0].maskSprite = maskData;
 
-        // TODO - may cause issues!
+        //  - may cause issues!
         target.filterArea = maskData.getBounds(true);
 
         this.renderer.filterManager.pushFilter(target, alphaMaskFilter);
@@ -19924,7 +19924,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Quad = function () {
   /**
    * @param {WebGLRenderingContext} gl - The gl context for this quad to use.
-   * @param {object} state - TODO: Description
+   * @param {object} state - : Description
    */
   function Quad(gl, state) {
     _classCallCheck(this, Quad);
@@ -20114,7 +20114,7 @@ var RenderTarget = function () {
   function RenderTarget(gl, width, height, scaleMode, resolution, root) {
     _classCallCheck(this, RenderTarget);
 
-    // TODO Resolution could go here ( eg low res blurs )
+    //  Resolution could go here ( eg low res blurs )
 
     /**
      * The current WebGL ReactSVG context.
@@ -20274,7 +20274,7 @@ var RenderTarget = function () {
 
 
   RenderTarget.prototype.attachStencilBuffer = function attachStencilBuffer() {
-    // TODO check if stencil is done?
+    //  check if stencil is done?
     /**
      * The stencil buffer is used for masking in pixi
      * lets create one and then add attach it to the framebuffer..
@@ -20316,7 +20316,7 @@ var RenderTarget = function () {
       this.projectionMatrix.append(this.transform);
     }
 
-    // TODO add a check as them may be the same!
+    //  add a check as them may be the same!
     if (this.destinationFrame !== this.sourceFrame) {
       gl.enable(gl.SCISSOR_TEST);
       gl.scissor(this.destinationFrame.x | 0, this.destinationFrame.y | 0, this.destinationFrame.width * this.resolution | 0, this.destinationFrame.height * this.resolution | 0);
@@ -20324,7 +20324,7 @@ var RenderTarget = function () {
       gl.disable(gl.SCISSOR_TEST);
     }
 
-    // TODO - does not need to be updated all the time??
+    //  - does not need to be updated all the time??
     gl.viewport(this.destinationFrame.x | 0, this.destinationFrame.y | 0, this.destinationFrame.width * this.resolution | 0, this.destinationFrame.height * this.resolution | 0);
   };
 
@@ -20343,7 +20343,7 @@ var RenderTarget = function () {
 
     pm.identity();
 
-    // TODO: make dest scale source
+    // : make dest scale source
     if (!this.root) {
       pm.a = 1 / destinationFrame.width * 2;
       pm.d = 1 / destinationFrame.height * 2;
@@ -20500,7 +20500,7 @@ var _const = require('../../../const');
 function mapWebGLBlendModesToPixi(gl) {
     var array = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
-    // TODO - premultiply alpha would be different.
+    //  - premultiply alpha would be different.
     // add a boolean for that!
     array[_const.BLEND_MODES.NORMAL] = [gl.ONE, gl.ONE_MINUS_SRC_ALPHA];
     array[_const.BLEND_MODES.ADD] = [gl.ONE, gl.DST_ALPHA];
@@ -20656,8 +20656,8 @@ exports.default = {
    */
   SPRITE_MAX_TEXTURES: (0, _maxRecommendedTextures2.default)(32),
 
-  // TODO: maybe change to SPRITE.BATCH_SIZE: 2000
-  // TODO: maybe add PARTICLE.BATCH_SIZE: 15000
+  // : maybe change to SPRITE.BATCH_SIZE: 2000
+  // : maybe add PARTICLE.BATCH_SIZE: 15000
 
   /**
    * The default sprite batch size.
@@ -21568,7 +21568,7 @@ var CanvasSpriteRenderer = function () {
                 if (sprite.cachedTint !== sprite.tint || sprite.tintedTexture.tintId !== sprite._texture._updateID) {
                     sprite.cachedTint = sprite.tint;
 
-                    // TODO clean up caching - how to clean up the caches?
+                    //  clean up caching - how to clean up the caches?
                     sprite.tintedTexture = _CanvasTinter2.default.getTintedTexture(sprite, sprite.tint);
                 }
 
@@ -22110,7 +22110,7 @@ var SpriteRenderer = function (_ObjectRenderer) {
 
 
     SpriteRenderer.prototype.render = function render(sprite) {
-        // TODO set blend modes..
+        //  set blend modes..
         // check texture..
         if (this.currentIndex >= this.size) {
             this.flush();
@@ -22256,7 +22256,7 @@ var SpriteRenderer = function (_ObjectRenderer) {
 
             vertexData = sprite.vertexData;
 
-            // TODO this sum does not need to be set each frame..
+            //  this sum does not need to be set each frame..
             uvs = sprite._texture._uvs.uvsUint32;
 
             if (this.renderer.roundPixels) {
@@ -24593,7 +24593,7 @@ var BaseTexture = function (_EventEmitter) {
          */
         _this.height = 100;
 
-        // TODO docs
+        //  docs
         // used to store the actual dimensions of the source
         /**
          * Used to store the actual width of the source of this texture
@@ -24644,7 +24644,7 @@ var BaseTexture = function (_EventEmitter) {
         /**
          * The image source that is used to create the texture.
          *
-         * TODO: Make this a setter that calls loadSource();
+         * : Make this a setter that calls loadSource();
          *
          * @readonly
          * @member {HTMLImageElement|HTMLCanvasElement}
@@ -24655,7 +24655,7 @@ var BaseTexture = function (_EventEmitter) {
          * The image source that is used to create the texture. This is used to
          * store the original Svg source when it is replaced with a canvas element.
          *
-         * TODO: Currently not in use but could be used when re-scaling svg.
+         * : Currently not in use but could be used when re-scaling svg.
          *
          * @readonly
          * @member {Image}
@@ -25479,7 +25479,7 @@ var RenderTexture = function (_Texture) {
         width = Math.ceil(width);
         height = Math.ceil(height);
 
-        // TODO - could be not required..
+        //  - could be not required..
         this.valid = width > 0 && height > 0;
 
         this._frame.width = this.orig.width = width;
@@ -25996,7 +25996,7 @@ var Texture = function (_EventEmitter) {
     Texture.prototype.onBaseTextureLoaded = function onBaseTextureLoaded(baseTexture) {
         this._updateID++;
 
-        // TODO this code looks confusing.. boo to abusing getters and setters!
+        //  this code looks confusing.. boo to abusing getters and setters!
         if (this.noFrame) {
             this.frame = new _math.Rectangle(0, 0, baseTexture.width, baseTexture.height);
         } else {
@@ -26191,8 +26191,8 @@ var Texture = function (_EventEmitter) {
 
 
     Texture.from = function from(source) {
-        // TODO auto detect cross origin..
-        // TODO pass in scale mode?
+        //  auto detect cross origin..
+        //  pass in scale mode?
         if (typeof source === 'string') {
             var texture = _utils.TextureCache[source];
 
@@ -28244,7 +28244,7 @@ function sign(n) {
 }
 
 /**
- * @todo Describe property usage
+ * @ Describe property usage
  *
  * @memberof PIXI.utils
  * @private
@@ -28252,7 +28252,7 @@ function sign(n) {
 var TextureCache = exports.TextureCache = Object.create(null);
 
 /**
- * @todo Describe property usage
+ * @ Describe property usage
  *
  * @memberof PIXI.utils
  * @private
@@ -31456,7 +31456,7 @@ var TilingSprite = function (_core$Sprite) {
         // fill the pattern!
         context.fillStyle = this._canvasPattern;
 
-        // TODO - this should be rolled into the setTransform above..
+        //  - this should be rolled into the setTransform above..
         context.scale(this.tileScale.x / baseTextureResolution, this.tileScale.y / baseTextureResolution);
 
         var anchorX = this.anchor.x * -this._width;
@@ -31879,7 +31879,7 @@ DisplayObject.prototype._initCachedDisplayObject = function _initCachedDisplayOb
     // next we find the dimensions of the untransformed object
     // this function also calls updatetransform on all its children as part of the measuring.
     // This means we don't need to update the transform again in this function
-    // TODO pass an object to clone too? saves having to create a new one each time!
+    //  pass an object to clone too? saves having to create a new one each time!
     var bounds = this.getLocalBounds().clone();
 
     // add some padding!
@@ -31979,7 +31979,7 @@ DisplayObject.prototype._renderCachedCanvas = function _renderCachedCanvas(rende
     this._cacheData.sprite.renderCanvas(renderer);
 };
 
-// TODO this can be the same as the webGL verison.. will need to do a little tweaking first though..
+//  this can be the same as the webGL verison.. will need to do a little tweaking first though..
 /**
  * Prepares the Canvas renderer to cache the sprite
  *
@@ -33785,7 +33785,7 @@ var FXAAFilter = function (_core$Filter) {
     function FXAAFilter() {
         _classCallCheck(this, FXAAFilter);
 
-        // TODO - needs work
+        //  - needs work
         return _possibleConstructorReturn(this, _core$Filter.call(this,
         // vertex shader
         '\nattribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\n\nuniform mat3 projectionMatrix;\n\nvarying vec2 v_rgbNW;\nvarying vec2 v_rgbNE;\nvarying vec2 v_rgbSW;\nvarying vec2 v_rgbSE;\nvarying vec2 v_rgbM;\n\nuniform vec4 filterArea;\n\nvarying vec2 vTextureCoord;\n\nvec2 mapCoord( vec2 coord )\n{\n    coord *= filterArea.xy;\n    coord += filterArea.zw;\n\n    return coord;\n}\n\nvec2 unmapCoord( vec2 coord )\n{\n    coord -= filterArea.zw;\n    coord /= filterArea.xy;\n\n    return coord;\n}\n\nvoid texcoords(vec2 fragCoord, vec2 resolution,\n               out vec2 v_rgbNW, out vec2 v_rgbNE,\n               out vec2 v_rgbSW, out vec2 v_rgbSE,\n               out vec2 v_rgbM) {\n    vec2 inverseVP = 1.0 / resolution.xy;\n    v_rgbNW = (fragCoord + vec2(-1.0, -1.0)) * inverseVP;\n    v_rgbNE = (fragCoord + vec2(1.0, -1.0)) * inverseVP;\n    v_rgbSW = (fragCoord + vec2(-1.0, 1.0)) * inverseVP;\n    v_rgbSE = (fragCoord + vec2(1.0, 1.0)) * inverseVP;\n    v_rgbM = vec2(fragCoord * inverseVP);\n}\n\nvoid main(void) {\n\n   gl_Position = vec4((projectionMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);\n\n   vTextureCoord = aTextureCoord;\n\n   vec2 fragCoord = vTextureCoord * filterArea.xy;\n\n   texcoords(fragCoord, filterArea.xy, v_rgbNW, v_rgbNE, v_rgbSW, v_rgbSE, v_rgbM);\n}',
@@ -35163,7 +35163,7 @@ var InteractionManager = function (_EventEmitter) {
 
         this.setCursorMode(this.cursor);
 
-        // TODO
+        // 
     };
 
     /**
@@ -35695,7 +35695,7 @@ var InteractionManager = function (_EventEmitter) {
         if (events[0].pointerType === 'mouse') {
             this.setCursorMode(this.cursor);
 
-            // TODO BUG for parents interactive object (border order issue)
+            //  BUG for parents interactive object (border order issue)
         }
     };
 
@@ -35966,7 +35966,7 @@ var InteractionManager = function (_EventEmitter) {
                 if (typeof touch.pressure === 'undefined') touch.pressure = touch.force || 0.5;
                 touch.twist = 0;
                 touch.tangentialPressure = 0;
-                // TODO: Remove these, as layerX/Y is not a standard, is deprecated, has uneven
+                // : Remove these, as layerX/Y is not a standard, is deprecated, has uneven
                 // support, and the fill ins are not quite the same
                 // offsetX/Y might be okay, but is not the same as clientX/Y when the canvas's top
                 // left is not 0,0 on the page
@@ -36952,7 +36952,7 @@ var Mesh = function (_core$Container) {
      *
      * @member {Uint16Array}
      */
-    //  TODO auto generate this based on draw mode!
+    //   auto generate this based on draw mode!
     _this.indices = indices || new Uint16Array([0, 1, 3, 2]);
 
     /**
@@ -37130,7 +37130,7 @@ var Mesh = function (_core$Container) {
   ;
 
   Mesh.prototype._calculateBounds = function _calculateBounds() {
-    // TODO - we can cache local bounds and use them if they are dirty (like graphics)
+    //  - we can cache local bounds and use them if they are dirty (like graphics)
     this._bounds.addVertices(this.transform, this.vertices, 0, this.vertices.length);
   };
 
@@ -38712,7 +38712,7 @@ var ParticleContainer = function (_core$Container) {
 
 
     ParticleContainer.prototype.updateTransform = function updateTransform() {
-        // TODO don't need to!
+        //  don't need to!
         this.displayObjectUpdateTransform();
         //  PIXI.Container.prototype.updateTransform.call( this );
     };
@@ -39577,7 +39577,7 @@ var ParticleRenderer = function (_core$ObjectRenderer) {
 
                 offset += stride * 4;
             } else {
-                // TODO you know this can be easier!
+                //  you know this can be easier!
                 array[offset] = 0;
                 array[offset + 1] = 0;
 

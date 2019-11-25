@@ -56,8 +56,8 @@ class Objects extends Component {
 
 const mapStateToProps = state => {
     return {
-        objects: state.editor.openedFile.pages[state.editor.currentPage].objects,
-        selectedUUID: state.editor.selectedObjects[0]
+        objects: state.editor.file.pages[state.editor.ui.currentPage].objects,
+        selectedUUID: state.editor.ui.selectedObjects[0]
     }
 };
 

@@ -179,12 +179,12 @@ class Document extends Component {
 
 const mapStateToProps = state => {
     return {
-        verticalGridSpacing: state.editor.verticalGridSpacing,
-        horizontalGridSpacing: state.editor.horizontalGridSpacing,
-        showVerticalGrid: state.editor.showVerticalGrid,
-        showHorizontalGrid: state.editor.showHorizontalGrid,
-        title: state.editor.openedFile.title,
-        defaultTitle: state.editor.defaultTitle
+        verticalGridSpacing: state.editor.ui.verticalGridSpacing,
+        horizontalGridSpacing: state.editor.ui.horizontalGridSpacing,
+        showVerticalGrid: state.editor.ui.showVerticalGrid,
+        showHorizontalGrid: state.editor.ui.showHorizontalGrid,
+        title: state.editor.file.title,
+        defaultTitle: state.editor.ui.defaultTitle
     }
 };
 

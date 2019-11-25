@@ -4,7 +4,7 @@ export default function* lsWatcher() {
     yield takeLatest('LAYOUT_CHANGED', saveLayout);
 }
 
-const getCurrentLayoutIndex = state => state.editor.currentLayout;
+const getCurrentLayoutIndex = state => state.editor.ui.currentLayout;
 
 function* saveLayout(action) {
     try {

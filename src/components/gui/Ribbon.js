@@ -121,8 +121,8 @@ class Ribbon extends Component {
 const mapStateToProps = state => {
     return {
         showHint_original: false,
-        showHint_category: state.editor.openedFile.backgroundURL.length !== 0,
-        showHint_layout: state.editor.openedFile.category !== null,
+        showHint_category: state.editor.file.backgroundURL.length !== 0,
+        showHint_layout: state.editor.file.category !== null,
         showHint_proofing: false
     }
 };

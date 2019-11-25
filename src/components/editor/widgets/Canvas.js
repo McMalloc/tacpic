@@ -38,7 +38,7 @@ class Canvas extends Component {
     hintTimer = null;
     state = {showHint: false};
     render() {
-        if (this.props.currentLayout === 4 && this.hintTimer === null) {
+        if (this.props.ui.currentLayout === 4 && this.hintTimer === null) {
             this.hintTimer = setTimeout(
                 () => this.setState({showHint: true}),
                 2000
@@ -48,8 +48,8 @@ class Canvas extends Component {
         return (
             <Wrapper>
                 {/*<Ruler/>*/}
-                {this.props.openedFile.backgroundURL &&
-                    <Background src={"images/beispiele/" + this.props.openedFile.backgroundURL}/>
+                {this.props.file.backgroundURL &&
+                    <Background src={"images/beispiele/" + this.props.file.backgroundURL}/>
                 }
                 <Popover
                     preferPlace={"above"}

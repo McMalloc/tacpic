@@ -24,7 +24,7 @@ class Manipulator extends Component {
         // bounding Box der ausgewählten Elemente berechnen und Manipulator rendern
         // Manipulator hört auf Events (delegiert vom SVG?) und verändert entsprechend per dispatch die Werte
 
-        return ( this.props.selected.length > 0 &&
+        return (this.props.selected.length > 0 &&
             <g transform={transform(this.props.bbox.x, this.props.bbox.y, this.props.selected[0].angle)}>
                 <rect
                     fill={"none"}
@@ -36,12 +36,27 @@ class Manipulator extends Component {
                     onMouseMove={this.mouseMoveHandler}
                     width={this.props.bbox.width}
                     height={this.props.bbox.height}
-                    />
+                />
                 <rect
-                    x={this.props.bbox.width/2 - 5}
-                    onMouseDown={ () => {this.props.transformStart('rotate')}}
+                    x={this.props.bbox.width / 2 - 5}
+                    style={{cursor: "pointer"}}
+                    data-role={"__rotate"}
+                    onMouseDown={event => {
+                        // event.stopPropagation();
+                        // this.props.transformStart('rotate')
+                    }}
                     y={-10}
-                    width={10} height={10} />
+                    width={10} height={10}/>
+
+                <rect
+                    x={-5}
+                    y={-5}
+                    onMouseDown={event => {
+                        // event.stopPropagation();
+                        // this.props.transformStart('scale')
+                    }}
+                    width={10} height={10}/>
+
             </g>
 
         )
@@ -49,15 +64,17 @@ class Manipulator extends Component {
 }
 
 const mapStateToProps = state => {
-    let selected = compact(state.editor.selectedObjects.map(uuid => {
-        return state.editor.openedFile.pages[state.editor.currentPage].objects.find(obj => {return obj.uuid === uuid})
+    let selected = compact(state.editor.ui.selectedObjects.map(uuid => {
+        return state.editor.file.pages[state.editor.ui.currentPage].objects.find(obj => {
+            return obj.uuid === uuid
+        })
     }));
 
     return {
         selected,
         bbox: (() => {
-            if (state.editor.selectedObjects.length === 0 || state.editor.selectedObjects[0] === "FG") return 0;
-            let element = document.getElementById(state.editor.selectedObjects[0]);
+            if (state.editor.ui.selectedObjects.length === 0 || state.editor.ui.selectedObjects[0] === "FG") return 0;
+            let element = document.getElementById(state.editor.ui.selectedObjects[0]);
             if (element === null || element === undefined) return {x: 0, y: 0, width: 0, height: 0};
             let svgbbox = element.getBBox();
             // TODO: alle ausgewählten Elemente berücksichtigen und bessere Methode finden als ID-Selektor

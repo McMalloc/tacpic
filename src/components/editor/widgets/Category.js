@@ -89,7 +89,7 @@ class Category extends Component {
 
 const mapStateToProps = state => {
     return {
-        category: state.editor.openedFile.category
+        category: state.editor.ui.file.category
     }
 };
 

@@ -29,7 +29,7 @@ class Navigator extends Component {
 
 const mapStateToProps = state => {
     return {
-        titleValid: state.editor.openedFile.title.length !== 0
+        titleValid: state.editor.file.title.length !== 0
     }
 };
 

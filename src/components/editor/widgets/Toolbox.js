@@ -64,9 +64,9 @@ class Toolbox extends Component {
 
 const mapStateToProps = state => {
     return {
-        mode: state.editor.mode,
-        fill: state.editor.fill,
-        texture: state.editor.texture
+        mode: state.editor.ui.mode,
+        fill: state.editor.ui.fill,
+        texture: state.editor.ui.texture
     }
 };
 

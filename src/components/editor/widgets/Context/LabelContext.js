@@ -105,7 +105,7 @@ class LabelContext extends Component {
 
 const mapStateToProps = state => {
     return {
-        selectedObject: find(state.editor.openedFile.pages[state.editor.currentPage].objects, {uuid: state.editor.selectedObjects[0]}) || {}
+        selectedObject: find(state.editor.file.pages[state.editor.ui.currentPage].objects, {uuid: state.editor.ui.selectedObjects[0]}) || {}
     }
 };
 

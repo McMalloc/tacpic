@@ -105,12 +105,12 @@ class Key extends Component {
 }
 
 const mapStateToProps = state => {
-    const allObjects = flatten(map(state.editor.openedFile.pages, page => page.objects));
+    const allObjects = flatten(map(state.editor.file.pages, page => page.objects));
 
     return {
         labelKeys: filter(allObjects, "isKey"),
         textureKeys: uniq(map(filter(allObjects, obj => !isUndefined(obj.pattern)), objWithPattern => objWithPattern.pattern.template)), // TODO könnte effizienter sein
-        keyedTextures: state.editor.openedFile.keyedTextures
+        keyedTextures: state.editor.file.keyedTextures
     }
 };
 

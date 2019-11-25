@@ -39,20 +39,20 @@ const widgetPadding = 8;
 
 class Editor extends Component {
     render() {
-        if (this.props.initialized) {
+        if (this.props.ui.initialized) {
             return (
                 <Wrapper>
                     <Tooltip />
-                    <Ribbon activeItem={this.props.currentLayout} menus={[
-                        {label: "editor:intro",  icon: "flag-checkered", action: () => {this.props.layoutSet(0)}},
-                        {label: "editor:original",  icon: "file-image", action: () => {this.props.layoutSet(1)}},
-                        {label: "editor:category",  icon: "tags",       action: () => {this.props.layoutSet(2)}},
-                        {label: "editor:layout",    icon: "sticky-note",    action: () => {this.props.layoutSet(3)}},
-                        {label: "editor:draw",      icon: "pen",        action: () => {this.props.layoutSet(4)}},
-                        {label: "editor:legend",    icon: "braille",    action: () => {this.props.layoutSet(5)}},
-                        {label: "editor:verbalise", icon: "book-open",  action: () => {this.props.layoutSet(6)}},
-                        {label: "editor:proofing",  icon: "glasses",    action: () => {this.props.layoutSet(7)}},
-                        {label: "editor:finish",    icon: "check-square",action: () => {this.props.layoutSet(8)}},
+                    <Ribbon activeItem={this.props.ui.currentLayout} menus={[
+                        {label: "editor_ui:intro",  icon: "flag-checkered", action: () => {this.props.layoutSet(0)}},
+                        {label: "editor_ui:original",  icon: "file-image", action: () => {this.props.layoutSet(1)}},
+                        {label: "editor_ui:category",  icon: "tags",       action: () => {this.props.layoutSet(2)}},
+                        {label: "editor_ui:layout",    icon: "sticky-note",    action: () => {this.props.layoutSet(3)}},
+                        {label: "editor_ui:draw",      icon: "pen",        action: () => {this.props.layoutSet(4)}},
+                        {label: "editor_ui:legend",    icon: "braille",    action: () => {this.props.layoutSet(5)}},
+                        {label: "editor_ui:verbalise", icon: "book-open",  action: () => {this.props.layoutSet(6)}},
+                        {label: "editor_ui:proofing",  icon: "glasses",    action: () => {this.props.layoutSet(7)}},
+                        {label: "editor_ui:finish",    icon: "check-square",action: () => {this.props.layoutSet(8)}},
                     ]} />
 
                     <Logo />
@@ -65,15 +65,15 @@ class Editor extends Component {
                         breakpoints={{lg: 1200, sm: 768}}
                         preventCollision={false}
                         layouts={{
-                            lg: this.props.widgetConfig,
-                            sm: this.props.widgetConfig
+                            lg: this.props.ui.widgetConfig,
+                            sm: this.props.ui.widgetConfig
                         }}
                         margin={[widgetPadding, widgetPadding]}
                         // onResizeStop={this.props.canvasResized}
-                        onLayoutChange={layout => this.props.layoutChanged(layout, this.props.widgetConfig)}
+                        onLayoutChange={layout => this.props.layoutChanged(layout, this.props.ui.widgetConfig)}
                         rowHeight={rowHeight}>
 
-                        {this.props.widgetConfig
+                        {this.props.ui.widgetConfig
                         // TODO: layoutChanged event-Callback gibt das aktuelle Layout ohne visible property zurück (und werden demnach ohne diese im LS gespeichert);
                             // wenn diese fehlt werden natürlich sämtliche Widgets ausgefiltert
                             .filter(widget => { return widget.visible })
@@ -82,7 +82,7 @@ class Editor extends Component {
                                     <div key={widget.i}>
                                         {/*<Tooltip />*/}
                                         <Widget
-                                            title={this.props.t("editor:" + widget.i)}
+                                            title={this.props.t("editor_ui:" + widget.i)}
                                             component={Widgets[widget.i]}/>
                                     </div>
                                 )

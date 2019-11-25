@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import connect from "react-redux/es/connect/connect";
 import transform from "./Transform";
 import patternTemplates from "./Patterns";
+import uuidv4 from "../../../../utility/uuid";
 
-class Rect extends Component {
+class SVGRect extends Component {
     render() {
         let selected = false;
         this.props.selectedObjects.forEach(uuid => {
@@ -12,6 +13,8 @@ class Rect extends Component {
 
         // TODO: wenn Farbe mit Textur geändert wird, aktualisiert sich das Objekt trotz anderem Pattern nicht. Irgendwas muss sich daher auch im style-String ändern
         const template = this.props.pattern.template;
+
+        window.rerender++;
         return (
             <g>
                 <rect
@@ -25,10 +28,8 @@ class Rect extends Component {
                     onMouseUp={ event => {
                         // event.stopPropagation();
                     }}
-                    onMouseDown={ event => {
-                        // console.log("rect mouse down");
-                        // event.stopPropagation();
-                        // selected ? this.props.transformStart('translate') : this.props.select(this.props.uuid);
+                    onMouseDown={event => {
+                        this.props.select(this.props.uuid);
                     }}
                 />
                 {template !== null && patternTemplates[template](this.props.pattern, this.props.uuid, this.props.fill)}
@@ -37,9 +38,34 @@ class Rect extends Component {
     }
 }
 
+export class Rect {
+    angle = 0;
+    pattern = {
+        angle: 0,
+        scaleX: 1,
+        scaleY: 1
+    };
+
+    constructor(x, y, width, height, fillID, textureID, moniker) {
+        this.height = height;
+        this.width = width;
+        this.x = x;
+        this.y = y;
+
+        this.moniker = moniker;
+        this.uuid = uuidv4();
+        this.fill = fillID;
+        this.pattern.template = textureID || null;
+    }
+    // Getter
+    get area() {
+        return this.calcArea();
+    }
+}
+
 const mapStateToProps = state => {
     return {
-        selectedObjects: state.editor.selectedObjects
+        selectedObjects: state.editor.ui.selectedObjects
     }
 };
 
@@ -60,4 +86,4 @@ const mapDispatchToProps = dispatch => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Rect);
+export default connect(mapStateToProps, mapDispatchToProps)(SVGRect);

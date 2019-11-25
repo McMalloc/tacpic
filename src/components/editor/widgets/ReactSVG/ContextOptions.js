@@ -57,7 +57,7 @@ class ContextOptions extends Component {
 }
 
 const mapStateToProps = state => {
-    const selectedObject = find(state.editor.openedFile.pages[state.editor.currentPage].objects, {uuid: state.editor.selectedObjects[0]});
+    const selectedObject = find(state.editor.file.pages[state.editor.ui.currentPage].objects, {uuid: state.editor.ui.selectedObjects[0]});
     if (isUndefined(selectedObject)) {
         return {
             nothingSelected: true

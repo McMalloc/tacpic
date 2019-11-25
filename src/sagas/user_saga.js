@@ -13,12 +13,24 @@ export function* saveUserLayoutWatcher() {
 function loginUser(action) {
     return axios({
         method: 'post',
-        url: 'http://localhost/wordpress/wp-json/jwt-auth/v1/token',
+        url: 'http://localhost:9292/login',
         data: {
-            username: action.payload.unameField.value,
+            login: action.payload.unameField.value,
             password: action.payload.pwdField.value
         }
     });
+}
+
+function* loginWorker(action) {
+    try {
+        const response = yield call(loginUser, action);
+        if (response.status === 200) {
+            localStorage.setItem('jwt', response.headers.authorization);
+            yield put({type: USER.LOGIN.SUCCESS});
+        }
+    } catch (error) {
+        yield put({type: USER.LOGIN.FAILURE});
+    }
 }
 
 function saveUserLayout(action) {
@@ -34,18 +46,6 @@ function saveUserLayout(action) {
             'AUTHORIZATION': 'Bearer ' + localStorage.getItem('jwt')
         }
     });
-}
-
-function* loginWorker(action) {
-    try {
-        const response = yield call(loginUser, action);
-        const user = response.data;
-        localStorage.setItem('jwt', user.token);
-        localStorage.setItem('user_id', user.user_id);
-        yield put({type: USER.LOGIN.SUCCESS, user});
-    } catch (error) {
-        yield put({type: USER.LOGIN.FAILURE, error});
-    }
 }
 
 function* saveLayoutWorker(action) {

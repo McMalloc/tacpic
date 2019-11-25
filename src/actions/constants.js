@@ -14,6 +14,10 @@ export const SEARCH     = constants('SEARCH',     ['QUERY']);
 export const PRODUCT    = constants('PRODUCT',  ['FETCH', 'GET']);
 export const PAGE       = constants('PAGE',     ['GET']);
 export const RESSOURCES = constants('RESSOURCES',   ['GET']);
+export const VERSION    = constants('VERSION',   ['GET', 'CREATE']);
+// export const GRAPHIC    = constants('GRAPHIC',   ['GET']);
+export const CATALOGUE    = constants('CATALOGUE',   ['SEARCH']);
+export const TAGS    = constants('TAGS',   ['GET', 'SEARCH', 'CREATE']);
 
 export const CANVAS_OBJECT_ADDED = 'CANVAS_OBJECT_ADDED';
 export const CANVAS_OBJECT_REMOVED = 'CANVAS_OBJECT_REMOVED';

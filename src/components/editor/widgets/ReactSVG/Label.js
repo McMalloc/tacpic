@@ -91,8 +91,8 @@ class Label extends Component {
 
 const mapStateToProps = (state, props) => {
     return {
-        selectedObjects: state.editor.selectedObjects,
-        selected: _.reduce(state.editor.selectedObjects, (result, uuid) => {
+        selectedObjects: state.editor.ui.selectedObjects,
+        selected: _.reduce(state.editor.ui.selectedObjects, (result, uuid) => {
             return (props.uuid === uuid) || result;
         }, false)
     }

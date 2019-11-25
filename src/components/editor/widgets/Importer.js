@@ -152,7 +152,7 @@ class Importer extends Component {
 
 const mapStateToProps = state => {
     return {
-        file: state.editor.openedFile.backgroundURL
+        file: state.editor.file.backgroundURL
     }
 };
 
