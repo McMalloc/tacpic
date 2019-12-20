@@ -5,6 +5,10 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from 'styled-components';
 import './i18n/i18n';
 
+// DELETE
+import deepFilter from './utility/deepPull';
+import {filter} from 'lodash';
+
 // app imports
 import './index.scss';
 import App from './App';

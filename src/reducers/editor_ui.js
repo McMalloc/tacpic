@@ -13,12 +13,12 @@ const ui = (state = {}, action) => {
         case 'TRANSFORM_START':
             lastMode = state.mode;
             return {...state, mode: action.transform};
-        case 'CLAMP_START':
-            return {...state, clamping: true};
-        case 'CLAMP_END':
-            return {...state, clamping: false};
         case 'OBJECT_SELECTED':
-            let selectedObjects = action.uuid === null ? [] : [action.uuid];
+            let uuids;
+            if (!(action.uuids instanceof Array)) { // selected single object
+                uuids = [action.uuids]
+            } else {uuids = action.uuids}
+            let selectedObjects = uuids[0] === null ? [] : uuids;
             return {...state, selectedObjects};
         case 'TRANSFORM_END':
             return {...state, mode: lastMode};
@@ -27,7 +27,6 @@ const ui = (state = {}, action) => {
         case 'HORIZONTAL_SPACING_SET':
             return {...state, horizontalGridSpacing: action.spacing};
         case 'VERTICAL_SPACING_TOGGLE':
-            console.log(action.payload);
             return {...state, showVerticalGrid: action.payload};
         case 'HORIZONTAL_SPACING_TOGGLE':
             return {...state, showHorizontalGrid: action.state};
@@ -39,7 +38,7 @@ const ui = (state = {}, action) => {
                     backgroundURL: action.filename
                 }};
         case 'SWITCH_CURSOR_MODE':
-            return {...state, mode: action.mode};
+            return {...state, tool: action.mode.toUpperCase()};
         case 'SWITCH_TEXTURE_MODE':
             return {...state, texture: action.mode};
         case 'SWITCH_FILL_MODE':

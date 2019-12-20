@@ -15,17 +15,16 @@ const sagaMiddleware = createSagaMiddleware();
 //     return next(action);
 // };
 
-
 const initialLayout = 4;
 const fromLS = JSON.parse(localStorage.getItem("custom_layout_" + initialLayout));
 const initialEditor = {
     ui: {
-        mode: 'rect',
-        clamping: false,
+        // mode: 'path',
+        tool: 'RECT',
         texture: 'striped',
-        width: 800,
+        width: 400,
         fill: "#1f78b4",
-        height: 800,
+        height: 400,
         mouseCoords: {
             originX: 0,
             originY: 0,
@@ -33,7 +32,7 @@ const initialEditor = {
             offsetY: 0
         },
         currentPage: 0,
-        verticalGridSpacing: 10, // todo: Dateieigenschaften sollten in 'openedFile'
+        verticalGridSpacing: 10, // TODO: Dateieigenschaften sollten in 'openedFile'
         horizontalGridSpacing: 10,
         showVerticalGrid: false,
         showHorizontalGrid: false,
@@ -69,7 +68,19 @@ const initialCatalogue = {
     graphics: []
 };
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 25 }) || compose;
+const composeEnhancers =
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 5 })
+    || compose;
+
+// performance hack: the current editor page is shared with all file reducers
+// to easily filter all objects in a document without structuring reducers
+// unintuitively, e.g. the currently visible page, a detail of ui state, is
+// of no concern for the objects of a document
+const shareCurrentPage = store => next => action => {
+    action.shared_currentPage = store.getState().editor.ui.currentPage;
+    return next(action);
+};
 
 export const store = createStore(
     rootReducer,
@@ -78,13 +89,8 @@ export const store = createStore(
         catalogue: initialCatalogue
     },
     composeEnhancers(
-        applyMiddleware(sagaMiddleware)
+        applyMiddleware(sagaMiddleware, shareCurrentPage)
     )
 );
-
-// store.subscribe(throttle(() => {
-//     localStorage.setItem('user_layout', JSON.stringify(store.getState().editor_ui.widgetConfig));
-// }, 1000));
-// TODO: anpassen
 
 sagaMiddleware.run(rootSaga);

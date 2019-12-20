@@ -49,7 +49,7 @@
  *      }
  *    }
  *
- *    PFSegmentation('/path.js/to/image.jpg', {
+ *    PFSegmentation('/Path.js/to/image.jpg', {
  *      sigma: 1.0,
  *      threshold: 500,
  *      minSize: 100,

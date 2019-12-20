@@ -17,16 +17,16 @@ class Toolbox extends Component {
         return (
             <Upper>
                 <Toolbar>
-                    {["rect", "ellipse", "line", "curve", "label"].map((mode, index) => {
+                    {["SELECT", "RECT", "ELLIPSE", "LINE", "PATH", "LABEL"].map((tool, index) => {
                         return (
                             <Toggle
-                                label={"editor:toggle_tools-" + mode}
+                                label={"editor:toggle_tools-" + tool}
                                 key={index}
-                                disabled={mode !== "rect" && mode !== "label"}
+                                // disabled={mode !== "rect" && mode !== "label"}
                                 fullWidth
-                                toggled={this.props.mode === mode}
+                                toggled={this.props.tool === tool}
                                 onClick={() => {
-                                    this.props.switchCursorMode(mode);
+                                    this.props.switchCursorMode(tool);
                                 }}
                             />
                         )
@@ -64,7 +64,7 @@ class Toolbox extends Component {
 
 const mapStateToProps = state => {
     return {
-        mode: state.editor.ui.mode,
+        tool: state.editor.ui.tool,
         fill: state.editor.ui.fill,
         texture: state.editor.ui.texture
     }
@@ -72,11 +72,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        switchCursorMode: mode => {
-            dispatch(switchCursorMode(mode));
+        switchCursorMode: tool => {
+            dispatch(switchCursorMode(tool));
         },
-        switchTextureMode: mode => {
-            dispatch(createTextureModeAction(mode));
+        switchTextureMode: tool => {
+            dispatch(createTextureModeAction(tool));
         },
         switchFillMode: colour => {
             dispatch(createFillModeAction(colour));

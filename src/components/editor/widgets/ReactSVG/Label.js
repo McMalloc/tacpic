@@ -31,6 +31,27 @@ const Container = styled.div`
   }
 `;
 
+//     this.props.addObject( // TODO named Prototypes nutzen für proptypes?
+//         // Hash, der key ist die UUID, darunter ist ein Objekt (oder ein ein weiteres Hash), dass die Daten enthält. Daraus werden in den Objektkomponenten die Elemente erstellt
+//         // Oder: React-Komponenten für Objekte so lassen wie sie sind und immer wieder in dieser Rendermethode neu aufrufen
+//         {
+//             type: OBJECT.LABEL,
+//             uuid: uuid,
+//             text: "Beschriftung",
+//             x: this.mouseDownX,
+//             y: this.mouseDownY,
+//             angle: 0,
+//             position: "left-top",
+//             isKey: false, // false
+//             displayDots: true,
+//             displayLetters: true,
+//             keyVal: 'Bschr', // ''
+//             width: this.state.mouseXDrag - this.mouseDownX,
+//             height: this.state.mouseYDrag - this.mouseDownY
+//         },
+//         this.props.ui.currentPage
+//     );
+
 // TODO onChange for textarea obligatory if value is set (says react)
 class Label extends Component {
     onClickHandler(event) {

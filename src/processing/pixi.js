@@ -1629,12 +1629,12 @@ module.exports = function parseURI (str, opts) {
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-// resolves . and .. elements in a path.js array with directory names there
+// resolves . and .. elements in a Path.js array with directory names there
 // must be no slashes, empty elements, or device names (c:\) in the array
 // (so also no leading and trailing slashes - it does not distinguish
 // relative and absolute paths)
 function normalizeArray(parts, allowAboveRoot) {
-  // if the path.js tries to go above the root, `up` ends up > 0
+  // if the Path.js tries to go above the root, `up` ends up > 0
   var up = 0;
   for (var i = parts.length - 1; i >= 0; i--) {
     var last = parts[i];
@@ -1649,7 +1649,7 @@ function normalizeArray(parts, allowAboveRoot) {
     }
   }
 
-  // if the path.js is allowed to go above the root, restore leading ..s
+  // if the Path.js is allowed to go above the root, restore leading ..s
   if (allowAboveRoot) {
     for (; up--; up) {
       parts.unshift('..');
@@ -1667,7 +1667,7 @@ var splitPath = function(filename) {
   return splitPathRe.exec(filename).slice(1);
 };
 
-// path.js.resolve([from ...], to)
+// Path.js.resolve([from ...], to)
 // posix version
 exports.resolve = function() {
   var resolvedPath = '',
@@ -1678,7 +1678,7 @@ exports.resolve = function() {
 
     // Skip empty and invalid entries
     if (typeof path !== 'string') {
-      throw new TypeError('Arguments to path.js.resolve must be strings');
+      throw new TypeError('Arguments to Path.js.resolve must be strings');
     } else if (!path) {
       continue;
     }
@@ -1687,10 +1687,10 @@ exports.resolve = function() {
     resolvedAbsolute = path.charAt(0) === '/';
   }
 
-  // At this point the path.js should be resolved to a full absolute path.js, but
+  // At this point the Path.js should be resolved to a full absolute Path.js, but
   // handle relative paths to be safe (might happen when process.cwd() fails)
 
-  // Normalize the path.js
+  // Normalize the Path.js
   resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
     return !!p;
   }), !resolvedAbsolute).join('/');
@@ -1698,13 +1698,13 @@ exports.resolve = function() {
   return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
 };
 
-// path.js.normalize(path.js)
+// Path.js.normalize(Path.js)
 // posix version
 exports.normalize = function(path) {
   var isAbsolute = exports.isAbsolute(path),
       trailingSlash = substr(path, -1) === '/';
 
-  // Normalize the path.js
+  // Normalize the Path.js
   path = normalizeArray(filter(path.split('/'), function(p) {
     return !!p;
   }), !isAbsolute).join('/');
@@ -1729,14 +1729,14 @@ exports.join = function() {
   var paths = Array.prototype.slice.call(arguments, 0);
   return exports.normalize(filter(paths, function(p, index) {
     if (typeof p !== 'string') {
-      throw new TypeError('Arguments to path.js.join must be strings');
+      throw new TypeError('Arguments to Path.js.join must be strings');
     }
     return p;
   }).join('/'));
 };
 
 
-// path.js.relative(from, to)
+// Path.js.relative(from, to)
 // posix version
 exports.relative = function(from, to) {
   from = exports.resolve(from).substr(1);
@@ -6664,7 +6664,7 @@ function Url() {
 var protocolPattern = /^([a-z0-9.+-]+:)/i,
     portPattern = /:[0-9]*$/,
 
-    // Special case for a simple path.js URL
+    // Special case for a simple Path.js URL
     simplePathPattern = /^(\/\/?(?!\/)[^\?\s]*)(\?[^\s]*)?$/,
 
     // RFC 2396: characters reserved for delimiting URLs.
@@ -6678,7 +6678,7 @@ var protocolPattern = /^([a-z0-9.+-]+:)/i,
     autoEscape = ['\''].concat(unwise),
     // Characters that are never ever allowed in a hostname.
     // Note that any invalid chars are also handled, but these
-    // are the ones that are *expected* to be seen, so we fast-path.js
+    // are the ones that are *expected* to be seen, so we fast-Path.js
     // them.
     nonHostChars = ['%', '/', '?', ';', '#'].concat(autoEscape),
     hostEndingChars = ['/', '?', '#'],
@@ -6741,7 +6741,7 @@ Url.prototype.parse = function(url, parseQueryString, slashesDenoteHost) {
   rest = rest.trim();
 
   if (!slashesDenoteHost && url.split('#').length === 1) {
-    // Try fast path.js regexp
+    // Try fast Path.js regexp
     var simplePath = simplePathPattern.exec(rest);
     if (simplePath) {
       this.path = rest;
@@ -6772,7 +6772,7 @@ Url.prototype.parse = function(url, parseQueryString, slashesDenoteHost) {
 
   // figure out if it's got a host
   // user@server is *always* interpreted as a hostname, and url
-  // resolution will treat //foo/bar as host=foo,path.js=bar because that's
+  // resolution will treat //foo/bar as host=foo,Path.js=bar because that's
   // how the browser resolves relative URLs.
   if (slashesDenoteHost || proto || rest.match(/^\/\/[^@\/]+@[^@\/]+/)) {
     var slashes = rest.substr(0, 2) === '//';
@@ -6795,7 +6795,7 @@ Url.prototype.parse = function(url, parseQueryString, slashesDenoteHost) {
     //
     // ex:
     // http://a@b@c/ => user:a@b host:c
-    // http://a@b?@c => user:a host:c path.js:/?@c
+    // http://a@b?@c => user:a host:c Path.js:/?@c
 
     // v0.12 (isaacs): This is not quite how Chrome does things.
     // Review our test case against browsers more comprehensively.
@@ -6816,7 +6816,7 @@ Url.prototype.parse = function(url, parseQueryString, slashesDenoteHost) {
       atSign = rest.lastIndexOf('@');
     } else {
       // atSign must be in auth portion.
-      // http://a@b/c@d => host:b auth:a path.js:/c@d
+      // http://a@b/c@d => host:b auth:a Path.js:/c@d
       atSign = rest.lastIndexOf('@', hostEnd);
     }
 
@@ -7107,8 +7107,8 @@ Url.prototype.resolveObject = function(relative) {
     // if it's a known url protocol, then changing
     // the protocol does weird things
     // first, if it's not file:, then we MUST have a host,
-    // and if there was a path.js
-    // to begin with, then we MUST have a path.js.
+    // and if there was a Path.js
+    // to begin with, then we MUST have a Path.js.
     // if it is file:, then the host is dropped,
     // because that's known to be hostless.
     // anything else is assumed to be absolute.
@@ -7167,7 +7167,7 @@ Url.prototype.resolveObject = function(relative) {
   // links like ../.. should be able
   // to crawl up to the hostname, as well.  This is strange.
   // result.protocol has already been set by now.
-  // Later on, put the first path.js part into the host field.
+  // Later on, put the first Path.js part into the host field.
   if (psychotic) {
     result.hostname = '';
     result.port = null;
@@ -7200,7 +7200,7 @@ Url.prototype.resolveObject = function(relative) {
     // fall through to the dot-handling below.
   } else if (relPath.length) {
     // it's relative
-    // throw away the existing file, and take the new path.js instead.
+    // throw away the existing file, and take the new Path.js instead.
     if (!srcPath) srcPath = [];
     srcPath.pop();
     srcPath = srcPath.concat(relPath);
@@ -7234,7 +7234,7 @@ Url.prototype.resolveObject = function(relative) {
   }
 
   if (!srcPath.length) {
-    // no path.js at all.  easy.
+    // no Path.js at all.  easy.
     // we've already handled the other stuff above.
     result.pathname = null;
     //to support http.request
@@ -7256,7 +7256,7 @@ Url.prototype.resolveObject = function(relative) {
       (last === '.' || last === '..') || last === '');
 
   // strip single dots, resolve double dots to parent dir
-  // if the path.js tries to go above the root, `up` ends up > 0
+  // if the Path.js tries to go above the root, `up` ends up > 0
   var up = 0;
   for (var i = srcPath.length; i >= 0; i--) {
     last = srcPath[i];
@@ -7271,7 +7271,7 @@ Url.prototype.resolveObject = function(relative) {
     }
   }
 
-  // if the path.js is allowed to go above the root, restore leading ..s
+  // if the Path.js is allowed to go above the root, restore leading ..s
   if (!mustEndAbs && !removeAllDots) {
     for (; up--; up) {
       srcPath.unshift('..');
@@ -10922,7 +10922,7 @@ var Graphics = function (_Container) {
         _this.blendMode = _const.BLEND_MODES.NORMAL;
 
         /**
-         * Current path.js
+         * Current Path.js
          *
          * @member {PIXI.GraphicsData}
          * @private
@@ -11304,7 +11304,7 @@ var Graphics = function (_Container) {
         var startX = cx + Math.cos(startAngle) * radius;
         var startY = cy + Math.sin(startAngle) * radius;
 
-        // If the currentPath exists, take its points. Otherwise call `moveTo` to start a path.js.
+        // If the currentPath exists, take its points. Otherwise call `moveTo` to start a Path.js.
         var points = this.currentPath ? this.currentPath.shape.points : null;
 
         if (points) {
@@ -11453,9 +11453,9 @@ var Graphics = function (_Container) {
     };
 
     /**
-     * Draws a polygon using the given path.js.
+     * Draws a polygon using the given Path.js.
      *
-     * @param {number[]|PIXI.Point[]|PIXI.Polygon} path - The path.js data used to construct the polygon.
+     * @param {number[]|PIXI.Point[]|PIXI.Polygon} path - The Path.js data used to construct the polygon.
      * @return {PIXI.Graphics} This Graphics object. Good for chaining method calls
      */
 
@@ -11833,7 +11833,7 @@ var Graphics = function (_Container) {
 
     Graphics.prototype.drawShape = function drawShape(shape) {
         if (this.currentPath) {
-            // check current path.js!
+            // check current Path.js!
             if (this.currentPath.shape.points.length <= 2) {
                 this.graphicsData.pop();
             }
@@ -11894,14 +11894,14 @@ var Graphics = function (_Container) {
     };
 
     /**
-     * Closes the current path.js.
+     * Closes the current Path.js.
      *
      * @return {PIXI.Graphics} Returns itself.
      */
 
 
     Graphics.prototype.closePath = function closePath() {
-        // ok so close path.js assumes next one is a hole!
+        // ok so close Path.js assumes next one is a hole!
         var currentPath = this.currentPath;
 
         if (currentPath && currentPath.shape) {
@@ -11912,7 +11912,7 @@ var Graphics = function (_Container) {
     };
 
     /**
-     * Adds a hole in the current path.js.
+     * Adds a hole in the current Path.js.
      *
      * @return {PIXI.Graphics} Returns itself.
      */
@@ -16540,7 +16540,7 @@ var CanvasMaskManager = function () {
                     context.lineTo(points[j * 2], points[j * 2 + 1]);
                 }
 
-                // if the first and last point are the same close the path.js - much neater :)
+                // if the first and last point are the same close the Path.js - much neater :)
                 if (points[0] === points[points.length - 2] && points[1] === points[points.length - 1]) {
                     context.closePath();
                 }
@@ -18685,7 +18685,7 @@ var _Filter3 = _interopRequireDefault(_Filter2);
 
 var _math = require('../../../../math');
 
-var _path = require('path.js');
+var _path = require('Path.js');
 
 var _TextureMatrix = require('../../../../textures/TextureMatrix');
 
@@ -22462,7 +22462,7 @@ var _Shader = require('../../Shader');
 
 var _Shader2 = _interopRequireDefault(_Shader);
 
-var _path = require('path.js');
+var _path = require('Path.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25164,7 +25164,7 @@ var BaseTexture = function (_EventEmitter) {
      * Changes the source image of the texture.
      * The original source must be an Image element.
      *
-     * @param {string} newSrc - the path.js of the image
+     * @param {string} newSrc - the Path.js of the image
      */
 
 
@@ -28063,7 +28063,7 @@ function rgb2hex(rgb) {
  *
  * @memberof PIXI.utils
  * @function getResolutionOfUrl
- * @param {string} url - the image path.js
+ * @param {string} url - the image Path.js
  * @param {number} [defaultValue=1] - the defaultValue if no filename prefix is set.
  * @return {number} resolution / device pixel ratio of an asset
  */
@@ -28116,7 +28116,7 @@ function decomposeDataUri(dataUri) {
  *
  * @memberof PIXI.utils
  * @function getUrlFileExtension
- * @param {string} url - the image path.js
+ * @param {string} url - the image Path.js
  * @return {string|undefined} image extension
  */
 function getUrlFileExtension(url) {
@@ -32238,7 +32238,7 @@ var core = _interopRequireWildcard(_core);
 
 var _const = require('../../core/const');
 
-var _path = require('path.js');
+var _path = require('Path.js');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -32400,7 +32400,7 @@ var _core = require('../../core');
 
 var core = _interopRequireWildcard(_core);
 
-var _path = require('path.js');
+var _path = require('Path.js');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -33096,7 +33096,7 @@ var _core = require('../../core');
 
 var core = _interopRequireWildcard(_core);
 
-var _path = require('path.js');
+var _path = require('Path.js');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -33647,7 +33647,7 @@ var _core = require('../../core');
 
 var core = _interopRequireWildcard(_core);
 
-var _path = require('path.js');
+var _path = require('Path.js');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -33753,7 +33753,7 @@ var _core = require('../../core');
 
 var core = _interopRequireWildcard(_core);
 
-var _path = require('path.js');
+var _path = require('Path.js');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -33888,7 +33888,7 @@ var _core = require('../../core');
 
 var core = _interopRequireWildcard(_core);
 
-var _path = require('path.js');
+var _path = require('Path.js');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -36464,7 +36464,7 @@ exports.default = function () {
     };
 };
 
-var _path = require('path.js');
+var _path = require('Path.js');
 
 var path = _interopRequireWildcard(_path);
 
@@ -36843,7 +36843,7 @@ var _core = require('../core');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function getResourcePath(resource, baseUrl) {
-    // Prepend url path.js unless the resource image is a data url
+    // Prepend url Path.js unless the resource image is a data url
     if (resource.isDataUrl) {
         return resource.data.meta.image;
     }
@@ -38371,7 +38371,7 @@ var _Mesh = require('../Mesh');
 
 var _Mesh2 = _interopRequireDefault(_Mesh);
 
-var _path = require('path.js');
+var _path = require('Path.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

@@ -2,29 +2,44 @@ import React, {Component} from 'react'
 import connect from "react-redux/es/connect/connect";
 import Manipulator from "./Manipulator";
 
-import {debounce} from "lodash";
-
-import SVGRect, {Rect} from "./Rect";
-import {OBJECT} from "../../constants";
-import Label from "./Label";
+import mapObject from "./index";
 import uuidv4 from "../../../../utility/uuid";
 import ContextOptions from "./ContextOptions";
-import {find} from "lodash";
+import {switchCursorMode} from "../../../../actions";
+import PathIndicator from "./PathManipulator";
+
+import styled from 'styled-components';
+import SVGGroup from "./Group";
 
 window.rerender = 0;
+
+const Indicator = styled.div`
+    display: inline-block;
+    padding: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    border: 1px solid grey;
+    border-radius: 2px;
+`;
 
 class InteractiveSVG extends Component {
     svgElement = React.createRef();
     state = {
         showContext: false,
+
         dragging: false,
         mouseIsDown: false,
+        openPath: false,
+        pathClosing: false,
+        lastUuid: null,
+        actuallyMoved: false,
+        transform: null, // transform mode while dragging the cursor
+
         mouseOffsetX: 0,
         mouseOffsetY: 0,
         mouseDownX: 0,
         mouseDownY: 0
     };
-    lastUuid = null;
 
     currentX = eventX => {
         return eventX - this.svgElement.current.getBoundingClientRect().left;
@@ -40,272 +55,283 @@ class InteractiveSVG extends Component {
 
     keyDownHandler = event => {
         // const selectedObject = find(this.props.file.pages[this.props.currentPage].objects, {uuid: this.props.selectedObjects[0]});
-
-        switch (event.which) {// TODO use constants instead of magic numbers
-            case 38: // up
-                this.props.transformStart("translate");
-                this.props.transform.translate({
-                    x0: 0,
-                    y0: 0,
-                    x1: 0,
-                    y1: -2
-                });
-                this.props.transformEnd();
-                break;
-            case 39: // right
-                this.props.transformStart("translate");
-                this.props.transform.translate({
-                    x0: 0,
-                    y0: 0,
-                    x1: 2,
-                    y1: 0
-                });
-                this.props.transformEnd();
-                break;
-            case 40: // down
-                this.props.transformStart("translate");
-                this.props.transform.translate({
-                    x0: 0,
-                    y0: 0,
-                    x1: 0,
-                    y1: 2
-                });
-                this.props.transformEnd();
-                break;
-            case 37: // left
-                this.props.transformStart("translate");
-                this.props.transform.translate({
-                    x0: 0,
-                    y0: 0,
-                    x1: -2,
-                    y1: 0
-                });
-                this.props.transformEnd();
-                break;
-        }
+        /*
+            switch (event.which) {// TODO use constants instead of magic numbers
+                case 38: // up
+                    this.props.transformStart("translate");
+                    this.props.transform.translate({
+                        x0: 0,
+                        y0: 0,
+                        x1: 0,
+                        y1: -2
+                    });
+                    this.props.transformEnd();
+                    break;
+                case 39: // right
+                    this.props.transformStart("translate");
+                    this.props.transform.translate({
+                        x0: 0,
+                        y0: 0,
+                        x1: 2,
+                        y1: 0
+                    });
+                    this.props.transformEnd();
+                    break;
+                case 40: // down
+                    this.props.transformStart("translate");
+                    this.props.transform.translate({
+                        x0: 0,
+                        y0: 0,
+                        x1: 0,
+                        y1: 2
+                    });
+                    this.props.transformEnd();
+                    break;
+                case 37: // left
+                    this.props.transformStart("translate");
+                    this.props.transform.translate({
+                        x0: 0,
+                        y0: 0,
+                        x1: -2,
+                        y1: 0
+                    });
+                    this.props.transformEnd();
+                    break;
+            }*/
     };
 
     mouseDownHandler = event => {
-        let originator = event.nativeEvent.path[0].dataset.role;
+        let target = event.nativeEvent.path[0];
+        // check if a group was the actual target since the event first fires
+        // on visible elements, and later bubbles up to the group
+        for (let i = 0; i < event.nativeEvent.path.length; i++) {
+            let element = event.nativeEvent.path[i];
+            if (element.dataset && element.dataset.group) {
+                target = event.nativeEvent.path[i];
+                break;
+            }
+        }
+
+        const mouseDownX = this.currentX(event.clientX);
+        const mouseDownY = this.currentY(event.clientY);
+
+        // TODO: transparenten Manipulator abfangen
+        // transform sollte auch bei einem klick auf den manipulator funktionieren, für gruppen
+
+        if (target.dataset.role === 'CANVAS') {
+            this.props.unselect();
+        }
+
+        if (target.dataset.role === 'ROTATE') {
+            this.setState({transform: 'rotate'});
+        }
+
+        if (target.dataset.selectable) {
+            this.props.select([target.id]);
+        }
+
+        if (target.dataset.transformable) { // TODO sinnig?
+            console.log(event.nativeEvent.path);
+            this.setState({transform: 'translate'});
+        }
+
+        if (this.props.ui.tool === 'PATH' && this.state.openPath) { // add additional vertices
+            let pathClosing = target.dataset.role === 'CLOSE_PATH';
+            this.setState({pathClosing});
+
+            this.props.addPoint({
+                kind: 'Q',
+                coords: [
+                    mouseDownX,
+                    mouseDownY
+                ]
+            }, this.state.lastUuid, pathClosing);
+        }
 
         this.setState({
             showContext: false,
-            mouseDownX: this.currentX(event.clientX),
-            mouseDownY: this.currentY(event.clientY),
-            mouseIsDown: true
+            mouseIsDown: true,
+            mouseDownX, mouseDownY
         });
-
-        console.log(originator);
-        switch (originator) {
-            case '__canvas': // this.svgElement.current.id
-                this.props.unselect();
-                this.props.clampStart();
-                break;
-            case '__rotate':
-                this.props.transformStart("rotate");
-                break;
-            default: // TODO Sollten Objekte selbst handhaben
-                this.props.transformStart("translate");
-                // if (id.includes("editable")) { // editable pane of label was clicked
-                //     this.props.select(id.slice(9));
-                // } else if (id.includes("braille")) { // braille of label was clicked
-                //     this.props.select(id.slice(8));
-                // } else {
-                //     this.props.select(id);
-                // }
-                //
-                // this.props.transformStart("translate");
-                // // ein tatsächliches Objekt wurde geklickt
-                break;
-        }
-
     };
 
     mouseUpHandler = event => {
-        if (this.state.dragging) console.log("drag end");
-        this.setState({
-            mouseIsDown: false,
-            dragging: false
-        });
-        console.log("-- mouse up");
+        if (this.state.transform === null) {
+            switch (this.props.ui.tool) {
+                case 'RECT':
+                    if (this.state.dragging) { // custom
+                        this.props.addObject({
+                            // TODO in die reducer packen?
+                            uuid: uuidv4(),
+                            x: this.state.mouseDownX,
+                            y: this.state.mouseDownY,
+                            width: Math.abs(this.state.mouseOffsetX - this.state.mouseDownX),
+                            height: Math.abs(this.state.mouseOffsetY - this.state.mouseDownY),
+                            fill: this.props.ui.fill,
+                            pattern: {
+                                template: this.props.ui.texture,
+                                angle: 0,
+                                scaleX: 1,
+                                scaleY: 1
+                            },
+                            moniker: "Rechteck",
+                            angle: 0,
+                            type: 'rect'
+                        }, this.props.ui.currentPage);
+                    } else {
+                        // default sizes
+                    }
 
-        if (this.props.ui.clamping && this.state.dragging) { // an object will be created TODO or selected
-            this.props.clampEnd();
-
-            switch (this.props.ui.mode) {
-                case 'rect':
-                    let rect = new Rect(
-                        this.state.mouseDownX, this.state.mouseDownY,
-                        this.state.mouseOffsetX - this.state.mouseDownX,
-                        this.state.mouseOffsetY - this.state.mouseDownY,
-                        this.props.ui.fill,
-                        this.props.ui.texture,
-                        "Rechteck");
-                    rect.type = "rect"; // TODO doch kein Objekt mehr
-
-                    this.props.addObject(rect, this.props.ui.currentPage);
-                    this.lastUuid = rect.uuid;
-                    // this.props.select(rect.uuid);
-
-                    // TODO was besseres finden. oder ist etwas besseres notwendig?
-                    // this.setState({showContext: true});
                     break;
-                // case OBJECT.LABEL:
-                //     this.props.addObject( // TODO named Prototypes nutzen für proptypes?
-                //         // Hash, der key ist die UUID, darunter ist ein Objekt (oder ein ein weiteres Hash), dass die Daten enthält. Daraus werden in den Objektkomponenten die Elemente erstellt
-                //         // Oder: React-Komponenten für Objekte so lassen wie sie sind und immer wieder in dieser Rendermethode neu aufrufen
-                //         {
-                //             type: OBJECT.LABEL,
-                //             uuid: uuid,
-                //             text: "Beschriftung",
-                //             x: this.mouseDownX,
-                //             y: this.mouseDownY,
-                //             angle: 0,
-                //             position: "left-top",
-                //             isKey: false, // false
-                //             displayDots: true,
-                //             displayLetters: true,
-                //             keyVal: 'Bschr', // ''
-                //             width: this.state.mouseXDrag - this.mouseDownX,
-                //             height: this.state.mouseYDrag - this.mouseDownY
-                //         },
-                //         this.props.ui.currentPage
-                //     );
-                //     break;
+                case 'PATH':
+                    if (!this.state.openPath) {
+                        let uuid = uuidv4();
+                        this.props.addObject({
+                            uuid: uuid,
+                            x: 0,
+                            angle: 0,
+                            y: 0,
+                            moniker: "Pfad",
+                            points: [
+                                {
+                                    kind: 'M',
+                                    coords: [
+                                        this.state.mouseOffsetX,
+                                        this.state.mouseOffsetY
+                                    ]
+                                }
+                            ],
+                            type: 'path'
+                        }, this.props.ui.currentPage);
+
+                        this.setState({
+                            openPath: true,
+                            lastUuid: uuid
+                        });
+                    } else {
+                        if (this.state.pathClosing) {
+                            this.setState({
+                                openPath: false,
+                                pathClosing: false,
+                                lastUuid: null
+                            });
+                        }
+
+                        this.props.addPoint({
+                            kind: '',
+                            coords: [
+                                this.state.mouseOffsetX,
+                                this.state.mouseOffsetY
+                            ]
+                        }, this.state.lastUuid);
+                    }
+                    break;
+                case 'SELECT':
+                    if (!this.state.dragging) break;
+                    const bounded = (object, originX, originY, dragX, dragY) => {
+                        // TODO: invertiertes Auswahlwerkzeug
+                        // TODO: in Objektfunktionen
+                        let bbox = document.getElementById(object.uuid).getBBox();
+                        let x1 = bbox.x + object.x,
+                            x2 = x1 + bbox.width,
+                            y1 = bbox.y + object.y,
+                            y2 = y1 + bbox.height;
+
+                        return x1 >= originX && x2 <= dragX && y1 >= originY && y2 <= dragY;
+                    };
+
+                    let selectedObjects = this.props.file.pages[this.props.ui.currentPage].objects.filter((object, index) => {
+                        return bounded(
+                            object,
+                            this.state.mouseDownX,
+                            this.state.mouseDownY,
+                            this.state.mouseOffsetX,
+                            this.state.mouseOffsetY
+                        );
+                    });
+                    this.props.select(selectedObjects.map(object => {return object.uuid}));
+                    break;
                 default:
                     break;
             }
-
-            setTimeout(() => {
-                // this.props.select(rect.uuid);
-            }, 0);
         }
 
-        if (this.props.hasOwnProperty(this.props.ui.mode)) {
-            this.props.transformEnd();
-        }
-
-        // TODO: side effect, should be handled by a saga
-        // this.triggerCache();
+        this.setState({
+            mouseIsDown: false,
+            dragging: false,
+            transform: null
+        });
     };
 
     mouseMoveHandler = event => {
-        if (this.state.mouseIsDown) {
-            let moved = Math.abs(this.state.mouseDownX - this.state.mouseOffsetX) > 3 || Math.abs(this.state.mouseDownY - this.state.mouseOffsetY) > 3;
-
-            if (moved && !this.state.dragging) {
-                this.setState({dragging: true});
-            }
-
-            let mouseOffsetX = this.currentX(event.clientX);
-            let mouseOffsetY = this.currentY(event.clientY);
-
-            if (this.state.dragging) {
-                switch (this.props.ui.mode) {
-                    case 'translate':
-                        this.props.translate({
-                            x: mouseOffsetX - this.state.mouseOffsetX,
-                            y: mouseOffsetY - this.state.mouseOffsetY
-                        }, this.props.ui.currentPage, this.props.ui.selectedObjects);
-                        break;
-                    case 'rotate':
-                        this.props.rotate({
-                            originX: this.state.mouseDownX,
-                            originY: this.state.mouseDownY,
-                            offsetX: this.state.mouseOffsetX,
-                            offsetY: this.state.mouseOffsetY
-                        }, this.props.ui.currentPage, this.props.ui.selectedObjects);
-                        break;
-                    case 'scale':
-
-                        break;
-                    default:
-
-                        break;
-                }
-            }
-
+        if (!this.state.dragging && this.state.mouseIsDown) {
             this.setState({
-                mouseOffsetX,
-                mouseOffsetY
+                dragging: true
             });
         }
+
+        const mouseOffsetX = this.currentX(event.clientX);
+        const mouseOffsetY = this.currentY(event.clientY);
+
+        this.setState({mouseOffsetX, mouseOffsetY});
+
+        if (this.state.transform !== null) {
+            this.props[this.state.transform]({
+                x: mouseOffsetX - this.state.mouseOffsetX,
+                y: mouseOffsetY - this.state.mouseOffsetY
+            }, this.props.ui.currentPage, this.props.ui.selectedObjects);
+        }
     };
-
-    static OBJECTS = (props, index) => ({
-        Rect: <SVGRect key={index} {...props} />,
-        Label: <Label key={index} {...props} />,
-    });
-
-    triggerCache = debounce(() => {
-        this.props.cacheSVG(this.svgElement.current.innerHTML, this.props.ui.currentPage);
-    }, 500);
 
     render() {
         return (
             <div style={{position: "relative"}}>
-                <pre style={{position: 'absolute', fontSize: '8pt', margin: "6px"}}>
-                    offset x: {this.state.mouseOffsetX}<br/>
-                    offset y: {this.state.mouseOffsetY}<br/>
-                    origin x: {this.state.mouseDownX}<br/>
-                    origin y: {this.state.mouseDownY}<br/>
-                    render cycles: {window.rerender}<br/>
-
-                    {this.state.dragging && "dragging"}&emsp;
-                    {this.state.mouseIsDown && "mouseIsDown"}
-                </pre>
                 <svg
                     xmlns={"http://www.w3.org/2000/svg"}
                     width={this.props.ui.width}
-                    data-role={"__canvas"}
+                    data-role={"CANVAS"}
                     height={this.props.ui.height}
-                    onMouseDown={event => {
-                        this.mouseDownHandler(event)
-                    }}
-                    onKeyDown={event => {
-                        this.keyDownHandler(event)
-                    }}
-                    onMouseUp={event => {
-                        this.mouseUpHandler(event)
-                    }}
-                    onMouseMove={event => {
-                        this.mouseMoveHandler(event)
-                    }}
-                    onMouseLeave={event => {
-                        this.mouseUpHandler(event)
-                    }}
-                    onInput={event => {
-                        this.onInputHandler(event)
-                    }}
+                    onMouseDown={this.mouseDownHandler}
+                    onKeyDown={this.keyDownHandler}
+                    onMouseUp={this.mouseUpHandler}
+                    onMouseMove={this.mouseMoveHandler}
+                    // onMouseLeave={this.mouseUpHandler} bessere Prozedur
+                    onInput={this.onInputHandler}
                     ref={this.svgElement}
                     tabIndex={0}
                     style={{backgroundColor: "rgba(255,255,255,.5)"}}>
 
                     {
                         this.props.file.pages[this.props.ui.currentPage].objects.map((object, index) => {
-                            return InteractiveSVG.OBJECTS(object, index)[object.constructor.name];
+                            return mapObject(object, index);
                         })
                     }
 
-
-                    {/*<Manipulator> muss hier stehen, um immer über allen anderen Objekten zu sein.*/}
                     <Manipulator/>
 
+                    {this.props.ui.tool === 'PATH' && this.state.lastUuid !== null && // TODO: component should be aware itself if there is nothing to draw
+                    <PathIndicator
+                        uuid={this.state.lastUuid}
+                        currentX={this.state.mouseOffsetX}
+                        currentY={this.state.mouseOffsetY}/>
+                    }
 
-                    {this.state.dragging && !this.props.hasOwnProperty(this.props.ui.mode) &&
+
+                    {/*TODO bisher nur RECT, auch relevant für andere TOOLs (LABEL, SELECT, ...) */}
+                    {this.state.dragging && this.state.transform === null && (this.props.ui.tool === 'RECT' || this.props.ui.tool === 'SELECT') &&
                     <rect
                         x={this.state.mouseDownX}
                         y={this.state.mouseDownY}
-                        fill={'rgba(0,0,255,0.06)'}
-                        stroke={'rgba(0,0,255,0.1)'}
-                        strokeWidth={'2px'}
+                        fill={'rgba(0,0,255,0.02)'}
+                        stroke={'rgba(0,50,255,0.3)'}
+                        strokeWidth={'1px'}
                         width={this.state.mouseOffsetX - this.state.mouseDownX}
                         height={this.state.mouseOffsetY - this.state.mouseDownY}/>
                     }
                 </svg>
                 {this.state.showContext &&
                 <ContextOptions
-                    uuid={this.lastUuid}
+                    uuid={this.state.lastUuid}
                     x={this.state.mouseOffsetX}
                     y={this.state.mouseOffsetY}/>
                 }
@@ -320,6 +346,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        switchCursorMode: mode => {
+            dispatch(switchCursorMode(mode));
+        },
         addObject: (object, currentPage) => {
             dispatch({
                 type: 'OBJECT_ADDED',
@@ -352,11 +381,6 @@ const mapDispatchToProps = dispatch => {
                 uuids: selectedObjects
             });
         },
-        transformEnd: () => {
-            dispatch({
-                type: 'TRANSFORM_END'
-            })
-        },
         transformStart: (transform, uuids) => {
             dispatch({
                 type: 'TRANSFORM_START',
@@ -373,23 +397,13 @@ const mapDispatchToProps = dispatch => {
         unselect: () => {
             dispatch({
                 type: 'OBJECT_SELECTED',
-                uuid: null
+                uuids: [null]
             });
         },
-        select: uuid => {
+        select: uuids => {
             dispatch({
                 type: 'OBJECT_SELECTED',
-                uuid: uuid
-            });
-        },
-        clampStart: () => {
-            dispatch({
-                type: 'CLAMP_START'
-            });
-        },
-        clampEnd: () => {
-            dispatch({
-                type: 'CLAMP_END'
+                uuids
             });
         },
         changeProp: (uuid, prop, value, currentPage) => {
@@ -400,6 +414,12 @@ const mapDispatchToProps = dispatch => {
                 value,
                 currentPage
             });
+        },
+        addPoint: (point, uuid, circular) => {
+            dispatch({
+                type: 'PATH_POINT_ADDED',
+                point, uuid, circular
+            })
         }
     }
 };
