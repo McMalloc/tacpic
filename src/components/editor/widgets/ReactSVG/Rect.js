@@ -11,7 +11,7 @@ export default function SVGRect(props) {
             <rect
                 id={props.uuid}
                 transform={transform(props.x, props.y, props.angle)}
-                style={{fill: template !== null ? 'url(#pattern-' + template + '-' + props.uuid + '' : props.fill || "transparent"}}
+                style={{cursor: 'pointer', fill: template !== null ? 'url(#pattern-' + template + '-' + props.uuid + '' : props.fill || "transparent"}}
                 strokeWidth={2}
                 data-transformable={1}
                 data-selectable={1}

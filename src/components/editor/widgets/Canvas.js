@@ -13,10 +13,10 @@ import Hint from "../../gui/Popover";
 // `;
 
 const Wrapper = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  //position: absolute;
+  //top: 50%;
+  //left: 50%;
+  //transform: translate(-50%, -50%);
   box-sizing: content-box;
   box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 `;
@@ -46,20 +46,21 @@ class Canvas extends Component {
         }
 
         return (
-            <Wrapper>
-                {/*<Ruler/>*/}
-                {this.props.file.backgroundURL &&
-                    <Background src={"images/beispiele/" + this.props.file.backgroundURL}/>
-                }
-                <Popover
-                    preferPlace={"above"}
-                    tipSize={12}
-                    onOuterAction={() => this.setState({showHint: false})}
-                    isOpen={this.state.showHint}
-                    body={<Hint>Ziehen Sie hier ein Rechteck mit der linken Maustaste auf, um zu beginnen.</Hint>}>
-                    <InteractiveSVG/>
-                </Popover>
-            </Wrapper>
+            <InteractiveSVG/>
+            // <Wrapper>
+            //     {/*<Ruler/>*/}
+            //     {this.props.file.backgroundURL &&
+            //         <Background src={"images/beispiele/" + this.props.file.backgroundURL}/>
+            //     }
+            //     <Popover
+            //         preferPlace={"above"}
+            //         tipSize={12}
+            //         onOuterAction={() => this.setState({showHint: false})}
+            //         isOpen={this.state.showHint}
+            //         body={<Hint>Ziehen Sie hier ein Rechteck mit der linken Maustaste auf, um zu beginnen.</Hint>}>
+            //         <InteractiveSVG/>
+            //     </Popover>
+            // </Wrapper>
         )
     }
 }

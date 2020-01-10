@@ -15,8 +15,6 @@ const ButtonSet = styled.div`
   margin-left: ${props => props.theme.spacing[2]};
 `;
 
-
-
 class Objects extends Component {
     render() {
         return (

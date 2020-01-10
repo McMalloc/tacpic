@@ -9,9 +9,6 @@ import {switchCursorMode} from "../../../../actions";
 import PathIndicator from "./PathManipulator";
 
 import styled from 'styled-components';
-import SVGGroup from "./Group";
-
-window.rerender = 0;
 
 const Indicator = styled.div`
     display: inline-block;
@@ -41,20 +38,61 @@ class InteractiveSVG extends Component {
         mouseDownY: 0
     };
 
-    currentX = eventX => {
-        return eventX - this.svgElement.current.getBoundingClientRect().left;
-    };
-    currentY = eventY => {
-        return eventY - this.svgElement.current.getBoundingClientRect().top;
-    };
+    componentDidMount() {
+        this.svgRefPoint = this.svgElement.current.createSVGPoint();
+    }
 
-    onInputHandler = event => {
-        event.target.tagName === "TEXTAREA" && // oh look, it is an editable label!
-        this.props.changeProp(this.props.ui.selectedObjects[0], 'text', event.target.value, this.props.ui.currentPage);
-    };
+    transformCoords(x, y) { // TODO eventuell in utilities, als Prototyp?
+        this.svgRefPoint.x = x;
+        this.svgRefPoint.y = y;
+        return this.svgRefPoint.matrixTransform(
+            this.svgElement.current.getScreenCTM().inverse()
+        );
+    }
 
     keyDownHandler = event => {
-        // const selectedObject = find(this.props.file.pages[this.props.currentPage].objects, {uuid: this.props.selectedObjects[0]});
+        event.stopPropagation();
+        switch (event.which) {// TODO use constants instead of magic numbers
+            case 38: // up
+                this.props.changeViewport(
+                    this.props.ui.scalingFactor,
+                    this.props.ui.viewPortX,
+                    this.props.ui.viewPortY - 10);
+                break;
+            case 39: // right
+                this.props.changeViewport(
+                    this.props.ui.scalingFactor,
+                    this.props.ui.viewPortX + 10,
+                    this.props.ui.viewPortY);
+                break;
+            case 40: // down
+                this.props.changeViewport(
+                    this.props.ui.scalingFactor,
+                    this.props.ui.viewPortX,
+                    this.props.ui.viewPortY + 10);
+                break;
+            case 37: // left
+                this.props.changeViewport(
+                    this.props.ui.scalingFactor,
+                    this.props.ui.viewPortX - 10,
+                    this.props.ui.viewPortY);
+                break;
+            case 187: // +
+                this.props.changeViewport(
+                    this.props.ui.scalingFactor * 0.99,
+                    this.props.ui.viewPortX,
+                    this.props.ui.viewPortY);
+                break;
+            case 189: // -
+                this.props.changeViewport(
+                    this.props.ui.scalingFactor * 1.01,
+                    this.props.ui.viewPortX,
+                    this.props.ui.viewPortY);
+                break;
+            default:
+                break;
+        }
+        return false;
         /*
             switch (event.which) {// TODO use constants instead of magic numbers
                 case 38: // up
@@ -100,6 +138,7 @@ class InteractiveSVG extends Component {
             }*/
     };
 
+
     mouseDownHandler = event => {
         let target = event.nativeEvent.path[0];
         // check if a group was the actual target since the event first fires
@@ -112,8 +151,10 @@ class InteractiveSVG extends Component {
             }
         }
 
-        const mouseDownX = this.currentX(event.clientX);
-        const mouseDownY = this.currentY(event.clientY);
+        let transformedCoords = this.transformCoords(event.clientX, event.clientY);
+
+        const mouseDownX = transformedCoords.x;
+        const mouseDownY = transformedCoords.y;
 
         // TODO: transparenten Manipulator abfangen
         // transform sollte auch bei einem klick auf den manipulator funktionieren, für gruppen
@@ -131,7 +172,6 @@ class InteractiveSVG extends Component {
         }
 
         if (target.dataset.transformable) { // TODO sinnig?
-            console.log(event.nativeEvent.path);
             this.setState({transform: 'translate'});
         }
 
@@ -151,6 +191,7 @@ class InteractiveSVG extends Component {
         this.setState({
             showContext: false,
             mouseIsDown: true,
+            lastMousedown: Date.now(),
             mouseDownX, mouseDownY
         });
     };
@@ -177,7 +218,7 @@ class InteractiveSVG extends Component {
                             moniker: "Rechteck",
                             angle: 0,
                             type: 'rect'
-                        }, this.props.ui.currentPage);
+                        });
                     } else {
                         // default sizes
                     }
@@ -188,9 +229,9 @@ class InteractiveSVG extends Component {
                         let uuid = uuidv4();
                         this.props.addObject({
                             uuid: uuid,
-                            x: 0,
+                            x: 0, // eigentlich: this.state.mouseDownX,
                             angle: 0,
-                            y: 0,
+                            y: 0, // eigentlich: this.state.mouseDownY,
                             moniker: "Pfad",
                             points: [
                                 {
@@ -202,7 +243,7 @@ class InteractiveSVG extends Component {
                                 }
                             ],
                             type: 'path'
-                        }, this.props.ui.currentPage);
+                        });
 
                         this.setState({
                             openPath: true,
@@ -231,6 +272,8 @@ class InteractiveSVG extends Component {
                     const bounded = (object, originX, originY, dragX, dragY) => {
                         // TODO: invertiertes Auswahlwerkzeug
                         // TODO: in Objektfunktionen
+                        // TODO: berechnet nicht korrekt, wenn Objekt rotiert ist
+                        // TODO:
                         let bbox = document.getElementById(object.uuid).getBBox();
                         let x1 = bbox.x + object.x,
                             x2 = x1 + bbox.width,
@@ -249,7 +292,30 @@ class InteractiveSVG extends Component {
                             this.state.mouseOffsetY
                         );
                     });
-                    this.props.select(selectedObjects.map(object => {return object.uuid}));
+                    this.props.select(selectedObjects.map(object => {
+                        return object.uuid
+                    }));
+                    break;
+                case 'LABEL':
+                    if (!this.state.dragging) break;
+                    let uuid = uuidv4();
+                    this.props.addObject({
+                        uuid: uuid,
+                        x: this.state.mouseDownX,
+                        y: this.state.mouseDownY,
+                        width: Math.abs(this.state.mouseOffsetX - this.state.mouseDownX),
+                        height: Math.abs(this.state.mouseOffsetY - this.state.mouseDownY),
+                        text: 'Neue Beschriftung',
+                        moniker: "Beschriftung",
+                        displayDots: true,
+                        displayLetters: true,
+                        editMode: true,
+                        isKey: false,
+                        type: 'label'
+                    });
+                    setTimeout(() => {
+                        document.getElementById("editable_" + uuid).focus();
+                    }, 200);
                     break;
                 default:
                     break;
@@ -270,8 +336,10 @@ class InteractiveSVG extends Component {
             });
         }
 
-        const mouseOffsetX = this.currentX(event.clientX);
-        const mouseOffsetY = this.currentY(event.clientY);
+        let transformedCoords = this.transformCoords(event.clientX, event.clientY);
+
+        const mouseOffsetX = transformedCoords.x;
+        const mouseOffsetY = transformedCoords.y;
 
         this.setState({mouseOffsetX, mouseOffsetY});
 
@@ -285,27 +353,44 @@ class InteractiveSVG extends Component {
 
     render() {
         return (
-            <div style={{position: "relative"}}>
+            <div style={{position: 'relative', width: '100%', height: '100%'}}>
                 <svg
                     xmlns={"http://www.w3.org/2000/svg"}
-                    width={this.props.ui.width}
+                    width={'100%'} height={'100%'}
+                    viewBox={`${this.props.ui.viewPortX} ${this.props.ui.viewPortY} ${this.props.file.width * this.props.ui.scalingFactor} ${this.props.file.height * this.props.ui.scalingFactor}`}
                     data-role={"CANVAS"}
-                    height={this.props.ui.height}
+                    id={"MAIN-CANVAS"}
                     onMouseDown={this.mouseDownHandler}
                     onKeyDown={this.keyDownHandler}
                     onMouseUp={this.mouseUpHandler}
                     onMouseMove={this.mouseMoveHandler}
                     // onMouseLeave={this.mouseUpHandler} bessere Prozedur
-                    onInput={this.onInputHandler}
+                    onInput={this.keyDownHandler}
                     ref={this.svgElement}
                     tabIndex={0}
-                    style={{backgroundColor: "rgba(255,255,255,.5)"}}>
+                    style={{backgroundColor: "rgba(0,0,0,0.08)", position: 'absolute'}}>
 
-                    {
-                        this.props.file.pages[this.props.ui.currentPage].objects.map((object, index) => {
-                            return mapObject(object, index);
-                        })
-                    }
+                    <g>
+                        <rect data-role={"CANVAS"} x={0} y={0} width={this.props.file.width}
+                              height={this.props.file.height} stroke={'rgba(0,0,0,0.3)'} fill={'white'}/>
+                        {
+                            this.props.file.pages[this.props.ui.currentPage].objects.map((object, index) => {
+                                return mapObject(object, index);
+                            })
+                        }
+                    </g>
+                </svg>
+                <svg
+                    xmlns={"http://www.w3.org/2000/svg"}
+                    width={'100%'} height={'100%'}
+                    id={"CONTROL-LAYER"}
+                    data-role={"CONTROL"}
+                    // onMouseDown={this.mouseDownHandler}
+                    // onKeyDown={this.keyDownHandler}
+                    // onMouseUp={this.mouseUpHandler}
+                    // onMouseMove={this.mouseMoveHandler}
+                    // onInput={this.keyDownHandler}
+                    style={{position: 'absolute', pointerEvents: "none"}}>
 
                     <Manipulator/>
 
@@ -316,9 +401,7 @@ class InteractiveSVG extends Component {
                         currentY={this.state.mouseOffsetY}/>
                     }
 
-
-                    {/*TODO bisher nur RECT, auch relevant für andere TOOLs (LABEL, SELECT, ...) */}
-                    {this.state.dragging && this.state.transform === null && (this.props.ui.tool === 'RECT' || this.props.ui.tool === 'SELECT') &&
+                    {this.state.dragging && this.state.transform === null && (this.props.ui.tool === 'RECT' || this.props.ui.tool === 'SELECT' || this.props.ui.tool === 'LABEL') &&
                     <rect
                         x={this.state.mouseDownX}
                         y={this.state.mouseDownY}
@@ -328,6 +411,7 @@ class InteractiveSVG extends Component {
                         width={this.state.mouseOffsetX - this.state.mouseDownX}
                         height={this.state.mouseOffsetY - this.state.mouseDownY}/>
                     }
+
                 </svg>
                 {this.state.showContext &&
                 <ContextOptions
@@ -344,16 +428,21 @@ const mapStateToProps = state => {
     return {...state.editor}
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         switchCursorMode: mode => {
             dispatch(switchCursorMode(mode));
         },
-        addObject: (object, currentPage) => {
+        changeViewport: (scalingFactor, viewPortX, viewPortY) => {
+            dispatch({
+                type: 'CHANGE_VIEWPORT',
+                scalingFactor, viewPortX, viewPortY
+            });
+        },
+        addObject: object => {
             dispatch({
                 type: 'OBJECT_ADDED',
-                object,
-                currentPage
+                object
             });
         },
         rotate: (coords, currentPage, selectedObjects) => {

@@ -22,6 +22,12 @@ const ui = (state = {}, action) => {
             return {...state, selectedObjects};
         case 'TRANSFORM_END':
             return {...state, mode: lastMode};
+        case 'CHANGE_VIEWPORT':
+            return {...state,
+                scalingFactor: action.scalingFactor,
+                viewPortX: action.viewPortX,
+                viewPortY: action.viewPortY
+            };
         case 'VERTICAL_SPACING_SET':
             return {...state, verticalGridSpacing: action.spacing};
         case 'HORIZONTAL_SPACING_SET':

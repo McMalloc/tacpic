@@ -32,10 +32,9 @@ const initialEditor = {
             offsetY: 0
         },
         currentPage: 0,
-        verticalGridSpacing: 10, // TODO: Dateieigenschaften sollten in 'openedFile'
-        horizontalGridSpacing: 10,
-        showVerticalGrid: false,
-        showHorizontalGrid: false,
+        scalingFactor: 1,
+        viewPortX: 0,
+        viewPortY: 0,
         selectedObjects: [],
         defaultTitle: true,
         initialized: true,
@@ -51,9 +50,18 @@ const initialEditor = {
         description: "",
         category: null,
         keyedTextures: {},
+        medium: 'swell',
+        system: 'de-de-g2', // name of the liblouis translation table
+        width: 210,
+        height: 290,
+        verticalGridSpacing: 10, // TODO: Dateieigenschaften sollten in 'openedFile'
+        horizontalGridSpacing: 10,
+        showVerticalGrid: false,
+        showHorizontalGrid: false,
         pages: [
             {
                 name: "Seite 1",
+                text: false, // TODO Textseiten werden anders behandelt, starres Braille-Layout
                 objects: []
             }
         ]

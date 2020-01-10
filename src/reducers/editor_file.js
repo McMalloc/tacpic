@@ -10,8 +10,8 @@ const file = (state = {}, action) => {
     let objects, oldState;
     switch (action.type) {
         case 'OBJECT_ADDED':
-            oldState = {...state};
-            oldState.pages[action.currentPage].objects.push(action.object);
+            oldState = cloneDeep(state);
+            oldState.pages[action.shared_currentPage].objects.push(action.object);
 
             return oldState;
         case 'PATH_POINT_ADDED':
@@ -31,9 +31,6 @@ const file = (state = {}, action) => {
                 currentPoint[1] = action.point.coords[1];
 
                 currentPath.points[0] = backup;
-
-                // currentPath.points[currentPath.points.length - 1].coords.splice(0, 0, action.point.coords[0]);
-                // currentPath.points[currentPath.points.length - 1].coords.splice(1, 0, action.point.coords[1]);
             } else { // new vertex
                 if (action.circular) { // last point will be at the same position as M
                     action.point.coords = currentPath.points[0].coords;
@@ -72,11 +69,12 @@ const file = (state = {}, action) => {
             // TODO sauberer für nested objects
             // TODO Idee: statt tatsächliches Objekt immer wieder während des Verschiebens neu zu rendern, die Browser-native <img> drag and drop Vorschau anzeigen
 
-
             return oldState;
         case 'OBJECT_PROP_CHANGED':
             oldState = cloneDeep(state);
-            filter(oldState.pages[action.currentPage].objects, {uuid: action.uuid}).forEach(object => {
+
+            filter(oldState.pages[action.shared_currentPage].objects,
+                {uuid: action.uuid}).forEach(object => {
                 object[action.prop] = action.value;
 
                 if (action.prop === "isKey" && object.keyVal === '') {
@@ -106,7 +104,7 @@ const file = (state = {}, action) => {
         case 'OBJECTS_GROUPED':
             oldState = {...state};
 
-            let objects = oldState.pages[action.shared_currentPage].objects;
+            objects = oldState.pages[action.shared_currentPage].objects;
             let groupedObjects = deepPull(objects, action.uuids);
             objects.push({
                 uuid: uuidv4(),

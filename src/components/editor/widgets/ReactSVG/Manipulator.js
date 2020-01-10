@@ -5,26 +5,26 @@ import {compact, reduce} from "lodash";
 import transformations, {combineBBoxes} from "./methods";
 
 class Manipulator extends Component {
-    mouseDownHandler = event => {
-        // event.stopPropagation();
-        // TODO wenn ein Label selektiert ist, sollte ein Doppelclick auf den manipulator
-        // den focus auf das editierbare Label verschieben (mit $(id).focus(), wenn tabindex gesetzt und der debugger könnte interferieren)
-        // Ein Umsetzen des des Cursors würde aber wieder den Manipulator auswählen und die Cursorposition zurücksetzen
+    constructor(props) {
+        super(props);
+        this.doubleClickHandler = this.doubleClickHandler.bind(this);
+    }
+
+    doubleClickHandler = event => {
+        if (this.props.selected.length === 1) {
+            let lastSelectedId = this.props.selected[0].uuid;
+            setTimeout(() => {
+                document.getElementById("editable_" + lastSelectedId).focus();
+            }, 0);
+            this.props.startEditing(lastSelectedId);
+        }
     };
-
-    mouseUpHandler = event => {};
-
-    mouseMoveHandler = event => {};
 
     render() {
         // bounding Box der ausgewählten Elemente berechnen und Manipulator rendern
         // Manipulator hört auf Events (delegiert vom SVG?) und verändert entsprechend per dispatch die Werte
-
         if (this.props.selected.length > 0) {
-
             const bbox = combineBBoxes(this.props.selected);
-
-            // fill={"transparent"} bewirkt, dass translate nicht ausgeführt wird, sollte es aber trotzdem
             return (
                 <g transform={transform(bbox.x, bbox.y, this.props.selected[0].angle)}>
                     <rect
@@ -34,8 +34,10 @@ class Manipulator extends Component {
                         strokeDasharray={"5,5"}
                         onMouseDown={this.mouseDownHandler}
                         data-transformable={1}
+                        data-role="MANIPULATOR"
                         onMouseUp={this.mouseUpHandler}
                         onMouseMove={this.mouseMoveHandler}
+                        onDoubleClick={this.doubleClickHandler}
                         width={bbox.width}
                         height={bbox.height}
                     />
@@ -75,9 +77,7 @@ const mapStateToProps = state => {
         })
     }));
 
-    return {
-        selected
-    }
+    return { selected }
 };
 
 const mapDispatchToProps = dispatch => {
@@ -86,7 +86,20 @@ const mapDispatchToProps = dispatch => {
             dispatch({
                 type: 'TRANSFORM_START',
                 transform
-            })
+            });
+        },
+        startEditing: uuid => {
+            dispatch({
+                type: 'OBJECT_PROP_CHANGED',
+                prop: 'editMode',
+                value: true,
+                uuid
+            });
+
+            dispatch({
+                type: 'OBJECT_SELECTED',
+                uuids: [null]
+            });
         }
     }
 };

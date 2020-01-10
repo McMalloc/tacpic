@@ -45,12 +45,13 @@
     "input_catalogue-publish": "Veröffentlichen",
     "catalogue-state-0": "Entwurf",
 
-    "toggle_tools-rect": "Rechteck",
-    "toggle_tools-ellipse": "Ellipse",
-    "toggle_tools-line": "Linie",
-    "toggle_tools-curve": "Kurve",
-    "toggle_tools-label": "Beschriftung",
+    "toggle_tools-RECT": "Rechteck",
+    "toggle_tools-ELLIPSE": "Ellipse",
+    "toggle_tools-LINE": "Linie",
+    "toggle_tools-PATH": "Kurve",
+    "toggle_tools-LABEL": "Beschriftung",
     "button_tools-diagram": "Diagramm",
+    "toggle_tools-SELECT": "Auswählen",
 
     "tablist_shape-fill": "Füllung",
     "tablist_shape-contour": "Kontur",

@@ -4,6 +4,12 @@ body {
   color: #231F20;
 }
 
+@font-face {
+  font-family: "Braille29 DE";
+  src: url("/webfonts/BrailleDEComputer.woff2") format("woff2"),
+  url("/webfonts/BrailleDEComputer.woff") format("woff");
+}
+
 button, input, textarea, select {
   font-family: "Roboto", sans-serif;
 }

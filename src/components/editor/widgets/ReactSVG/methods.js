@@ -12,7 +12,7 @@ const defaultRotate = (object, originX, originY, offsetX, offsetY) => {
 
 const defaultGetBBox = object => {
     const element = document.getElementById(object.uuid);
-    const box = element.getBBox();
+    const box = element.getBoundingClientRect();
     return {
         x: box.x + object.x || 0,
         y: box.y + object.y || 0,
@@ -27,8 +27,14 @@ export const combineBBoxes = objects => {
         let box = methods[object.type].getBBox(object);
         x1 = Math.min(x1, box.x);
         y1 = Math.min(y1, box.y);
-        x2 = Math.max(x2, box.x + box.width);
-        y2 = Math.max(y2, box.y + box.height);
+        x2 = box.x + box.width;
+        y2 = box.y + box.height;
+        // console.log(
+        //     `box.y: ${parseInt(box.y)}\tbox.h: ${parseInt(box.height)}`
+        // );
+        // console.log(
+        //     `x1: ${parseInt(x1)}\ty1: ${parseInt(y1)}\nx2: ${parseInt(x2)}\ty2: ${parseInt(y2)}`
+        // );
     });
 
     return {
@@ -36,6 +42,9 @@ export const combineBBoxes = objects => {
         width: Math.abs(x1 - x2), height: Math.abs(y1 - y2)
     }
 };
+
+// TODO sollten hier auch Methoden rein, die beschreiben,
+//  was beispielsweise bei einem Mousedown oder Doppelklick passiert?
 
 const methods = {
     rect: {
@@ -47,6 +56,10 @@ const methods = {
         translate: defaultTranslate,
         rotate: defaultRotate,
         getBBox: defaultGetBBox,
+    },
+    label: {
+        translate: defaultTranslate,
+        getBBox: defaultGetBBox
     },
     group: {
         translate: defaultTranslate,
