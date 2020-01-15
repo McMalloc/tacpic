@@ -1,5 +1,5 @@
 import React from 'react'
-import transform from "./Transform";
+import transform from "./transform";
 
 export default function SVGGroup(props) {
     return (

@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import connect from "react-redux/es/connect/connect";
-import transform from "./Transform";
 import {compact, reduce} from "lodash";
-import transformations, {combineBBoxes} from "./methods";
+import {combineBBoxes} from "./methods";
 
 class Manipulator extends Component {
     constructor(props) {
@@ -26,7 +25,7 @@ class Manipulator extends Component {
         if (this.props.selected.length > 0) {
             const bbox = combineBBoxes(this.props.selected);
             return (
-                <g transform={transform(bbox.x, bbox.y, this.props.selected[0].angle)}>
+                <g transform={`translate(${bbox.x}, ${bbox.y})`}>
                     <rect
                         fill={"transparent"}
                         stroke={'rgba(0,0,255,0.7)'}
@@ -53,8 +52,9 @@ class Manipulator extends Component {
                         width={10} height={10}/>
 
                     <rect
-                        x={-5}
-                        y={-5}
+                        x={bbox.width-5}
+                        y={bbox.height-5}
+                        data-role={"SCALE"}
                         onMouseDown={event => {
                             // event.stopPropagation();
                             // this.props.transformStart('scale')

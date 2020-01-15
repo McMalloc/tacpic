@@ -53,7 +53,7 @@ const initialEditor = {
         medium: 'swell',
         system: 'de-de-g2', // name of the liblouis translation table
         width: 210,
-        height: 290,
+        height: 297,
         verticalGridSpacing: 10, // TODO: Dateieigenschaften sollten in 'openedFile'
         horizontalGridSpacing: 10,
         showVerticalGrid: false,

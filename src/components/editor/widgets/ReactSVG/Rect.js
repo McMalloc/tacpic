@@ -1,5 +1,5 @@
 import React from 'react'
-import transform from "./Transform";
+import transform from "./transform";
 import patternTemplates from "./Patterns";
 
 export default function SVGRect(props) {
@@ -10,8 +10,9 @@ export default function SVGRect(props) {
         <g>
             <rect
                 id={props.uuid}
-                transform={transform(props.x, props.y, props.angle)}
-                style={{cursor: 'pointer', fill: template !== null ? 'url(#pattern-' + template + '-' + props.uuid + '' : props.fill || "transparent"}}
+                transform={transform(props.x, props.y, props.angle, props.width, props.height)}
+                style={
+                    {cursor: 'pointer', fill: template !== null ? 'url(#pattern-' + template + '-' + props.uuid + '' : props.fill || "transparent"}}
                 strokeWidth={2}
                 data-transformable={1}
                 data-selectable={1}
@@ -19,6 +20,7 @@ export default function SVGRect(props) {
                 width={props.width}
                 height={props.height}
             />
+            <text transform={transform(props.x+2, props.y+10, 0)} fontSize={9} fill={'white'}>{props.uuid.substring(0, 4)}</text>
             {template !== null && patternTemplates[template](props.pattern, props.uuid, props.fill)}
         </g>
     )

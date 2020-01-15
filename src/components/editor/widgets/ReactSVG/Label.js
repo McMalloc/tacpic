@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import transform from "./Transform";
+import transform from "./transform";
 import _ from "lodash";
 import styled from "styled-components";
 import {connect} from "react-redux";

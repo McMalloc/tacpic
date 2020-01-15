@@ -1,21 +1,38 @@
+import {transformCoords} from "./transform";
+
 const defaultTranslate = (object, x, y) => {
     object.x += x;
     object.y += y;
     return object;
 };
 
-const defaultRotate = (object, originX, originY, offsetX, offsetY) => {
-    // TODO: intuitiv machen
-    object.angle += 5;
+const defaultRotate = (object, deltaX, deltaY) => {
+    if (deltaY + deltaX < 0) {
+        object.angle += Math.min(deltaY, deltaX);
+    } else {
+        object.angle += Math.max(deltaY, deltaX);
+    }
+
+    return object;
+};
+
+const defaultScale = (object, offsetX, offsetY) => {
+    object.width += offsetX;
+    object.height += offsetY;
     return object;
 };
 
 const defaultGetBBox = object => {
+    // getBoundingClientRect() is needed since we need the bounding box
+    // after the geometry has been transformed
     const element = document.getElementById(object.uuid);
+    if (!element) return false;
+    const canvasBox = document.getElementById('MAIN-CANVAS').getBoundingClientRect();
     const box = element.getBoundingClientRect();
+
     return {
-        x: box.x + object.x || 0,
-        y: box.y + object.y || 0,
+        x: box.x - canvasBox.left, //+ object.x || 0,
+        y: box.y - canvasBox.top, //+ object.y || 0,
         width: box.width,
         height: box.height
     };
@@ -27,14 +44,8 @@ export const combineBBoxes = objects => {
         let box = methods[object.type].getBBox(object);
         x1 = Math.min(x1, box.x);
         y1 = Math.min(y1, box.y);
-        x2 = box.x + box.width;
-        y2 = box.y + box.height;
-        // console.log(
-        //     `box.y: ${parseInt(box.y)}\tbox.h: ${parseInt(box.height)}`
-        // );
-        // console.log(
-        //     `x1: ${parseInt(x1)}\ty1: ${parseInt(y1)}\nx2: ${parseInt(x2)}\ty2: ${parseInt(y2)}`
-        // );
+        x2 = Math.max(box.x + box.width, x2);
+        y2 = Math.max(box.y + box.height, y2);
     });
 
     return {
@@ -50,6 +61,7 @@ const methods = {
     rect: {
         translate: defaultTranslate,
         rotate: defaultRotate,
+        scale: defaultScale,
         getBBox: defaultGetBBox,
     },
     path: {
@@ -65,8 +77,6 @@ const methods = {
         translate: defaultTranslate,
         getBBox: group => {
             let contents = combineBBoxes(group.objects);
-            contents.x += group.x;
-            contents.y += group.y;
             return contents;
         },
     }

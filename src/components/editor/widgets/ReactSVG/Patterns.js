@@ -1,5 +1,5 @@
 import React from "react";
-import transform from "./Transform";
+import transform from "./transform";
 
 const filledRect = (colour) => {
     if (colour === undefined) return null;
@@ -7,6 +7,7 @@ const filledRect = (colour) => {
     return <rect x="0" y="0" width="20" height="20" fill={colour}/>
 };
 
+// TODO Muster sollten nicht mittransformiert werden
 export default {
     striped: ({scaleX, scaleY, angle}, uuid, fill) => {
         return (

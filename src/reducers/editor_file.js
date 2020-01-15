@@ -42,15 +42,13 @@ const file = (state = {}, action) => {
         case 'OBJECT_ROTATED':
             oldState = {...state};
 
-            oldState.pages[action.currentPage].objects.forEach(object => { // refactor selective function
+            oldState.pages[action.shared_currentPage].objects.forEach(object => { // refactor selective function
                 if (!includes(action.uuids, object.uuid)) return;
 
                 methods[object.type].rotate(
                     object,
-                    action.coords.originX,
-                    action.coords.originY,
-                    action.coords.offsetX,
-                    action.coords.offsetY
+                    action.coords.x,
+                    action.coords.y
                 );
             });
 
@@ -59,7 +57,7 @@ const file = (state = {}, action) => {
             // TODO sauberer für nested objects
             oldState = {...state};
 
-            oldState.pages[action.currentPage].objects.forEach(object => {
+            oldState.pages[action.shared_currentPage].objects.forEach(object => {
                 if (!includes(action.uuids, object.uuid)) return;
                 methods[object.type].translate(object, action.coords.x, action.coords.y);
             });
@@ -67,7 +65,12 @@ const file = (state = {}, action) => {
             return oldState;
         case 'OBJECT_SCALED':
             // TODO sauberer für nested objects
-            // TODO Idee: statt tatsächliches Objekt immer wieder während des Verschiebens neu zu rendern, die Browser-native <img> drag and drop Vorschau anzeigen
+            oldState = {...state};
+
+            oldState.pages[action.shared_currentPage].objects.forEach(object => {
+                if (!includes(action.uuids, object.uuid)) return;
+                methods[object.type].scale(object, action.coords.x, action.coords.y);
+            });
 
             return oldState;
         case 'OBJECT_PROP_CHANGED':
@@ -87,6 +90,18 @@ const file = (state = {}, action) => {
                     ...state,
                     title: action.title
                 }};
+        case 'OBJECT_REMOVED':
+            oldState = cloneDeep(state);
+
+            // TODO make possible for objects in groups
+            action.uuids.forEach(uuid => {
+                let index = oldState.pages[action.shared_currentPage].objects.findIndex(object => {
+                    return object.uuid === uuid
+                });
+                oldState.pages[action.shared_currentPage].objects.splice(index, 1);
+            });
+
+            return oldState;
         case 'CHANGE_CATALOGUE_TITLE':
             return {...state, file: {
                     ...state,
@@ -118,18 +133,20 @@ const file = (state = {}, action) => {
             oldState.pages[action.shared_currentPage].objects = compact(objects);
             return oldState;
         case 'OBJECTS_UNGROUPED':
-            oldState = {...state};
-            // TODO alle Transformationen der Gruppe rückanwenden
-
+            oldState = cloneDeep(state);
             objects = oldState.pages[action.shared_currentPage].objects;
-            let group = objects.find(o => o.uuid === action.uuid[0]);
 
-            group.objects.forEach(object => {
-                methods[object.type].translate(object, group.x, group.y);
+            let groupIndex = objects.findIndex(o => o.uuid === action.uuid[0]);
+
+            // apply transformations of the group to all children
+            objects[groupIndex].objects.forEach(object => {
+                // TODO: andere außer translate()
+                methods[object.type].translate(object, objects[groupIndex].x, objects[groupIndex].y);
             });
 
-            oldState.pages[action.shared_currentPage].objects = compact(objects.concat(group.objects));
-
+            // add children to root, then delete group
+            objects[groupIndex].objects.forEach(object => { objects.push(object); });
+            objects.splice(groupIndex, 1);
             return oldState;
         case 'CACHE_SVG':
             oldState = {...state};
