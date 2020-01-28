@@ -3,6 +3,20 @@ import connect from "react-redux/es/connect/connect";
 import {find} from "lodash";
 import './PathManipulator.css';
 
+const transformView = (coords, scale, offsetX, offsetY) => {
+    return coords.map((coord, index) => {
+        let transformed = coord;
+        if (index % 2 === 0) { // horizontal / x
+            transformed += offsetX;
+        } else { // vertikal / y
+            transformed += offsetY;
+        }
+        return transformed * scale;
+    });
+};
+
+// TODO Koordinaten entsprechend der Pfadtransformation mittransformieren
+// TODO lineare Verbindung zwischen letztem Punkt und Cursorposition
 class PathManipulator extends Component {
     pointDragStart = event => {
         // event.stopPropagation();
@@ -12,71 +26,126 @@ class PathManipulator extends Component {
         event.stopPropagation();
     };
 
+    // TODO der Indikator wird gerade noch mittransformiert.
+    //  wie Manipulator nicht mittransformieren, aber die einzelnen Koordinaten
     render() {
-        let nrOfPoints = this.props.path.points.length;
-        let latestSegment = this.props.path.points[nrOfPoints - 1];
-        let previousSegment = this.props.path.points[nrOfPoints - 2];
-        let segmentStart;
-        let segmentEnd;
-        let display = true; //latestSegment.coords.length === 2;
-
-        if (nrOfPoints <= 2) {
-            segmentStart = [this.props.path.x, this.props.path.y];
-            // display = false;
-        } else {
-            segmentStart = [previousSegment.coords[2], previousSegment.coords[3]];
-        }
-
-        segmentEnd = [latestSegment.coords[0], latestSegment.coords[1]];
-
         return (
             <g>
                 {this.props.path.points.map((point, index) => {
+                    let coords = transformView(
+                        [...point.coords],
+                        this.props.scale,
+                        this.props.offsetX + this.props.path.x,
+                        this.props.offsetY + this.props.path.y
+                    );
                     switch (point.kind.toUpperCase()) {
                         case 'M':
                             return (
-                                    <circle
-                                        cx={point.coords[0] - 3}
-                                        cy={point.coords[1] - 3}
-                                        data-role={"CLOSE_PATH"}
-                                        key={index}
-                                        r={6}/>
+                                <circle
+                                    cx={coords[0]}
+                                    cy={coords[1]}
+                                    data-role={"CLOSE-PATH"}
+                                    data-index={index}
+                                    data-param={0}
+                                    key={index}
+                                    r={6}/>
                             );
                         case 'L':
                             return (
-                                    <circle key={index} cx={point.coords[0] - 2} cy={point.coords[1] - 2} r={4}/>
+                                <circle key={index}
+                                        cx={coords[0] - 2}
+                                        cy={coords[1] - 2}
+                                        r={4}/>
+                            );
+                        case 'C':
+                            let previousSegment = transformView(
+                                [...this.props.path.points[index-1].coords],
+                                this.props.scale,
+                                this.props.offsetX + this.props.path.x,
+                                this.props.offsetY + this.props.path.y
+                            );
+                            let prevPointX = previousSegment[previousSegment.length - 2];
+                            let prevPointY = previousSegment[previousSegment.length - 1];
+                            return (
+                                <g key={index}>
+                                    <line
+                                        stroke={'black'}
+                                        strokeWidth={0.5}
+                                        x1={prevPointX}
+                                        y1={prevPointY}
+                                        x2={coords[0]}
+                                        y2={coords[1]} />
+
+                                    <line
+                                        stroke={'black'}
+                                        strokeWidth={0.5}
+                                        x1={coords[4]}
+                                        y1={coords[5]}
+                                        x2={coords[2]}
+                                        y2={coords[3]} />
+
+                                    <circle
+                                        cx={coords[0]}
+                                        cy={coords[1]}
+                                        className={"translatable"}
+                                        data-role={"EDIT-PATH"}
+                                        data-index={index}
+                                        data-param={0}
+                                        r={4}/>
+
+                                    <circle
+                                            cx={coords[2]}
+                                            cy={coords[3]}
+                                            className={"translatable"}
+                                            data-role={"EDIT-PATH"}
+                                            data-index={index}
+                                            data-param={2}
+                                            r={4}/>
+
+                                    <rect   x={coords[4]-5}
+                                            y={coords[5]-5}
+                                            className={"translatable"}
+                                            data-role={"EDIT-PATH"}
+                                            data-index={index}
+                                            data-param={4}
+                                            width={10} height={10}/>
+                                    <text
+                                        style={{fill: 'yellow'}}
+                                        x={coords[4]} y={coords[5] + 10}
+                                        fontSize={10}>
+                                        {index}: {coords[4]}, {coords[5]}
+                                    </text>
+                                </g>
                             );
                         case 'Q':
                             return (
-                                <circle onMouseDown={this.pointDragStart}
-                                        onMouseUp={this.pointDragStop}
-                                        data-role={"__path-vertex"}
-                                        stroke={"darkblue"} fill={"none"}
-                                        key={index}
-                                        cx={(point.coords[2] || point.coords[0]) - 2} cy={(point.coords[3] || point.coords[1]) - 2} r={4}/>
+                                <g>
+                                    <circle onMouseDown={this.pointDragStart}
+                                            onMouseUp={this.pointDragStop}
+                                            data-role={"__path-vertex"}
+                                            stroke={"darkblue"} fill={"none"}
+                                            key={index}
+                                            cx={(coords[2] || coords[0]) - 2}
+                                            cy={(coords[3] || coords[1]) - 2} r={4}/>
+                                    }
+                                </g>
                             );
                     }
                 })}
-                {latestSegment.coords.length === 2 && latestSegment.kind === 'Q' &&
-                    <g>
-                        <line style={{stroke: 'orange', strokeWidth: 0.5}}
-                              x1={segmentStart[0]} y1={segmentStart[1]}
-                              x2={this.props.currentX} y2={this.props.currentY}/>
-                        <line style={{stroke: 'orange', strokeWidth: 0.5}}
-                              x1={this.props.currentX} y1={this.props.currentY}
-                              x2={segmentEnd[0]} y2={segmentEnd[1]}/>
-                        <path style={{stroke: 'orange', strokeWidth: 1}} fill={"none"}
-                              d={`M ${segmentStart[0]} ${segmentStart[1]} Q ${this.props.currentX} ${this.props.currentY} ${segmentEnd[0]} ${segmentEnd[1]}`}/>
-                    </g>
+
                 }
             </g>
         );
     }
 }
 
+// TODO brauch keine Instanz sein
 const mapStateToProps = (state, ownProps) => {
     return {
-        path: find(state.editor.file.pages[0].objects, {uuid: ownProps.uuid})
+        path: find(state.editor.file.pages[0].objects, {uuid: ownProps.uuid}),
+        scale: state.editor.ui.scalingFactor,
+        offsetX: state.editor.ui.viewPortX,
+        offsetY: state.editor.ui.viewPortY
     }
 };
 

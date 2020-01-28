@@ -3,7 +3,6 @@ import connect from "react-redux/es/connect/connect";
 import Manipulator from "./Manipulator";
 
 import mapObject from "./index";
-import uuidv4 from "../../../../utility/uuid";
 import ContextOptions from "./ContextOptions";
 import {switchCursorMode} from "../../../../actions";
 import PathIndicator from "./PathManipulator";
@@ -12,15 +11,7 @@ import styled from 'styled-components';
 import methods, {combineBBoxes} from "./methods";
 import {init, transformCoords} from "./transform";
 import SVGGrid from "./Grid";
-
-const Indicator = styled.div`
-    display: inline-block;
-    padding: 2px;
-    margin-right: 2px;
-    margin-top: 2px;
-    border: 1px solid grey;
-    border-radius: 2px;
-`;
+import {findObject} from "../../../../utility/findObject";
 
 class InteractiveSVG extends Component {
     svgElement = React.createRef();
@@ -33,7 +24,10 @@ class InteractiveSVG extends Component {
         pathClosing: false,
         lastUuid: null,
         actuallyMoved: false,
+        preview: null,
         transform: null, // transform mode while dragging the cursor
+        edit: null, // internal edit modes of certain tools whose state doesn't need
+                    // to be communicated to the store (but the results will be of course)
 
         mouseOffsetX: 0,
         mouseOffsetY: 0,
@@ -53,8 +47,8 @@ class InteractiveSVG extends Component {
     };
 
     keyDownHandler = event => {
-        event.stopPropagation();
-        console.log(event.which);
+        // unnötig, Event bubblet nicht
+        // event.stopPropagation();
         switch (event.which) {// TODO use constants instead of magic numbers
             case 38: // up
                 this.props.changeViewport(
@@ -101,6 +95,12 @@ class InteractiveSVG extends Component {
         return false;
     };
 
+    onModeChange = uuid => {
+        this.setState({
+            edit: {uuid}
+        })
+    };
+
     mouseDownHandler = event => {
         let target = event.nativeEvent.path[0];
         // check if a group was the actual target since the event first fires
@@ -113,50 +113,98 @@ class InteractiveSVG extends Component {
             }
         }
 
+        // transform mouse coordinates into svg viewbox
         let transformedCoords = transformCoords(event.clientX, event.clientY);
         const mouseDownX = transformedCoords.x;
         const mouseDownY = transformedCoords.y;
 
         // TODO: transparenten Manipulator abfangen
-        // transform sollte auch bei einem klick auf den manipulator funktionieren, für gruppen
+        //  transform sollte auch bei einem klick auf den manipulator funktionieren, für gruppen
 
         if (target.dataset.role === 'CANVAS') {
             this.props.unselect();
         }
-
         if (target.dataset.role === 'ROTATE') {
             this.setState({transform: 'rotate'});
         }
-
         if (target.dataset.role === 'SCALE') {
             this.setState({transform: 'scale'});
         }
-
         if (target.dataset.selectable) {
             this.props.select([target.id]);
         }
-
-        if (target.dataset.transformable) { // TODO sinnig?
+        if (target.dataset.transformable) {
+            // TODO nicht für Pfadsegmente
             this.setState({transform: 'translate'});
         }
 
-        if (this.props.ui.tool === 'PATH' && this.state.openPath) { // add additional vertices
-            let pathClosing = target.dataset.role === 'CLOSE_PATH';
-            this.setState({pathClosing});
+        // Die Abfrage muss eventuell anders erfolgen: Ein Pfad ist eventuell auch geöffnet und bereits abgeschlossen,
+        // außerdem ist ein bereits abgeschlossener Pfad vielleicht auch Ziel eines weiteren Vertex.
+        // Allerdings: ein Klick auf den Canvas deselektiert im Moment ein Objekt.
+        if (this.state.edit !== null) {
+            if (target.dataset.role === 'EDIT-PATH') { // change vertices
 
-            this.props.addPoint({
-                kind: 'Q',
-                coords: [
-                    mouseDownX,
-                    mouseDownY
-                ]
-            }, this.state.lastUuid, pathClosing);
+                this.setState({
+                    edit: {
+                        index: parseInt(target.dataset.index),
+                        param: parseInt(target.dataset.param),
+                        uuid: this.state.edit.uuid
+                    }
+                })
+
+            } else { // add additional vertices
+                // TODO M lässt sich nicht verschieben, weil ein Klick darauf zum Schließen
+                //  des Pfades registriert wird
+                // TODO Schließen des Pfades durch Klick auf M muss den letzten Punkt auf M
+                //  setzen
+                let pathClosing = target.dataset.role === 'CLOSE-PATH';
+                this.setState({pathClosing});
+
+                let currentPath = findObject(this.props.file.pages[this.props.ui.currentPage].objects, this.state.edit.uuid); // TODO in externes Modul auslagern
+
+                if (this.props.ui.tool === 'QUADRATIC') {
+                    let appendedPath = methods.path.addPoint(
+                        currentPath,
+                        [mouseDownX, mouseDownY],
+                        'Q');
+
+                    this.setState({
+                        edit: {
+                            uuid: appendedPath.uuid,
+                            index: appendedPath.points.length - 1,
+                            param: 0
+                        }
+                    });
+
+                    this.props.changeProp(appendedPath.uuid, 'points',
+                        appendedPath.points
+                    );
+                } else if (this.props.ui.tool === 'CUBIC') {
+                    let appendedPath = methods.path.addPoint(
+                        currentPath,
+                        [mouseDownX, mouseDownY],
+                        'C');
+
+                    this.setState({
+                        edit: {
+                            uuid: appendedPath.uuid,
+                            index: appendedPath.points.length - 1,
+                            param: 2
+                        }
+                    });
+
+                    this.props.changeProp(appendedPath.uuid, 'points',
+                        appendedPath.points
+                    );
+                }
+            }
+
+
         }
 
         this.setState({
             showContext: false,
             mouseIsDown: true,
-            lastMousedown: Date.now(),
             mouseDownX, mouseDownY,
             t_mouseDownX: this.currentX(event.clientX),
             t_mouseDownY: this.currentY(event.clientY),
@@ -164,74 +212,52 @@ class InteractiveSVG extends Component {
     };
 
     mouseUpHandler = event => {
+        // TODO create-Methoden in methods.js stecken bzw. einem Objektmodul
         if (this.state.transform === null) {
             switch (this.props.ui.tool) {
-                case 'RECT':
-                    if (this.state.dragging) { // custom
-                        this.props.addObject({
-                            // TODO in die reducer packen?
-                            uuid: uuidv4(),
-                            x: this.state.mouseDownX,
-                            y: this.state.mouseDownY,
-                            width: Math.abs(this.state.mouseOffsetX - this.state.mouseDownX),
-                            height: Math.abs(this.state.mouseOffsetY - this.state.mouseDownY),
-                            fill: this.props.ui.fill,
-                            pattern: {
-                                template: this.props.ui.texture,
-                                angle: 0,
-                                scaleX: 1,
-                                scaleY: 1
-                            },
-                            moniker: "Rechteck",
-                            angle: 0,
-                            type: 'rect'
-                        });
-                    } else {
-                        // default sizes
+                case 'ELLIPSE':
+                    // TODO default Größe einbauen
+                    if (this.state.preview !== null) { // custom
+                        this.props.addObject(
+                            this.state.preview
+                        );
                     }
-
                     break;
-                case 'PATH':
-                    if (!this.state.openPath) {
-                        let uuid = uuidv4();
-                        this.props.addObject({
-                            uuid: uuid,
-                            x: 0, // eigentlich: this.state.mouseDownX,
-                            angle: 0,
-                            y: 0, // eigentlich: this.state.mouseDownY,
-                            moniker: "Pfad",
-                            points: [
-                                {
-                                    kind: 'M',
-                                    coords: [
-                                        this.state.mouseOffsetX,
-                                        this.state.mouseOffsetY
-                                    ]
-                                }
-                            ],
-                            type: 'path'
-                        });
+                case 'RECT':
+                    // TODO default Größe einbauen
+                    if (this.state.dragging) { // custom
+                        this.props.addObject(
+                            methods.rect.create(
+                                this.state.mouseDownX,
+                                this.state.mouseDownY,
+                                Math.abs(this.state.mouseOffsetX - this.state.mouseDownX),
+                                Math.abs(this.state.mouseOffsetY - this.state.mouseDownY),
+                                this.props.ui.texture, this.props.ui.fill
+                            )
+                        );
+                    }
+                    break;
+                case 'CUBIC':
+                case 'QUADRATIC':
+                    if (this.state.edit === null) {
+                        let path = methods.path.create(
+                            this.state.mouseDownX,
+                            this.state.mouseDownY,
+                            this.props.ui.texture,
+                            this.props.ui.fill
+                        );
+                        this.props.addObject(path);
 
                         this.setState({
-                            openPath: true,
-                            lastUuid: uuid
+                            edit: {uuid: path.uuid}
                         });
-                    } else {
+                    } else { // a path is open and is being edited
                         if (this.state.pathClosing) {
                             this.setState({
-                                openPath: false,
                                 pathClosing: false,
-                                lastUuid: null
+                                edit: null
                             });
                         }
-
-                        this.props.addPoint({
-                            kind: '',
-                            coords: [
-                                this.state.mouseOffsetX,
-                                this.state.mouseOffsetY
-                            ]
-                        }, this.state.lastUuid);
                     }
                     break;
                 case 'SELECT':
@@ -265,23 +291,16 @@ class InteractiveSVG extends Component {
                     break;
                 case 'LABEL':
                     if (!this.state.dragging) break;
-                    let uuid = uuidv4();
-                    this.props.addObject({
-                        uuid: uuid,
-                        x: this.state.mouseDownX,
-                        y: this.state.mouseDownY,
-                        width: Math.abs(this.state.mouseOffsetX - this.state.mouseDownX),
-                        height: Math.abs(this.state.mouseOffsetY - this.state.mouseDownY),
-                        text: 'Neue Beschriftung',
-                        moniker: "Beschriftung",
-                        displayDots: true,
-                        displayLetters: true,
-                        editMode: true,
-                        isKey: false,
-                        type: 'label'
-                    });
+                    let label = methods.label.create(
+                        this.state.mouseDownX,
+                        this.state.mouseDownY,
+                        Math.abs(this.state.mouseOffsetX - this.state.mouseDownX),
+                        Math.abs(this.state.mouseOffsetY - this.state.mouseDownY)
+                    );
+
+                    this.props.addObject(label);
                     setTimeout(() => {
-                        document.getElementById("editable_" + uuid).focus();
+                        document.getElementById("editable_" + label.uuid).focus();
                     }, 200);
                     break;
                 default:
@@ -292,21 +311,49 @@ class InteractiveSVG extends Component {
         this.setState({
             mouseIsDown: false,
             dragging: false,
-            transform: null
+            transform: null,
+            preview: null
         });
     };
 
     mouseMoveHandler = event => {
+        let transformedCoords = transformCoords(event.clientX, event.clientY);
+
+        // TODO hier das snapping implementieren
+        const mouseOffsetX = transformedCoords.x;
+        const mouseOffsetY = transformedCoords.y;
+
         if (!this.state.dragging && this.state.mouseIsDown) {
             this.setState({
                 dragging: true
             });
         }
 
-        let transformedCoords = transformCoords(event.clientX, event.clientY);
-
-        const mouseOffsetX = transformedCoords.x;
-        const mouseOffsetY = transformedCoords.y;
+        // preview for certain objects
+        // TODO Mechanik kann benutzt werden für lagfreie Transformationen
+        let type;
+        if (this.props.ui.tool === 'ELLIPSE') type = 'ellipse';
+        if (this.props.ui.tool === 'RECT') type = 'rect';
+        if (type && this.state.dragging && this.state.transform === null && this.state.edit === null) {
+            // create temporary preview object that will later be dispatched as-is to the store
+            if (this.state.preview === null) {
+                this.setState({
+                    preview: methods[type].create(
+                        this.state.mouseDownX,
+                        this.state.mouseDownY,
+                        Math.abs(this.state.mouseOffsetX - this.state.mouseDownX),
+                        Math.abs(this.state.mouseOffsetY - this.state.mouseDownY),
+                        this.props.ui.texture, this.props.ui.fill
+                    )
+                })
+            } else {
+                // update preview object
+                let preview = {...this.state.preview};
+                preview.width = Math.abs(this.state.mouseOffsetX - this.state.mouseDownX);
+                preview.height = Math.abs(this.state.mouseOffsetY - this.state.mouseDownY);
+                this.setState({preview});
+            }
+        }
 
         // TODO only update if relevant -- otherwise the state updates trigger a rerender at every move
         this.setState({
@@ -315,16 +362,32 @@ class InteractiveSVG extends Component {
             t_mouseOffsetY: this.currentY(event.clientY),
         });
 
+        // apply transform to selected objects if transforming at all
         if (this.state.transform !== null) {
             this.props[this.state.transform]({
                 x: mouseOffsetX - this.state.mouseOffsetX,
                 y: mouseOffsetY - this.state.mouseOffsetY
             }, this.props.ui.selectedObjects);
         }
+
+        if (this.state.transform === null && this.state.edit !== null && this.state.dragging) {
+            // TODO cache currentPath, auch für PathManipulator,
+            //  wenn dieser nur noch funktional ist
+            let currentPath = findObject(this.props.file.pages[this.props.ui.currentPage].objects, this.state.edit.uuid);
+            console.log(currentPath.x);
+            console.log(mouseOffsetX);
+            console.log(currentPath.points);
+            this.props.changeProp(currentPath.uuid, 'points',
+                methods.path.changePoint(
+                    currentPath,
+                    [mouseOffsetX - currentPath.x, mouseOffsetY - currentPath.y],
+                    this.state.edit.index,
+                    this.state.edit.param).points
+            );
+        }
     };
 
     render() {
-        // console.log("-- render --");
         return (
             <div style={{position: 'relative', width: '100%', height: '100%'}}>
                 <svg
@@ -348,21 +411,34 @@ class InteractiveSVG extends Component {
                        translate(${this.props.ui.viewPortX} ${this.props.ui.viewPortY}) 
                        scale(${this.props.ui.scalingFactor})`}>
 
-                        <rect data-role={"CANVAS"} x={0} y={0} width={this.props.file.width}
-                              height={this.props.file.height} stroke={'rgba(0,0,0,0.0)'} fill={'white'}/>
+                        <rect data-role={"CANVAS"} x={0} y={0}
+                              width={this.props.file.width}
+                              height={this.props.file.height}
+                              stroke={'rgba(0,0,0,0.0)'} fill={'white'}/>
                         {
                             this.props.file.pages[this.props.ui.currentPage].objects.map((object, index) => {
                                 return mapObject(object, index);
                             })
                         }
 
-
+                        {this.state.preview !== null && this.state.dragging &&
+                            mapObject(this.state.preview, -1)
+                        }
 
                     </g>
 
-                    <Manipulator/>
+                    {this.state.edit !== null &&
+                    <PathIndicator
+                        uuid={this.state.edit.uuid}
+                        dragging={this.state.dragging}/>
+                    }
 
-                    {this.state.dragging && this.state.transform === null && (this.props.ui.tool === 'RECT' || this.props.ui.tool === 'SELECT' || this.props.ui.tool === 'LABEL') &&
+                    <Manipulator
+                        onModeChange={this.onModeChange}
+                    />
+
+                    {this.state.dragging && this.state.transform === null && this.state.edit === null &&
+                    (this.props.ui.tool === 'SELECT' || this.props.ui.tool === 'LABEL') &&
                     <g>
                         <rect
                             x={this.state.t_mouseDownX}
@@ -379,13 +455,6 @@ class InteractiveSVG extends Component {
                             {/*this.state.mouseOffsetY*/}
                         </text>
                     </g>
-                    }
-
-                    {this.props.ui.tool === 'PATH' && this.state.lastUuid !== null && // TODO: component should be aware itself if there is nothing to draw
-                    <PathIndicator
-                        uuid={this.state.lastUuid}
-                        currentX={this.state.mouseOffsetX}
-                        currentY={this.state.mouseOffsetY}/>
                     }
 
                     {this.svgElement.current !== null &&
@@ -429,19 +498,15 @@ class InteractiveSVG extends Component {
                     {/*</g>*/}
 
                 </svg>
-                {this.state.showContext &&
-                <ContextOptions
-                    uuid={this.state.lastUuid}
-                    x={this.state.mouseOffsetX}
-                    y={this.state.mouseOffsetY}/>
-                }
             </div>
         )
     }
 }
 
 const mapStateToProps = state => {
-    return {...state.editor}
+    return {
+        ...state.editor
+    }
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -507,21 +572,20 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 uuids
             });
         },
-        changeProp: (uuid, prop, value, currentPage) => {
+        changeProp: (uuid, prop, value) => {
             dispatch({
                 type: 'OBJECT_PROP_CHANGED',
                 uuid,
                 prop,
-                value,
-                currentPage
+                value
             });
         },
-        addPoint: (point, uuid, circular) => {
-            dispatch({
-                type: 'PATH_POINT_ADDED',
-                point, uuid, circular
-            })
-        }
+        // changePoint: uuid => {
+        //     dispatch({
+        //         type: 'PATH_POINT_CHANGED',
+        //         uuid,
+        //     })
+        // }
     }
 };
 

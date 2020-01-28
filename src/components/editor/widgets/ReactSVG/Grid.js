@@ -1,6 +1,7 @@
 import React from 'react';
 import './Grid.css';
 
+// TODO laut react profiler große performance kosten
 export default function SVGGrid(props) {
     let nVerticals = parseInt(props.canvasWidth / props.verticalGridSpacing) + 1;
     let verticals = new Array(nVerticals).fill(null).map((n, i) => {

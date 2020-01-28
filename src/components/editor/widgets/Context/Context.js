@@ -8,6 +8,7 @@ import {Upper} from "../../../gui/WidgetContainer";
 class Context extends Component {
     render() {
         switch (this.props.selectedObject.type) {
+            case "path":
             case "rect":
                 return (
                     <Upper><ShapeContext /></Upper>

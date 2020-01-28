@@ -1,3 +1,9 @@
-svg circle:hover {
-    fill: blue;
+svg .translatable {
+    stroke: green;
+    fill: transparent;
+    transition: fill 0.2s;
+}
+
+svg .translatable:hover {
+    fill: green;
 }

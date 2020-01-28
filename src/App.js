@@ -44,15 +44,15 @@ const App = () => {
     return (
         <BrowserRouter>
             <div className="App">
-                <Navbar>
-                    <NavbarItem to={"home"}/>
-                    <NavbarItem to={"home"}/>
-                </Navbar>
-                <nav>
-                    <Link to="/login">Login</Link>
-                    <Link to="/editor">Editor</Link>
-                    <Link to="/catalogue">Stöbern</Link>
-                </nav>
+                {/*<Navbar>*/}
+                {/*    <NavbarItem to={"home"}/>*/}
+                {/*    <NavbarItem to={"home"}/>*/}
+                {/*</Navbar>*/}
+                {/*<nav>*/}
+                {/*    <Link to="/login">Login</Link>*/}
+                {/*    <Link to="/editor">Editor</Link>*/}
+                {/*    <Link to="/catalogue">Stöbern</Link>*/}
+                {/*</nav>*/}
                 <ErrorBoundary>
                     <Switch>
                         {/*Renders exclusivly*/}

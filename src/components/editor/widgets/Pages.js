@@ -31,9 +31,9 @@ class Pages extends Component {
                 <Upper>
                     {this.props.file.pages.map((page, i) =>
                         <PagePreview
-                            width={this.props.uiwidth}
-                            height={this.props.uiheight}
-                            current={i === this.props.uicurrentPage}
+                            width={this.props.width}
+                            height={this.props.height}
+                            current={i === this.props.currentPage}
                             markup={page.cache}
                             key={i}
                             onClick={() => this.props.changePage(i)}
@@ -54,8 +54,8 @@ class Pages extends Component {
 const mapStateToProps = state => {
     return {
         file: state.editor.file,
-        width: state.editor.ui.width,
-        height: state.editor.ui.height,
+        width: state.editor.file.width,
+        height: state.editor.file.height,
         currentPage: state.editor.ui.currentPage
     }
 };

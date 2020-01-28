@@ -17,7 +17,7 @@ class Toolbox extends Component {
         return (
             <Upper>
                 <Toolbar>
-                    {["SELECT", "RECT", "ELLIPSE", "LINE", "PATH", "LABEL"].map((tool, index) => {
+                    {["SELECT", "RECT", "ELLIPSE", "CUBIC", "QUADRATIC", "LABEL"].map((tool, index) => {
                         return (
                             <Toggle
                                 label={"editor:toggle_tools-" + tool}

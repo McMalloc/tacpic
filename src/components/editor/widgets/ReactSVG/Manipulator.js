@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import connect from "react-redux/es/connect/connect";
+import connect from "react-redux/es/connect/connect"; // TODO richtiger import Pfad?
 import {compact, reduce} from "lodash";
 import {combineBBoxes} from "./methods";
 
@@ -12,10 +12,15 @@ class Manipulator extends Component {
     doubleClickHandler = event => {
         if (this.props.selected.length === 1) {
             let lastSelectedId = this.props.selected[0].uuid;
-            setTimeout(() => {
-                document.getElementById("editable_" + lastSelectedId).focus();
-            }, 0);
-            this.props.startEditing(lastSelectedId);
+            if (this.props.selected[0].type === 'label') {
+                setTimeout(() => {
+                    document.getElementById("editable_" + lastSelectedId).focus();
+                }, 0);
+                this.props.startEditing(lastSelectedId);
+            } else if (this.props.selected[0].type === 'path') {
+                this.props.onModeChange(this.props.selected[0].uuid);
+                this.props.startEditing(lastSelectedId);
+            }
         }
     };
 
@@ -33,7 +38,7 @@ class Manipulator extends Component {
                         strokeDasharray={"5,5"}
                         onMouseDown={this.mouseDownHandler}
                         data-transformable={1}
-                        data-role="MANIPULATOR"
+                        data-role={"MANIPULATOR"}
                         onMouseUp={this.mouseUpHandler}
                         onMouseMove={this.mouseMoveHandler}
                         onDoubleClick={this.doubleClickHandler}
@@ -82,12 +87,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        transformStart: transform => {
-            dispatch({
-                type: 'TRANSFORM_START',
-                transform
-            });
-        },
         startEditing: uuid => {
             dispatch({
                 type: 'OBJECT_PROP_CHANGED',

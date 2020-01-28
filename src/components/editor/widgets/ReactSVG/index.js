@@ -3,6 +3,7 @@ import SVGGroup from "./Group";
 import SVGPath from "./Path";
 import Label from "./Label";
 import React from "react";
+import Ellipse from "./Ellipse";
 
 export default function mapObject(props, index) {
     switch (props.type) {
@@ -18,6 +19,8 @@ export default function mapObject(props, index) {
             );
         case "path":
             return <SVGPath key={index} {...props} />;
+        case "ellipse":
+            return <Ellipse key={index} {...props} />;
         case "label":
             return <Label key={index} {...props} />;
     }

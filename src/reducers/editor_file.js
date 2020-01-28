@@ -14,31 +14,16 @@ const file = (state = {}, action) => {
             oldState.pages[action.shared_currentPage].objects.push(action.object);
 
             return oldState;
-        case 'PATH_POINT_ADDED':
-            oldState = cloneDeep(state);
-            let currentPath = find(oldState.pages[0].objects, {uuid: action.uuid});
-
-            if (action.point.kind.length === 0) { // control point, prepend to coords
-                let currentPoint = currentPath.points[currentPath.points.length - 1].coords;
-
-                // TODO: M wird beim Schließend es Pfades mit dem letzten Vertex in diesem Block gleichgesetzt, obwohl das dazugehörige Objekt nicht angefasst wird.
-                let backup = cloneDeep(currentPath.points[0]);
-                if (currentPath.points[currentPath.points.length - 1].kind === 'M') return;
-
-                currentPoint[2] = currentPoint[0];
-                currentPoint[3] = currentPoint[1];
-                currentPoint[0] = action.point.coords[0];
-                currentPoint[1] = action.point.coords[1];
-
-                currentPath.points[0] = backup;
-            } else { // new vertex
-                if (action.circular) { // last point will be at the same position as M
-                    action.point.coords = currentPath.points[0].coords;
-                }
-                currentPath.points.push(action.point);
-            }
-
-            return oldState;
+        // case 'PATH_POINT_ADDED':
+        //     oldState = cloneDeep(state);
+        //     let currentPath = find(oldState.pages[action.shared_currentPage].objects, {uuid: action.uuid});
+        //
+        //     if (action.circular) { // last point will be at the same position as M
+        //         action.point.coords = currentPath.points[0].coords;
+        //     }
+        //     currentPath.points.push(action.point);
+        //
+        //     return oldState;
         case 'OBJECT_ROTATED':
             oldState = {...state};
 
@@ -86,10 +71,12 @@ const file = (state = {}, action) => {
             });
             return oldState;
         case 'CHANGE_TITLE':
-            return {...state, file: {
+            return {
+                ...state, file: {
                     ...state,
                     title: action.title
-                }};
+                }
+            };
         case 'OBJECT_REMOVED':
             oldState = cloneDeep(state);
 
@@ -103,15 +90,19 @@ const file = (state = {}, action) => {
 
             return oldState;
         case 'CHANGE_CATALOGUE_TITLE':
-            return {...state, file: {
+            return {
+                ...state, file: {
                     ...state,
                     catalogueTitle: action.title
-                }};
+                }
+            };
         case 'CHANGE_CATEGORY':
-            return {...state, file: {
+            return {
+                ...state, file: {
                     ...state,
                     category: action.catID
-                }};
+                }
+            };
         case 'PAGE_ADD':
             oldState = {...state};
             oldState.pages.push({name: 'Seite ' + (oldState.pages.length + 1), objects: []});
@@ -145,7 +136,9 @@ const file = (state = {}, action) => {
             });
 
             // add children to root, then delete group
-            objects[groupIndex].objects.forEach(object => { objects.push(object); });
+            objects[groupIndex].objects.forEach(object => {
+                objects.push(object);
+            });
             objects.splice(groupIndex, 1);
             return oldState;
         case 'CACHE_SVG':
