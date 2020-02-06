@@ -43,6 +43,7 @@
     "input_catalogue-desc": "Beschreibung",
     "input_catalogue-desc-sub": "Kurze Beschreibung für den Katalog.",
     "input_catalogue-publish": "Veröffentlichen",
+    "input_catalogue-save": "Änderungen speichern",
     "catalogue-state-0": "Entwurf",
 
     "toggle_tools-RECT": "Rechteck",

@@ -58,6 +58,7 @@ const ButtonBase = styled.button`
 // die ref muss heruntergereicht werden, da noch ein styled-component dazwischen steht
 const Button = React.forwardRef((props, ref) => {
     const { t } = useTranslation();
+    const label = props.label || props.children;
     return (
         <ButtonBase type={"button"} ref={ref} {...props}>
             {props.icon &&
@@ -65,9 +66,9 @@ const Button = React.forwardRef((props, ref) => {
                 <i className={"fas fa-" + props.icon}/>
             </Icon>
             }
-            {props.children &&
+            {label &&
             <Label icon={props.icon}>
-                {t(props.children)}
+                {t(label)}
                 {props.isDropdown &&
                 <Caret><i className={"fas fa-caret-down"} /></Caret>
                 }

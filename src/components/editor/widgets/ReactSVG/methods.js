@@ -10,7 +10,8 @@ const createRect = (x = 0, y = 0, width = 100, height = 100, template = 'striped
             template,
             angle: 0,
             scaleX: 1,
-            scaleY: 1
+            scaleY: 1,
+            offset: true
         },
         moniker: "Rechteck",
         angle: 0,

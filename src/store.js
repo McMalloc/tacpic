@@ -17,10 +17,10 @@ const sagaMiddleware = createSagaMiddleware();
 
 const initialLayout = 4;
 const fromLS = JSON.parse(localStorage.getItem("custom_layout_" + initialLayout));
-const initialEditor = {
+export const initialEditor = {
     ui: {
         // mode: 'path',
-        tool: 'ELLIPSE',
+        tool: 'RECT',
         texture: 'striped',
         width: 400,
         fill: "#1f78b4",
@@ -44,6 +44,10 @@ const initialEditor = {
     file: {
         title: "",
         tags: [],
+        variant_id: null,
+        graphic_id: null,
+        version_id: null,
+        lastVersionHash: null,
         backgroundURL: "",
         catalogueTitle: "",
         catalogueDescription: "",
@@ -62,66 +66,7 @@ const initialEditor = {
             {
                 name: "Seite 1",
                 text: false, // TODO Textseiten werden anders behandelt, starres Braille-Layout
-                objects: [
-                    {
-                        uuid: 'b702fa61-92fd-47b3-b9ac-8a0f39d1d2cc',
-                        x: 0,
-                        angle: 0,
-                        y: 0,
-                        moniker: 'Kurve',
-                        editMode: true,
-                        fill: '#1f78b4',
-                        pattern: {
-                            template: 'striped',
-                            angle: 0,
-                            scaleX: 1,
-                            scaleY: 1
-                        },
-                        points: [
-                            {
-                                kind: 'M',
-                                coords: [
-                                    448,
-                                    345
-                                ]
-                            },
-                            {
-                                kind: 'C',
-                                coords: [
-                                    510,
-                                    353,
-                                    588,
-                                    263,
-                                    455,
-                                    274
-                                ]
-                            },
-                            {
-                                kind: 'C',
-                                coords: [
-                                    322,
-                                    285,
-                                    296,
-                                    291,
-                                    321,
-                                    355
-                                ]
-                            },
-                            {
-                                kind: 'C',
-                                coords: [
-                                    346,
-                                    419,
-                                    454,
-                                    376,
-                                    450,
-                                    345
-                                ]
-                            }
-                        ],
-                        type: 'path'
-                    }
-                ]
+                objects: []
             }
         ]
     },

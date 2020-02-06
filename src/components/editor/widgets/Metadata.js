@@ -6,7 +6,7 @@ import Select from "../../gui/Select";
 import {Button} from "../../gui/Button";
 import {Upper} from "../../gui/WidgetContainer";
 import Tooltip from "../../gui/Tooltip";
-import {VERSION} from "../../../actions/constants";
+import {GRAPHIC, VERSION} from "../../../actions/constants";
 
 const Status = styled.div`
   display: flex;
@@ -42,12 +42,13 @@ class Metadata extends Component {
     state = {
         changedOnce: false
     };
+
     render() {
         return (
             <Upper>
                 <div>
                     <Textinput
-                        value={this.state.changedOnce ? this.props.catalogueTitle : (this.props.catalogueTitle || this.props.title)}
+                        value={this.state.changedOnce ? this.props.catalogueTitle : this.props.title}
                         onChange={event => {
                             !this.state.changedOnce && this.setState({changedOnce: true});
                             this.props.changeCatalogueTitle(event.currentTarget.value)
@@ -55,7 +56,7 @@ class Metadata extends Component {
                         tip={"help:input_catalogue-title"}
                         label={"editor:input_catalogue-title"}
                         sublabel={"editor:input_catalogue-title-sub"}/>
-                    {/*todo @mock*/}
+
                     <Select
                         label={"editor:input_catalogue-tags"}
                         tip={"help:input_catalogue-tags"}
@@ -79,10 +80,19 @@ class Metadata extends Component {
                         <Indicator state={this.props.documentState}>
                             {/*editor:catalogue-state-{this.props.documentState}*/}
                             Entwurf
-                            </Indicator>
+                        </Indicator>
                     </Status>
-                    <p>Ich stimme der Veröffentlichung unter der liberalen CC-BY-SA 3.0 Lizenz zu.</p>
-                    <Button onClick={this.props.uploadVersion(this.props.file)} primary fullWidth>editor:input_catalogue-publish</Button>
+                    TODO: CC-lizensiertes Material unterbindet technische Schutzmaßnahmen.
+                    <p>Ich stimme der Veröffentlichung unter der liberalen <a target={"blank"}
+                                                                              href={"https://creativecommons.org/licenses/by/4.0/deed.de"}>CC-BY-SA
+                        3.0 Lizenz</a> zu.</p>
+                    <Button onClick={() => this.props.uploadVersion(this.props.file)}
+                            primary fullWidth
+                            label={this.props.graphic_id === null && this.props.variant_id === null ?
+                                "editor:input_catalogue-publish" :
+                                (this.props.variant_id !== null && "editor:input_catalogue-save")
+                            }>
+                    </Button>
                 </div>
             </Upper>
         );
@@ -94,7 +104,9 @@ const mapStateToProps = state => {
         documentState: 0, // 0 = draft, 1 = published, 2 = published with new draft
         title: state.editor.file.title,
         catalogueTitle: state.editor.file.catalogueTitle,
-        file: state.editor.file
+        file: state.editor.file,
+        graphic_id: state.editor.file.graphic_id,
+        variant_id: state.editor.file.variant_id
     }
 };
 
@@ -107,10 +119,18 @@ const mapDispatchToProps = dispatch => {
             })
         },
         uploadVersion: file => {
-            dispatch({
-                type: VERSION.CREATE.REQUEST,
-                payload: file
-            })
+            if (file.graphic_id === null) {
+                dispatch({
+                    type: GRAPHIC.CREATE.REQUEST,
+                    payload: file
+                })
+            } else if (file.variant_id !== null) {
+                dispatch({
+                    type: VERSION.CREATE.REQUEST,
+                    payload: file
+                })
+            }
+
         }
     }
 };

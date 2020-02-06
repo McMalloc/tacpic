@@ -3,6 +3,7 @@ import {VERSION} from "../actions/constants";
 import methods from "../components/editor/widgets/ReactSVG/methods";
 import uuidv4 from "../utility/uuid";
 import deepPull from "../utility/deepPull";
+import {initialEditor} from "../store";
 
 let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so
 
@@ -77,6 +78,14 @@ const file = (state = {}, action) => {
                     title: action.title
                 }
             };
+        case 'VARIANT_GET_SUCCESS':
+            let current_file = {...initialEditor.file};
+            for (let [key, value] of Object.entries(action.data)) {
+                current_file[key] = value;
+            }
+            return current_file;
+        case 'NEW_GRAPHIC_STARTED':
+            return {...initialEditor.file};
         case 'OBJECT_REMOVED':
             oldState = cloneDeep(state);
 
@@ -91,10 +100,8 @@ const file = (state = {}, action) => {
             return oldState;
         case 'CHANGE_CATALOGUE_TITLE':
             return {
-                ...state, file: {
-                    ...state,
-                    catalogueTitle: action.title
-                }
+                ...state,
+                catalogueTitle: action.title
             };
         case 'CHANGE_CATEGORY':
             return {

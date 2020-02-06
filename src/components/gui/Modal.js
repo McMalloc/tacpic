@@ -24,8 +24,10 @@ const Window = styled.div`
   box-shadow: ${props => props.theme.middle_shadow};
   background-color: ${props => props.theme.background};
   animation: ${slideFromAbove} 0.1s ease-in;
-  max-width: 600px;
-  margin: auto;
+  width: 100%;
+  //max-width: 600px;
+  //margin: auto;
+  margin: 20px;
   max-height: 90%;
   border-radius: ${props => props.theme.border_radius};
   display: flex;

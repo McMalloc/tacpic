@@ -102,6 +102,9 @@ class InteractiveSVG extends Component {
     };
 
     mouseDownHandler = event => {
+        // TODO FIREFOX: TypeError: event.nativeEvent.path is undefined
+        //  src/components/editor/widgets/ReactSVG/InteractiveSVG.js:105
+        // https://stackoverflow.com/questions/39245488/event-path-undefined-with-firefox-and-vue-js
         let target = event.nativeEvent.path[0];
         // check if a group was the actual target since the event first fires
         // on visible elements, and later bubbles up to the group

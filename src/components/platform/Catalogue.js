@@ -1,26 +1,29 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {CATALOGUE} from "../../actions/constants";
+import {CATALOGUE, VARIANT, VERSION} from "../../actions/constants";
 import {Button} from "./../gui/Button";
+import CatalogueItem from "./CatalogueItem";
+import {Modal} from "../gui/Modal";
+import {Redirect} from "react-router";
 
 class Catalogue extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            unameField: {
-                value: ''
-            },
-            pwdField: {
-                value: ''
-            }
+            showModal: false,
+            selectedGraphicIndex: null,
+            selectedVariantIndex: 0
         };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.props.queryGraphics();
-        this.props.queryTags();
+        if (props.private) {
+            this.props.getVersions();
+        } else {
+            this.props.queryGraphics();
+            this.props.queryTags();
+        }
     }
 
-    handleChange(event) {
+    handleChange = (event) => {
         switch (event.target.name) {
             case 'searchTerm':
                 this.setState({
@@ -29,23 +32,92 @@ class Catalogue extends Component {
                     }
                 });
                 break;
-            default: break;
+            default:
+                break;
         }
-    }
+    };
+
+    handleClickOnGraphic = index => {
+        this.setState({
+            selectedGraphicIndex: index
+        });
+    };
+
+    handleClickOnVariant = index => {
+        this.setState({
+            selectedVariantIndex: index
+        });
+    };
+
+    handleModalClose = () => {
+        this.setState({
+            selectedGraphicIndex: null,
+            selectedVariantIndex: 0
+        });
+    };
+
+    editVariant = id => {
+        this.setState({
+            redirect: true
+        });
+        this.props.editVariant(id);
+    };
+
+    handleNewGraphic = () => {
+        this.setState({
+            redirect: true
+        });
+        this.props.newGraphic();
+    };
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect push to="/editor"/>;
+        }
+        let graphics = this.props.graphics;
         return (
-            <React.Fragment>
+            <>
                 {/*<input value={this.state.searchTermField.value} onChange={this.handleChange} name={'searchTerm'}/>*/}
                 {/*<Button onClick={this.props.createVersion}>Post version</Button>*/}
                 <h1>Grafiken</h1>
-                {this.props.graphics.map(graphic => {
-                   return <p>
-                       {graphic.id}: {graphic.title} ({graphic.variants_count} Varianten)
-                   </p>
+                {graphics.map((graphic, index) => {
+                    return <CatalogueItem key={index} onClick={() => this.handleClickOnGraphic(index)} {...graphic}/>
                 })}
-                <p>Zeige {this.props.limit} Grafiken</p>
-            </React.Fragment>
+                <Button icon={"plus"} onClick={this.handleNewGraphic}>Neue Grafik</Button>
+                {this.state.selectedGraphicIndex !== null &&
+                <Modal title={graphics[this.state.selectedGraphicIndex].title} dismiss={this.handleModalClose}
+                       actions={[
+                           {
+                               label: "Ok",
+                               template: "primary",
+                               align: "right",
+                               action: this.handleModalClose
+                           }, {label: "Abbrechen"}
+                       ]}>
+                    <div>
+                        {graphics[this.state.selectedGraphicIndex].variants.map((variant, index) => {
+                            return (
+                                <p onClick={() => this.handleClickOnVariant(index)}
+                                   key={index}
+                                   style={{
+                                    border: "1px solid darkred",
+                                    margin: 3,
+                                    padding: 2,
+                                    backgroundColor: "coral"
+                                }}>
+                                    {variant.title} <Button onClick={() => this.editVariant(variant.id)} icon={"pen"}>Bearbeiten</Button>
+                                </p>
+                            )
+                        })}
+
+                        <div>
+                            {graphics[this.state.selectedGraphicIndex].variants[this.state.selectedVariantIndex].versions.length} Versionen
+                            <Button onClick={this.handleEdit}>Bearbeiten</Button>
+                        </div>
+                    </div>
+                </Modal>
+                }
+            </>
         )
     }
 }
@@ -59,37 +131,53 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         queryGraphics: (tags = [], terms = [], limit = 20, offset = 0) => {
-          return dispatch({
-              type: CATALOGUE.SEARCH.REQUEST,
-              payload: {
-                  tags,
-                  terms,
-                  limit,
-                  offset,
-                  order: {
-                      by: "date",
-                      desc: false
-                  }
-              }
-          })
+            return dispatch({
+                type: CATALOGUE.SEARCH.REQUEST,
+                payload: {
+                    tags,
+                    terms,
+                    limit,
+                    offset,
+                    order: {
+                        by: "date",
+                        desc: false
+                    }
+                }
+            })
         },
         changeLimit: limit => {
-          return dispatch({
-              type: "CATALOGUE_LIMIT_CHANGE", // DOMAIN_VARIABLE_EVENT
-              limit
-          })
+            return dispatch({
+                type: "CATALOGUE_LIMIT_CHANGE", // DOMAIN_VARIABLE_EVENT
+                limit
+            })
+        },
+        getVersions: () => {
+            return dispatch({
+                type: VERSION.GET.REQUEST
+            })
         },
         changeOffset: offset => {
-          return dispatch({
-              type: "CATALOGUE_OFFSET_CHANGE",
-              offset
-          })
+            return dispatch({
+                type: "CATALOGUE_OFFSET_CHANGE",
+                offset
+            })
         },
         queryTags: () => {
-          // return dispatch({
-          //
-          // })
+            // return dispatch({
+            //
+            // })
         },
+        newGraphic: () => {
+            dispatch({
+                type: "NEW_GRAPHIC_STARTED"
+            })
+        },
+        editVariant: id => {
+            dispatch({
+                type: VARIANT.GET.REQUEST,
+                payload: {id}
+            })
+        }
         // createVersion: () => {
         //     return dispatch({
         //         type: VERSION.CREATE.REQUEST,

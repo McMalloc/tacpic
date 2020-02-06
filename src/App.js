@@ -5,7 +5,7 @@ import Login from "./components/Login";
 import {useTranslation} from 'react-i18next';
 import {Navbar, NavbarItem} from "./components/platform/Navbar";
 import Catalogue from "./components/platform/Catalogue";
-
+import Register from "./components/Register";
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -44,21 +44,24 @@ const App = () => {
     return (
         <BrowserRouter>
             <div className="App">
-                {/*<Navbar>*/}
-                {/*    <NavbarItem to={"home"}/>*/}
-                {/*    <NavbarItem to={"home"}/>*/}
-                {/*</Navbar>*/}
-                {/*<nav>*/}
-                {/*    <Link to="/login">Login</Link>*/}
-                {/*    <Link to="/editor">Editor</Link>*/}
-                {/*    <Link to="/catalogue">Stöbern</Link>*/}
-                {/*</nav>*/}
+                <Navbar>
+                    <NavbarItem to={"home"}/>
+                    <NavbarItem to={"home"}/>
+                </Navbar>
+                <nav>
+                    {/*<Link to="/login">Login</Link>*/}
+                    <Link to="/register">Registrieren</Link>
+                    <Link to="/editor">Editor</Link>
+                    <Link to="/private-catalogue">Stöbern</Link>
+                </nav>
                 <ErrorBoundary>
                     <Switch>
                         {/*Renders exclusivly*/}
-                        <Route path="/login" component={Login}/>
+                        {/*<Route path="/login" component={Login}/>*/}
+                        <Route path="/register" component={Register}/>
                         <Route path="/editor" component={Editor}/>
                         <Route path="/catalogue" component={Catalogue}/>
+                        <Route path="/private-catalogue" render={() => <Catalogue private={true} />}/>
                     </Switch>
                 </ErrorBoundary>
             </div>

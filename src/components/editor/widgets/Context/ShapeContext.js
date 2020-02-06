@@ -55,8 +55,16 @@ class ShapeContext extends Component {
                     onChange={this.changeTexture}/>
 
                 <Checkbox name={"padding"}
+                          checked={this.props.object.pattern.offset}
+                          onChange={() => {
+                              this.props.changeProp(
+                                  this.props.object.uuid,
+                                  'pattern',
+                                  {...this.props.object.pattern, offset: !this.props.object.pattern.offset})
+                          }}
                           label={"Abstand zwischen Textur und Rand"}/>
-                <Numberinput unit={"mm"}/>
+                {this.props.offset + "--"}
+                {/*<Numberinput unit={"mm"}/>*/}
             </fieldset>
 
             <fieldset>
@@ -120,6 +128,7 @@ class ShapeContext extends Component {
 }
 
 const mapStateToProps = state => {
+    // TODO ersetzen durch Funktion
     const selectedObject = find(state.editor.file.pages[state.editor.ui.currentPage].objects, {uuid: state.editor.ui.selectedObjects[0]});
     if (isUndefined(selectedObject)) {
         return {
@@ -130,7 +139,8 @@ const mapStateToProps = state => {
             selectedFill: selectedObject.fill,
             uuid: selectedObject.uuid,
             selectedMoniker: selectedObject.moniker,
-            selectedTexture: selectedObject.pattern.template
+            selectedTexture: selectedObject.pattern.template,
+            object: selectedObject
         }
     }
 };

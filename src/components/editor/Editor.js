@@ -43,17 +43,17 @@ class Editor extends Component {
             return (
                 <Wrapper>
                     <Tooltip />
-                    {/*<Ribbon activeItem={this.props.ui.currentLayout} menus={[*/}
-                    {/*    {label: "editor_ui:intro",  icon: "flag-checkered", action: () => {this.props.layoutSet(0)}},*/}
-                    {/*    {label: "editor_ui:original",  icon: "file-image", action: () => {this.props.layoutSet(1)}},*/}
-                    {/*    {label: "editor_ui:category",  icon: "tags",       action: () => {this.props.layoutSet(2)}},*/}
-                    {/*    {label: "editor_ui:layout",    icon: "sticky-note",    action: () => {this.props.layoutSet(3)}},*/}
-                    {/*    {label: "editor_ui:draw",      icon: "pen",        action: () => {this.props.layoutSet(4)}},*/}
-                    {/*    {label: "editor_ui:legend",    icon: "braille",    action: () => {this.props.layoutSet(5)}},*/}
-                    {/*    {label: "editor_ui:verbalise", icon: "book-open",  action: () => {this.props.layoutSet(6)}},*/}
-                    {/*    {label: "editor_ui:proofing",  icon: "glasses",    action: () => {this.props.layoutSet(7)}},*/}
-                    {/*    {label: "editor_ui:finish",    icon: "check-square",action: () => {this.props.layoutSet(8)}},*/}
-                    {/*]} />*/}
+                    <Ribbon activeItem={this.props.ui.currentLayout} menus={[
+                        {label: "editor_ui:intro",  icon: "flag-checkered", action: () => {this.props.layoutSet(0)}},
+                        {label: "editor_ui:original",  icon: "file-image", action: () => {this.props.layoutSet(1)}},
+                        {label: "editor_ui:category",  icon: "tags",       action: () => {this.props.layoutSet(2)}},
+                        {label: "editor_ui:layout",    icon: "sticky-note",    action: () => {this.props.layoutSet(3)}},
+                        {label: "editor_ui:draw",      icon: "pen",        action: () => {this.props.layoutSet(4)}},
+                        {label: "editor_ui:legend",    icon: "braille",    action: () => {this.props.layoutSet(5)}},
+                        {label: "editor_ui:verbalise", icon: "book-open",  action: () => {this.props.layoutSet(6)}},
+                        {label: "editor_ui:proofing",  icon: "glasses",    action: () => {this.props.layoutSet(7)}},
+                        {label: "editor_ui:finish",    icon: "check-square",action: () => {this.props.layoutSet(8)}},
+                    ]} />
 
                     <Logo />
 

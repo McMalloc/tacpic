@@ -4,7 +4,7 @@ import {USER} from "../actions/constants";
 import {Button} from "./gui/Button";
 import {Modal} from "./gui/Modal";
 
-class Login extends Component {
+class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -15,13 +15,11 @@ class Login extends Component {
                 value: ''
             }
         };
+
+        this.handleChange = this.handleChange.bind(this);
     }
 
-    componentDidMount() {
-        this.props.validateLogin();
-    }
-
-    handleChange = (event) => {
+    handleChange(event) {
         switch (event.target.name) {
             case 'uname':
                 this.setState({
@@ -39,7 +37,7 @@ class Login extends Component {
                 break;
             default: break;
         }
-    };
+    }
 
     render() {
         let form =
@@ -52,15 +50,15 @@ class Login extends Component {
                 <label>Passwort</label>
                 <input value={this.state.pwdField.value} onChange={this.handleChange} type={'password'} name={'pwd'}/>
                 {this.props.login_pending ?
-                    (<span className={"fas fa-cog fa-spin"} />) :
-                    (<button type={'submit'}>Anmelden</button>)
+                    (<span>Warte kurz, Brudi</span>) :
+                    (<button type={'submit'}>Registrieren</button>)
                 }
             </form>;
 
         return (
             <React.Fragment>
                 {this.props.logged_in ? (
-                    <span>Angemeldet als {this.props.displayName}</span>
+                    <span>Angemeldet!</span>
                 ) : (form)}
             </React.Fragment>
         )
@@ -69,7 +67,7 @@ class Login extends Component {
 
 const mapStateToProps = state => {
     return {
-        ...state.user
+        ...state.user.user
     }
 };
 
@@ -77,17 +75,12 @@ const mapDispatchToProps = dispatch => {
     return {
         submitUserLogin: (username, password) => {
             return dispatch({
-                type: USER.LOGIN.REQUEST,
+                type: USER.CREATE.REQUEST,
                 username, password
-            });
-        },
-        validateLogin: () => {
-            return dispatch({
-                type: USER.VALIDATE.REQUEST
             });
         }
     }
 };
 
 // export default Login;
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

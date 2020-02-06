@@ -9,13 +9,14 @@ function constants(domain, methods) {
     return obj;
 }
 
-export const USER       = constants('USER',     ['LOGIN', 'CREATE', 'SAVE_LAYOUT']);
+export const USER       = constants('USER',     ['LOGIN', 'CREATE', 'SAVE_LAYOUT', 'VALIDATE']);
 export const SEARCH     = constants('SEARCH',     ['QUERY']);
 export const PRODUCT    = constants('PRODUCT',  ['FETCH', 'GET']);
 export const PAGE       = constants('PAGE',     ['GET']);
 export const RESSOURCES = constants('RESSOURCES',   ['GET']);
 export const VERSION    = constants('VERSION',   ['GET', 'CREATE']);
-// export const GRAPHIC    = constants('GRAPHIC',   ['GET']);
+export const GRAPHIC    = constants('GRAPHIC',   ['CREATE']);
+export const VARIANT    = constants('VARIANT',   ['GET']);
 export const CATALOGUE    = constants('CATALOGUE',   ['SEARCH']);
 export const TAGS    = constants('TAGS',   ['GET', 'SEARCH', 'CREATE']);
 

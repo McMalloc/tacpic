@@ -38,12 +38,12 @@ class Canvas extends Component {
     hintTimer = null;
     state = {showHint: false};
     render() {
-        if (this.props.ui.currentLayout === 4 && this.hintTimer === null) {
-            this.hintTimer = setTimeout(
-                () => this.setState({showHint: true}),
-                2000
-            );
-        }
+        // if (this.props.ui.currentLayout === 4 && this.hintTimer === null) {
+        //     this.hintTimer = setTimeout(
+        //         () => this.setState({showHint: true}),
+        //         2000
+        //     );
+        // }
 
         return (
             <InteractiveSVG/>
