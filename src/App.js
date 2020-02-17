@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Editor from './components/editor/Editor';
 import {BrowserRouter, Route, Link, Switch} from 'react-router-dom'
 import Login from "./components/Login";
@@ -6,6 +6,8 @@ import {useTranslation} from 'react-i18next';
 import {Navbar, NavbarItem} from "./components/platform/Navbar";
 import Catalogue from "./components/platform/Catalogue";
 import Register from "./components/Register";
+import {useDispatch} from "react-redux";
+import {TAGS} from "./actions/constants";
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -41,6 +43,15 @@ const App = () => {
     const t = useTranslation().t;
     // Hook. https://react.i18next.com/latest/usetranslation-hook
     // Alternative withTranslation HOC
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch({
+            type: TAGS.GET.REQUEST,
+            payload: {limit: 30}
+        })
+    });
+
     return (
         <BrowserRouter>
             <div className="App">
@@ -59,9 +70,11 @@ const App = () => {
                         {/*Renders exclusivly*/}
                         {/*<Route path="/login" component={Login}/>*/}
                         <Route path="/register" component={Register}/>
-                        <Route path="/editor" component={Editor}/>
+                        <Route path="/editor/:graphic_id?/variants/:variant_id?" component={Editor}/>
+                        <Route path="/editor/new" component={Editor}/>
+                        {/*<Route path="/private-catalogue/:graphic_id/variant/:variant_id/edit" component={Editor}/>*/}
                         <Route path="/catalogue" component={Catalogue}/>
-                        <Route path="/private-catalogue" render={() => <Catalogue private={true} />}/>
+                        <Route path="/private-catalogue" render={() => <Catalogue private={true}/>}/>
                     </Switch>
                 </ErrorBoundary>
             </div>

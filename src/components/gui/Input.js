@@ -45,7 +45,8 @@ const Textarea = styled.textarea`
   box-sizing: border-box;
   border: 1px solid ${props => props.theme.midlight};
   border-radius: 3px;
-  background-color: white;
+  background-color: ${props => props.disabled ? "transparent" : props.theme.background};
+  cursor: ${props => props.disabled ? "not-allowed" : "text"};
   padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[1]};
 `;
 

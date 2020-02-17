@@ -15,7 +15,7 @@ const sagaMiddleware = createSagaMiddleware();
 //     return next(action);
 // };
 
-const initialLayout = 4;
+const initialLayout = 8;
 const fromLS = JSON.parse(localStorage.getItem("custom_layout_" + initialLayout));
 export const initialEditor = {
     ui: {
@@ -43,17 +43,22 @@ export const initialEditor = {
     },
     file: {
         title: "",
+        graphicTitle: "",
+        graphicDescription: "",
+        variantTitle: "",
+        variantDescription: "",
+        transcribersNotes: "",
         tags: [],
+        category: null,
+
         variant_id: null,
         graphic_id: null,
         version_id: null,
         lastVersionHash: null,
+
         backgroundURL: "",
-        catalogueTitle: "",
-        catalogueDescription: "",
-        description: "",
-        category: null,
         keyedTextures: {},
+
         medium: 'swell',
         system: 'de-de-g2', // name of the liblouis translation table
         width: 210,
@@ -75,6 +80,7 @@ export const initialEditor = {
 const initialCatalogue = {
     filterTags: [],
     filterTerms: [],
+    tags: [],
     limit: 0,
     offset: 0,
     graphics: []

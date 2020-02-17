@@ -10,13 +10,14 @@ function constants(domain, methods) {
 }
 
 export const USER       = constants('USER',     ['LOGIN', 'CREATE', 'SAVE_LAYOUT', 'VALIDATE']);
-export const SEARCH     = constants('SEARCH',     ['QUERY']);
+export const SEARCH     = constants('SEARCH',   ['QUERY']);
 export const PRODUCT    = constants('PRODUCT',  ['FETCH', 'GET']);
-export const PAGE       = constants('PAGE',     ['GET']);
-export const RESSOURCES = constants('RESSOURCES',   ['GET']);
+// export const PAGE       = constants('PAGE',     ['GET']);
+export const FILE       = constants('FILE',     ['OPEN']);
+export const RESSOURCES = constants('RESSOURCES',['GET']);
 export const VERSION    = constants('VERSION',   ['GET', 'CREATE']);
 export const GRAPHIC    = constants('GRAPHIC',   ['CREATE']);
-export const VARIANT    = constants('VARIANT',   ['GET']);
+export const VARIANT    = constants('VARIANT',   ['GET', 'CREATE', 'UPDATE']);
 export const CATALOGUE    = constants('CATALOGUE',   ['SEARCH']);
 export const TAGS    = constants('TAGS',   ['GET', 'SEARCH', 'CREATE']);
 

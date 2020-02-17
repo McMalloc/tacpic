@@ -24,12 +24,14 @@ export const canvasResized = (width, height) => ({
     height
 });
 
+// TODO DEPRECATED
 export const layoutChanged = layout => ({
     // type: USER.SAVE_LAYOUT.REQUEST, // das Ändern des Layouts alleine sollte noch nichts zum Server persistieren
     type: "LAYOUT_CHANGED",
     layout
 });
 
+// TODO DEPRECATED
 export const layoutSet = layoutIndex => ({
     // type: USER.SAVE_LAYOUT.REQUEST, // das Ändern des Layouts alleine sollte noch nichts zum Server persistieren
     type: "LAYOUT_SET",

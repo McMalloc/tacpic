@@ -18,7 +18,6 @@ const userApi = (state = initialState, action) => {
             };
         case USER.VALIDATE.SUCCESS:
         case USER.LOGIN.SUCCESS:
-            console.log(action);
             return {
                 ...state,
                 login_pending: false,

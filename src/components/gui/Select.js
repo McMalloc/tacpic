@@ -33,7 +33,11 @@ const Select = props => {
     const { t } = useTranslation();
     const Component = props.creatable ? AtlCrSelect : AtlSelect;
     // TODO: funktioniert noch nicht für gruppierte options-Arrays
-    let dflt = props.default ? find(props.options, {value: props.default}) : null;
+    let value = props.value;
+    if (!Array.isArray(props.value)) {
+        value = find(props.options, {value: props.value})
+    }
+
     return (
             <div>
                 <Label data-tip={t(props.tip)} label={props.label} sublabel={props.sublabel}>
@@ -55,7 +59,7 @@ const Select = props => {
                         })}
                         isMulti={props.isMulti}
                         placeholder={t(props.placeholder)}
-                        defaultValue={dflt}
+                        defaultValue={value}
                         onChange={props.onChange}
                         menuPortalTarget={document.body}
                         options={props.options}/></Label>

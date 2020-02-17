@@ -13,5 +13,5 @@ export default combineReducers({
     catalogue,
     // canvas,
     user,
-    pages
+    // pages
 });

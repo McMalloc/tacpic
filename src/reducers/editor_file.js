@@ -1,5 +1,5 @@
 import {cloneDeep, filter, includes, find, compact} from "lodash"
-import {VERSION} from "../actions/constants";
+import {VARIANT, FILE} from "../actions/constants";
 import methods from "../components/editor/widgets/ReactSVG/methods";
 import uuidv4 from "../utility/uuid";
 import deepPull from "../utility/deepPull";
@@ -71,21 +71,21 @@ const file = (state = {}, action) => {
                 }
             });
             return oldState;
-        case 'CHANGE_TITLE':
+        case 'CHANGE_FILE_PROPERTY':
             return {
-                ...state, file: {
-                    ...state,
-                    title: action.title
-                }
+                ...state,
+                [action.key]: action.value
             };
-        case 'VARIANT_GET_SUCCESS':
+        case FILE.OPEN.SUCCESS:
             let current_file = {...initialEditor.file};
-            for (let [key, value] of Object.entries(action.data)) {
+            for (let [key, value] of Object.entries(action.data)) { // assign new values, keep defaults
                 current_file[key] = value;
             }
+            current_file.isNew = action.mode === 'new';
             return current_file;
-        case 'NEW_GRAPHIC_STARTED':
-            return {...initialEditor.file};
+        case FILE.OPEN.REQUEST:
+
+            return state;
         case 'OBJECT_REMOVED':
             oldState = cloneDeep(state);
 
@@ -98,18 +98,6 @@ const file = (state = {}, action) => {
             });
 
             return oldState;
-        case 'CHANGE_CATALOGUE_TITLE':
-            return {
-                ...state,
-                catalogueTitle: action.title
-            };
-        case 'CHANGE_CATEGORY':
-            return {
-                ...state, file: {
-                    ...state,
-                    category: action.catID
-                }
-            };
         case 'PAGE_ADD':
             oldState = {...state};
             oldState.pages.push({name: 'Seite ' + (oldState.pages.length + 1), objects: []});

@@ -33,8 +33,5 @@ export const versionGetSaga = createSaga(
         }
     );
 
-export const versionCreateSaga = createSaga(
-    VERSION.CREATE, 'post', 'versions', takeLatest, true);
-
 
 

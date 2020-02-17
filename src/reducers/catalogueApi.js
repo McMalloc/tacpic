@@ -1,5 +1,4 @@
-import {CATALOGUE, VERSION} from '../actions/constants';
-import {groupBy} from 'lodash';
+import {CATALOGUE, VERSION, TAGS} from '../actions/constants';
 
 const catalogueApi = (state = {}, action) => {
     switch (action.type) {
@@ -28,6 +27,11 @@ const catalogueApi = (state = {}, action) => {
         case VERSION.GET.FAILURE:
             return {
                 ...state
+            };
+        case TAGS.GET.SUCCESS:
+            return {
+                ...state,
+                tags: action.data
             };
         default:
             return state;

@@ -2,7 +2,7 @@ import {call, put} from "@redux-saga/core/effects";
 import axios from "axios";
 
 const replaceParam = (path, paramObj) => {
-    let matches = path.match(/:[a-z]+/g);
+    let matches = path.match(/:[a-z_]+/g);
     if (matches !== null) {
         matches.forEach(match => {
             let param = match.slice(1); // get rid of the ":"
@@ -22,6 +22,9 @@ const replaceParam = (path, paramObj) => {
  *
  * A redux saga
  * @typedef {Function} Saga
+ *
+ * A redux action
+ * @typedef {Object} Action
  */
 
 /**
@@ -39,6 +42,7 @@ const replaceParam = (path, paramObj) => {
  * @param {Boolean} auth Passing `true` will add the Authorization header to the REQUEST, setting its value to the JWT
  *   saved in `localStorage`
  * @param {Function} transform A function to transform the data from the API upon a SUCCESS event. Leave undefined for identity.
+ * @return {Saga} The callable saga.
  */
 export default function createSaga(event, method, endpoint, effect, auth, transform = args => { return args }) {
     return function* () {

@@ -1,12 +1,11 @@
-import React, {Component, Fragment} from 'react';
-import {connect} from "react-redux";
+import React, {useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import styled from 'styled-components';
 import {Multiline, Textinput} from "../../gui/Input";
 import Select from "../../gui/Select";
 import {Button} from "../../gui/Button";
 import {Upper} from "../../gui/WidgetContainer";
-import Tooltip from "../../gui/Tooltip";
-import {GRAPHIC, VERSION} from "../../../actions/constants";
+import {GRAPHIC, VERSION, VARIANT} from "../../../actions/constants";
 
 const Status = styled.div`
   display: flex;
@@ -38,101 +37,144 @@ const Indicator = styled.span`
   
 `;
 
-class Metadata extends Component {
-    state = {
-        changedOnce: false
-    };
-
-    render() {
-        return (
-            <Upper>
-                <div>
-                    <Textinput
-                        value={this.state.changedOnce ? this.props.catalogueTitle : this.props.title}
-                        onChange={event => {
-                            !this.state.changedOnce && this.setState({changedOnce: true});
-                            this.props.changeCatalogueTitle(event.currentTarget.value)
-                        }}
-                        tip={"help:input_catalogue-title"}
-                        label={"editor:input_catalogue-title"}
-                        sublabel={"editor:input_catalogue-title-sub"}/>
-
-                    <Select
-                        label={"editor:input_catalogue-tags"}
-                        tip={"help:input_catalogue-tags"}
-                        isMulti
-                        creatable
-                        options={[
-                            {label: "Sek 1", value: 0}, // value entspricht id
-                            {label: "Sek 2", value: 1},
-                            {label: "Biologie", value: 2},
-                            {label: "Physik", value: 3},
-                            {label: "Geographie", value: 4}]}
-                        sublabel={"editor:input_catalogue-tags-sub"}/>
-                    <Multiline label={"editor:input_catalogue-desc"} sublabel={"editor:input_catalogue-desc-sub"}/>
-
-                </div>
-
-                <div>
-                    <hr/>
-                    <Status>
-                        <span>Status:</span>
-                        <Indicator state={this.props.documentState}>
-                            {/*editor:catalogue-state-{this.props.documentState}*/}
-                            Entwurf
-                        </Indicator>
-                    </Status>
-                    TODO: CC-lizensiertes Material unterbindet technische Schutzmaßnahmen.
-                    <p>Ich stimme der Veröffentlichung unter der liberalen <a target={"blank"}
-                                                                              href={"https://creativecommons.org/licenses/by/4.0/deed.de"}>CC-BY-SA
-                        3.0 Lizenz</a> zu.</p>
-                    <Button onClick={() => this.props.uploadVersion(this.props.file)}
-                            primary fullWidth
-                            label={this.props.graphic_id === null && this.props.variant_id === null ?
-                                "editor:input_catalogue-publish" :
-                                (this.props.variant_id !== null && "editor:input_catalogue-save")
-                            }>
-                    </Button>
-                </div>
-            </Upper>
-        );
-    }
-}
-
-const mapStateToProps = state => {
-    return {
-        documentState: 0, // 0 = draft, 1 = published, 2 = published with new draft
-        title: state.editor.file.title,
-        catalogueTitle: state.editor.file.catalogueTitle,
-        file: state.editor.file,
-        graphic_id: state.editor.file.graphic_id,
-        variant_id: state.editor.file.variant_id
+const uploadVersion = (dispatch, file) => {
+    if (file.graphic_id === null) {
+        dispatch({
+            type: GRAPHIC.CREATE.REQUEST,
+            payload: file
+        })
+    } else if (file.isNew) {
+        dispatch({
+            type: VARIANT.CREATE.REQUEST,
+            payload: file
+        })
+    } else {
+        dispatch({
+            type: VARIANT.UPDATE.REQUEST,
+            payload: file
+        })
     }
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        changeCatalogueTitle: title => {
-            dispatch({
-                type: "CHANGE_CATALOGUE_TITLE",
-                title
-            })
-        },
-        uploadVersion: file => {
-            if (file.graphic_id === null) {
-                dispatch({
-                    type: GRAPHIC.CREATE.REQUEST,
-                    payload: file
-                })
-            } else if (file.variant_id !== null) {
-                dispatch({
-                    type: VERSION.CREATE.REQUEST,
-                    payload: file
-                })
+const Metadata = props => {
+    const file = useSelector(
+        state => state.editor.file
+    );
+    const tags = useSelector(
+        state => state.catalogue.tags.map(tag => {
+            return {
+                label: tag.name,
+                value: tag.tag_id
             }
+        })
+    );
+    const dispatch = useDispatch();
+    const [input, setInput] = useState({});
 
-        }
-    }
+    const handleInputChange = (e) => setInput({
+        ...input,
+        [e.currentTarget.name]: e.currentTarget.value
+    });
+
+    return (
+        <Upper>
+            <div>
+                <Textinput
+                    value={file.graphicTitle}
+                    onChange={event => {
+                        dispatch({
+                            type: "CHANGE_FILE_PROPERTY",
+                            key: 'graphicTitle',
+                            value: event.currentTarget.value
+                        });
+                    }}
+                    tip={"help:input_graphic-title"}
+                    disabled={file.graphic_id !== null}
+                    label={"editor:input_graphic-title"}
+                    sublabel={"editor:input_graphic-title-sub"}/>
+                <Textinput
+                    value={file.variantTitle}
+                    onChange={event => {
+                        dispatch({
+                            type: "CHANGE_FILE_PROPERTY",
+                            key: 'variantTitle',
+                            value: event.currentTarget.value
+                        });
+                    }}
+                    tip={"help:input_variant-title"}
+                    disabled={file.graphic_id === null}
+                    label={"editor:input_variant-title"}
+                    sublabel={"editor:input_variant-title-sub"}/>
+
+                <Select
+                    label={"editor:input_catalogue-tags"}
+                    tip={"help:input_catalogue-tags"}
+                    isMulti
+                    creatable
+                    onChange={selection => {
+                        dispatch({
+                            type: "CHANGE_FILE_PROPERTY",
+                            key: 'tags',
+                            value: selection.map(tag => tag.value)
+                        })
+                    }}
+                    options={tags}
+                    value={file.tags.map(tag => {
+                        return {label: tag.name, value: tag.tag_id}
+                    })}
+                    sublabel={"editor:input_catalogue-tags-sub"}/>
+
+                <Multiline
+                    value={file.graphicDescription}
+                    onChange={event => {
+                        dispatch({
+                            type: "CHANGE_FILE_PROPERTY",
+                            key: 'graphicDescription',
+                            value: event.currentTarget.value
+                        });
+                    }}
+                    disabled={file.graphic_id !== null}
+                    label={"editor:input_graphic-desc"}
+                    sublabel={"editor:input_graphic-desc-sub"}/>
+
+                <Multiline
+                    value={file.variantDescription}
+                    onChange={event => {
+                        dispatch({
+                            type: "CHANGE_FILE_PROPERTY",
+                            key: 'variantDescription',
+                            value: event.currentTarget.value
+                        });
+                    }}
+                    disabled={file.graphic_id === null}
+                    label={"editor:input_variant-desc"}
+                    sublabel={"editor:input_variant-desc-sub"}/>
+
+            </div>
+
+            <div>
+                <hr/>
+                <Status>
+                    <span>Status:</span>
+                    <Indicator state={file.documentState}>
+                        {/*editor:catalogue-state-{this.props.documentState}*/}
+                        Entwurf
+                    </Indicator>
+                </Status>
+                TODO: CC-lizensiertes Material unterbindet technische Schutzmaßnahmen.
+                <p>Ich stimme der Veröffentlichung unter der liberalen <a target={"blank"}
+                                                                          href={"https://creativecommons.org/licenses/by/4.0/deed.de"}>CC-BY-SA
+                    3.0 Lizenz</a> zu.</p>
+                <Button onClick={() => uploadVersion(dispatch, file)}
+                        primary fullWidth
+                        label={file.graphic_id === null ?
+                            "editor:input_catalogue-publish" :
+                            (file.isNew ? "editor:input_catalogue-create" : "editor:input_catalogue-update")
+                        }>
+                </Button>
+            </div>
+        </Upper>
+    );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Metadata);
+export default Metadata;

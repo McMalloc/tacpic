@@ -4,7 +4,8 @@ import {CATALOGUE, VARIANT, VERSION} from "../../actions/constants";
 import {Button} from "./../gui/Button";
 import CatalogueItem from "./CatalogueItem";
 import {Modal} from "../gui/Modal";
-import {Redirect} from "react-router";
+import {Link, Redirect, Route, useRouteMatch} from "react-router-dom";
+import CatalogueItemList from "./CatalogueItemList";
 
 class Catalogue extends Component {
     constructor(props) {
@@ -72,51 +73,17 @@ class Catalogue extends Component {
 
     render() {
         if (this.state.redirect) {
-            return <Redirect push to="/editor"/>;
+            return <Redirect push to="/editor/new"/>;
         }
-        let graphics = this.props.graphics;
+
         return (
             <>
                 {/*<input value={this.state.searchTermField.value} onChange={this.handleChange} name={'searchTerm'}/>*/}
-                {/*<Button onClick={this.props.createVersion}>Post version</Button>*/}
                 <h1>Grafiken</h1>
-                {graphics.map((graphic, index) => {
-                    return <CatalogueItem key={index} onClick={() => this.handleClickOnGraphic(index)} {...graphic}/>
-                })}
-                <Button icon={"plus"} onClick={this.handleNewGraphic}>Neue Grafik</Button>
-                {this.state.selectedGraphicIndex !== null &&
-                <Modal title={graphics[this.state.selectedGraphicIndex].title} dismiss={this.handleModalClose}
-                       actions={[
-                           {
-                               label: "Ok",
-                               template: "primary",
-                               align: "right",
-                               action: this.handleModalClose
-                           }, {label: "Abbrechen"}
-                       ]}>
-                    <div>
-                        {graphics[this.state.selectedGraphicIndex].variants.map((variant, index) => {
-                            return (
-                                <p onClick={() => this.handleClickOnVariant(index)}
-                                   key={index}
-                                   style={{
-                                    border: "1px solid darkred",
-                                    margin: 3,
-                                    padding: 2,
-                                    backgroundColor: "coral"
-                                }}>
-                                    {variant.title} <Button onClick={() => this.editVariant(variant.id)} icon={"pen"}>Bearbeiten</Button>
-                                </p>
-                            )
-                        })}
 
-                        <div>
-                            {graphics[this.state.selectedGraphicIndex].variants[this.state.selectedVariantIndex].versions.length} Versionen
-                            <Button onClick={this.handleEdit}>Bearbeiten</Button>
-                        </div>
-                    </div>
-                </Modal>
-                }
+                <CatalogueItemList graphics={this.props.graphics} />
+
+                <Button icon={"plus"} onClick={this.handleNewGraphic}>Neue Grafik</Button>
             </>
         )
     }
@@ -178,14 +145,6 @@ const mapDispatchToProps = dispatch => {
                 payload: {id}
             })
         }
-        // createVersion: () => {
-        //     return dispatch({
-        //         type: VERSION.CREATE.REQUEST,
-        //         payload: {
-        //             title: "Grafik",
-        //             document: "<svg />"
-        //         }});
-        // }
     }
 };
 
