@@ -1,9 +1,10 @@
 import createSaga from "./saga_utilities";
 import {VARIANT} from "../actions/constants";
 import {takeLatest} from "redux-saga/effects";
+import extractSVG from "../utility/extractSVG";
 
 export const variantGetSaga = createSaga(
-    VARIANT.GET, 'get', 'variants/:id', takeLatest, true,
+    VARIANT.GET, 'get', 'variants/:id', takeLatest, true, undefined,
     variant => {
         return {
             variant_id: variant.id,
@@ -22,12 +23,12 @@ export const variantGetSaga = createSaga(
 
 export const variantUpdateSaga = createSaga(
     VARIANT.UPDATE, 'post', 'variants/:variant_id', takeLatest, true, file => {
-        // file.renderPreview = document.getElementById("MAIN-CANVAS").outerHTML;
+        file.renderedPreview = extractSVG();
         return file;
     });
 
 export const variantCreateSaga = createSaga(
     VARIANT.CREATE, 'post', 'variants', takeLatest, true, file => {
-        // file.renderPreview = document.getElementById("MAIN-CANVAS").outerHTML;
+        file.renderedPreview = extractSVG();
         return file;
     });

@@ -7,7 +7,7 @@ import {groupBy} from "lodash";
 
 
 export const versionGetSaga = createSaga(
-    VERSION.GET, 'get', 'users/versions', takeLatest, true,
+    VERSION.GET, 'get', 'users/versions', takeLatest, true, undefined,
     graphics => {
             let groupedGraphics = groupBy(graphics, 'graphic_id');
             let mappableGraphics = [];

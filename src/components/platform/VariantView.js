@@ -32,6 +32,15 @@ const VariantView = props => {
                     id: variant.id, mode: "new"
                 })
             }}>Neue Variante aus dieser</Button>
+
+            <Button onClick={() => {
+                window.location = 'http://localhost:9292/variants/' + variantId + '/pdf';
+            }}>
+                Herunterladen</Button>
+
+            <img
+                style={{width:200,height:'auto'}}
+                src={"http://localhost:9292/static/thumbnails/thumbnail-" + variantId + "-xl.png"}/>
         </div>
     );
 };

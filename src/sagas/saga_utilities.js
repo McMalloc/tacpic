@@ -1,14 +1,15 @@
-import {call, put} from "@redux-saga/core/effects";
+import {call, put} from "redux-saga/effects";
 import axios from "axios";
 
 const replaceParam = (path, paramObj) => {
     let matches = path.match(/:[a-z_]+/g);
+    let params = {...paramObj};
     if (matches !== null) {
         matches.forEach(match => {
             let param = match.slice(1); // get rid of the ":"
-            if (paramObj.hasOwnProperty(param)) {
-                path = path.replace(match, paramObj[param]);
-                delete paramObj[param];
+            if (params.hasOwnProperty(param)) {
+                path = path.replace(match, params[param]);
+                delete params[param];
             }
         })
     }
@@ -41,10 +42,18 @@ const replaceParam = (path, paramObj) => {
  * @param {SagaEffect} effect The desired effect, eg. `takeLatest` for only executing the latest incoming REQUEST.
  * @param {Boolean} auth Passing `true` will add the Authorization header to the REQUEST, setting its value to the JWT
  *   saved in `localStorage`
- * @param {Function} transform A function to transform the data from the API upon a SUCCESS event. Leave undefined for identity.
+ * @param {Function} transformRequest A function to transform the data from the API upon a SUCCESS event. Leave undefined for identity.
+ * @param {Function} transformResponse A function to transform the data to the API upon a REQUEST event. Leave undefined for identity.
  * @return {Saga} The callable saga.
  */
-export default function createSaga(event, method, endpoint, effect, auth, transform = args => { return args }) {
+export default function createSaga(
+    event,
+    method,
+    endpoint,
+    effect,
+    auth,
+    transformRequest = args => { return args },
+    transformResponse = args => { return args }) {
     return function* () {
         yield effect(event.REQUEST, function* (action) {
             try {
@@ -57,10 +66,10 @@ export default function createSaga(event, method, endpoint, effect, auth, transf
                         'Authorization': 'Bearer ' + localStorage.getItem('jwt') // propably should be own saga :(
                     };
 
-                    if (method === 'post') request.data = action.payload;
+                    if (method === 'post') request.data = transformRequest(action.payload);
                     return axios(request);
                 }, action);
-                let data = transform(response.data);
+                let data = transformResponse(response.data);
                 yield put({type: event.SUCCESS, data});
             } catch (error) {
                 console.error(error);
