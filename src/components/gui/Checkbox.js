@@ -53,7 +53,7 @@ const Input = styled.input`
   width: 0;
   margin: 0;
 
-  &:checked+label {
+  &:checked + label {
     font-weight: 700;
     color: ${props => props.theme.accent_1};
   }  
@@ -84,7 +84,6 @@ const Checkbox = props => {
                      disabled={props.disabled}
                      aria-disabled={props.disabled}
                      id={props.name + "-cb"}
-                     // tabIndex={0}
                      checked={props.checked}
                      type={"checkbox"} />
                  <Label disabled={props.disabled} checked={props.checked} htmlFor={props.name + "-cb"}>

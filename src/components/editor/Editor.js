@@ -68,7 +68,6 @@ const Editor = props => {
     const dispatch = useDispatch();
     const t = useTranslation().t;
     let {graphic_id, variant_id} = useParams();
-    console.log(useParams());
     useEffect(() => {
         // TODO Editor wird natürlich immer neu gezeichnet, daher abfangen
         // dispatch({

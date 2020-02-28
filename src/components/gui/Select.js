@@ -57,9 +57,11 @@ const Select = props => {
                                 }
 
                         })}
+                        // components={{ Input: CustomInput }}
                         isMulti={props.isMulti}
                         placeholder={t(props.placeholder)}
-                        defaultValue={value}
+                        value={value}
+                        onCreateOption={props.onCreateOption}
                         onChange={props.onChange}
                         menuPortalTarget={document.body}
                         options={props.options}/></Label>

@@ -1,151 +1,86 @@
-import React, {Component} from 'react';
-import {connect} from "react-redux";
-import {CATALOGUE, VARIANT, VERSION} from "../../actions/constants";
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {CATALOGUE, TAGS, VARIANT, VERSION} from "../../actions/constants";
 import {Button} from "./../gui/Button";
-import CatalogueItem from "./CatalogueItem";
-import {Modal} from "../gui/Modal";
-import {Link, Redirect, Route, useRouteMatch} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import CatalogueItemList from "./CatalogueItemList";
+import {Textinput} from "../gui/Input";
+import TagList from "./TagList";
+import Select from "../gui/Select";
 
-class Catalogue extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            showModal: false,
-            selectedGraphicIndex: null,
-            selectedVariantIndex: 0
-        };
-
-        if (props.private) {
-            this.props.getVersions();
-        } else {
-            this.props.queryGraphics();
-            this.props.queryTags();
-        }
-    }
-
-    handleChange = (event) => {
-        switch (event.target.name) {
-            case 'searchTerm':
-                this.setState({
-                    searchTermField: {
-                        value: event.target.value
-                    }
-                });
-                break;
-            default:
-                break;
-        }
-    };
-
-    handleClickOnGraphic = index => {
-        this.setState({
-            selectedGraphicIndex: index
-        });
-    };
-
-    handleClickOnVariant = index => {
-        this.setState({
-            selectedVariantIndex: index
-        });
-    };
-
-    handleModalClose = () => {
-        this.setState({
-            selectedGraphicIndex: null,
-            selectedVariantIndex: 0
-        });
-    };
-
-    editVariant = id => {
-        this.setState({
-            redirect: true
-        });
-        this.props.editVariant(id);
-    };
-
-    handleNewGraphic = () => {
-        this.setState({
-            redirect: true
-        });
-        this.props.newGraphic();
-    };
-
-    render() {
-        if (this.state.redirect) {
-            return <Redirect push to="/editor/new"/>;
-        }
-
-        return (
-            <>
-                {/*<input value={this.state.searchTermField.value} onChange={this.handleChange} name={'searchTerm'}/>*/}
-                <h1>Grafiken</h1>
-
-                <CatalogueItemList graphics={this.props.graphics} />
-
-                <Button icon={"plus"} onClick={this.handleNewGraphic}>Neue Grafik</Button>
-            </>
-        )
-    }
-}
-
-const mapStateToProps = state => {
-    return {
-        ...state.catalogue
-    }
+const handleNewGraphic = (dispatch, doRedirect) => {
+    doRedirect(true);
+    dispatch({
+        type: "NEW_GRAPHIC_STARTED"
+    });
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        queryGraphics: (tags = [], terms = [], limit = 20, offset = 0) => {
-            return dispatch({
-                type: CATALOGUE.SEARCH.REQUEST,
-                payload: {
-                    tags,
-                    terms,
-                    limit,
-                    offset,
-                    order: {
-                        by: "date",
-                        desc: false
-                    }
-                }
-            })
-        },
-        changeLimit: limit => {
-            return dispatch({
-                type: "CATALOGUE_LIMIT_CHANGE", // DOMAIN_VARIABLE_EVENT
-                limit
-            })
-        },
-        getVersions: () => {
-            return dispatch({
-                type: VERSION.GET.REQUEST
-            })
-        },
-        changeOffset: offset => {
-            return dispatch({
-                type: "CATALOGUE_OFFSET_CHANGE",
-                offset
-            })
-        },
-        queryTags: () => {
-            // return dispatch({
-            //
-            // })
-        },
-        newGraphic: () => {
-            dispatch({
-                type: "NEW_GRAPHIC_STARTED"
-            })
-        },
-        editVariant: id => {
-            dispatch({
-                type: VARIANT.GET.REQUEST,
-                payload: {id}
-            })
+const queryGraphics = (dispatch, tags = [], terms = [], limit = 20, offset = 0) => {
+    dispatch({
+        type: CATALOGUE.SEARCH.REQUEST,
+        payload: {
+            tags,
+            terms,
+            limit,
+            offset,
+            order_by: "date",
+            order_desc: false
         }
-    }
+    })
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Catalogue);
+const searchChanged = (dispatch, value) => {
+    dispatch({
+        type: 'SEARCH_CHANGED',
+        value
+    })
+};
+
+// const handleInputChange = (e) => setFilter({
+//     ...input,
+//     [e.currentTarget.name]: e.currentTarget.value
+// });
+
+const Catalogue = props => {
+    const catalogue = useSelector(
+        state => state.catalogue
+    );
+    const dispatch = useDispatch();
+    const [redirect, doRedirect] = useState(false);
+
+    useEffect(() => {
+        queryGraphics(dispatch);
+    }, []);
+
+    const [input, setInput] = useState({});
+
+    if (redirect) {
+        return <Redirect push to="/editor/new"/>;
+    }
+
+    return (
+        <>
+            <h1>Grafiken</h1>
+            {/*<Select value={catalogue.searchTerms}*/}
+            {/*        isMulti*/}
+            {/*        options={catalogue.tags.map(tag => ({label: tag.name, value: tag.tag_id}))}*/}
+            {/*        onChange={event => searchChanged(dispatch, event.target.value)}*/}
+            {/*/>*/}
+            <Textinput value={catalogue.searchTerms}
+                       onChange={event => searchChanged(dispatch, event.target.value)} />
+            <div className={"row"}>
+                <div className={"col-xs-3"}>
+                    <TagList/>
+                </div>
+                <div className={"col-xs-9"}>
+                    <CatalogueItemList graphics={catalogue.graphics}/>
+                    <Button icon={"plus"} onClick={() => handleNewGraphic(dispatch, doRedirect)}>Neue Grafik</Button>
+                </div>
+            </div>
+
+
+        </>
+    )
+};
+
+export default Catalogue;

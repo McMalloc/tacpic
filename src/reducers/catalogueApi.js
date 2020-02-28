@@ -33,6 +33,24 @@ const catalogueApi = (state = {}, action) => {
                 ...state,
                 tags: action.data
             };
+        case 'TAG_TOGGLED':
+            const index = state.filterTags.indexOf(action.id);
+            let filterTags = [...state.filterTags];
+
+            if (index === -1) {
+                filterTags.push(action.id)
+            } else {
+                filterTags.splice(index, 1);
+            }
+            return {
+              ...state,
+              filterTags
+            };
+        case 'SEARCH_CHANGED':
+            return {
+                ...state,
+                filterTerms: action.value
+            };
         default:
             return state;
     }

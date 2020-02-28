@@ -13,10 +13,15 @@ const VariantView = props => {
     let {graphicId, variantId} = useParams();
     let variant = props.variants.find(variant => variant.id == variantId);
     const dispatch = useDispatch();
+    const tags = useSelector(
+        state => state.catalogue.tags
+    );
+
+    // TODO Suchbegriff aus Store holen und in Variantenbeschreibung hervorheben
 
     return (
-        <div style={{border: "2px solid green", margin: 5, padding: 3}}>
-            {variant.title}
+        <div>
+            <h3>{variant.title}</h3>
             <Button onClick={() => {
                 history.push(`/editor/${graphicId}/variants/${variantId}`);
                 dispatch({
@@ -37,6 +42,16 @@ const VariantView = props => {
                 window.location = 'http://localhost:9292/variants/' + variantId + '/pdf';
             }}>
                 Herunterladen</Button>
+
+            <p>{variant.description}</p>
+
+            <p>
+                {tags.map(tag => {
+                    if (variant.tags.includes(tag.tag_id)) {
+                        return <span style={{padding: 2, margin: 3, border: '1px solid red', borderRadius: 2}} key={tag.tag_id}>{tag.name}</span>
+                    } else return null;
+                })}
+            </p>
 
             <img
                 style={{width:200,height:'auto'}}

@@ -1,6 +1,23 @@
 import {call, put} from "redux-saga/effects";
 import axios from "axios";
 
+const buildParams = (paramObj) => {
+    let paramString = '';
+    if (!paramObj) return paramString;
+
+    paramString += '?';
+    console.log(paramObj);
+    for (const param in paramObj) {
+        if (!paramObj.hasOwnProperty(param)) break;
+        //
+        // if (paramObj[param].length !== undefined && paramObj[param].length === 0) break;
+        console.log(param, paramObj[param]);
+        paramString += `${param}=${paramObj[param].toString()}&`
+    }
+
+    return paramString;
+};
+
 const replaceParam = (path, paramObj) => {
     let matches = path.match(/:[a-z_]+/g);
     let params = {...paramObj};
@@ -15,7 +32,6 @@ const replaceParam = (path, paramObj) => {
     }
     return path;
 };
-
 
 /**
  * A redux saga effect
@@ -60,7 +76,7 @@ export default function createSaga(
                 const response = yield call(action => {
                     let request = {
                         method,
-                        url: '/' + replaceParam(endpoint, action.payload)
+                        url: '/' + replaceParam(endpoint, action.payload) // + (method === 'get' ? buildParams(action.payload) : '')
                     };
                     if (auth) request.headers = {
                         'Authorization': 'Bearer ' + localStorage.getItem('jwt') // propably should be own saga :(

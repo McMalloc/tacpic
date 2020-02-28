@@ -1,10 +1,13 @@
 import React from "react";
 import {Route, Switch, useHistory, useParams, useRouteMatch} from "react-router";
-import {Link} from "react-router-dom";
 import CatalogueItem from "./CatalogueItem";
-import {Button} from "../gui/Button";
-import {Modal} from "../gui/Modal";
-import CatalogueItemView, {CatalogueItemViewModal} from "./CatalogueItemView";
+import {CatalogueItemViewModal} from "./CatalogueItemView";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
 
 const CatalogueItemList = props => {
     // The `path` lets us build <Route> paths that are
@@ -13,27 +16,24 @@ const CatalogueItemList = props => {
     let { path, url } = useRouteMatch();
     const history = useHistory();
 
-    function handleClick() {
-        history.push(url);
-    }
+    function handleClick() { history.push(url); }
 
     return (
-        <div>
-            {props.graphics.map((graphic, index) => {
-                return (
-                    <Link key={index} to={`${url}/${graphic.id}`}>
-                        <CatalogueItem key={index} {...graphic}/>
-                    </Link>
-                )
-            })}
-
+        <>
+            <Wrapper>
+                {props.graphics && props.graphics.map((graphic, index) => {
+                    return (
+                        <CatalogueItem key={index} url={`${url}/${graphic.id}/variant/${graphic.variants[0].id}`} {...graphic}/>
+                    )
+                })}
+            </Wrapper>
             <Switch>
                 <Route path={`${path}/:graphicId`}>
                     <CatalogueItemViewModal dismiss={handleClick} graphics={props.graphics}/>
                 </Route>
             </Switch>
+        </>
 
-        </div>
     );
 };
 

@@ -143,6 +143,8 @@ const file = (state = {}, action) => {
                 ...state,
                 file: oldState
             };
+        case 'NEW_GRAPHIC_STARTED':
+            return {...initialEditor.file};
         default:
             return state;
     }

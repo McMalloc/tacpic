@@ -57,9 +57,7 @@ const uploadVersion = (dispatch, file) => {
 };
 
 const Metadata = props => {
-    const file = useSelector(
-        state => state.editor.file
-    );
+    const file = useSelector(state => state.editor.file);
     const tags = useSelector(
         state => state.catalogue.tags.map(tag => {
             return {
@@ -68,6 +66,7 @@ const Metadata = props => {
             }
         })
     );
+    const variantTags = useSelector(state => state.editor.file.tags);
     const dispatch = useDispatch();
     const [input, setInput] = useState({});
 
@@ -112,16 +111,24 @@ const Metadata = props => {
                     isMulti
                     creatable
                     onChange={selection => {
+                        if (selection === null) selection = [];
                         dispatch({
                             type: "CHANGE_FILE_PROPERTY",
                             key: 'tags',
-                            value: selection.map(tag => tag.value)
+                            value: selection.map(tag => {return {tag_id: tag.value, name: tag.label}})
+                        })
+                    }}
+                    onCreateOption={(option) => {
+                        let taglist = [...variantTags];
+                        taglist.push({tag_id: null, name: option});
+                        dispatch({
+                            type: "CHANGE_FILE_PROPERTY",
+                            key: 'tags',
+                            value: taglist
                         })
                     }}
                     options={tags}
-                    value={file.tags.map(tag => {
-                        return {label: tag.name, value: tag.tag_id}
-                    })}
+                    value={variantTags.map(tag => {return {value: tag.tag_id, label: tag.name}})}
                     sublabel={"editor:input_catalogue-tags-sub"}/>
 
                 <Multiline

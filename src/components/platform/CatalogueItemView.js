@@ -3,7 +3,6 @@ import {Route, Switch, useParams, useRouteMatch} from "react-router";
 import {Modal} from "../gui/Modal";
 import {Link} from "react-router-dom";
 import VariantView from "./VariantView";
-import {Button} from "../gui/Button";
 
 const CatalogueItemViewModal = props => {
     let { graphicId } = useParams();
@@ -29,11 +28,15 @@ const CatalogueItemView = props => {
     let { path, url } = useRouteMatch();
     return (
         <div>
+            <p>{props.description}</p>
             <ul>
                 {props.variants.map((variant, index) => {
                     return (
                         <Link key={index} to={`${url}/variant/${variant.id}`}>
                             <li>{variant.title} ({variant.id})</li>
+                            <img
+                                style={{width:50,height:'auto'}}
+                                src={"http://localhost:9292/static/thumbnails/thumbnail-" + variant.id + "-sm.png"}/>
                         </Link>
                     )
                 })}
