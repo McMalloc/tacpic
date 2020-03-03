@@ -15,7 +15,7 @@ const sagaMiddleware = createSagaMiddleware();
 //     return next(action);
 // };
 
-const initialLayout = 8;
+const initialLayout = 4;
 const fromLS = JSON.parse(localStorage.getItem("custom_layout_" + initialLayout));
 export const initialEditor = {
     ui: {
@@ -35,6 +35,7 @@ export const initialEditor = {
         scalingFactor: 1,
         viewPortX: 0,
         viewPortY: 0,
+        previewMode: false,
         selectedObjects: [],
         defaultTitle: true,
         initialized: true,
@@ -60,7 +61,7 @@ export const initialEditor = {
         keyedTextures: {},
 
         medium: 'swell',
-        system: 'de-de-g2', // name of the liblouis translation table
+        system: 'de-de-g2.ctb', // name of the liblouis translation table
         width: 210,
         height: 297,
         verticalGridSpacing: 10, // TODO: Dateieigenschaften sollten in 'openedFile'

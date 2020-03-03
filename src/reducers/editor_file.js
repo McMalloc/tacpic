@@ -15,16 +15,6 @@ const file = (state = {}, action) => {
             oldState.pages[action.shared_currentPage].objects.push(action.object);
 
             return oldState;
-        // case 'PATH_POINT_ADDED':
-        //     oldState = cloneDeep(state);
-        //     let currentPath = find(oldState.pages[action.shared_currentPage].objects, {uuid: action.uuid});
-        //
-        //     if (action.circular) { // last point will be at the same position as M
-        //         action.point.coords = currentPath.points[0].coords;
-        //     }
-        //     currentPath.points.push(action.point);
-        //
-        //     return oldState;
         case 'OBJECT_ROTATED':
             oldState = {...state};
 
@@ -62,14 +52,28 @@ const file = (state = {}, action) => {
         case 'OBJECT_PROP_CHANGED':
             oldState = cloneDeep(state);
 
+            // TODO nested Objects / andere ausgewählte Seite
             filter(oldState.pages[action.shared_currentPage].objects,
                 {uuid: action.uuid}).forEach(object => {
                 object[action.prop] = action.value;
 
-                if (action.prop === "isKey" && object.keyVal === '') {
+                if (action.prop === "isKey"){// && object.keyVal.length === 0) {
                     object.keyVal = object.text.slice(0, 3);
                 }
             });
+            return oldState;
+        case 'BRAILLE_BULK_TRANSLATED':
+            oldState = cloneDeep(state);
+
+            oldState.pages.forEach(page => {
+                page.objects.forEach(object => {
+                    if (object.type === 'label') {
+                        let translated = action.labels.find(label=>label.uuid === object.uuid);
+                        object.braille = translated.braille;
+                    }
+                })
+            });
+
             return oldState;
         case 'CHANGE_FILE_PROPERTY':
             return {
@@ -145,6 +149,8 @@ const file = (state = {}, action) => {
             };
         case 'NEW_GRAPHIC_STARTED':
             return {...initialEditor.file};
+        case 'DOCUMENT_PROP_CHANGED':
+            return {...state, [action.prop]: action.value};
         default:
             return state;
     }

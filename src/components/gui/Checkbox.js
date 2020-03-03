@@ -38,7 +38,7 @@ const Label = styled.label`
     display: inline-block;
     color: white;
     height: 0;
-    font-size: 14px;
+    font-size: 16px;
     left: 0.3em;
     top: 0;
   }

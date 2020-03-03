@@ -415,8 +415,8 @@ class InteractiveSVG extends Component {
                        scale(${this.props.ui.scalingFactor})`}>
 
                         <rect data-role={"CANVAS"} x={0} y={0}
-                              width={this.props.file.width}
-                              height={this.props.file.height}
+                              width={this.props.file.width + "mm"}
+                              height={this.props.file.height + "mm"}
                               stroke={'rgba(0,0,0,0.0)'} fill={'white'}/>
                         {
                             this.props.file.pages[this.props.ui.currentPage].objects.map((object, index) => {

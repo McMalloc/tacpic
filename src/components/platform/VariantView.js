@@ -54,7 +54,7 @@ const VariantView = props => {
             </p>
 
             <img
-                style={{width:200,height:'auto'}}
+                style={{width:200,height:'auto', border: '1px solid red'}}
                 src={"http://localhost:9292/static/thumbnails/thumbnail-" + variantId + "-xl.png"}/>
         </div>
     );

@@ -7,6 +7,7 @@ import {CATALOGUE, TAGS, GRAPHIC, USER, VARIANT} from "../actions/constants";
 import createSaga from "./saga_utilities";
 import extractSVG from "../utility/extractSVG";
 import {searchChangeWatcher, catalogueSearchSaga, tagToggledWatcher} from "./catalogue_saga";
+import {labelWriteWatcher, systemChangeWatcher} from "./label_translate_saga";
 
 
 export default function* root() {
@@ -21,6 +22,7 @@ export default function* root() {
             return file;
         })),
         call(createSaga(USER.VALIDATE, 'get', 'users/validate', takeLatest, true)),
+        // call(createSaga(BRAILLE.TRANSLATE)),
         call(variantGetSaga),
         call(openFileWatcher),
         call(catalogueSearchSaga),
@@ -28,6 +30,8 @@ export default function* root() {
         call(variantCreateSaga),
         call(localstorageWatcher),
         call(searchChangeWatcher),
+        call(labelWriteWatcher),
+        call(systemChangeWatcher),
         call(tagToggledWatcher)
     ])
 }

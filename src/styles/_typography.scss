@@ -10,6 +10,16 @@ body {
   url("/webfonts/BrailleDEComputer.woff") format("woff");
 }
 
+@font-face {
+  font-family: "HBS6";
+  src: url("/webfonts/hbs6brlt-webfont.woff") format("woff");
+}
+
+@font-face {
+  font-family: "HBS6Visual";
+  src: url("/webfonts/hbs6brlvs-webfont.woff") format("woff");
+}
+
 button, input, textarea, select {
   font-family: "Roboto", sans-serif;
 }

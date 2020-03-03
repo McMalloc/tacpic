@@ -70,11 +70,11 @@ const Editor = props => {
     let {graphic_id, variant_id} = useParams();
     useEffect(() => {
         // TODO Editor wird natürlich immer neu gezeichnet, daher abfangen
-        // dispatch({
-        //     type: FILE.OPEN.REQUEST,
-        //     id: variant_id, mode: "edit"
-        // })
-    });
+        dispatch({
+            type: FILE.OPEN.REQUEST,
+            id: variant_id, mode: "edit"
+        })
+    }, []);
 
     if (uiSettings.initialized) {
         return (

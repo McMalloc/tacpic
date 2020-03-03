@@ -35,15 +35,18 @@ const createEllipse = (x = 0, y = 0, width = 100, height = 100, template = 'stri
     }
 };
 
-const createLabel = (x = 0, y = 0, width = 100, height = 100, text = 'Neue Beschriftung') => {
+const createLabel = (x = 0, y = 0, width = 100, height = 100, text = 'Neue Beschriftung', braille = '') => {
     return {
         uuid: uuidv4(),
-        x, y, width, height, text,
+        x, y, width, height, text, braille,
         moniker: "Beschriftung",
         displayDots: true,
         displayLetters: true,
         editMode: true,
         isKey: false,
+        keyVal: '',
+        fullCharPrefix: false,
+        border: false,
         type: 'label'
     }
 };
@@ -205,6 +208,7 @@ const methods = {
     label: {
         translate: defaultTranslate,
         getBBox: defaultGetBBox,
+        scale: defaultScale,
         create: createLabel,
     },
     group: {

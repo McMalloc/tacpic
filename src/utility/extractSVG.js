@@ -1,5 +1,7 @@
 const extractSVG = () => {
-    return document.getElementById("VIEWBOX").outerHTML;
+    let exported = document.getElementById("VIEWBOX").cloneNode(true);
+    exported.removeAttribute("transform");
+    return exported.outerHTML;
 };
 
 export default extractSVG;

@@ -44,12 +44,14 @@ class Document extends Component {
                             />
 
                             <Select tip={"help:select_braille-system"} default={"de_k"}
+                                    value={this.props.system}
+                                    onChange={selection=>this.props.setBrailleSystem(selection.value)}
                                     label={"editor:select_braille-system"} options={
                                 [
-                                    {label: "Braille DE Kurzschrift", value: "de_k"},
-                                    {label: "Braille DE Langschrift", value: "de_l"},
-                                    {label: "Braille DE Vollschrift", value: "de_v"},
-                                    {label: "Computerbraille 8-Punkt DE Kurzschrift", value: "cb"}
+                                    {label: "Deutsch Kurzschrift", value: "de-de-g2.ctb"},
+                                    {label: "Deutsch Langschrift", value: "de-de-g1.ctb"},
+                                    {label: "Deutsch Vollschrift", value: "de-de-g0.utb"},
+                                    // {label: "Computerbraille 8-Punkt DE Kurzschrift", value: "cb"}
                                 ]
                             }/>
 
@@ -66,14 +68,16 @@ class Document extends Component {
                     </Row>
                     <Row>
                         <div className={"col-sm-6"}>
-                            <Select tip={"help:select_medium"} label={"editor:select_medium"} options={
-                                [
-                                    {label: "Schwellpapier", value: "swell"},
-                                    {label: "3D-Druck", value: "3d", isDisabled: true},
-                                    {label: "Thermoform", value: "thermo", isDisabled: true},
-                                    {label: "Schnittcollage", value: "cut", isDisabled: true}
-                                ]
-                            } default={"swell"}/>
+                            <Select tip={"help:select_medium"}
+                                    label={"editor:select_medium"}
+                                    options={
+                                        [
+                                            {label: "Schwellpapier", value: "swell"},
+                                            {label: "3D-Druck", value: "3d", isDisabled: true},
+                                            {label: "Thermoform", value: "thermo", isDisabled: true},
+                                            {label: "Schnittcollage", value: "cut", isDisabled: true}
+                                        ]
+                                    } default={"swell"}/>
                         </div>
                         <div className={"col-sm-6"}>
                             {/*todo: erst zeigen, nachdem etwas anderes als Schwellpapier ausgewählt worden ist*/}
@@ -97,7 +101,7 @@ class Document extends Component {
                                 }}
                                 label={"Vertikales Gitternetz zeigen"}/>
 
-                                <img style={{width: 80, height: "auto"}} src={"images/vertical_grid.svg"}/>
+                            <img style={{width: 80, height: "auto"}} src={"images/vertical_grid.svg"}/>
                         </div>
 
                         <div className={"col-sm-6"}>
@@ -184,6 +188,7 @@ const mapStateToProps = state => {
         showVerticalGrid: state.editor.file.showVerticalGrid,
         showHorizontalGrid: state.editor.file.showHorizontalGrid,
         title: state.editor.file.title,
+        system: state.editor.file.system,
         defaultTitle: state.editor.ui.defaultTitle
     }
 };
@@ -200,6 +205,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch({
                 type: "HORIZONTAL_SPACING_SET",
                 spacing
+            })
+        },
+        setBrailleSystem: system => {
+            dispatch({
+                type: "DOCUMENT_PROP_CHANGED",
+                prop: 'system', value: system
             })
         },
         toggleVerticalGrid: state => {

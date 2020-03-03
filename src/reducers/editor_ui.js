@@ -4,6 +4,7 @@ import {VERSION} from "../actions/constants";
 
 let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so
 let lastObjectsProps = [];
+const roundingAccuracy = 10;
 
 // TODO Monster-Reducer refaktorisieren
 
@@ -24,7 +25,7 @@ const ui = (state = {}, action) => {
             return {...state, mode: lastMode};
         case 'CHANGE_VIEWPORT':
             return {...state,
-                scalingFactor: action.scalingFactor,
+                scalingFactor: Math.round(action.scalingFactor * roundingAccuracy) / roundingAccuracy, // regain accuracy from wonky javascript rounding
                 viewPortX: action.viewPortX,
                 viewPortY: action.viewPortY
             };
@@ -60,6 +61,7 @@ const ui = (state = {}, action) => {
             return {
                 ...state,
                 currentLayout: action.layoutIndex,
+                previewMode: action.layoutIndex === 8,
                 widgetConfig: fromLS !== null ? fromLS : layouts[action.layoutIndex]
             };
         case 'WIDGET_VISIBILITY_TOGGLED':
