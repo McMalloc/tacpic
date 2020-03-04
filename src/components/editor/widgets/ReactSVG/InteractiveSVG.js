@@ -317,6 +317,13 @@ class InteractiveSVG extends Component {
             transform: null,
             preview: null
         });
+
+        // switch to selecting
+        if (event.nativeEvent.type === 'mouseup' && this.state.pathClosing) {
+            this.props.switchCursorMode('select');
+        }
+
+
     };
 
     mouseMoveHandler = event => {
@@ -402,7 +409,7 @@ class InteractiveSVG extends Component {
                     onKeyDown={this.keyDownHandler}
                     onMouseUp={this.mouseUpHandler}
                     onMouseMove={this.mouseMoveHandler}
-                    // onMouseLeave={this.mouseUpHandler} bessere Prozedur
+                    onMouseLeave={this.mouseUpHandler}
                     onInput={this.keyDownHandler}
                     ref={this.svgElement}
                     tabIndex={0}
@@ -444,13 +451,13 @@ class InteractiveSVG extends Component {
                     (this.props.ui.tool === 'SELECT' || this.props.ui.tool === 'LABEL') &&
                     <g>
                         <rect
-                            x={this.state.t_mouseDownX}
-                            y={this.state.t_mouseDownY}
+                            x={Math.min(this.state.t_mouseDownX, this.state.t_mouseOffsetX)}
+                            y={Math.min(this.state.t_mouseDownY,this.state.t_mouseOffsetY)}
                             fill={'rgba(0,0,255,0.02)'}
                             stroke={'rgba(0,50,255,0.3)'}
                             strokeWidth={'1px'}
-                            width={this.state.t_mouseOffsetX - this.state.t_mouseDownX}
-                            height={this.state.t_mouseOffsetY - this.state.t_mouseDownY}/>
+                            width={Math.abs(this.state.t_mouseOffsetX - this.state.t_mouseDownX)}
+                            height={Math.abs(this.state.t_mouseOffsetY - this.state.t_mouseDownY)}/>
                         <text fill={'blue'} fontSize={8} x={this.state.t_mouseDownX} y={this.state.t_mouseDownY + 10}>
                             {parseInt(this.state.t_mouseDownX) + ", " +
                             parseInt(this.state.t_mouseDownY)}

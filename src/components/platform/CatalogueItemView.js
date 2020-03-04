@@ -35,7 +35,7 @@ const CatalogueItemView = props => {
                         <Link key={index} to={`${url}/variant/${variant.id}`}>
                             <li>{variant.title} ({variant.id})</li>
                             <img
-                                style={{width:50,height:'auto'}}
+                                style={{width:50,height:'auto', border: '1px solid red'}}
                                 src={"http://localhost:9292/static/thumbnails/thumbnail-" + variant.id + "-sm.png"}/>
                         </Link>
                     )

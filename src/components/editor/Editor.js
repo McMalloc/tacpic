@@ -68,12 +68,15 @@ const Editor = props => {
     const dispatch = useDispatch();
     const t = useTranslation().t;
     let {graphic_id, variant_id} = useParams();
+
     useEffect(() => {
         // TODO Editor wird natürlich immer neu gezeichnet, daher abfangen
-        dispatch({
-            type: FILE.OPEN.REQUEST,
-            id: variant_id, mode: "edit"
-        })
+        if (!!variant_id) {
+            dispatch({
+                type: FILE.OPEN.REQUEST,
+                id: variant_id, mode: "edit"
+            })
+        }
     }, []);
 
     if (uiSettings.initialized) {

@@ -71,6 +71,7 @@ const App = () => {
                         {/*<Route path="/login" component={Login}/>*/}
                         <Route path="/register" component={Register}/>
                         <Route path="/editor/:graphic_id?/variants/:variant_id?" component={Editor}/>
+                        <Route path="/editor/:graphic_id?" component={Editor}/>
                         <Route path="/editor/new" component={Editor}/>
                         {/*<Route path="/private-catalogue/:graphic_id/variant/:variant_id/edit" component={Editor}/>*/}
                         <Route path="/catalogue" component={Catalogue}/>

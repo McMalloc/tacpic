@@ -86,6 +86,7 @@ const file = (state = {}, action) => {
                 current_file[key] = value;
             }
             current_file.isNew = action.mode === 'new';
+            // debugger;
             return current_file;
         case FILE.OPEN.REQUEST:
 

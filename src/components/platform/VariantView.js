@@ -31,7 +31,8 @@ const VariantView = props => {
             }}>
                 Bearbeiten</Button>
             <Button onClick={() => {
-                history.push(`/editor/${graphicId}/variants/${variantId}`);
+                history.push(`/editor/${graphicId}`);
+                // console.log("new");
                 dispatch({
                     type: FILE.OPEN.REQUEST,
                     id: variant.id, mode: "new"

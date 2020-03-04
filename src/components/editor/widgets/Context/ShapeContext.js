@@ -33,53 +33,61 @@ class ShapeContext extends Component {
     render() {
         const fill = <div>
             <Tooltip/>
+            {/*<Row>*/}
+            {/*    <div className={"col-md-12"}>*/}
+            {/*        <Select label={"Vorlagen"} tip={"Tippen Sie hier, um eine neue Vorlage zu erstellen."} createable*/}
+            {/*                placeholder={"Keine gewählt"} options={*/}
+            {/*            [*/}
+            {/*                {label: "Aubergine", value: "A", children: []}*/}
+            {/*            ]*/}
+            {/*        }/>*/}
+            {/*    </div>*/}
+            {/*</Row>*/}
+
             <Row>
-                <div className={"col-md-12"}>
-                    <Select label={"Vorlagen"} tip={"Tippen Sie hier, um eine neue Vorlage zu erstellen."} createable
-                            placeholder={"Keine gewählt"} options={
-                        [
-                            {label: "Aubergine", value: "A", children: []}
-                        ]
-                    }/>
+                <div className={'col-xs-6'}>
+                    <fieldset>
+                        <legend>Relief</legend>
+                        {/*<Checkbox default={this.props.texture !== null} name={"relief"} label={"Füllung fühlbar reliefieren"}/>*/}
+
+                        <TexturePalette
+                            disabled={this.props.nothingSelected}
+                            textures={[null, "striped", "bigdots", "dashed"]}
+                            selected={this.props.selectedTexture}
+                            onChange={this.changeTexture}/>
+
+                        <Checkbox name={"padding"}
+                                  checked={this.props.object.pattern.offset}
+                                  onChange={() => {
+                                      this.props.changeProp(
+                                          this.props.object.uuid,
+                                          'pattern',
+                                          {...this.props.object.pattern, offset: !this.props.object.pattern.offset})
+                                  }}
+                                  label={"Abstand zwischen Textur und Rand"}/>
+                        {this.props.offset + "--"}
+                        {/*<Numberinput unit={"mm"}/>*/}
+                    </fieldset>
+                </div>
+                <div className={'col-xs-6'}>
+                    <fieldset>
+                        <legend>Farbe</legend>
+                        {/*<Checkbox name={"colour"} label={"Farbe sichtbar drucken"}/>*/}
+                        {/*<Checkbox name={"texture"} label={"Textur sichtbar drucken"}/>*/}
+
+                        <Palette selected={this.props.selectedFill}
+                                 onChange={this.changeFill}
+                                 colours={
+                                     [null, '#000000', '#1f78b4', '#b2df8a', '#e31a1c', '#ff7f00', '#cab2d6', '#b15928']
+                                 } extendedColours={
+                            ['#a6cee3', '#33a02c', '#fb9a99', '#fdbf6f', '#6a3d9a', '#ffff99']
+                        }/>
+                    </fieldset>
                 </div>
             </Row>
 
-            <fieldset>
-                <legend>Relief</legend>
-                {/*<Checkbox default={this.props.texture !== null} name={"relief"} label={"Füllung fühlbar reliefieren"}/>*/}
 
-                <TexturePalette
-                    disabled={this.props.nothingSelected}
-                    textures={[null, "striped", "bigdots", "dashed"]}
-                    selected={this.props.selectedTexture}
-                    onChange={this.changeTexture}/>
 
-                <Checkbox name={"padding"}
-                          checked={this.props.object.pattern.offset}
-                          onChange={() => {
-                              this.props.changeProp(
-                                  this.props.object.uuid,
-                                  'pattern',
-                                  {...this.props.object.pattern, offset: !this.props.object.pattern.offset})
-                          }}
-                          label={"Abstand zwischen Textur und Rand"}/>
-                {this.props.offset + "--"}
-                {/*<Numberinput unit={"mm"}/>*/}
-            </fieldset>
-
-            <fieldset>
-                <legend>Farbe</legend>
-                {/*<Checkbox name={"colour"} label={"Farbe sichtbar drucken"}/>*/}
-                <Checkbox name={"texture"} label={"Textur sichtbar drucken"}/>
-
-                <Palette selected={this.props.selectedFill}
-                         onChange={this.changeFill}
-                         colours={
-                             [null, '#000000', '#1f78b4', '#b2df8a', '#e31a1c', '#ff7f00', '#cab2d6', '#b15928']
-                         } extendedColours={
-                    ['#a6cee3', '#33a02c', '#fb9a99', '#fdbf6f', '#6a3d9a', '#ffff99']
-                }/>
-            </fieldset>
         </div>;
 
         const _border = <div>
