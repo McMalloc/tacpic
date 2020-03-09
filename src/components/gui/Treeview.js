@@ -25,14 +25,15 @@ const TreeItem = styled.li`
 const TreeLabel = styled.button`
   font-size: inherit;
   border: none;
-  background-color: ${props => props.theme.accent_1_light};
+  background-color: transparent;
   cursor: pointer;
   display: block;
   width: 100%;
   text-align: left;
   
-  color: ${props => props.selected ? props.theme.accent_1 : "inherit"};
+  color: ${props => props.selected ? props.theme.brand_secondary : "inherit"};
   font-weight: ${props => props.selected ? 700 : "inherit"};
+  text-decoration: ${props => props.selected ? 'underline' : "none"};
 
    position: relative;
    padding: ${props => props.theme.base_padding};
@@ -81,9 +82,11 @@ class Treeview extends Component {
             return (
                 <TreeItem depth={depth} key={index}>
 
-                    <TreeLabel selected={this.props.selected === node.value} tabIndex={0} onClick={() => this.props.onSelect && this.props.onSelect(node.value)}>
+                    <TreeLabel selected={this.props.selected === node.value} tabIndex={0}
+                               onClick={() => this.props.onSelect && this.props.onSelect(node.value)}>
                         {node.children && node.children.length > 0 &&
-                        <TreeIcon onClick={() => this.toggle(node.value)} expanded={expanded}><Icon icon={expanded ? "caret-down" : "caret-right"} /></TreeIcon>
+                        <TreeIcon onClick={() => this.toggle(node.value)} expanded={expanded}><Icon
+                            icon={expanded ? "caret-down" : "caret-right"}/></TreeIcon>
                         }
                         {node.label}
                     </TreeLabel>

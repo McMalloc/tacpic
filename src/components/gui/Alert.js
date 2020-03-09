@@ -6,12 +6,12 @@ const Wrapper = styled.div`
 `;
 
 const IconContainer = styled.div`
-  flex: ${props => props.theme.spacing[3]} 0 0;
+  flex: ${props => props.theme.spacing[2]} 0 0;
   height: 100%;
   margin-top: ${props => props.theme.spacing[2]};
   margin-right: ${props => props.theme.spacing[1]};
   color: ${props =>
-    props.success ? props.theme.success :
+    props.success ? props.theme.success_dark :
         props.info ? props.theme.info :
             props.warning ? props.theme.warning :
                 props.danger ? props.theme.danger : "grey"
@@ -21,14 +21,15 @@ const IconContainer = styled.div`
 
 const Message = styled.div`
   flex: 1 0 0;
+  font-weight: bold;
   //border-radius: 3px;
   padding: ${props => props.theme.spacing[2]};
-  border-left: 2px solid ${props =>
-    props.success ? props.theme.success :
+  color: ${props =>
+    props.success ? props.theme.success_dark :
         props.info ? props.theme.info :
             props.warning ? props.theme.warning :
                 props.danger ? props.theme.danger : "grey"
-    };
+};
 `;
 
 const Alert = props => {

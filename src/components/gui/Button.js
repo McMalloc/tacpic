@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import React, {Component} from "react";
 import {fadeIn, slideFromAbove} from "./Animations";
 import {useTranslation} from 'react-i18next';
@@ -15,10 +15,10 @@ const Icon = styled.span`
 `;
 
 const ButtonBase = styled.button`
-  background-color: ${props => props.primary ? props.theme.brand_secondary : "transparent"};
+  background-color: ${props => props.primary ? props.theme.brand_secondary : "white"};
   color: ${props => props.primary ? props.theme.background : "inherit"};
   border: 1px solid ${props => props.theme.middark};
-  padding: 4px ${props => props.theme.spacing[3]};
+  padding: 4px ${props => props.theme.spacing[2]};
   border-radius: 3px;
   cursor: pointer;
   margin-top: 0;
@@ -32,14 +32,18 @@ const ButtonBase = styled.button`
   // }
   
   &:disabled {
-    color: ${props => props.theme.middark};
-    background-color: ${props => props.theme.midlight};
-    border-color: ${props => props.theme.midlight};
+    color: ${props => props.theme.grey_1};
+    background-color: ${props => props.theme.grey_6};
+    border-color: ${props => props.theme.grey_3};
     cursor: not-allowed;
+    
+    &:hover {
+      box-shadow: none;
+    }
   }
   
   &:hover {
-      background-color: ${props => props.primary ? props.theme.accent_1 : props.theme.light};
+      background-color: ${props => props.primary ? props.theme.brand_secondary_lighter : props.theme.light};
       box-shadow: ${props => props.theme.middle_shadow};
       ${Label} {
         text-decoration: underline;
@@ -59,8 +63,9 @@ const ButtonBase = styled.button`
 const Button = React.forwardRef((props, ref) => {
     const { t } = useTranslation();
     const label = props.label || props.children;
+    const theme = useTheme();
     return (
-        <ButtonBase type={"button"} ref={ref} {...props}>
+        <ButtonBase theme={theme} type={"button"} ref={ref} {...props}>
             {props.icon &&
             <Icon primary={props.primary}>
                 <i className={"fas fa-" + props.icon}/>

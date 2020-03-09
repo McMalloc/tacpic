@@ -3,17 +3,18 @@ import React from "react";
 
 const Bar = styled.div`
   display: flex;
-  //align-content: space-between;
   flex-wrap: wrap;
+  justify-content: space-between;
 `;
 
 const Item = styled.div`
-  flex: 1 0 100px;
-  max-width: 150px;
-  margin-bottom: ${props => props.theme.spacing[2]};
+  flex: 0 32%;
+  //max-width: 150px;
+  //margin-bottom: ${props => props.theme.spacing[2]};
+  margin-bottom: 2%; /* (100-32*3)/2 */
   
   &:not(:last-child) {
-     padding-right: ${props => props.theme.spacing[2]}; 
+     //padding-right: ${props => props.theme.spacing[2]}; 
   }
 `;
 

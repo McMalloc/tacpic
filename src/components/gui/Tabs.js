@@ -4,11 +4,11 @@ import {Icon} from "./_Icon";
 import {withTranslation} from "react-i18next";
 
 const TabBar = styled.div`
-  border-bottom: 1px solid ${props => props.theme.midlight};
+  border-bottom: 1px solid ${props => props.theme.brand_secondary_light};
   box-sizing: content-box;
   display: flex;
   margin-bottom: ${props => props.theme.spacing[3]};
-  //background-color: ${props => props.theme.accent_1_light};
+  //background-color: ${props => props.theme.brand_secondary_light};
 `;
 
 const TabItem = styled.button`
@@ -17,11 +17,11 @@ const TabItem = styled.button`
   // background-color: ${props => props.active ? props.theme.background : "transparent"};
   cursor: pointer;
   font-size: ${props => props.theme.font_size_ui};
-  color: ${props => props.active ? props.theme.accent_1 : "inherit"};
+  color: ${props => props.active ? props.theme.brand_secondary : "inherit"};
   font-weight: ${props => props.active ? "700" : "inherit"};
   padding: ${props => props.theme.spacing[2]};
   position: relative;
-  border: 1px solid ${props => props.active ? props.theme.midlight : "transparent"};
+  border: 1px solid ${props => props.active ? props.theme.brand_secondary_light : "transparent"};
   border-bottom: none;
   //border-right: 1px solid ${props => props.theme.midlight};
   box-shadow: ${props => props.active ? props.theme.middle_shadow : "none"};
@@ -39,7 +39,7 @@ const TabItem = styled.button`
     left: 0;
     right: 0;
     bottom: -3px;
-    background-color: ${props => props.active ? props.theme.accent_1_light : "transparent"};
+    background-color: ${props => props.active ? props.theme.grey_5 : "transparent"};
   }
 `;
 

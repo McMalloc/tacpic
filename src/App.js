@@ -8,6 +8,19 @@ import Catalogue from "./components/platform/Catalogue";
 import Register from "./components/Register";
 import {useDispatch} from "react-redux";
 import {TAGS} from "./actions/constants";
+import AccountWidget from "./components/platform/AccountWidget";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Main = styled.div`
+  flex: 1 1 100%;
+  display: flex;
+  overflow: auto;
+`;
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -41,8 +54,6 @@ class ErrorBoundary extends React.Component {
 
 const App = () => {
     const t = useTranslation().t;
-    // Hook. https://react.i18next.com/latest/usetranslation-hook
-    // Alternative withTranslation HOC
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -52,33 +63,34 @@ const App = () => {
         })
     });
 
+    const navbarItems = [
+        {label: 'Grafiken', to: '/private-catalogue'},
+        {label: 'Editor', to: '/editor/new'},
+        {label: 'Wissen', to: '/knowledge'},
+        {label: 'Häufige Fragen', to: '/faq'}
+    ];
+
     return (
         <BrowserRouter>
-            <div className="App">
-                <Navbar>
-                    <NavbarItem to={"home"}/>
-                    <NavbarItem to={"home"}/>
-                </Navbar>
-                <nav>
-                    {/*<Link to="/login">Login</Link>*/}
-                    <Link to="/register">Registrieren</Link>
-                    <Link to="/editor">Editor</Link>
-                    <Link to="/private-catalogue">Stöbern</Link>
-                </nav>
-                <ErrorBoundary>
-                    <Switch>
-                        {/*Renders exclusivly*/}
-                        {/*<Route path="/login" component={Login}/>*/}
-                        <Route path="/register" component={Register}/>
-                        <Route path="/editor/:graphic_id?/variants/:variant_id?" component={Editor}/>
-                        <Route path="/editor/:graphic_id?" component={Editor}/>
-                        <Route path="/editor/new" component={Editor}/>
-                        {/*<Route path="/private-catalogue/:graphic_id/variant/:variant_id/edit" component={Editor}/>*/}
-                        <Route path="/catalogue" component={Catalogue}/>
-                        <Route path="/private-catalogue" render={() => <Catalogue private={true}/>}/>
-                    </Switch>
-                </ErrorBoundary>
-            </div>
+            <Wrapper className="App">
+                <Navbar items={navbarItems}/>
+                <Main>
+                    <ErrorBoundary>
+                        <Switch>
+                            {/*Renders exclusivly*/}
+                            {/*<Route path="/login" component={Login}/>*/}
+                            <Route path="/register" component={Register}/>
+                            <Route path="/login" component={Login}/>
+                            <Route path="/editor/:graphic_id?/variants/:variant_id?" component={Editor}/>
+                            <Route path="/editor/:graphic_id?" component={Editor}/>
+                            <Route path="/editor/new" component={Editor}/>
+                            {/*<Route path="/private-catalogue/:graphic_id/variant/:variant_id/edit" component={Editor}/>*/}
+                            <Route path="/catalogue" component={Catalogue}/>
+                            <Route path="/private-catalogue" render={() => <Catalogue private={true}/>}/>
+                        </Switch>
+                    </ErrorBoundary>
+                </Main>
+            </Wrapper>
         </BrowserRouter>
     );
 };

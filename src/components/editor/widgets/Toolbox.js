@@ -1,16 +1,31 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {switchCursorMode} from '../../../actions/index'
-import {Button} from "../../gui/Button";
 import Toggle from "../../gui/Toggle";
-import Toolbar from "../../gui/Toolbar";
-import Palette from "../../gui/Palette";
-import TexturePreview from "../../gui/TexturePreview";
 import {createFillModeAction, createTextureModeAction} from "../../../actions";
-import TexturePalette from "../../gui/TexturePalette";
-import {Row} from "../../gui/Grid";
 import {Upper} from "../../gui/WidgetContainer";
-import ContextOptions from "./ReactSVG/ContextOptions";
+import styled from "styled-components";
+
+const iconMap = {
+    SELECT: 'hand-pointer',
+    RECT: 'vector-square',
+    ELLIPSE: 'circle',
+    CUBIC: 'bezier-curve',
+    QUADRATIC: 'bezier-curve',
+    LABEL: 'font'
+};
+
+const ToolboxToggle = styled.div`
+  flex: 0 0 calc(50% - 4px);
+  padding: 2px;
+`;
+
+const Toolbar = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  //justify-content: space-between;
+`;
 
 class Toolbox extends Component {
     render() {
@@ -19,43 +34,21 @@ class Toolbox extends Component {
                 <Toolbar>
                     {["SELECT", "RECT", "ELLIPSE", "CUBIC", "QUADRATIC", "LABEL"].map((tool, index) => {
                         return (
+                            <ToolboxToggle key={index}>
                             <Toggle
                                 label={"editor:toggle_tools-" + tool}
-                                key={index}
                                 // disabled={mode !== "rect" && mode !== "label"}
                                 fullWidth
+                                icon={iconMap[tool]}
                                 toggled={this.props.tool === tool}
                                 onClick={() => {
                                     this.props.switchCursorMode(tool);
                                 }}
-                            />
+                            /></ToolboxToggle>
                         )
                     })}
 
                 </Toolbar>
-                {/*<Button*/}
-                {/*label={"editor:button_tools-diagram"}*/}
-                {/*icon={"chart-bar"}*/}
-                {/*disabled*/}
-                {/*onClick={() => {*/}
-                {/*}}>editor:button_tools-diagram</Button>*/}
-
-                {/*<hr />*/}
-
-                {/*<Row>*/}
-                    {/*<div className={"col-sm-6"}>*/}
-                        {/*<legend>Farbe</legend>*/}
-                    {/*<Palette selected={this.props.fill} onChange={this.props.switchFillMode} colours={*/}
-                        {/*[null, '#000000', '#1f78b4', '#b2df8a', '#e31a1c', '#ff7f00', '#cab2d6', '#b15928']*/}
-                    {/*} extendedColours={*/}
-                        {/*['#a6cee3', '#33a02c', '#fb9a99', '#fdbf6f', '#6a3d9a', '#ffff99']*/}
-                    {/*}/></div>*/}
-
-                    {/*<div className={"col-sm-6"}>*/}
-                        {/*<legend>Relief</legend>*/}
-                    {/*<TexturePalette textures={[null, "striped", "bigdots", "dashed"]} selected={this.props.texture}*/}
-                                    {/*onChange={this.props.switchTextureMode}/></div>*/}
-                {/*</Row>*/}
             </Upper>
         )
     }
@@ -74,12 +67,6 @@ const mapDispatchToProps = dispatch => {
     return {
         switchCursorMode: tool => {
             dispatch(switchCursorMode(tool));
-        },
-        switchTextureMode: tool => {
-            dispatch(createTextureModeAction(tool));
-        },
-        switchFillMode: colour => {
-            dispatch(createFillModeAction(colour));
         }
     }
 };

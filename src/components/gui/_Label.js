@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import React from "react";
+import styled, {useTheme} from 'styled-components';
+import React, {useContext} from "react";
 import {useTranslation} from 'react-i18next';
 import {Icon} from "./_Icon";
 
@@ -27,9 +27,10 @@ const Sub = styled.span`
 `;
 
 const Label = props => {
+    const theme = useTheme();
     const { t } = useTranslation();
     return (
-        <Main data-tip={t(props.tip)} {...props}>{t(props.label)}
+        <Main theme={theme} data-tip={t(props.tip)} {...props}>{t(props.label)}
             {props.sublabel &&
             <><br/><Sub>{t(props.sublabel)}</Sub></>
             }

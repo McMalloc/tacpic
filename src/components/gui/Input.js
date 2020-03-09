@@ -20,7 +20,7 @@ const Numberwrapper = styled.div`
 const Input = styled.input`
   font-size: 1em;
   font-weight: 700;
-  color: ${props => props.disabled ? props.theme.middark : props.theme.accent_1};;
+  color: ${props => props.disabled ? props.theme.middark : props.theme.brand_secondary};;
   display: ${props => props.inline ? "inline" : "block"};
   width: ${props => props.inline ? "inherit" : "100%"};
   box-sizing: border-box;
@@ -39,7 +39,7 @@ const Input = styled.input`
 const Textarea = styled.textarea`
   font-size: 1em;
   font-weight: 700;
-  color: ${props => props.theme.accent_1};
+  color: ${props => props.theme.brand_secondary};
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;

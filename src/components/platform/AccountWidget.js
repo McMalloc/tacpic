@@ -3,12 +3,9 @@ import {connect} from "react-redux";
 import Login from "../Login";
 
 class AccountWidget extends Component {
-    // TODO: Route im Backend, worüber ein Token verifiziert werden kann
     render() {
         return (
             <Login />
-
-            // <div>{this.props.email}</div>
         );
     }
 }

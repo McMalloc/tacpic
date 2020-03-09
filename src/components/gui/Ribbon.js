@@ -97,7 +97,7 @@ class Ribbon extends Component {
                                     }}>
 
                                     <Icon icon={item.icon}/> <Label
-                                    show={!this.state.collapsed}>{index+1}. | {this.props.t(item.label)}</Label>
+                                    show={!this.state.collapsed}>{this.props.t(item.label)}</Label>
                                 </RibbonItem>
                             </Popover>
                         </ItemWrapper>

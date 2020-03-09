@@ -19,6 +19,9 @@ export const catalogueSearchSaga = createSaga(
                     return {
                         id: variant.variant_id,
                         title: variant.variant_title,
+                        system: variant.system,
+                        width: variant.width,
+                        height: variant.height,
                         created_at: variant.created_at,
                         description: variant.variant_description,
                         tags: variant.tags === "{NULL}" ?

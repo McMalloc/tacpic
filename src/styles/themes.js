@@ -1,32 +1,39 @@
 
 
 export const standard = {
-    brand_primary: "#f9e500",
-    brand_primary_dark: "#ad9b00",
-    brand_primary_light: "#FFF79A",
-    brand_secondary: "#00303c",
-    dark: "#231F20",
-    light: "#fcfcfc",
-    midlight: "#ccc",
-    middark: "#777",
-    accent_1: "#273670",
-    // accent_1: "#b8155b",
-    // accent_1: "#037171",
-    // accent_1: "#1b5585",
-    accent_1_light: "#e9f5f7",
-    accent_2: "#a5d0a8",
-    accent_2_light: "#bbf1d1",
-    accent_3: "#b9d6f2",
+    brand_primary: "#FCE400",
+    brand_primary_light: "#FBED95",
+    brand_secondary: "#02333E",
+    brand_secondary_lighter: "#036D6E",
+    brand_secondary_light: "#4E9CA1",
+    brand_secondary_verylight: "#99c1cd",
+    accent_1: "#D2E7D4",
+    accent_2: "#B6D5F1",
+
+
     background: "#fff",
-    middle_shadow: "0 1px 2px rgba(0,0,0,0.2)",
-    distant_shadow: "2px 2px 5px rgba(0,0,0,0.2)",
+    foreground: "#231F20",
+
+    grey_1: "#4B4B4A",
+    grey_2: "#646463",
+    grey_3: "#808181",
+    grey_4: "#D9D9D9",
+    grey_5: "#ECECEC",
+    grey_6: "#F5F5F5",
+
+    middle_shadow: "1px 1px 2px rgba(0,0,0,0.4)",
+    distant_shadow: "1px 2px 5px rgba(0,0,0,0.3)",
     divider_line: "1px solid #e9f5f7", // accent_1
     // middle_shadow: "0 3px 8px rgba(0,0,0,0.2)",
 
     success: "#4c9b42",
+    success_dark: "#21591d",
     info: "#1792b2",
-    warning: "#ea9800",
+    info_dark: "#005476",
+    warning: "#ecc800",
+    warning_dark: "#c47e00",
     danger: "#911422",
+    danger_dark: "#6e101b",
 
     font_size_ui: "0.9em",
 

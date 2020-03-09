@@ -10,7 +10,7 @@ const Label = styled.label`
   transition: font-weight 0.1s, color 0.1s;
   position: relative;
   align-items: center;
-  color: ${props => props.disabled ? props.theme.middark : "inherit"};
+  color: ${props => props.disabled ? props.theme.grey_4 : "inherit"};
   
   &:last-child {
   margin-bottom: inherit;
@@ -27,8 +27,8 @@ const Label = styled.label`
       box-sizing: border-box;
       content: "";
       border-radius: ${props => props.theme.border_radius};
-      border: 1px solid ${props => props.disabled ? props.theme.middark : props.checked ? props.theme.accent_1 : props.theme.midlight};
-      background-color: ${props => props.disabled ? "transparent" : props.checked ? props.theme.accent_1 : "white"};
+      border: 1px solid ${props => props.disabled ? props.theme.grey_4 : props.checked ? props.theme.brand_secondary : props.theme.midlight};
+      background-color: ${props => props.disabled ? "transparent" : props.checked ? props.theme.brand_secondary : "white"};
       transition: background-color 0.1s;
   }
   
@@ -55,7 +55,7 @@ const Input = styled.input`
 
   &:checked + label {
     font-weight: 700;
-    color: ${props => props.theme.accent_1};
+    color: ${props => props.theme.brand_secondary};
   }  
 
   &:checked + label:after {

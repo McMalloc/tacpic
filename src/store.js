@@ -22,9 +22,7 @@ export const initialEditor = {
         // mode: 'path',
         tool: 'RECT',
         texture: 'striped',
-        width: 400,
         fill: "#1f78b4",
-        height: 400,
         mouseCoords: {
             originX: 0,
             originY: 0,
@@ -33,12 +31,15 @@ export const initialEditor = {
         },
         currentPage: 0,
         scalingFactor: 1,
-        viewPortX: 0,
-        viewPortY: 0,
+        viewPortX: 50,
+        viewPortY: 50,
         previewMode: false,
         selectedObjects: [],
         defaultTitle: true,
         initialized: true,
+
+        fileState: null,
+
         currentLayout: initialLayout,
         widgetConfig: fromLS !== null ? fromLS : layouts[initialLayout]
     },
@@ -51,7 +52,6 @@ export const initialEditor = {
         transcribersNotes: "",
         tags: [],
         category: null,
-
         variant_id: null,
         graphic_id: null,
         version_id: null,

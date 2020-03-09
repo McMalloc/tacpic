@@ -44,8 +44,8 @@ class ShapeContext extends Component {
             {/*    </div>*/}
             {/*</Row>*/}
 
-            <Row>
-                <div className={'col-xs-6'}>
+            {/*<Row>*/}
+            {/*    <div className={'col-xs-2'}>*/}
                     <fieldset>
                         <legend>Relief</legend>
                         {/*<Checkbox default={this.props.texture !== null} name={"relief"} label={"Füllung fühlbar reliefieren"}/>*/}
@@ -65,11 +65,11 @@ class ShapeContext extends Component {
                                           {...this.props.object.pattern, offset: !this.props.object.pattern.offset})
                                   }}
                                   label={"Abstand zwischen Textur und Rand"}/>
-                        {this.props.offset + "--"}
                         {/*<Numberinput unit={"mm"}/>*/}
                     </fieldset>
-                </div>
-                <div className={'col-xs-6'}>
+                {/*</div>*/}
+                {/*<div className={'col-xs-12'}>*/}
+                <br />
                     <fieldset>
                         <legend>Farbe</legend>
                         {/*<Checkbox name={"colour"} label={"Farbe sichtbar drucken"}/>*/}
@@ -83,8 +83,8 @@ class ShapeContext extends Component {
                             ['#a6cee3', '#33a02c', '#fb9a99', '#fdbf6f', '#6a3d9a', '#ffff99']
                         }/>
                     </fieldset>
-                </div>
-            </Row>
+            {/*    </div>*/}
+            {/*</Row>*/}
 
 
 

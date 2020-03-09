@@ -9,15 +9,15 @@ const Wrapper = styled.div`
   line-height: 0;
   cursor: pointer;
   width: ${props => props.width};
-  border: 2px solid ${props => props.active ? props.theme.accent_1 : "transparent"};
+  border: 2px solid ${props => props.active ? props.theme.brand_secondary : "transparent"};
   height: ${props => props.height};
   transition: border-color 0.2s, background-color 0.1s;
-  background-color: ${props => props.active ? props.theme.background : props.theme.accent_1_light};
+  background-color: ${props => props.active ? props.theme.background : 'transparent'};
   padding: 2px;
   border-radius: ${props => props.theme.border_radius};
   
   &:hover {
-     //border-color: ${props => props.theme.accent_1};
+     //border-color: ${props => props.theme.brand_secondary};
      background-color: ${props => props.theme.background};
   }
 `;

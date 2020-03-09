@@ -1,65 +1,99 @@
-import React, {useEffect} from 'react';
-import {Responsive, WidthProvider} from "react-grid-layout";
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
-import Widget from "../gui/WidgetContainer";
-import Widgets from "./widgets";
-
 import '../../styles/Editor.css';
-import styled from 'styled-components';
-import Ribbon from "../gui/Ribbon";
+import styled, {useTheme} from 'styled-components';
 import {useTranslation} from "react-i18next";
-import Tooltip from "../gui/Tooltip";
 import {FILE} from "../../actions/constants";
 import {useParams} from "react-router";
+import Canvas from "./widgets/Canvas";
+import Toggle from "../gui/Toggle";
+import {Button} from "../gui/Button";
+import Document from "./widgets/Document";
+import Importer from "./widgets/Importer";
+import Key from "./widgets/Key";
+import Verbalizer from "./widgets/Verbalizer";
+import Metadata from "./widgets/Metadata";
+import Pages from "./widgets/Pages";
+import Objects from "./widgets/Objects";
+import Toolbox from "./widgets/Toolbox";
+import Context from "./widgets/Context/Context";
+import {Modal} from "../gui/Modal";
+import {CatalogueItemView} from "../platform/CatalogueItemView";
+import {Alert} from "../gui/Alert";
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   position: relative;
-  min-height: 100%;
-  background-color: ${props => props.theme.accent_1};
+  flex: 1 1 auto;
+  background-color: ${props => props.theme.brand_secondary};
 `;
 
-const Logo = styled.div`
-  position: absolute;
-  top: 0.7em;
-  left: 0.7em;
-  width: 100px;
-  height: 50px;
-  background-image: url("images/logo.svg");
-  background-size: 100%;
-  background-repeat: no-repeat;
+const Toolbar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 20;
+  padding: ${props => props.theme.base_padding} ${props => props.theme.large_padding};
 `;
 
-const ResponsiveReactGridLayout = styled(WidthProvider(Responsive))`
-  flex: 1 1 100%;
+const ToolbarSegment = styled.div`
+  display: flex;
+  
+  button {
+    
+    &:not(:first-child) {
+      border-left: 0;
+    }
+    
+    &:last-child {
+      //border-radius: ${props => props.theme.base_padding};
+    }
+    
+    border-radius: 0;
+  }
 `;
-const rowHeight = 30;
-const widgetPadding = 8;
 
-const layoutChanged = (dispatch, layout, config) => {
-    // react-grid-layout verschluckt die visible property, daher muss sie manuell mitgegeben werden
-    layout.forEach(widget => {
-        let fromConfig = config.find(c => c.i === widget.i);
-        widget.visible = fromConfig.visible;
-        if (widget.i === "Canvas") { // TODO nachhaltiger fixen. wenn die sichtbarkeit geändert wird, gibt rgl w=1/h=1 im callback zurück
-            widget.w = widget.w === 1 ? fromConfig.w : widget.w;
-            widget.h = widget.h === 1 ? fromConfig.h : widget.h;
-        }
-    });
+const PanelWrapper = styled.div`
+  display: flex;
+  flex: 1 1 auto;
+  position: relative;
+  overflow: hidden;
+`;
 
-    dispatch({
-        type: "LAYOUT_CHANGED",
-        layout
-    });
-};
+const Sidebar = styled.div`
+  display: flex;
+  flex: 0 1 25%;
+  min-width: 200px;
+  flex-direction: column;
+  border-top: 2px solid ${props => props.theme.brand_secondary_light};
+  border-right: 2px solid ${props => props.theme.brand_secondary_light};
+  background-color: ${props => props.theme.grey_6};
+`;
 
-const layoutSet = (dispatch, layoutIndex) => {
-    dispatch({
-        type: "LAYOUT_SET",
-        layoutIndex
-    });
-};
+const ModalSidebar = styled(Sidebar)`
+    border-left: 2px solid ${props => props.theme.brand_secondary_light};
+    border-right: none;
+    box-shadow: -3px 0 6px rgba(0,0,0,0.3);
+    max-width: 500px;
+    position: absolute;
+    right: -500px; top: 0; bottom: 0;
+    transition: right 0.2s;
+`;
+
+const FixedSidebar = styled(Sidebar)`
+    min-width: 300px;
+    max-width: 400px;
+`;
+
+const SidebarPanel = styled.div`
+  flex: ${props => props.flex};
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px solid ${props => props.theme.brand_secondary_light};
+`;
+
 
 const Editor = props => {
     const uiSettings = useSelector(
@@ -67,10 +101,10 @@ const Editor = props => {
     );
     const dispatch = useDispatch();
     const t = useTranslation().t;
-    let {graphic_id, variant_id} = useParams();
+    const theme = useTheme();
+    let {variant_id} = useParams();
 
     useEffect(() => {
-        // TODO Editor wird natürlich immer neu gezeichnet, daher abfangen
         if (!!variant_id) {
             dispatch({
                 type: FILE.OPEN.REQUEST,
@@ -79,65 +113,106 @@ const Editor = props => {
         }
     }, []);
 
+    const [openedModalSidebar, toggleModalSidebar] = useState(null);
+    const handleModalSidebar = index => {
+        index === openedModalSidebar ? toggleModalSidebar(null) : toggleModalSidebar(index);
+    };
+
+    const [showPages, togglePages] = useState(false);
+    const [showObjects, toggleObjects] = useState(false);
+
     if (uiSettings.initialized) {
         return (
             <Wrapper>
-                <Tooltip />
-                <Ribbon activeItem={uiSettings.currentLayout} menus={[
-                    {label: "editor_ui:intro",  icon: "flag-checkered", action: () => {layoutSet(dispatch, 0)}},
-                    {label: "editor_ui:original",  icon: "file-image", action: () => {layoutSet(dispatch, 1)}},
-                    {label: "editor_ui:category",  icon: "tags",       action: () => {layoutSet(dispatch, 2)}},
-                    {label: "editor_ui:layout",    icon: "sticky-note",    action: () => {layoutSet(dispatch, 3)}},
-                    {label: "editor_ui:draw",      icon: "pen",        action: () => {layoutSet(dispatch, 4)}},
-                    {label: "editor_ui:legend",    icon: "braille",    action: () => {layoutSet(dispatch, 5)}},
-                    {label: "editor_ui:verbalise", icon: "book-open",  action: () => {layoutSet(dispatch, 6)}},
-                    {label: "editor_ui:proofing",  icon: "glasses",    action: () => {layoutSet(dispatch, 7)}},
-                    {label: "editor_ui:finish",    icon: "check-square",action: () => {layoutSet(dispatch, 8)}},
-                ]} />
+                <Toolbar>
+                    <ToolbarSegment>
+                        <Toggle toggled={showPages} onClick={() => togglePages(!showPages)} label={"Seiten"}/>
+                        <Toggle toggled={showObjects} onClick={() => toggleObjects(!showObjects)} label={"Objekte"}/>
+                    </ToolbarSegment>
+                    <ToolbarSegment>
+                        <Toggle primary onClick={() => alert('hi')} label={"Neu"}/>
+                    </ToolbarSegment>
+                    <ToolbarSegment>
+                        <Toggle primary toggled={openedModalSidebar === 0} onClick={() => handleModalSidebar(0)}
+                                label={"Einrichten"}/>
+                        <Toggle primary toggled={openedModalSidebar === 1} onClick={() => handleModalSidebar(1)}
+                                label={"Importieren"}/>
+                        <Toggle primary toggled={openedModalSidebar === 2} onClick={() => handleModalSidebar(2)}
+                                label={"Legende"}/>
+                        <Toggle primary toggled={openedModalSidebar === 3} onClick={() => handleModalSidebar(3)}
+                                label={"Bildbeschreibung"}/>
+                        <Toggle primary toggled={openedModalSidebar === 4} onClick={() => handleModalSidebar(4)}
+                                label={"Veröffentlichen"}/>
+                    </ToolbarSegment>
+                </Toolbar>
+                <PanelWrapper>
 
-                <Logo />
+                    {/*<ToggleSidebar>*/}
+                    {/*    */}
+                    {/*</ToggleSidebar>*/}
 
-                <ResponsiveReactGridLayout
-                    className="layout"
-                    draggableHandle={'.drag-handle'}
-                    cols={{lg: 12, sm: 12}}
-                    id={'widget-grid'}
-                    breakpoints={{lg: 1200, sm: 768}}
-                    preventCollision={false}
-                    layouts={{
-                        lg: uiSettings.widgetConfig,
-                        sm: uiSettings.widgetConfig
-                    }}
-                    margin={[widgetPadding, widgetPadding]}
-                    // onResizeStop={this.props.canvasResized}
-                    onLayoutChange={layout => layoutChanged(dispatch, layout, uiSettings.widgetConfig)}
-                    rowHeight={rowHeight}>
+                    {(showPages || showObjects) &&
+                    <Sidebar>
+                        {showPages && <SidebarPanel flex={'1 0 auto'}><Pages/></SidebarPanel>}
+                        {showObjects && <SidebarPanel flex={'4 0 auto'}><Objects/></SidebarPanel>}
+                    </Sidebar>
+                    }
 
-                    {uiSettings.widgetConfig
-                        // TODO: layoutChanged event-Callback gibt das aktuelle Layout ohne visible property zurück (und werden demnach ohne diese im LS gespeichert);
-                        // wenn diese fehlt werden natürlich sämtliche Widgets ausgefiltert
-                        .filter(widget => { return widget.visible })
-                        .map((widget, index) => {
-                            return (
-                                <div key={widget.i}>
-                                    {/*<Tooltip />*/}
-                                    <Widget
-                                        title={t("editor_ui:" + widget.i)}
-                                        component={Widgets[widget.i]}/>
-                                </div>
-                            )
-                        })}
-                </ResponsiveReactGridLayout>
+                    <FixedSidebar>
+                        <SidebarPanel flex={'0 1 auto'}><Toolbox/></SidebarPanel>
+                        <SidebarPanel flex={'1 1 100%'}><Context/></SidebarPanel>
+                    </FixedSidebar>
+
+                    <Canvas/>
+
+
+                    <ModalSidebar style={{right: openedModalSidebar === null ? '-500px' : 0}} theme={theme}>
+                        {openedModalSidebar === 0 && <Document/>}
+                        {openedModalSidebar === 1 && <Importer/>}
+                        {openedModalSidebar === 2 && <Key/>}
+                        {openedModalSidebar === 3 && <Verbalizer/>}
+                        {openedModalSidebar === 4 && <Metadata/>}
+                    </ModalSidebar>
+
+                </PanelWrapper>
+
+                {uiSettings.fileState !== null &&
+                <Modal fitted title={'editor:modal_filestate_title'} dismiss={props.dismiss}
+                       actions={[
+                           {
+                               label: "Weiter bearbeiten",
+                               align: "left",
+                               disabled: uiSettings.fileState === 'updating',
+                               action: props.dismiss
+                           },
+                           {
+                               label: "Zurück zum Katalog",
+                               align: "right",
+                               template: 'primary',
+                               disabled: uiSettings.fileState === 'updating',
+                               action: props.dismiss
+                           }
+                       ]}
+                >
+
+                    {uiSettings.fileState === 'updating' &&
+                    <Alert info>
+                        <p>{t('editor:filestate_updating-pending')}</p>
+                    </Alert>
+                    }
+                    {uiSettings.fileState === 'success' &&
+                    <Alert success>
+                        <p>{t('editor:filestate_updating-success')}</p>
+                    </Alert>
+                    }
+                    {uiSettings.fileState === 'failure' && t('editor:filestate_updating-failure')}
+
+                </Modal>
+                }
             </Wrapper>
         );
     } else {
         return (<div>Bitte warten.</div>)
-    }
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-
     }
 };
 

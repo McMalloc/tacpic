@@ -65,25 +65,25 @@ const LabelContext = props => {
 
             {/*<hr />*/}
 
-            <Row>
-                <div className={"col-xs-4"}>
+            {/*<Row>*/}
+                <div>
                     {/*<legend>Beschriftung</legend>*/}
                     <Multiline onChange={onChangeHandler} value={selectedObject.text}
                                label={"Text"}/>
                 </div>
-                <div className={"col-xs-4"}>
+                <div>
                     <div>Vorschau</div>
                     <BraillePreview>{selectedObject.braille}</BraillePreview>
                 </div>
-                <div className={"col-xs-4"}>
+                <div>
                     <div>Braillecode in Schwarzschrift</div>
                     <CodePreview>{selectedObject.braille}</CodePreview>
                 </div>
-            </Row>
+            {/*</Row>*/}
 
 
-            <Row>
-                <div className={"col-xs-6"}>
+            {/*<Row>*/}
+            {/*    <div className={"col-xs-6"}>*/}
                     <Checkbox name={"is-key"}
                               checked={selectedObject.isKey}
                               onChange={() => changeProp(
@@ -102,16 +102,16 @@ const LabelContext = props => {
                                    event.currentTarget.value)}
                                value={selectedObject.keyVal}
                                aria-labelledby={"is-key"}/>
-                </div>
-                <div className={"col-xs-6"}>
+                {/*</div>*/}
+                {/*<div className={"col-xs-6"}>*/}
                     <p>{t("editor:cb_braille-key-explanation")}</p>
                     {/*<Checkbox name={"leading"}*/}
                     {/*          label={"Führungslinie"}/>*/}
-                </div>
-            </Row>
+            {/*    </div>*/}
+            {/*</Row>*/}
 
-            <Row>
-                <fieldset className={"col-xs-6"}>
+            {/*<Row>*/}
+                <fieldset>
                     <legend>Punktschrift</legend>
                     {/*<Checkbox default={this.props.texture !== null} name={"relief"} label={"Füllung fühlbar reliefieren"}/>*/}
                     <Checkbox name={"display-dots"}
@@ -133,7 +133,7 @@ const LabelContext = props => {
                               label={"editor:cb_braille-show-border"}/>
                 </fieldset>
 
-                <fieldset className={"col-xs-6"}>
+                <fieldset>
                     <legend>Schwarzschrift</legend>
                     {/*<Checkbox default={this.props.texture !== null} name={"relief"} label={"Füllung fühlbar reliefieren"}/>*/}
                     <Checkbox name={"black-letter"}
@@ -154,7 +154,7 @@ const LabelContext = props => {
                     {/*selected={selectedObject.position}*/}
                     {/*onChange={this.onChangeHandler}/>*/}
                 </fieldset>
-            </Row>
+            {/*</Row>*/}
 
 
 

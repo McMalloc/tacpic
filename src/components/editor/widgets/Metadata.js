@@ -6,6 +6,7 @@ import Select from "../../gui/Select";
 import {Button} from "../../gui/Button";
 import {Upper} from "../../gui/WidgetContainer";
 import {GRAPHIC, VERSION, VARIANT} from "../../../actions/constants";
+import {Modal} from "../../gui/Modal";
 
 const Status = styled.div`
   display: flex;
@@ -76,6 +77,7 @@ const Metadata = props => {
     });
 
     return (
+        <>
         <Upper>
             <div>
                 <Textinput
@@ -181,6 +183,7 @@ const Metadata = props => {
                 </Button>
             </div>
         </Upper>
+            </>
     );
 };
 

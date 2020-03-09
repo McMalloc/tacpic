@@ -1,19 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {CATALOGUE, TAGS, VARIANT, VERSION} from "../../actions/constants";
-import {Button} from "./../gui/Button";
-import {Redirect} from "react-router-dom";
+import {CATALOGUE} from "../../actions/constants";
 import CatalogueItemList from "./CatalogueItemList";
 import {Textinput} from "../gui/Input";
 import TagList from "./TagList";
-import Select from "../gui/Select";
-
-const handleNewGraphic = (dispatch, doRedirect) => {
-    doRedirect(true);
-    dispatch({
-        type: "NEW_GRAPHIC_STARTED"
-    });
-};
+import {Row} from "../gui/Grid";
 
 const queryGraphics = (dispatch, tags = [], terms = [], limit = 20, offset = 0) => {
     dispatch({
@@ -46,40 +37,40 @@ const Catalogue = props => {
         state => state.catalogue
     );
     const dispatch = useDispatch();
-    const [redirect, doRedirect] = useState(false);
 
     useEffect(() => {
         queryGraphics(dispatch);
     }, []);
 
-    const [input, setInput] = useState({});
-
-    if (redirect) {
-        return <Redirect push to="/editor/new"/>;
-    }
-
     return (
-        <>
-            <h1>Grafiken</h1>
+        <div className={"container container-fluid"} style={{width: '100%'}}>
+            <Row>
+                <div className={"col-xs-10 col-xs-offset-2"}>
+                    <h1>Katalog</h1>
+                </div>
+            </Row>
+            <Row>
+                <div className={"col-xs-10 col-xs-offset-2"}>
+                    <Textinput value={catalogue.searchTerms}
+                               label={"Suche"}
+                               onChange={event => searchChanged(dispatch, event.target.value)} />
+                </div>
+            </Row>
+            <Row>
+                <div className={"col-xs-2 col-lg-1"}>
+                    <TagList/>
+                </div>
+                <div className={"col-xs-10 col-lg-11"}>
+                    <CatalogueItemList graphics={catalogue.graphics}/>
+                </div>
+            </Row>
             {/*<Select value={catalogue.searchTerms}*/}
             {/*        isMulti*/}
             {/*        options={catalogue.tags.map(tag => ({label: tag.name, value: tag.tag_id}))}*/}
             {/*        onChange={event => searchChanged(dispatch, event.target.value)}*/}
             {/*/>*/}
-            <Textinput value={catalogue.searchTerms}
-                       onChange={event => searchChanged(dispatch, event.target.value)} />
-            <div className={"row"}>
-                <div className={"col-xs-3"}>
-                    <TagList/>
-                </div>
-                <div className={"col-xs-9"}>
-                    <CatalogueItemList graphics={catalogue.graphics}/>
-                    <Button icon={"plus"} onClick={() => handleNewGraphic(dispatch, doRedirect)}>Neue Grafik</Button>
-                </div>
-            </div>
 
-
-        </>
+        </div>
     )
 };
 

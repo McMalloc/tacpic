@@ -1,8 +1,14 @@
 import React from 'react';
 import './Grid.css';
+import {useSelector} from "react-redux";
 
 // TODO laut react profiler große performance kosten
 export default function SVGGrid(props) {
+    const {
+        showVerticalGrid,
+        showHorizontalGrid
+    } = useSelector(state => state.editor.file);
+
     let nVerticals = parseInt(props.canvasWidth / props.verticalGridSpacing) + 1;
     let verticals = new Array(nVerticals).fill(null).map((n, i) => {
         let x = parseInt((i * props.verticalGridSpacing + props.offsetX)) + "mm";
@@ -23,10 +29,11 @@ export default function SVGGrid(props) {
                      strokeWidth={1}
                      stroke={'rgba(0,0,0,0.05)'}/>
     });
+
     return (
         <g role={"GRID"}>
-            {verticals}
-            {horizontals}
+            {showVerticalGrid && verticals}
+            {showHorizontalGrid && horizontals}
         </g>
     )
 }

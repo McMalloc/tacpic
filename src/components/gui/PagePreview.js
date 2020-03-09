@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const SVG = styled.svg`
   display: inline-block;
   line-height: 0;
-  border: 2px solid ${props => props.current ? props.theme.accent_1 : props.theme.background};
+  border: 2px solid ${props => props.current ? props.theme.brand_secondary : props.theme.background};
   background-color: white;
   transition: border-color 0.2s;
 `;
@@ -17,10 +17,10 @@ const Title = styled.label`
   text-align: center;
   margin-top: ${props => props.theme.spacing[1]};
   
-  color: ${props => props.current ? props.theme.accent_1 : "inherit"};
+  color: ${props => props.current ? props.theme.brand_secondary : "inherit"};
   font-weight: ${props => props.current ? "700" : "inherit"};
   
-  text-decoration: ${props => props.current ? "none!important": "inherit"};
+  text-decoration: ${props => props.current ? "underline": "inherit"};
 `;
 
 const Wrapper = styled.div`

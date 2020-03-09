@@ -40,8 +40,8 @@ const TagList = props => {
             {named_taxonomies.map(taxonomy_id => {
                 return (
                     <div key={taxonomy_id}>
-                        <h3>{t(`catalogue-taxonomy-${taxonomy_id}`)}</h3>
-                        <ul>
+                        <strong>{t(`catalogue-taxonomy-${taxonomy_id}`)}</strong>
+                        <ul style={{paddingLeft: 0}}>
                             {groupedTags[taxonomy_id].map(tag => {
                                 return <Tag key={tag.tag_id} {...tag}/>
                             })}
@@ -50,8 +50,8 @@ const TagList = props => {
                 )
             })}
 
-            <h3>misc</h3>
-            <ul>
+            <strong>misc</strong>
+            <ul style={{paddingLeft: 0}}>
                 {misc.map(tag => {
                         return <Tag key={tag.tag_id} {...tag}/>
                     }

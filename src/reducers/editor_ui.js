@@ -1,6 +1,6 @@
 import {cloneDeep} from "lodash"
 import layouts from "../components/editor/widgets/layouts.js"
-import {VERSION} from "../actions/constants";
+import {VERSION, VARIANT} from "../actions/constants";
 
 let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so
 let lastObjectsProps = [];
@@ -24,8 +24,10 @@ const ui = (state = {}, action) => {
         case 'TRANSFORM_END':
             return {...state, mode: lastMode};
         case 'CHANGE_VIEWPORT':
+            let scalingFactor = action.scalingFactor < 0.05 ? 0.1 :
+                Math.round(action.scalingFactor * roundingAccuracy) / roundingAccuracy; // regain accuracy from wonky javascript rounding
             return {...state,
-                scalingFactor: Math.round(action.scalingFactor * roundingAccuracy) / roundingAccuracy, // regain accuracy from wonky javascript rounding
+                scalingFactor,
                 viewPortX: action.viewPortX,
                 viewPortY: action.viewPortY
             };
@@ -82,6 +84,12 @@ const ui = (state = {}, action) => {
             console.log(action.label);
             oldState.openedFile.keyedTextures[action.texture] = action.label;
             return oldState;
+        case VARIANT.UPDATE.REQUEST:
+            return {...state, fileState: 'updating'};
+        case VARIANT.UPDATE.SUCCESS:
+            return {...state, fileState: 'success'};
+        case VARIANT.UPDATE.FAILURE:
+            return {...state, fileState: 'failure'};
         default:
             return state;
     }

@@ -13,40 +13,19 @@ import Hint from "../../gui/Popover";
 // `;
 
 const Wrapper = styled.div`
-  //position: absolute;
-  //top: 50%;
-  //left: 50%;
-  //transform: translate(-50%, -50%);
-  box-sizing: content-box;
-  box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-`;
-
-const Background = styled.img`
-  position: absolute;
-  top: 12px;
-  bottom: 12px;
-  right: 12px;
-  width: auto;   
-  max-height: 95%;
-  left: 12px;
-  opacity: 0.6;
+  flex: 1 1 auto;
+  z-index: 0;
 `;
 
 const Ruler = styled.div``;
 
-class Canvas extends Component {
-    hintTimer = null;
-    state = {showHint: false};
-    render() {
-        // if (this.props.ui.currentLayout === 4 && this.hintTimer === null) {
-        //     this.hintTimer = setTimeout(
-        //         () => this.setState({showHint: true}),
-        //         2000
-        //     );
-        // }
+const Canvas = props => {
 
         return (
-            <InteractiveSVG/>
+            <Wrapper>
+                <InteractiveSVG/>
+            </Wrapper>
+
             // <Wrapper>
             //     {/*<Ruler/>*/}
             //     {this.props.file.backgroundURL &&
@@ -62,21 +41,7 @@ class Canvas extends Component {
             //     </Popover>
             // </Wrapper>
         )
-    }
-}
 
-const mapStateToProps = state => {
-    return {
-        ...state.editor
-    }
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        updateCanvas: (serializedCanvas) => {
-            dispatch(canvasUpdated(serializedCanvas));
-        }
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Canvas);
+export default Canvas;

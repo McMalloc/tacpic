@@ -12,6 +12,12 @@ const Row = props => {
     )
 };
 
+const Container = props => {
+    return (
+        <div {...props} className={"container"}>{props.children}</div>
+    )
+};
+
 const Column = props => {
     let classes = "";
 
@@ -26,13 +32,12 @@ const Column = props => {
 
     // z.B. width={1/4}
     // Nenner gibt an, ob die Spalten sm, md, lg bassiert sein sollen, Zähler die Breite
-    console.log(classes);
     return (
         <div className={classes}>{props.children}</div>
     )
 };
 
-export {Row, Column}
+export {Row, Column, Container}
 // const Flyout = props => {
 //       return <div></div>
 // };

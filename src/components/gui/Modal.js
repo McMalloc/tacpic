@@ -6,9 +6,7 @@ import {Icon} from "./_Icon";
 import {Button} from "./Button";
 
 const Backdrop = styled.div`
-  //background-color: rgba(0,0,0,0.4);
   background-color: rgba(3,113,113,0.3);
-  //background-color: rgba(255,255,255,0.9);
   position: fixed;
   height: 100%;
   width: 100%;
@@ -18,58 +16,55 @@ const Backdrop = styled.div`
   align-items: center;
   justify-content: center;
   animation: ${fadeIn} 0.1s ease-in;
+  cursor: zoom-out;
 `;
 
 const Window = styled.div`
-  box-shadow: ${props => props.theme.middle_shadow};
+  box-shadow: -1px 1px 11px 0px rgba(0, 0, 0, 0.87); //${props => props.theme.distant_shadow};
   background-color: ${props => props.theme.background};
   animation: ${slideFromAbove} 0.1s ease-in;
-  width: 100%;
-  //max-width: 600px;
-  //margin: auto;
+  width: ${props=> props.fitted ? 'auto' : '100%'};
   margin: 20px;
   max-height: 90%;
   border-radius: ${props => props.theme.border_radius};
   display: flex;
+  overflow: hidden;
   flex-direction: column;
+  cursor: default;
+  z-index: 100;
 `;
 
 const ModalHeader = styled.div`
   padding: ${props => props.theme.large_padding};
-  //border-bottom: 2px solid ${props => props.theme.accent_1};
-   border-bottom: 2px solid ${props => props.theme.accent_1_light};
+   border-bottom: 2px solid ${props => props.theme.grey_5};
   display: flex;
   flex: 0 0 auto;
-  color: ${props => props.theme.accent_1};
+  color: ${props => props.theme.brand_secondary_lighter};
 `;
 
 const ModalTitle = styled.h3`
-  //font-weight: 700;
   margin: 0;
   flex: 1 1 auto;
-  //font-size: 1.2em;
 `;
 
 const ModalClose = styled.div`
   font-size: 1.2em;
   flex: 0 0 0;
   cursor: pointer;
-  //border-left: 2px solid ${props => props.theme.accent_1_light};
 `;
 
 const ModalContent = styled.div`
-  padding: ${props => props.theme.large_padding};
-  overflow-y: scroll;
-  overflow-x: auto;
-  //box-shadow: inset 0 0 8px rgba(0,0,0,0.4);
-  //flex: 1 100% auto;
+  padding: ${props => props.noPadding ? 0 : props.theme.large_padding};
+  flex: 1 1 auto;
+  display: flex; 
+  overflow: hidden; 
 `;
 
 const ModalFooter = styled.div`
-  // border-top: 2px solid ${props => props.theme.accent_1};
-  border-top: 2px solid ${props => props.theme.accent_1_light};
+  border-top: 2px solid ${props => props.theme.grey_5};
   padding: ${props => props.theme.large_padding};
   flex: 0 0 auto;
+  background-color: ${props => props.theme.background};
 `;
 
 class Modal extends Component {
@@ -96,25 +91,28 @@ class Modal extends Component {
     render() {
         // Use a portal to render the children into the element
         return createPortal(
-            <Backdrop>
-                <Window>
+            <Backdrop onClick={this.props.dismiss}>
+                <Window fitted={this.props.fitted} onClick={event=>event.stopPropagation()}>
                     <ModalHeader>
                         <ModalTitle>{this.props.title}</ModalTitle>
                         {typeof this.props.dismiss === "function" && <ModalClose onClick={this.props.dismiss}><Icon icon={"times"} /></ModalClose>}
                         {/*<ModalClose>{typeof this.props.dismiss === "function" && <Icon onClick={this.props.dismiss} icon={"times"} />}</ModalClose>*/}
                     </ModalHeader>
-                    <ModalContent>{this.props.children}</ModalContent>
-                    <ModalFooter>{this.props.actions.map((action, index) => {
-                        let buttonProps = {
-                            primary: action.template === "primary"
-                        };
-                        // TODO: kein float fürs Layout nutzen
-                        return (
-                            <span key={index} style={{float: action.align}}>
-                                <Button {...buttonProps} onClick={action.action}>{action.label}</Button>
-                            </span>
-                        )
-                    })}</ModalFooter>
+                    <ModalContent noPadding={this.props.noPadding}>{this.props.children}</ModalContent>
+                    {this.props.actions && this.props.actions.length !== 0 &&
+                        <ModalFooter>{this.props.actions.map((action, index) => {
+                            let buttonProps = {
+                                primary: action.template === "primary",
+                                icon: action.icon
+                            };
+                            // TODO: kein float fürs Layout nutzen
+                            return (
+                                <span key={index} style={{float: action.align}}>
+                                    <Button disabled={action.disabled} {...buttonProps} onClick={action.action}>{action.label}</Button>
+                                </span>
+                            )
+                        })}</ModalFooter>
+                    }
                 </Window>
             </Backdrop>,
             // A DOM element
