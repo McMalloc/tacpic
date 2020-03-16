@@ -72,6 +72,11 @@ const mapDispatchToProps = dispatch => {
         },
         group: uuids => {
             dispatch({
+                type: 'OBJECT_SELECTED',
+                uuids: [null]
+            });
+
+            dispatch({
                 type: 'OBJECTS_GROUPED',
                 uuids
             })

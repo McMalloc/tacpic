@@ -19,8 +19,7 @@ const initialLayout = 4;
 const fromLS = JSON.parse(localStorage.getItem("custom_layout_" + initialLayout));
 export const initialEditor = {
     ui: {
-        // mode: 'path',
-        tool: 'RECT',
+        tool: 'SELECT',
         texture: 'striped',
         fill: "#1f78b4",
         mouseCoords: {
@@ -81,10 +80,14 @@ export const initialEditor = {
 const initialCatalogue = {
     filterTags: [],
     filterTerms: [],
+    filterFormat: [],
+    filterSystem: [],
     tags: [],
-    limit: 0,
+    limit: 50,
     offset: 0,
-    graphics: []
+    graphics: [],
+    viewedGraphic: {},
+    graphicGetPending: true
 };
 
 const composeEnhancers =
@@ -97,7 +100,9 @@ const composeEnhancers =
 // unintuitively, e.g. the currently visible page, a detail of ui state, is
 // of no concern for the objects of a document
 const shareCurrentPage = store => next => action => {
-    action.shared_currentPage = store.getState().editor.ui.currentPage;
+    if (action.type.includes('OBJECT')) {
+        action.shared_currentPage = store.getState().editor.ui.currentPage;
+    }
     return next(action);
 };
 

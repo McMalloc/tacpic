@@ -16,7 +16,7 @@ export default function SVGRect(props) {
                           cursor: 'pointer',
                           fill: template !== null ? 'url(#pattern-' + template + '-' + props.uuid + '' : props.fill || "transparent"
                       }}
-                  strokeWidth={props.pattern.offset ? 20 : 2}
+                  strokeWidth={props.border ? props.pattern.offset ? 20 : props.borderWidth : 0}
                   data-transformable={1}
                   data-selectable={1}
                   stroke={props.pattern.offset ? props.fill : "black"}
@@ -24,12 +24,12 @@ export default function SVGRect(props) {
                   width={props.width}
                   height={props.height}/>
 
-            {props.pattern.offset &&
+            {props.pattern.offset && props.border &&
             <rect
                 id={"stroke-" + props.uuid}
                 transform={transformProperty}
                 style={{fill: "none"}}
-                strokeWidth={2}
+                strokeWidth={props.borderWidth}
                 data-transformable={1}
                 data-selectable={1}
                 stroke={"black"}

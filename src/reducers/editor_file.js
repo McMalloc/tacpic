@@ -5,11 +5,35 @@ import uuidv4 from "../utility/uuid";
 import deepPull from "../utility/deepPull";
 import {initialEditor} from "../store";
 
-let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so
+// let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so || rausnehmen, da jetzt vom internen State des Editors verwaltet, ODER?
+const getSelectedObjects = (objects, selected) => {
+    if (selected.length === 1) {
+        for (let i = 0; i < objects.length; i++) {
+            if (objects[i].uuid === selected[0]) return [objects[i]];
+        }
+    } else {
+        return objects.filter(object => selected.includes(object.uuid));
+    }
+};
 
 const file = (state = {}, action) => {
     let objects, oldState;
     switch (action.type) {
+        case VARIANT.UPDATE.REQUEST:
+            return {...state, state: 'updating'};
+        case VARIANT.UPDATE.SUCCESS:
+            return {...state, state: 'success'};
+        case VARIANT.UPDATE.FAILURE:
+            return {...state, state: 'failure'};
+
+        case VARIANT.CREATE.REQUEST:
+            return {...state, state: 'updating'};
+        case VARIANT.CREATE.SUCCESS:
+            console.log(action);
+            return {...state, state: 'success', variant_id: action.data.variant_id};
+        case VARIANT.CREATE.FAILURE:
+            return {...state, state: 'failure'};
+
         case 'OBJECT_ADDED':
             oldState = cloneDeep(state);
             oldState.pages[action.shared_currentPage].objects.push(action.object);
@@ -17,16 +41,18 @@ const file = (state = {}, action) => {
             return oldState;
         case 'OBJECT_ROTATED':
             oldState = {...state};
+            objects = getSelectedObjects(oldState.pages[action.shared_currentPage].objects, action.uuids);
 
-            oldState.pages[action.shared_currentPage].objects.forEach(object => { // refactor selective function
-                if (!includes(action.uuids, object.uuid)) return;
 
-                methods[object.type].rotate(
-                    object,
+            if (objects.length === 1) {
+                methods[objects[0].type].rotate(
+                    objects[0],
                     action.coords.x,
                     action.coords.y
                 );
-            });
+            } else if (objects.length > 1) {
+                methods.selection.rotate(objects, action.coords.x, action.coords.y)
+            }
 
             return oldState;
         case 'OBJECT_TRANSLATED':
@@ -57,7 +83,7 @@ const file = (state = {}, action) => {
                 {uuid: action.uuid}).forEach(object => {
                 object[action.prop] = action.value;
 
-                if (action.prop === "isKey"){// && object.keyVal.length === 0) {
+                if (action.prop === "isKey") {// && object.keyVal.length === 0) {
                     object.keyVal = object.text.slice(0, 3);
                 }
             });
@@ -68,7 +94,7 @@ const file = (state = {}, action) => {
             oldState.pages.forEach(page => {
                 page.objects.forEach(object => {
                     if (object.type === 'label') {
-                        let translated = action.labels.find(label=>label.uuid === object.uuid);
+                        let translated = action.labels.find(label => label.uuid === object.uuid);
                         object.braille = translated.braille;
                     }
                 })

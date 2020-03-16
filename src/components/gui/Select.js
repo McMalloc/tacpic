@@ -61,6 +61,7 @@ const Select = props => {
                         isMulti={props.isMulti}
                         placeholder={t(props.placeholder)}
                         value={value}
+                        isDisabled={props.disabled}
                         onCreateOption={props.onCreateOption}
                         onChange={props.onChange}
                         menuPortalTarget={document.body}

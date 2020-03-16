@@ -17,15 +17,19 @@ const Backdrop = styled.div`
   justify-content: center;
   animation: ${fadeIn} 0.1s ease-in;
   cursor: zoom-out;
+  z-index: 1000;
 `;
 
 const Window = styled.div`
   box-shadow: -1px 1px 11px 0px rgba(0, 0, 0, 0.87); //${props => props.theme.distant_shadow};
   background-color: ${props => props.theme.background};
   animation: ${slideFromAbove} 0.1s ease-in;
+  transition: height 0.2s;
   width: ${props=> props.fitted ? 'auto' : '100%'};
   margin: 20px;
   max-height: 90%;
+  ${props=> props.fitted ? '' : 'height: 90%'};
+  //min-height: 300px;
   border-radius: ${props => props.theme.border_radius};
   display: flex;
   overflow: hidden;
@@ -56,7 +60,7 @@ const ModalClose = styled.div`
 const ModalContent = styled.div`
   padding: ${props => props.noPadding ? 0 : props.theme.large_padding};
   flex: 1 1 auto;
-  display: flex; 
+  display: flex;
   overflow: hidden; 
 `;
 

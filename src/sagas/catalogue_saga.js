@@ -4,7 +4,7 @@ import createSaga from "./saga_utilities";
 import {groupBy} from "lodash";
 
 export const catalogueSearchSaga = createSaga(
-    CATALOGUE.SEARCH, 'get', 'graphics?tags=:tags&search=:terms&limit=:limit&offset=:offset', takeLatest, true, undefined,
+    CATALOGUE.SEARCH, 'get', 'graphics?tags=:tags&search=:terms&system=:system&format=:format&limit=:limit&offset=:offset', takeLatest, true, undefined,
     graphics => {
         let groupedGraphics = groupBy(graphics, 'graphic_id');
         let mappableGraphics = [];
@@ -40,6 +40,8 @@ const catalogueSearch = catalogue => {
         payload: {
             tags: catalogue.filterTags,
             terms: catalogue.filterTerms,
+            system: catalogue.filterSystem,
+            format: catalogue.filterFormat,
             limit: catalogue.limit,
             offset: catalogue.offset,
             order_by: "date",
@@ -48,6 +50,8 @@ const catalogueSearch = catalogue => {
     }
 };
 
+
+// TODO ein watcher genügt vermutlich, doch mit welchem effect/channel?
 export function* searchChangeWatcher() {
     yield takeLatest('SEARCH_CHANGED', function* (action) {
         const catalogue = yield select(state => state.catalogue);
@@ -57,6 +61,20 @@ export function* searchChangeWatcher() {
 
 export function* tagToggledWatcher() {
     yield takeLatest('TAG_TOGGLED', function* (action) {
+        const catalogue = yield select(state => state.catalogue);
+        yield put(catalogueSearch(catalogue));
+    });
+}
+
+export function* formatToggledWatcher() {
+    yield takeLatest('FORMAT_TOGGLED', function* (action) {
+        const catalogue = yield select(state => state.catalogue);
+        yield put(catalogueSearch(catalogue));
+    });
+}
+
+export function* systemToggledWatcher() {
+    yield takeLatest('SYSTEM_TOGGLED', function* (action) {
         const catalogue = yield select(state => state.catalogue);
         yield put(catalogueSearch(catalogue));
     });

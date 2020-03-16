@@ -4,7 +4,7 @@ import CatalogueItem, {Wrapper as CatalogueItemWrapper} from "./CatalogueItem";
 import {CatalogueItemViewModal} from "./CatalogueItemView";
 import styled from "styled-components";
 import {Button} from "../gui/Button";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Redirect} from "react-router-dom";
 
 const FlexRow = styled.div`
@@ -25,11 +25,16 @@ const CatalogueItemList = props => {
     const history = useHistory();
     const dispatch = useDispatch();
     const [redirect, doRedirect] = useState(false);
+    const filtered = !useSelector(
+        state => state.catalogue.filterTags.length === 0 &&
+            state.catalogue.filterTerms.length === 0 &&
+            state.catalogue.filterFormat.length === 0 &&
+            state.catalogue.filterSystem.length === 0
+    );
 
     function handleClick() {
         history.push(url);
     }
-
     if (redirect) {
         return <Redirect push to="/editor/new"/>;
     }
@@ -42,7 +47,7 @@ const CatalogueItemList = props => {
             <FlexRow>
                 {props.graphics && props.graphics.map((graphic, index) => {
                     return (
-                        <CatalogueItem key={index} {...graphic}
+                        <CatalogueItem key={index} {...graphic} filtered={filtered}
                                        url={`${url}/${graphic.id}/variant/${graphic.variants[0].id}`}/>
                     )
                 })}

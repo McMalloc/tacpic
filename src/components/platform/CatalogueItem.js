@@ -68,11 +68,14 @@ export default props => {
                         props.variants[0].id + "-sm.png"} />
                     <Info>
                         <strong>{props.title}</strong> <br/>
-                        <small>{props.variants.length} zutreffende Variante{props.variants.length !== 1 && 'n'}</small>
+                        <small>
+                            {props.variants.length}
+                            {props.filtered ? ' zutreffende ' : ' '}
+                            Variante{props.variants.length !== 1 && 'n'}
+                        </small>
                     </Info>
                 </Tile>
             </Link>
-
         </Wrapper>
     )
 };

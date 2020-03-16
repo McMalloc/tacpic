@@ -11,6 +11,15 @@
     "select_braille-system": "Pro Dokument sollte ein einheitliches Punktschriftsystem verwendet werden. Alle Beschriftungen werden in dem hier ausgewählten System angelegt und bestehende Beschriftungen werden umgewandelt.",
     "select_medium": "Unterschiedliche Medien bieten unterschiedliche Möglichkeiten. Der Editor wird für bestimmte Produktionstechniken Funktionen einschränken, sodass Sie keine Vorlage gestalten, die z.B. mit Schwellpapier gar nicht produzierbar ist."
   },
+  "catalogue": {
+    "a3-portrait": "DIN A3 Hochformat",
+    "a3-Landscape": "DIN A3 Querformat",
+    "a4-portrait": "DIN A4 Hochformat",
+    "a4-Landscape": "DIN A4 Querformat",
+    "de-de-g0.utb": "Deutsch Vollschrift",
+    "de-de-g1.ctb": "Deutsch Langschrift",
+    "de-de-g2.ctb": "Deutsch Kurzschrift"
+  },
   "editor": {
     "Context": "Eigenschaften",
     "Intro": "Willkommen!",

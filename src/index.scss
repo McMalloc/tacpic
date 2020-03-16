@@ -32,3 +32,9 @@ a.no-styled-link {
   text-decoration: none;
   //color: inherit;
 }
+
+.extra-margin {
+  &:not(:last-child) {
+    margin-bottom: 12px;
+  }
+}

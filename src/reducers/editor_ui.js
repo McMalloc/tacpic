@@ -84,12 +84,6 @@ const ui = (state = {}, action) => {
             console.log(action.label);
             oldState.openedFile.keyedTextures[action.texture] = action.label;
             return oldState;
-        case VARIANT.UPDATE.REQUEST:
-            return {...state, fileState: 'updating'};
-        case VARIANT.UPDATE.SUCCESS:
-            return {...state, fileState: 'success'};
-        case VARIANT.UPDATE.FAILURE:
-            return {...state, fileState: 'failure'};
         default:
             return state;
     }

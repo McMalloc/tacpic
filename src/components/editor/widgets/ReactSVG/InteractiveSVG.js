@@ -60,12 +60,11 @@ class InteractiveSVG extends Component {
 
         this.props.changeViewport(
             this.props.ui.scalingFactor + (event.nativeEvent.deltaY > 0 ? -0.1 : 0.1),
-            this.props.ui.viewPortX + (this.state.t_mouseOffsetX - this.svgElement.current.scrollWidth / 2)*(1/this.props.ui.scalingFactor),
-            this.props.ui.viewPortY + (this.state.t_mouseOffsetY - this.svgElement.current.scrollHeight / 2)*(1/this.props.ui.scalingFactor));
+            this.props.ui.viewPortX + (this.state.t_mouseOffsetX - this.svgElement.current.scrollWidth / 2) * (1 / this.props.ui.scalingFactor),
+            this.props.ui.viewPortY + (this.state.t_mouseOffsetY - this.svgElement.current.scrollHeight / 2) * (1 / this.props.ui.scalingFactor));
     };
 
     keyDownHandler = event => {
-        console.log(event.which);
         switch (event.which) {// TODO use constants instead of magic numbers
             case 38: // up
                 event.stopPropagation();
@@ -106,8 +105,8 @@ class InteractiveSVG extends Component {
                 );
                 this.props.changeViewport(
                     this.props.ui.scalingFactor + 0.1,
-                    this.props.ui.viewPortX + this.state.mouseOffsetX * this.props.ui.scalingFactor,
-                    this.props.ui.viewPortY + this.state.mouseOffsetY * this.props.ui.scalingFactor);
+                    this.props.ui.viewPortX,// + this.state.mouseOffsetX * this.props.ui.scalingFactor,
+                    this.props.ui.viewPortY);// + this.state.mouseOffsetY * this.props.ui.scalingFactor);
                 break;
             case 189: // -
                 this.props.changeViewport(
@@ -136,7 +135,7 @@ class InteractiveSVG extends Component {
         event.preventDefault();
         switch (event.which) {// TODO use constants instead of magic numbers
             case 32: // space
-                this.setState({ panning: false });
+                this.setState({panning: false});
                 break;
             default:
                 break;
@@ -214,7 +213,24 @@ class InteractiveSVG extends Component {
 
                 let currentPath = findObject(this.props.file.pages[this.props.ui.currentPage].objects, this.state.edit.uuid); // TODO in externes Modul auslagern
 
-                if (this.props.ui.tool === 'QUADRATIC') {
+                if (this.props.ui.tool === 'LINE') {
+                    let appendedPath = methods.path.addPoint(
+                        currentPath,
+                        [mouseDownX, mouseDownY],
+                        'L');
+
+                    this.setState({
+                        edit: {
+                            uuid: appendedPath.uuid,
+                            index: appendedPath.points.length - 1,
+                            param: 0
+                        }
+                    });
+
+                    this.props.changeProp(appendedPath.uuid, 'points',
+                        appendedPath.points
+                    );
+                } else if (this.props.ui.tool === 'QUADRATIC') {
                     let appendedPath = methods.path.addPoint(
                         currentPath,
                         [mouseDownX, mouseDownY],
@@ -254,6 +270,19 @@ class InteractiveSVG extends Component {
 
         }
 
+        if (this.props.ui.tool === 'DRAW' && !target.dataset.transformable) {
+            let path = methods.path.create(
+                mouseDownX,
+                mouseDownY,
+                this.props.ui.texture,
+                this.props.ui.fill
+            );
+
+            this.setState({
+                preview: path
+            });
+        }
+
         this.setState({
             showContext: false,
             mouseIsDown: true,
@@ -290,6 +319,7 @@ class InteractiveSVG extends Component {
                     }
                     break;
                 case 'CUBIC':
+                case 'LINE':
                 case 'QUADRATIC':
                     if (this.state.edit === null) {
                         let path = methods.path.create(
@@ -312,6 +342,13 @@ class InteractiveSVG extends Component {
                         }
                     }
                     break;
+                case 'DRAW':
+                    if (this.state.preview !== null) { // custom
+                        this.props.addObject(
+                            this.state.preview
+                        );
+                    }
+                    break;
                 case 'SELECT':
                     if (!this.state.dragging) break;
                     const bounded = (object, originX, originY, dragX, dragY) => {
@@ -319,7 +356,7 @@ class InteractiveSVG extends Component {
                         // TODO: in Objektfunktionen
                         // TODO: berechnet nicht korrekt, wenn Objekt rotiert ist
                         // TODO:
-                        let bbox = methods[object.type].getBBox(object);
+                        let bbox = methods[object.type].getClientBox(object);
                         let x1 = bbox.x,
                             x2 = x1 + bbox.width,
                             y1 = bbox.y,
@@ -391,8 +428,8 @@ class InteractiveSVG extends Component {
         if (this.state.panning) {
             this.props.changeViewport(
                 this.props.ui.scalingFactor,
-                this.props.ui.viewPortX + this.props.ui.scalingFactor*(this.state.mouseOffsetX - this.state.anchorX),
-                this.props.ui.viewPortY + this.props.ui.scalingFactor*(this.state.mouseOffsetY - this.state.anchorY));
+                this.props.ui.viewPortX + this.props.ui.scalingFactor * (this.state.mouseOffsetX - this.state.anchorX),
+                this.props.ui.viewPortY + this.props.ui.scalingFactor * (this.state.mouseOffsetY - this.state.anchorY));
         }
 
         // preview for certain objects
@@ -400,7 +437,11 @@ class InteractiveSVG extends Component {
         let type;
         if (this.props.ui.tool === 'ELLIPSE') type = 'ellipse';
         if (this.props.ui.tool === 'RECT') type = 'rect';
-        if (type && this.state.dragging && this.state.transform === null && this.state.edit === null) {
+        if (this.props.ui.tool === 'DRAW') type = 'path';
+        if ((type === 'ellipse' || type === 'rect')
+            && this.state.dragging
+            && this.state.transform === null
+            && this.state.edit === null) {
             // create temporary preview object that will later be dispatched as-is to the store
             if (this.state.preview === null) {
                 this.setState({
@@ -421,6 +462,19 @@ class InteractiveSVG extends Component {
                 preview.y = Math.min(this.state.mouseDownY, this.state.mouseOffsetY);
                 this.setState({preview});
             }
+        } else if (type === 'path'
+            && this.state.dragging
+            && this.state.transform === null
+            && this.state.edit === null) {
+
+            this.setState({
+                preview: methods.path.addPoint(
+                    this.state.preview,
+                    [mouseOffsetX, mouseOffsetY],
+                    'L'
+                )
+            });
+
         }
 
         // TODO only update if relevant -- otherwise the state updates trigger a rerender at every move
@@ -442,9 +496,7 @@ class InteractiveSVG extends Component {
             // TODO cache currentPath, auch für PathManipulator,
             //  wenn dieser nur noch funktional ist
             let currentPath = findObject(this.props.file.pages[this.props.ui.currentPage].objects, this.state.edit.uuid);
-            console.log(currentPath.x);
-            console.log(mouseOffsetX);
-            console.log(currentPath.points);
+
             this.props.changeProp(currentPath.uuid, 'points',
                 methods.path.changePoint(
                     currentPath,
@@ -452,122 +504,127 @@ class InteractiveSVG extends Component {
                     this.state.edit.index,
                     this.state.edit.param).points
             );
+
         }
     };
 
     render() {
         return (
             // <div style={{position: 'relative', width: '100%', height: '100%'}}>
-                <svg
-                    xmlns={"http://www.w3.org/2000/svg"}
-                    width={'100%'} height={'100%'}
-                    data-role={"CANVAS"}
-                    id={"MAIN-CANVAS"}
-                    onMouseDown={this.mouseDownHandler}
-                    onKeyDown={this.keyDownHandler}
-                    onKeyUp={this.keyUpHandler}
-                    onMouseUp={this.mouseUpHandler}
-                    onMouseMove={this.mouseMoveHandler}
-                    onMouseLeave={this.mouseUpHandler}
-                    // onWheel={this.wheelHandler}
-                    onInput={this.keyDownHandler}
-                    ref={this.svgElement}
-                    tabIndex={0}
-                    style={{touchAction: 'none'}}>
+            <svg
+                xmlns={"http://www.w3.org/2000/svg"}
+                width={'100%'} height={'100%'}
+                data-role={"CANVAS"}
+                id={"MAIN-CANVAS"}
+                onMouseDown={this.mouseDownHandler}
+                onKeyDown={this.keyDownHandler}
+                onKeyUp={this.keyUpHandler}
+                onMouseUp={this.mouseUpHandler}
+                onMouseMove={this.mouseMoveHandler}
+                onMouseLeave={this.mouseUpHandler}
+                // onWheel={this.wheelHandler}
+                onInput={this.keyDownHandler}
+                ref={this.svgElement}
+                tabIndex={0}
+                style={{touchAction: 'none'}}>
 
-                    <g id={'VIEWBOX'}
-                       style={{transition: 'transform 0.1s'}}
-                       transform={`
+                <g id={'VIEWBOX'}
+                   style={{transition: 'transform 0.1s'}}
+                   transform={`
                        translate(${this.props.ui.viewPortX} ${this.props.ui.viewPortY}) 
                        scale(${this.props.ui.scalingFactor})`}>
 
-                        <rect data-role={"CANVAS"} x={0} y={0}
-                              width={this.props.file.width + "mm"}
-                              height={this.props.file.height + "mm"}
-                              stroke={'rgba(0,0,0,0.0)'} fill={'white'}/>
-                        {
-                            this.props.file.pages[this.props.ui.currentPage].objects.map((object, index) => {
-                                return mapObject(object, index);
-                            })
-                        }
-
-                        {this.state.preview !== null && this.state.dragging &&
-                            mapObject(this.state.preview, -1)
-                        }
-
-                    </g>
-
-                    {this.state.edit !== null &&
-                    <PathIndicator
-                        uuid={this.state.edit.uuid}
-                        dragging={this.state.dragging}/>
+                    <rect data-role={"CANVAS"} x={0} y={0}
+                          width={this.props.file.width + "mm"}
+                          height={this.props.file.height + "mm"}
+                          stroke={'rgba(0,0,0,0.0)'} fill={'white'}/>
+                    {
+                        this.props.file.pages[this.props.ui.currentPage].objects.map((object, index) => {
+                            return mapObject(object, index);
+                        })
                     }
 
-                    <Manipulator
-                        onModeChange={this.onModeChange}
-                    />
-
-                    {this.state.dragging && this.state.transform === null && this.state.edit === null &&
-                    (this.props.ui.tool === 'SELECT' || this.props.ui.tool === 'LABEL') &&
-                    <g>
-                        <rect
-                            x={Math.min(this.state.t_mouseDownX, this.state.t_mouseOffsetX)}
-                            y={Math.min(this.state.t_mouseDownY,this.state.t_mouseOffsetY)}
-                            fill={'rgba(0,0,255,0.02)'}
-                            stroke={'rgba(0,50,255,0.3)'}
-                            strokeWidth={'1px'}
-                            width={Math.abs(this.state.t_mouseOffsetX - this.state.t_mouseDownX)}
-                            height={Math.abs(this.state.t_mouseOffsetY - this.state.t_mouseDownY)}/>
-                        <text fill={'blue'} fontSize={8} x={this.state.t_mouseDownX} y={this.state.t_mouseDownY + 10}>
-                            {parseInt(this.state.t_mouseDownX) + ", " +
-                            parseInt(this.state.t_mouseDownY)}
-                            {/*this.state.mouseOffsetX,*/}
-                            {/*this.state.mouseOffsetY*/}
-                        </text>
-                    </g>
+                    {this.state.preview !== null && this.state.dragging &&
+                        mapObject(this.state.preview, -1)
                     }
 
-                    {this.svgElement.current !== null &&
-                    <SVGGrid canvasWidth={this.svgElement.current.scrollWidth}
-                             canvasHeight={this.svgElement.current.scrollHeight}
-                             offsetX={this.props.ui.viewPortX % (this.props.file.verticalGridSpacing * this.props.ui.scalingFactor)}
-                             offsetY={this.props.ui.viewPortY % (this.props.file.horizontalGridSpacing * this.props.ui.scalingFactor)}
-                             verticalGridSpacing={this.props.file.verticalGridSpacing * this.props.ui.scalingFactor}
-                             horizontalGridSpacing={this.props.file.horizontalGridSpacing * this.props.ui.scalingFactor}/>
-                    }
+                </g>
 
-                    {/*<g id={"mouse-indicators"}>*/}
-                    {/*    {this.props.ui.scalingFactor !== 1 &&*/}
-                    {/*    <g>*/}
-                    {/*        <line x1={this.state.mouseOffsetX}*/}
-                    {/*              y1={0} x2={this.state.mouseOffsetX}*/}
-                    {/*              y2={this.state.mouseOffsetY - 2} stroke={'grey'} strokeWidth={0.5}/>*/}
-                    {/*        <text fontSize={8} x={this.state.mouseOffsetX + 2} y={this.state.mouseOffsetY - 8}>*/}
-                    {/*            {parseInt(this.state.mouseOffsetX)} document space</text>*/}
+                {this.state.edit !== null &&
+                <PathIndicator
+                    uuid={this.state.edit.uuid}
+                    dragging={this.state.dragging}/>
+                }
 
-                    {/*        <line x1={0}*/}
-                    {/*              y1={this.state.mouseOffsetY} x2={this.state.mouseOffsetX - 2}*/}
-                    {/*              y2={this.state.mouseOffsetY} stroke={'grey'} strokeWidth={0.5}/>*/}
-                    {/*        <text fontSize={8} y={this.state.mouseOffsetY + 10} x={this.state.mouseOffsetX - 20}>*/}
-                    {/*            {parseInt(this.state.mouseOffsetY)}</text>*/}
-                    {/*    </g>*/}
-                    {/*    }*/}
+                <Manipulator
+                    onModeChange={this.onModeChange}
+                />
+
+                {this.state.dragging && this.state.transform === null && this.state.edit === null &&
+                (this.props.ui.tool === 'SELECT' || this.props.ui.tool === 'LABEL') &&
+                <g>
+                    <rect
+                        x={Math.min(this.state.t_mouseDownX, this.state.t_mouseOffsetX)}
+                        y={Math.min(this.state.t_mouseDownY, this.state.t_mouseOffsetY)}
+                        fill={'rgba(0,0,255,0.02)'}
+                        stroke={'rgba(0,50,255,0.3)'}
+                        strokeWidth={'1px'}
+                        width={Math.abs(this.state.t_mouseOffsetX - this.state.t_mouseDownX)}
+                        height={Math.abs(this.state.t_mouseOffsetY - this.state.t_mouseDownY)}/>
+                    <text fill={'blue'} fontSize={8} x={this.state.t_mouseDownX} y={this.state.t_mouseDownY + 10}>
+                        {parseInt(this.state.t_mouseDownX) + ", " +
+                        parseInt(this.state.t_mouseDownY)}
+                        {/*this.state.mouseOffsetX,*/}
+                        {/*this.state.mouseOffsetY*/}
+                    </text>
+                </g>
+                }
+
+                {this.svgElement.current !== null &&
+                <SVGGrid canvasWidth={this.svgElement.current.scrollWidth}
+                         canvasHeight={this.svgElement.current.scrollHeight}
+                         offsetX={this.props.ui.viewPortX % (this.props.file.verticalGridSpacing * this.props.ui.scalingFactor)}
+                         offsetY={this.props.ui.viewPortY % (this.props.file.horizontalGridSpacing * this.props.ui.scalingFactor)}
+                         verticalGridSpacing={this.props.file.verticalGridSpacing * this.props.ui.scalingFactor}
+                         horizontalGridSpacing={this.props.file.horizontalGridSpacing * this.props.ui.scalingFactor}/>
+                }
+
+                {/*<g id={"mouse-indicators"}>*/}
+                {/*    {this.props.ui.scalingFactor !== 1 &&*/}
+                {/*    <g>*/}
+                {/*        <line x1={this.state.mouseOffsetX}*/}
+                {/*              y1={0} x2={this.state.mouseOffsetX}*/}
+                {/*              y2={this.state.mouseOffsetY - 2} stroke={'grey'} strokeWidth={0.5}/>*/}
+                {/*        <text fontSize={8} x={this.state.mouseOffsetX + 2} y={this.state.mouseOffsetY - 8}>*/}
+                {/*            {parseInt(this.state.mouseOffsetX)} document space*/}
+                {/*        </text>*/}
+
+                {/*        <line x1={0}*/}
+                {/*              y1={this.state.mouseOffsetY} x2={this.state.mouseOffsetX - 2}*/}
+                {/*              y2={this.state.mouseOffsetY} stroke={'grey'} strokeWidth={0.5}/>*/}
+                {/*        <text fontSize={8} y={this.state.mouseOffsetY + 10} x={this.state.mouseOffsetX - 20}>*/}
+                {/*            {parseInt(this.state.mouseOffsetY)}</text>*/}
+                {/*    </g>*/}
+                {/*    }*/}
 
 
-                    {/*    <line x1={this.state.t_mouseOffsetX}*/}
-                    {/*          y1={0} x2={this.state.t_mouseOffsetX}*/}
-                    {/*          y2={this.state.t_mouseOffsetY - 2} stroke={'lightgreen'} strokeWidth={0.5}/>*/}
-                    {/*    <text fill={'green'} fontSize={8} x={this.state.t_mouseOffsetX + 2} y={this.state.t_mouseOffsetY - 8}>*/}
-                    {/*        {parseInt(this.state.t_mouseOffsetX)} user space</text>*/}
+                {/*    <line x1={this.state.t_mouseOffsetX}*/}
+                {/*          y1={0} x2={this.state.t_mouseOffsetX}*/}
+                {/*          y2={this.state.t_mouseOffsetY - 2} stroke={'lightgreen'} strokeWidth={0.5}/>*/}
+                {/*    <text fill={'green'} fontSize={8} x={this.state.t_mouseOffsetX + 2}*/}
+                {/*          y={this.state.t_mouseOffsetY - 8}>*/}
+                {/*        {parseInt(this.state.t_mouseOffsetX)} user space*/}
+                {/*    </text>*/}
 
-                    {/*    <line x1={0}*/}
-                    {/*          y1={this.state.t_mouseOffsetY} x2={this.state.t_mouseOffsetX - 2}*/}
-                    {/*          y2={this.state.t_mouseOffsetY} stroke={'lightgreen'} strokeWidth={0.5}/>*/}
-                    {/*    <text fill={'green'} fontSize={8} y={this.state.t_mouseOffsetY + 10} x={this.state.t_mouseOffsetX - 20}>*/}
-                    {/*        {parseInt(this.state.t_mouseOffsetY)}</text>*/}
-                    {/*</g>*/}
+                {/*    <line x1={0}*/}
+                {/*          y1={this.state.t_mouseOffsetY} x2={this.state.t_mouseOffsetX - 2}*/}
+                {/*          y2={this.state.t_mouseOffsetY} stroke={'lightgreen'} strokeWidth={0.5}/>*/}
+                {/*    <text fill={'green'} fontSize={8} y={this.state.t_mouseOffsetY + 10}*/}
+                {/*          x={this.state.t_mouseOffsetX - 20}>*/}
+                {/*        {parseInt(this.state.t_mouseOffsetY)}</text>*/}
+                {/*</g>*/}
 
-                </svg>
+            </svg>
             // </div>
         )
     }

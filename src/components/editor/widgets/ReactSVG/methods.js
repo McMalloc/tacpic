@@ -13,6 +13,8 @@ const createRect = (x = 0, y = 0, width = 100, height = 100, template = 'striped
             scaleY: 1,
             offset: true
         },
+        border: true,
+        borderWidth: 2,
         moniker: "Rechteck",
         angle: 0,
         type: 'rect'
@@ -52,26 +54,26 @@ const createLabel = (x = 0, y = 0, width = 100, height = 100, text = 'Neue Besch
 };
 
 const createPath = (x = 0, y = 0, template = 'striped', fill = 'white') => {
-  return {
-      uuid: uuidv4(),
-      x: 0,
-      angle: 0,
-      y: 0,
-      moniker: "Kurve",
-      editMode: true,
-      fill,
-      pattern: {
-          template,
-          angle: 0,
-          scaleX: 1,
-          scaleY: 1
-      },
-      points: [{
-          kind: 'M',
-          coords: [x, y]
-      }],
-      type: 'path'
-  }
+    return {
+        uuid: uuidv4(),
+        x: 0,
+        angle: 0,
+        y: 0,
+        moniker: "Kurve",
+        editMode: true,
+        fill,
+        pattern: {
+            template,
+            angle: 0,
+            scaleX: 1,
+            scaleY: 1
+        },
+        points: [{
+            kind: 'M',
+            coords: [x, y]
+        }],
+        type: 'path'
+    }
 };
 
 const defaultTranslate = (object, x, y) => {
@@ -97,7 +99,7 @@ const defaultScale = (object, offsetX, offsetY) => {
     return object;
 };
 
-const defaultGetBBox = object => {
+const defaultGetClientBox = object => {
     // getBoundingClientRect() is needed since we need the bounding box
     // after the geometry has been transformed
     const element = document.getElementById(object.uuid);
@@ -113,10 +115,24 @@ const defaultGetBBox = object => {
     };
 };
 
-export const combineBBoxes = objects => {
+const getBBox = object => {
+    return document.getElementById(object.uuid).getBBox();
+};
+
+// TODO durch den Abstand des Reliefs zum Rand ist die bbox verfälscht, muss abgezogen werden
+export const combineBBoxes = (objects, transformed = true) => {
     let x1 = Infinity, y1 = Infinity, x2 = 0, y2 = 0;
     objects.forEach(object => {
-        let box = methods[object.type].getBBox(object);
+        let box;
+        if (transformed) {
+            box = methods[object.type].getClientBox(object);
+        } else {
+            box = getBBox(object);
+            box.x = object.x;
+            box.y = object.y;
+            box.width = object.width;
+            box.height = object.height;
+        }
         x1 = Math.min(x1, box.x);
         y1 = Math.min(y1, box.y);
         x2 = Math.max(box.x + box.width, x2);
@@ -161,11 +177,14 @@ const addPoint = (path, mouseCoords, kind) => {
         coords[3] = mouseCoords[1];
         coords[4] = mouseCoords[0];
         coords[5] = mouseCoords[1];
+    } else if (kind === 'L' && mouseCoords.length === 2) {
+        coords[0] = mouseCoords[0];
+        coords[1] = mouseCoords[1];
     }
 
     path.points.push({
-       kind,
-       coords
+        kind,
+        coords
     });
     return path;
 };
@@ -179,6 +198,37 @@ const changePoint = (path, coords, index, param, kind) => {
     return path;
 };
 
+const cosOfDegs = degs => {
+  return Math.cos(degs*(Math.PI/180));
+};
+
+const sinOfDegs = degs => {
+  return Math.sin(degs*(Math.PI/180));
+};
+
+const selectionRotate = (objects, deltaX, deltaY) => {
+    const selectionBox = combineBBoxes(objects, false);
+    objects.forEach(object => {
+
+        // fuck it
+        methods[object.type].rotate(object, deltaX, deltaY);
+        // object.angle = 10;
+        let {x, y, angle} = object;
+        // console.log("vorher: ", x, y, "winkel: ", angle);
+
+        let offsetX = x;// - selectionBox.x - selectionBox.width/2;
+        let offsetY = y;// - selectionBox.y - selectionBox.height/2;
+
+        console.log(x, selectionBox.x - selectionBox.width/2);
+        console.log("angle: ", angle);
+
+        object.x = offsetX * cosOfDegs(angle) - offsetX * sinOfDegs(angle);// + selectionBox.x + selectionBox.width/2;
+        object.y = offsetY * sinOfDegs(angle) + offsetY * cosOfDegs(angle);// + selectionBox.x + selectionBox.width/2;
+
+        // methods[object.type].translate(object, x, y);
+    });
+};
+
 // TODO sollten hier auch Methoden rein, die beschreiben,
 //  was beispielsweise bei einem Mousedown oder Doppelklick passiert?
 
@@ -188,12 +238,12 @@ const methods = {
         rotate: defaultRotate,
         scale: defaultScale,
         create: createRect,
-        getBBox: defaultGetBBox,
+        getClientBox: defaultGetClientBox,
     },
     path: {
         translate: defaultTranslate,
         rotate: defaultRotate,
-        getBBox: defaultGetBBox,
+        getClientBox: defaultGetClientBox,
         create: createPath,
         addPoint,
         changePoint
@@ -202,18 +252,22 @@ const methods = {
         translate: defaultTranslate,
         rotate: defaultRotate,
         scale: defaultScale,
-        getBBox: defaultGetBBox,
+        getClientBox: defaultGetClientBox,
         create: createEllipse
     },
     label: {
         translate: defaultTranslate,
-        getBBox: defaultGetBBox,
+        getClientBox: defaultGetClientBox,
         scale: defaultScale,
         create: createLabel,
+        rotate: label => label // id function, labels shouldn't be rotated
+    },
+    selection: {
+        rotate: selectionRotate
     },
     group: {
         translate: defaultTranslate,
-        getBBox: group => {
+        getClientBox: group => {
             return combineBBoxes(group.objects);
         },
     }

@@ -48,7 +48,6 @@ const Navbar = props => {
     const {t} = useTranslation();
     const location = useLocation();
     const theme = useTheme();
-    console.log(location);
     return (
         <Wrapper theme={theme}>
             <Logo src={"/images/logo.svg"}/>

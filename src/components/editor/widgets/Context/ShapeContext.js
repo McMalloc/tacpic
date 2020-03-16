@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {connect} from "react-redux";
+import {connect, useDispatch, useSelector} from "react-redux";
 import {createFillModeAction, createTextureModeAction} from "../../../../actions";
 import TabPane from "../../../gui/Tabs";
 import {Numberinput, Textinput} from "../../../gui/Input";
@@ -11,166 +11,146 @@ import Palette from "../../../gui/Palette";
 import {find, isUndefined, debounce} from 'lodash';
 import TexturePalette from "../../../gui/TexturePalette";
 import Tooltip from "../../../gui/Tooltip";
+import {findObject} from "../../../../utility/findObject";
+import {useTranslation} from "react-i18next";
+import {Alert} from "../../../gui/Alert";
 
-class ShapeContext extends Component {
-    changeMoniker = event => {
-        this.props.changeProp(this.props.uuid, "moniker", event.currentTarget.value);
-    };
-
-    changeTexture = texture => {
-        this.props.changeProp(this.props.uuid, "pattern", {
-            template: texture,
+const changePattern = (dispatch, uuid, pattern) => {
+    dispatch({
+        type: 'OBJECT_PROP_CHANGED',
+        uuid,
+        prop: 'pattern',
+        value: {
+            template: pattern,
             angle: 0,
             scaleX: 1,
             scaleY: 1
-        });
-    };
+        }
+    });
+};
 
-    changeFill = fill => {
-        this.props.changeProp(this.props.uuid, "fill", fill);
-    };
+const changeProp = (dispatch, uuid, prop, value) => {
+    dispatch({
+        type: 'OBJECT_PROP_CHANGED',
+        uuid,
+        prop,
+        value
+    });
+};
 
-    render() {
-        const fill = <div>
-            <Tooltip/>
-            {/*<Row>*/}
-            {/*    <div className={"col-md-12"}>*/}
-            {/*        <Select label={"Vorlagen"} tip={"Tippen Sie hier, um eine neue Vorlage zu erstellen."} createable*/}
-            {/*                placeholder={"Keine gewählt"} options={*/}
-            {/*            [*/}
-            {/*                {label: "Aubergine", value: "A", children: []}*/}
-            {/*            ]*/}
-            {/*        }/>*/}
-            {/*    </div>*/}
-            {/*</Row>*/}
+const changeFill = fill => {
+    this.props.changeProp(this.props.uuid, "fill", fill);
+};
 
-            {/*<Row>*/}
-            {/*    <div className={'col-xs-2'}>*/}
-                    <fieldset>
-                        <legend>Relief</legend>
-                        {/*<Checkbox default={this.props.texture !== null} name={"relief"} label={"Füllung fühlbar reliefieren"}/>*/}
+const ShapeContext = props => {
+    const selectedObject = useSelector(state => findObject(
+        state.editor.file.pages[state.editor.ui.currentPage].objects,
+        state.editor.ui.selectedObjects[0])
+    );
+    const t = useTranslation().t;
+    const dispatch = useDispatch();
+    const nothingSelected = selectedObject === void 0;
 
-                        <TexturePalette
-                            disabled={this.props.nothingSelected}
-                            textures={[null, "striped", "bigdots", "dashed"]}
-                            selected={this.props.selectedTexture}
-                            onChange={this.changeTexture}/>
+    return (
+        <>
+            <Row>
+                <div className={"col-md-6"}>
+                    <Textinput value={selectedObject.moniker}
+                               disabled={nothingSelected}
+                               onChange={moniker => changeProp(dispatch, selectedObject.uuid, 'moniker', moniker)} label={"Bezeichner"}/>
+                </div>
+                <div className={"col-md-6"}>
+                    <Checkbox disabled={nothingSelected} name={"visible"} label={"Aktiv"}/>
+                    <Checkbox disabled={nothingSelected} name={"locked"} label={"Sperren"}/>
+                </div>
+            </Row>
 
-                        <Checkbox name={"padding"}
-                                  checked={this.props.object.pattern.offset}
-                                  onChange={() => {
-                                      this.props.changeProp(
-                                          this.props.object.uuid,
-                                          'pattern',
-                                          {...this.props.object.pattern, offset: !this.props.object.pattern.offset})
-                                  }}
-                                  label={"Abstand zwischen Textur und Rand"}/>
-                        {/*<Numberinput unit={"mm"}/>*/}
-                    </fieldset>
-                {/*</div>*/}
-                {/*<div className={'col-xs-12'}>*/}
-                <br />
-                    <fieldset>
-                        <legend>Farbe</legend>
-                        {/*<Checkbox name={"colour"} label={"Farbe sichtbar drucken"}/>*/}
-                        {/*<Checkbox name={"texture"} label={"Textur sichtbar drucken"}/>*/}
+            <div>
+                <Tooltip/>
 
-                        <Palette selected={this.props.selectedFill}
-                                 onChange={this.changeFill}
-                                 colours={
-                                     [null, '#000000', '#1f78b4', '#b2df8a', '#e31a1c', '#ff7f00', '#cab2d6', '#b15928']
-                                 } extendedColours={
-                            ['#a6cee3', '#33a02c', '#fb9a99', '#fdbf6f', '#6a3d9a', '#ffff99']
-                        }/>
-                    </fieldset>
-            {/*    </div>*/}
-            {/*</Row>*/}
+                <fieldset>
+                    <legend>Relief</legend>
 
+                    <TexturePalette
+                        disabled={nothingSelected}
+                        textures={[null, "striped", "bigdots", "dashed"]}
+                        selected={selectedObject.pattern.template}
+                        onChange={pattern => changePattern(dispatch, selectedObject.uuid, pattern)}/>
 
-
-        </div>;
-
-        const _border = <div>
-            <button onClick={() => {
-                this.props.switchFillMode("rgba(255,0,0,0.4)");
-            }}>rot
-            </button>
-            <button onClick={() => {
-                this.props.switchFillMode("rgba(0,255,0,0.4)");
-            }}>grün
-            </button>
-        </div>;
-
-        const border = <div>
-            to do
-        </div>;
-
-        return (
-            <>
-                <Row>
-                    <div className={"col-md-6"}>
-                        <Textinput value={this.props.selectedMoniker}
-                                   disabled={this.props.nothingSelected}
-                                   onChange={this.changeMoniker} label={"Bezeichner"}/>
-                    </div>
-                    <div className={"col-md-6"}>
-                        <Checkbox disabled={isUndefined(this.props.selectedObject)} name={"visible"} label={"Aktiv"}/>
-                        <Checkbox disabled={isUndefined(this.props.selectedObject)} name={"locked"} label={"Sperren"}/>
-                    </div>
-                </Row>
-                <TabPane tabs={[
-                    {
-                        label: 'editor:tablist_shape-fill',
-                        icon: 'paint-roller',
-                        content: fill
-                    },
-                    {
-                        label: 'editor:tablist_shape-contour',
-                        icon: 'circle-notch',
-                        content: border
+                    <Checkbox name={"padding"}
+                              checked={selectedObject.pattern.offset}
+                              disabled={!selectedObject.border || selectedObject.pattern.template == null}
+                              onChange={() => {
+                                  changeProp(
+                                      dispatch,
+                                      selectedObject.uuid,
+                                      'pattern',
+                                      {...selectedObject.pattern, offset: !selectedObject.pattern.offset})
+                              }}
+                              label={"Abstand zwischen Textur und Rand"}/>
+                    {!selectedObject.border &&
+                        <Alert info>Geben Sie der Form eine Kontur, um einen Abstand zwischen Relief und Kontur einzustellen.</Alert>
                     }
-                ]}/>
-            </>
-        );
-    }
-}
+                    {/*<Numberinput unit={"mm"}/>*/}
+                </fieldset>
+                <br/>
+                <fieldset>
+                    <legend>Farbe</legend>
 
-const mapStateToProps = state => {
-    // TODO ersetzen durch Funktion
-    const selectedObject = find(state.editor.file.pages[state.editor.ui.currentPage].objects, {uuid: state.editor.ui.selectedObjects[0]});
-    if (isUndefined(selectedObject)) {
-        return {
-            nothingSelected: true
-        }
-    } else {
-        return {
-            selectedFill: selectedObject.fill,
-            uuid: selectedObject.uuid,
-            selectedMoniker: selectedObject.moniker,
-            selectedTexture: selectedObject.pattern.template,
-            object: selectedObject
-        }
-    }
+                    <Palette selected={selectedObject.fill}
+                             onChange={fill => changeProp(dispatch, selectedObject.uuid, 'fill', fill)}
+                             colours={
+                                 [null, '#000000', '#1f78b4', '#b2df8a', '#e31a1c', '#ff7f00', '#cab2d6', '#b15928']
+                             } extendedColours={
+                        ['#a6cee3', '#33a02c', '#fb9a99', '#fdbf6f', '#6a3d9a', '#ffff99']
+                    }/>
+                </fieldset>
+                <fieldset>
+                    <legend>Kontur</legend>
+                    <Checkbox name={"border"}
+                              checked={selectedObject.border}
+                              onChange={() => {
+                                  changeProp(
+                                      dispatch,
+                                      selectedObject.uuid,
+                                      'border',
+                                      !selectedObject.border)
+                              }}
+                              label={"Fühl- und sichtbare Kontur"}/>
+                    <Select onChange={option => {
+                        changeProp(
+                            dispatch,
+                            selectedObject.uuid,
+                            'borderWidth',
+                            option.value)
+                    }} value={selectedObject.borderWidth} disabled={!selectedObject.border} label={t("Linienstärke")} options={[
+                        {
+                            value: 1,
+                            label: t("1 mm (Hilfslinie)")
+                        },
+                        {
+                            value: 2,
+                            label: t("2 mm")
+                        }]} />
+                </fieldset>
+
+            </div>
+
+            {/*<TabPane tabs={[*/}
+            {/*    {*/}
+            {/*        label: 'editor:tablist_shape-fill',*/}
+            {/*        icon: 'paint-roller',*/}
+            {/*        content: fill*/}
+            {/*    },*/}
+            {/*    {*/}
+            {/*        label: 'editor:tablist_shape-contour',*/}
+            {/*        icon: 'circle-notch',*/}
+            {/*        content: border*/}
+            {/*    }*/}
+            {/*]}/>*/}
+        </>
+    );
+
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        switchTextureMode: mode => {
-            dispatch(createTextureModeAction(mode));
-        },
-        switchFillMode: colour => {
-            console.log("switch swatch");
-            dispatch(createFillModeAction(colour));
-        },
-        changeProp: (uuid, prop, value) => {
-            dispatch({
-                type: 'OBJECT_PROP_CHANGED',
-                uuid,
-                prop,
-                value
-            });
-        }
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ShapeContext);
+export default ShapeContext;

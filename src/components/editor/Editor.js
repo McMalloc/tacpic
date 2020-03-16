@@ -46,9 +46,13 @@ const ToolbarSegment = styled.div`
     &:not(:first-child) {
       border-left: 0;
     }
+        
+    &:first-child {
+      border-radius: ${props => props.theme.border_radius} 0 0 ${props => props.theme.border_radius};
+    }
     
     &:last-child {
-      //border-radius: ${props => props.theme.base_padding};
+      border-radius: 0 ${props => props.theme.border_radius} ${props => props.theme.border_radius} 0;
     }
     
     border-radius: 0;
@@ -80,11 +84,13 @@ const ModalSidebar = styled(Sidebar)`
     position: absolute;
     right: -500px; top: 0; bottom: 0;
     transition: right 0.2s;
+    border-radius: ${props => props.theme.border_radius} 0 0 0;
 `;
 
 const FixedSidebar = styled(Sidebar)`
     min-width: 300px;
     max-width: 400px;
+    border-radius: 0 ${props => props.theme.border_radius}  0 0;
 `;
 
 const SidebarPanel = styled.div`
@@ -129,9 +135,9 @@ const Editor = props => {
                         <Toggle toggled={showPages} onClick={() => togglePages(!showPages)} label={"Seiten"}/>
                         <Toggle toggled={showObjects} onClick={() => toggleObjects(!showObjects)} label={"Objekte"}/>
                     </ToolbarSegment>
-                    <ToolbarSegment>
+                    {/*<ToolbarSegment>*/}
                         <Toggle primary onClick={() => alert('hi')} label={"Neu"}/>
-                    </ToolbarSegment>
+                    {/*</ToolbarSegment>*/}
                     <ToolbarSegment>
                         <Toggle primary toggled={openedModalSidebar === 0} onClick={() => handleModalSidebar(0)}
                                 label={"Einrichten"}/>
@@ -176,39 +182,6 @@ const Editor = props => {
 
                 </PanelWrapper>
 
-                {uiSettings.fileState !== null &&
-                <Modal fitted title={'editor:modal_filestate_title'} dismiss={props.dismiss}
-                       actions={[
-                           {
-                               label: "Weiter bearbeiten",
-                               align: "left",
-                               disabled: uiSettings.fileState === 'updating',
-                               action: props.dismiss
-                           },
-                           {
-                               label: "Zurück zum Katalog",
-                               align: "right",
-                               template: 'primary',
-                               disabled: uiSettings.fileState === 'updating',
-                               action: props.dismiss
-                           }
-                       ]}
-                >
-
-                    {uiSettings.fileState === 'updating' &&
-                    <Alert info>
-                        <p>{t('editor:filestate_updating-pending')}</p>
-                    </Alert>
-                    }
-                    {uiSettings.fileState === 'success' &&
-                    <Alert success>
-                        <p>{t('editor:filestate_updating-success')}</p>
-                    </Alert>
-                    }
-                    {uiSettings.fileState === 'failure' && t('editor:filestate_updating-failure')}
-
-                </Modal>
-                }
             </Wrapper>
         );
     } else {

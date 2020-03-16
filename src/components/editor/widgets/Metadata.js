@@ -7,6 +7,9 @@ import {Button} from "../../gui/Button";
 import {Upper} from "../../gui/WidgetContainer";
 import {GRAPHIC, VERSION, VARIANT} from "../../../actions/constants";
 import {Modal} from "../../gui/Modal";
+import {Alert} from "../../gui/Alert";
+import {useTranslation} from "react-i18next";
+import {useHistory} from "react-router";
 
 const Status = styled.div`
   display: flex;
@@ -67,9 +70,12 @@ const Metadata = props => {
             }
         })
     );
+    const {t} = useTranslation();
     const variantTags = useSelector(state => state.editor.file.tags);
+    const history = useHistory();
     const dispatch = useDispatch();
     const [input, setInput] = useState({});
+    const [showFileModal, toggleFileModal] = useState(false);
 
     const handleInputChange = (e) => setInput({
         ...input,
@@ -134,19 +140,6 @@ const Metadata = props => {
                     sublabel={"editor:input_catalogue-tags-sub"}/>
 
                 <Multiline
-                    value={file.graphicDescription}
-                    onChange={event => {
-                        dispatch({
-                            type: "CHANGE_FILE_PROPERTY",
-                            key: 'graphicDescription',
-                            value: event.currentTarget.value
-                        });
-                    }}
-                    disabled={file.graphic_id !== null}
-                    label={"editor:input_graphic-desc"}
-                    sublabel={"editor:input_graphic-desc-sub"}/>
-
-                <Multiline
                     value={file.variantDescription}
                     onChange={event => {
                         dispatch({
@@ -156,8 +149,8 @@ const Metadata = props => {
                         });
                     }}
                     disabled={file.graphic_id === null}
-                    label={"editor:input_variant-desc"}
-                    sublabel={"editor:input_variant-desc-sub"}/>
+                    label={t("editor:input_variant-desc")}
+                    sublabel={t("editor:input_variant-desc-sub")}/>
 
             </div>
 
@@ -174,14 +167,48 @@ const Metadata = props => {
                 <p>Ich stimme der Veröffentlichung unter der liberalen <a target={"blank"}
                                                                           href={"https://creativecommons.org/licenses/by/4.0/deed.de"}>CC-BY-SA
                     3.0 Lizenz</a> zu.</p>
-                <Button onClick={() => uploadVersion(dispatch, file)}
+                <Button onClick={() => {toggleFileModal(true); uploadVersion(dispatch, file)}}
                         primary fullWidth
                         label={file.graphic_id === null ?
-                            "editor:input_catalogue-publish" :
-                            (file.isNew ? "editor:input_catalogue-create" : "editor:input_catalogue-update")
+                            t("editor:input_catalogue-publish") :
+                            (file.isNew ? t("editor:input_catalogue-create") : t("editor:input_catalogue-update"))
                         }>
                 </Button>
             </div>
+
+            {showFileModal &&
+            <Modal fitted title={'editor:modal_filestate_title'} dismiss={() => toggleFileModal(false)}
+                   actions={[
+                       {
+                           label: "Weiter bearbeiten",
+                           align: "left",
+                           disabled: file.state === 'updating',
+                           action: () => toggleFileModal(false)
+                       },
+                       {
+                           label: "Zurück zum Katalog",
+                           align: "right",
+                           template: 'primary',
+                           disabled: file.state === 'updating',
+                           action: () => history.push(`/private-catalogue/${file.graphic_id}/variant/${file.variant_id}`)
+                       }
+                   ]}
+            >
+
+                {file.state === 'updating' &&
+                <Alert info>
+                    <p>{t('editor:filestate_updating-pending')}</p>
+                </Alert>
+                }
+                {file.state === 'success' &&
+                <Alert success>
+                    <p>{t('editor:filestate_updating-success')}</p>
+                </Alert>
+                }
+                {file.state === 'failure' && t('editor:filestate_updating-failure')}
+
+            </Modal>
+            }
         </Upper>
             </>
     );

@@ -53,9 +53,9 @@ class PathManipulator extends Component {
                         case 'L':
                             return (
                                 <circle key={index}
-                                        cx={coords[0] - 2}
-                                        cy={coords[1] - 2}
-                                        r={4}/>
+                                        cx={coords[0] - 1}
+                                        cy={coords[1] - 1}
+                                        r={2}/>
                             );
                         case 'C':
                             let previousSegment = transformView(

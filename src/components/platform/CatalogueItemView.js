@@ -1,11 +1,14 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Route, Switch, useParams, useRouteMatch} from "react-router";
 import {Modal} from "../gui/Modal";
+import {GRAPHIC} from "../../actions/constants";
 import {Link} from "react-router-dom";
 import VariantView from "./VariantView";
 import {Container, Row} from "../gui/Grid";
 import styled, {useTheme} from "styled-components";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {TagView} from "./Tag";
+import {Icon} from "../gui/_Icon";
 
 const VariantPreviewStyled = styled.div`
   display: flex;
@@ -27,8 +30,9 @@ const VariantPreviewStyled = styled.div`
   }
 
   img {
-    width: 50%;
+    width: 30%;
     height: auto;
+    align-self: center;
     border: 1px solid ${props => props.grey_6};
     box-shadow: ${props => props.middle_shadow};
   }
@@ -41,12 +45,12 @@ const VariantPreviewStyled = styled.div`
 `;
 
 const VariantColumn = styled.div`
-    flex: 0 0 auto;
+    //flex: 0 0 auto;
     overflow-y: auto;
     height: 100%;
     padding: 0;
     flex-direction: column;
-    border-right: 1px solid ${props => props.theme.grey_5};
+    border-right: 1px solid ${props => props.theme.brand_secondary_light};
     position: relative;
     
     .heading {
@@ -58,9 +62,10 @@ const VariantColumn = styled.div`
 `;
 
 const DetailsColumn = styled.div`
-    flex: 0 0 auto;
+    //flex: 0 0 auto;
     overflow: auto;
-    background-color: ${props => props.theme.background};
+    height: 100%;
+    background-color: ${props => props.theme.grey_6};
     padding: ${props => props.theme.large_padding};
 `;
 
@@ -89,7 +94,7 @@ const VariantPreview = ({title, id, description, tags}) => {
                 <div>
                     {tags.length !== 0 && tags.map(t => {
                         let completeTag = allTags.find(_t => _t.tag_id === t);
-                        return <span key={t}>{completeTag && completeTag.name}</span>
+                        return <TagView title={"Schlagwort"} key={t}>{completeTag && completeTag.name}</TagView>
                     })}
                 </div>
             </div>
@@ -97,21 +102,54 @@ const VariantPreview = ({title, id, description, tags}) => {
     )
 };
 
+const Placeholder = styled.div`
+  height: 30%;
+  min-height: 200px;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  display: flex;
+  text-align: center;
+  font-size: 200%;
+`;
+
+const getGraphic = (dispatch, id) => {
+    dispatch({
+        type: GRAPHIC.GET.REQUEST,
+        payload: {id}
+    })
+};
+
 const CatalogueItemViewModal = props => {
-    let {graphicId} = useParams();
-    const graphic = props.graphics.find(g => g.id === graphicId);
-    if (!graphic) return null;
+    const {graphicId} = useParams();
+    const dispatch = useDispatch();
+
+    const pending = useSelector(
+        state => state.catalogue.graphicGetPending
+    );
+
+    const graphic = useSelector(
+        state => state.catalogue.viewedGraphic
+    );
+
+    useEffect(() => {
+        getGraphic(dispatch, graphicId);
+    }, graphicId);
 
     return (
-        <Modal noPadding={true} title={graphic.title} dismiss={props.dismiss}>
-            <CatalogueItemView {...graphic}/>
+        <Modal noPadding={true} title={!pending ? graphic.title : 'Moment...'} dismiss={props.dismiss}>
+            {pending && <Placeholder><Icon icon={"spinner fa-spin"}/></Placeholder>}
+            {!pending && <CatalogueItemView {...graphic}/>}
         </Modal>
     )
 };
 
+
 const CatalogueItemView = props => {
     let {path, url} = useRouteMatch();
     const theme = useTheme();
+    const {variantId} = useParams();
+
     return (
         <Wrapper theme={theme}>
             <Route path={`${path}/variant/:variantId`}>
