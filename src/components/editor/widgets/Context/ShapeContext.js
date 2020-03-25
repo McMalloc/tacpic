@@ -66,7 +66,7 @@ const ShapeContext = props => {
             </Row>
 
             <div>
-                <Tooltip/>
+                {/*<Tooltip/>*/}
 
                 <fieldset>
                     <legend>Relief</legend>
@@ -88,7 +88,7 @@ const ShapeContext = props => {
                                       {...selectedObject.pattern, offset: !selectedObject.pattern.offset})
                               }}
                               label={"Abstand zwischen Textur und Rand"}/>
-                    {!selectedObject.border &&
+                    {!selectedObject.border && false &&
                         <Alert info>Geben Sie der Form eine Kontur, um einen Abstand zwischen Relief und Kontur einzustellen.</Alert>
                     }
                     {/*<Numberinput unit={"mm"}/>*/}
@@ -132,6 +132,31 @@ const ShapeContext = props => {
                             value: 2,
                             label: t("2 mm")
                         }]} />
+
+                    {selectedObject.type === 'path'&&
+                        <>
+                            <Checkbox name={"arrow-start"}
+                                      checked={selectedObject.startArrow}
+                                      onChange={() => {
+                                          changeProp(
+                                              dispatch,
+                                              selectedObject.uuid,
+                                              'startArrow',
+                                              !selectedObject.startArrow)
+                                      }}
+                                      label={"Pfeilspitze am Anfang"}/>
+                            <Checkbox name={"arrow-end"}
+                                      checked={selectedObject.endArrow}
+                                      onChange={() => {
+                                          changeProp(
+                                              dispatch,
+                                              selectedObject.uuid,
+                                              'endArrow',
+                                              !selectedObject.endArrow)
+                                      }}
+                                      label={"Pfeilspitze am Ende"}/>
+                        </>
+                    }
                 </fieldset>
 
             </div>

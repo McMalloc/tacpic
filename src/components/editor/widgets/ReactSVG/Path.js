@@ -12,23 +12,52 @@ export const buildPath = points => {
     }, "").replace(/\s\s/g, " ").trim();
 };
 
+// TODO in geometry.js
+const getRotation = (pointA, pointB) => {
+    const deltaY = pointA[1] - pointB[1];
+    const deltaX = pointB[0] - pointA[0];
+    const result = 180 / Math.PI * (Math.atan2(deltaY, deltaX));
+    console.log(deltaY, deltaX, result);
+    // return 0;
+    return (result < 0) ? (360 + result) : result;
+};
+
 export default function SVGPath(props) {
+    const path = buildPath(props.points);
     return (
-        <g>
+        <g transform={transform(props.x, props.y, props.angle)}>
             <path
-                stroke={"black"}
-                transform={transform(props.x, props.y, props.angle)}
+                stroke={props.border ? "black" : "none"}
+                strokeWidth={props.borderWidth + "mm"}
+                strokeLinecap={"butt"}
                 style={
                     {
-                        cursor: 'pointer',
-                        fill: props.pattern.template !== null ? 'url(#pattern-' + props.pattern.template + '-' + props.uuid + '' : props.fill || "transparent"}
+                        fill: props.pattern.template !== null ? 'url(#pattern-' + props.pattern.template + '-' + props.uuid + '' : props.fill || "transparent",
+                        // cursor: 'pointer'
                     }
-                id={props.uuid}
-                d={buildPath(props.points)}
+                    }
+                id={'outline_' + props.uuid}
+                d={path}
                 data-transformable={1}
                 data-selectable={1}
             />
-            <text width={500} y={12} x={2} fontSize={10} fill={'red'}>{buildPath(props.points)}</text>
+            <path
+                stroke={"rgba(100,100,100,0.15)"}
+                strokeWidth={props.border ? 10 : 0}
+                style={
+                    {
+                        fill: 'none', cursor: "pointer"}
+                }
+                id={props.uuid}
+                d={path}
+                data-transformable={1}
+                data-selectable={1}
+            />
+            {props.startArrow &&
+                <polygon transform={`translate(${props.points[0].coords.toString()}) rotate(-${getRotation(props.points[0].coords, props.points[1].coords)+45})`}
+                         points={"-10,-10 20,0 0,20"} />
+            }
+            {/*<text width={500} y={12} x={2} fontSize={10} fill={'red'}>{buildPath(props.points)}</text>*/}
             {props.pattern.template !== null &&
                 patternTemplates[props.pattern.template](props.pattern, props.uuid, props.fill)
             }

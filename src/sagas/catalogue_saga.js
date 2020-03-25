@@ -3,8 +3,12 @@ import {CATALOGUE} from "../actions/constants";
 import createSaga from "./saga_utilities";
 import {groupBy} from "lodash";
 
+console.log(process.env);
+console.log("hi");
 export const catalogueSearchSaga = createSaga(
-    CATALOGUE.SEARCH, 'get', 'graphics?tags=:tags&search=:terms&system=:system&format=:format&limit=:limit&offset=:offset', takeLatest, true, undefined,
+    CATALOGUE.SEARCH, 'get',
+    'graphics?tags=:tags&search=:terms&system=:system&format=:format&limit=:limit&offset=:offset',
+    takeLatest, true, undefined,
     graphics => {
         let groupedGraphics = groupBy(graphics, 'graphic_id');
         let mappableGraphics = [];

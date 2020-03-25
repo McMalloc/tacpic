@@ -52,10 +52,13 @@ class PathManipulator extends Component {
                             );
                         case 'L':
                             return (
-                                <circle key={index}
-                                        cx={coords[0] - 1}
-                                        cy={coords[1] - 1}
-                                        r={2}/>
+                                <rect x={coords[0] - 5}
+                                      y={coords[1] - 5}
+                                      className={"translatable"}
+                                      data-role={"EDIT-PATH"}
+                                      data-index={index}
+                                      data-param={0}
+                                      width={10} height={10}/>
                             );
                         case 'C':
                             let previousSegment = transformView(
@@ -74,7 +77,7 @@ class PathManipulator extends Component {
                                         x1={prevPointX}
                                         y1={prevPointY}
                                         x2={coords[0]}
-                                        y2={coords[1]} />
+                                        y2={coords[1]}/>
 
                                     <line
                                         stroke={'black'}
@@ -82,8 +85,9 @@ class PathManipulator extends Component {
                                         x1={coords[4]}
                                         y1={coords[5]}
                                         x2={coords[2]}
-                                        y2={coords[3]} />
+                                        y2={coords[3]}/>
 
+                                    {index !== 1 &&
                                     <circle
                                         cx={coords[0]}
                                         cy={coords[1]}
@@ -92,29 +96,24 @@ class PathManipulator extends Component {
                                         data-index={index}
                                         data-param={0}
                                         r={4}/>
+                                    }
 
                                     <circle
-                                            cx={coords[2]}
-                                            cy={coords[3]}
-                                            className={"translatable"}
-                                            data-role={"EDIT-PATH"}
-                                            data-index={index}
-                                            data-param={2}
-                                            r={4}/>
+                                        cx={coords[2]}
+                                        cy={coords[3]}
+                                        className={"translatable"}
+                                        data-role={"EDIT-PATH"}
+                                        data-index={index}
+                                        data-param={2}
+                                        r={4}/>
 
-                                    <rect   x={coords[4]-5}
-                                            y={coords[5]-5}
-                                            className={"translatable"}
-                                            data-role={"EDIT-PATH"}
-                                            data-index={index}
-                                            data-param={4}
-                                            width={10} height={10}/>
-                                    <text
-                                        style={{fill: 'yellow'}}
-                                        x={coords[4]} y={coords[5] + 10}
-                                        fontSize={10}>
-                                        {index}: {coords[4]}, {coords[5]}
-                                    </text>
+                                    <rect x={coords[4] - 5}
+                                          y={coords[5] - 5}
+                                          className={"translatable"}
+                                          data-role={"EDIT-PATH"}
+                                          data-index={index}
+                                          data-param={4}
+                                          width={10} height={10}/>
                                 </g>
                             );
                         case 'Q':
@@ -142,7 +141,7 @@ class PathManipulator extends Component {
 // TODO brauch keine Instanz sein
 const mapStateToProps = (state, ownProps) => {
     return {
-        path: find(state.editor.file.pages[0].objects, {uuid: ownProps.uuid}),
+        // path: find(state.editor.file.pages[0].objects, {uuid: ownProps.uuid}),
         scale: state.editor.ui.scalingFactor,
         offsetX: state.editor.ui.viewPortX,
         offsetY: state.editor.ui.viewPortY

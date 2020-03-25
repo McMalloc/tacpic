@@ -86,7 +86,7 @@ const VariantPreview = ({title, id, description, tags}) => {
     );
     return (
         <VariantPreviewStyled {...theme} active={id === parseInt(selectedVariantId)}>
-            <img src={`http://localhost:9292/static/thumbnails/thumbnail-${id}-sm.png`}/>
+            <img src={`http://localhost:9292/thumbnails/thumbnail-${id}-sm.png`}/>
             {/*<VariantListingPreview bgUrl={`http://localhost:9292/static/thumbnails/thumbnail-${id}-sm.png`} />*/}
             <div className={'variant-info'}>
                 <strong>{title}</strong><br/>

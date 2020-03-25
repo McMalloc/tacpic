@@ -24,7 +24,7 @@ export const Lower = styled.div`
 `;
 
 export const Upper = styled.div`
-  flex: 1 1 auto;
+  flex: 1 1 100%;
   padding: ${props => props.theme.spacing[2]};
   overflow: auto;
 `;

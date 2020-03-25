@@ -1,6 +1,6 @@
 import React from 'react'
 import {compact} from "lodash";
-import {combineBBoxes} from "./methods";
+import methods, {combineBBoxes} from "./methods";
 import {useDispatch, useSelector} from "react-redux";
 import transform from "./transform";
 
@@ -49,11 +49,12 @@ const Manipulator = props => {
 
     // TODO für Pfade -- wie?? Erstmal Skalieren implementieren
     if (selected.length === 1) { // single objects
-        width = selected[0].width * scalingFactor;
-        height = selected[0].height * scalingFactor;
+        const bbox = methods[selected[0].type].getBBox(selected[0]);
+        width = bbox.width * scalingFactor;
+        height = bbox.height * scalingFactor;
         transformProperty = transform(
-            selected[0].x * scalingFactor + viewPortX,
-            selected[0].y * scalingFactor + viewPortY,
+            bbox.x * scalingFactor + viewPortX,
+            bbox.y * scalingFactor + viewPortY,
             selected[0].angle,
             width,
             height
@@ -71,6 +72,7 @@ const Manipulator = props => {
             height
         );
     }
+
 
     return (
         <g transform={transformProperty}>

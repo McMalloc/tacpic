@@ -74,21 +74,32 @@ export default function createSaga(
         yield effect(event.REQUEST, function* (action) {
             try {
                 const response = yield call(action => {
+
+                    return fetch('/' + replaceParam(endpoint, action.payload), {
+                        method: method,
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('jwt'),
+                            'Content-Type': 'application/json',
+                        },
+                        body: method === 'post' ? JSON.stringify(transformRequest(action.payload)) : null // body data type must match "Content-Type" header
+                    }).then(response => response.json());
+
                     let request = {
                         method,
                         url: '/' + replaceParam(endpoint, action.payload) // + (method === 'get' ? buildParams(action.payload) : '')
+                        // url: 'http://'+process.env.REACT_APP_API_HOST+'/' + replaceParam(endpoint, action.payload) // + (method === 'get' ? buildParams(action.payload) : '')
                     };
                     if (auth) request.headers = {
-                        'Authorization': 'Bearer ' + localStorage.getItem('jwt') // propably should be own saga :(
+                        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
                     };
 
                     if (method === 'post') request.data = transformRequest(action.payload);
                     return axios(request);
                 }, action);
-                let data = transformResponse(response.data);
+                let data = transformResponse(response);
                 yield put({type: event.SUCCESS, data});
             } catch (error) {
-                console.error(error);
+                console.dir(error);
                 yield put({type: event.FAILURE, error});
             }
         });

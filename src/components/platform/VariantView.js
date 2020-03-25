@@ -50,7 +50,7 @@ const VariantView = props => {
         <Row>
             <div className={"col-md-6 col-xl-4 col-xs-12"}>
                 <GraphicView {...theme}>
-                    <img src={"http://localhost:9292/static/thumbnails/thumbnail-" + variantId + "-xl.png"}/>
+                    <img src={"http://localhost:9292/thumbnails/thumbnail-" + variantId + "-xl.png"}/>
                 </GraphicView>
 
             </div>

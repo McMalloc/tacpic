@@ -21,6 +21,15 @@ const createRect = (x = 0, y = 0, width = 100, height = 100, template = 'striped
     }
 };
 
+const rectGetBBox = rect => {
+  return {
+      x: rect.x,
+      y: rect.y,
+      width: rect.width,
+      height: rect.height,
+  }
+};
+
 const createEllipse = (x = 0, y = 0, width = 100, height = 100, template = 'striped', fill = 'white') => {
     return {
         uuid: uuidv4(),
@@ -53,14 +62,16 @@ const createLabel = (x = 0, y = 0, width = 100, height = 100, text = 'Neue Besch
     }
 };
 
-const createPath = (x = 0, y = 0, template = 'striped', fill = 'white') => {
+const createPath = (x = 0, y = 0, template = null, fill = null, moniker = "Kurve") => {
     return {
         uuid: uuidv4(),
-        x: 0,
-        angle: 0,
-        y: 0,
-        moniker: "Kurve",
+        angle: 0, x: 0, y: 0,
+        moniker,
         editMode: true,
+        border: true,
+        borderWidth: 2,
+        startArrow: false,
+        endArrow: false,
         fill,
         pattern: {
             template,
@@ -192,10 +203,29 @@ const addPoint = (path, mouseCoords, kind) => {
 // param 0 CP_ST: control point of start point
 // param 2 CP_E: control point of end point
 // param 4 E: end point
-const changePoint = (path, coords, index, param, kind) => {
+const changePoint = (path, coords, index = path.points.length - 1, param = 0, kind) => {
     path.points[index].coords[param] = coords[0];
+    if (!!kind) {
+        path.points[index].kind = kind;
+    }
     path.points[index].coords[param + 1] = coords[1];
     return path;
+};
+
+const smoothCubicPoint = (path, index) => {
+    const ref = path.points[index - 1].coords;
+    if (path.points[index - 1].kind === 'M' || path.points[index - 1].kind === 'L')
+        return changePoint(path, ref, index);
+    let mirrored = mirrorPoint(ref[2], ref[3], ref[4], ref[5]);
+    // if (ref.length === 2) {
+    //     const prevRef = path.points[index - 2].coords;
+    //     mirrored = mirrorPoint(prevRef[0], prevRef[1], ref[0], ref[1])
+    //     // return changePoint(path, ref, index)
+    // } else {
+    //     mirrored = mirrorPoint(ref[2], ref[3], ref[4], ref[5]);
+    // }
+    // const mirrored = mirrorPoint(ref[ref.length - 3], ref[ref.length - 4], ref[ref.length - 1], ref[ref.length - 2]);
+    return changePoint(path, [mirrored.x, mirrored.y], index);
 };
 
 const cosOfDegs = degs => {
@@ -238,6 +268,7 @@ const methods = {
         rotate: defaultRotate,
         scale: defaultScale,
         create: createRect,
+        getBBox: rectGetBBox,
         getClientBox: defaultGetClientBox,
     },
     path: {
@@ -245,7 +276,9 @@ const methods = {
         rotate: defaultRotate,
         getClientBox: defaultGetClientBox,
         create: createPath,
+        getBBox: getBBox,
         addPoint,
+        smoothCubicPoint,
         changePoint
     },
     ellipse: {

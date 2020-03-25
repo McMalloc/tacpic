@@ -64,7 +64,7 @@ export default props => {
             <Link className={'no-styled-link'} to={props.url}>
                 <Tile>
                     <Preview
-                        thumbnailURL={"http://localhost:9292/static/thumbnails/thumbnail-" +
+                        thumbnailURL={"http://localhost:9292/thumbnails/thumbnail-" +
                         props.variants[0].id + "-sm.png"} />
                     <Info>
                         <strong>{props.title}</strong> <br/>

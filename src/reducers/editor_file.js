@@ -4,6 +4,7 @@ import methods from "../components/editor/widgets/ReactSVG/methods";
 import uuidv4 from "../utility/uuid";
 import deepPull from "../utility/deepPull";
 import {initialEditor} from "../store";
+import {findObject} from "../utility/findObject";
 
 // let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so || rausnehmen, da jetzt vom internen State des Editors verwaltet, ODER?
 const getSelectedObjects = (objects, selected) => {
@@ -43,7 +44,6 @@ const file = (state = {}, action) => {
             oldState = {...state};
             objects = getSelectedObjects(oldState.pages[action.shared_currentPage].objects, action.uuids);
 
-
             if (objects.length === 1) {
                 methods[objects[0].type].rotate(
                     objects[0],
@@ -54,6 +54,15 @@ const file = (state = {}, action) => {
                 methods.selection.rotate(objects, action.coords.x, action.coords.y)
             }
 
+            return oldState;
+        case 'OBJECT_UPDATED':
+            oldState = {...state};
+            objects = findObject(oldState.pages[action.shared_currentPage].objects, action.preview.uuid);
+            if (objects === void 0) { // add if not present TODO: delete old adding method
+                oldState.pages[action.shared_currentPage].objects.push(action.preview);
+            } else {
+                objects = action.preview;
+            }
             return oldState;
         case 'OBJECT_TRANSLATED':
             // TODO sauberer für nested objects
