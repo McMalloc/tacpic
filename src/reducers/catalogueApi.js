@@ -14,15 +14,17 @@ const catalogueApi = (state = {}, action) => {
             return {
                 ...state,
                 limit: action.payload.limit,
-                offset: action.payload.offset
+                offset: action.payload.offset,
+                searchPending: true
             };
         case CATALOGUE.SEARCH.SUCCESS:
             return {
-                ...state, graphics: action.data
+                ...state, graphics: action.data, searchPending: false
             };
         case CATALOGUE.SEARCH.FAILURE:
             return {
-                ...state
+                ...state,
+                searchPending: false
             };
 
         case GRAPHIC.GET.REQUEST:

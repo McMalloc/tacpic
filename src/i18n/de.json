@@ -11,7 +11,30 @@
     "select_braille-system": "Pro Dokument sollte ein einheitliches Punktschriftsystem verwendet werden. Alle Beschriftungen werden in dem hier ausgewählten System angelegt und bestehende Beschriftungen werden umgewandelt.",
     "select_medium": "Unterschiedliche Medien bieten unterschiedliche Möglichkeiten. Der Editor wird für bestimmte Produktionstechniken Funktionen einschränken, sodass Sie keine Vorlage gestalten, die z.B. mit Schwellpapier gar nicht produzierbar ist."
   },
+  "auth": {
+    "invalid login, already an account with this login": "Es gibt bereits ein Konto unter dieser E-Mail-Adresse."
+  },
+  "general": {
+    "username": "Nutzername",
+    "email": "E-Mail-Adresse",
+    "password": "Passwort",
+    "password-confirm": "Passwort wiederholen",
+    "password-confirm-invalid": "Die Passwörter stimmen nicht überein.",
+    "email-hint": "Ihre E-Mail dient ausschließlich dazu, ihr Benutzerkonto zu verwalten. Sie erhalten keine Werbung von uns.",
+    "email-invalid": "Bitte geben Sie eine gültige E-Mail-Adresse an.",
+    "password-hint": "Das Passwort sollte mindestens 8 Zeichen haben.",
+    "password-invalid": "Das Passwort sollte mindestens 8 Zeichen haben.",
+    "signup": "Konto anlegen",
+    "login": "Anmelden",
+    "my_account": "Mein Konto",
+    "catalogue": "Katalog"
+  },
   "catalogue": {
+    "search": "Suchen",
+    "searchterm": "Suchbegriff",
+    "search-placeholder": "z.B. Biologie Herz",
+    "grub": "Stattdessen im Katalog stöbern",
+    "create": "Grafik gestalten",
     "a3-portrait": "DIN A3 Hochformat",
     "a3-Landscape": "DIN A3 Querformat",
     "a4-portrait": "DIN A4 Hochformat",

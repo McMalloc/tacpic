@@ -7,22 +7,20 @@ const Main = styled.label`
   //font-size: 0.9em;
   display: ${props => props.inline ? "inline" : "block"};
   color: ${props => props.disabled ? props.theme.middark : "inherit"};
-  margin-bottom: ${props => props.theme.spacing[3]};
+  margin-bottom: ${props => props.noMargin ? 0 : props.theme.spacing[3]};
   
-  &:hover {
+  &:hover:first-line {
+    //border-color: ${props => props.theme.brand_secondary};
     text-decoration: underline;
-    
-    input {
-      text-decoration: none;
-    }
   }
 `;
 
 const Sub = styled.span`
-  font-size: 0.8em;
+  font-size: 0.9em;
   margin: ${props => props.theme.spacing[1]} 0;
   color: ${props => props.theme.brand_secondary};
   display: block;
+  font-style: italic;
   line-height: 1.1em;
 `;
 

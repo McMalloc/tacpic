@@ -190,7 +190,7 @@ const Metadata = props => {
                            align: "right",
                            template: 'primary',
                            disabled: file.state === 'updating',
-                           action: () => history.push(`/private-catalogue/${file.graphic_id}/variant/${file.variant_id}`)
+                           action: () => history.push(`/catalogue/${file.graphic_id}/variant/${file.variant_id}`)
                        }
                    ]}
             >

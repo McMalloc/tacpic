@@ -1,11 +1,9 @@
 import {USER} from '../actions/constants';
 
 let initialState = {
-
     logged_in: false,
     login_pending: false,
-    error: null,
-    pages: {}
+    error: {}
 };
 
 const userApi = (state = initialState, action) => {
@@ -27,15 +25,35 @@ const userApi = (state = initialState, action) => {
                 displayName: action.data.display_name
             };
         case USER.VALIDATE.FAILURE:
+            return {
+                ...state,
+                login_pending: false,
+                logged_in: false
+            };
         case USER.LOGIN.FAILURE:
             return {
                 ...state,
                 login_pending: false,
                 logged_in: false,
-                error: action.error
+                error: action.message
             };
         case USER.CREATE.REQUEST:
-            return {...state};
+            return {
+                ...state,
+                login_pending: true
+            };
+        case USER.CREATE.SUCCESS:
+            return {
+                ...state,
+                login_pending: false,
+                logged_in: true
+            };
+        case USER.CREATE.FAILURE:
+            return {
+                ...state,
+                login_pending: false,
+                error: action.message
+            };
         case USER.SAVE_LAYOUT.REQUEST:
             console.log(action.layout);
             return {...state};

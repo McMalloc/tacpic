@@ -7,19 +7,29 @@ import {Navbar, NavbarItem} from "./components/platform/Navbar";
 import Catalogue from "./components/platform/Catalogue";
 import Register from "./components/Register";
 import {useDispatch} from "react-redux";
-import {TAGS} from "./actions/constants";
+import {TAGS, USER} from "./actions/constants";
 import AccountWidget from "./components/platform/AccountWidget";
 import styled from "styled-components";
+import SignupForm from "./components/SignupForm";
+import {Footer} from "./components/platform/Footer";
+import Landing from "./components/platform/Landing";
+
+const ScrollContent = styled.div`
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  overflow: auto;
+`;
 
 const Wrapper = styled.div`
   display: flex;
+  height: 100vh;
   flex-direction: column;
 `;
 
 const Main = styled.div`
-  flex: 1 1 100%;
+  flex: 1;
   display: flex;
-  overflow: auto;
 `;
 
 class ErrorBoundary extends React.Component {
@@ -57,14 +67,14 @@ const App = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
+        if (localStorage.getItem('jwt') === null) return;
         dispatch({
-            type: TAGS.GET.REQUEST,
-            payload: {limit: 30}
-        })
+            type: USER.VALIDATE.REQUEST
+        });
     });
 
     const navbarItems = [
-        {label: 'Grafiken', to: '/private-catalogue'},
+        {label: t("general:catalogue"), to: '/catalogue'},
         {label: 'Editor', to: '/editor/new'},
         {label: 'Wissen', to: '/knowledge'},
         {label: 'Häufige Fragen', to: '/faq'}
@@ -72,10 +82,11 @@ const App = () => {
 
     return (
         <BrowserRouter>
-            <Wrapper className="App">
+            <Wrapper>
                 <Navbar items={navbarItems}/>
-                <Main>
-                    <ErrorBoundary>
+                <ScrollContent className="App">
+                    <Main>
+                        <ErrorBoundary>
                         <Switch>
                             {/*Renders exclusivly*/}
                             {/*<Route path="/login" component={Login}/>*/}
@@ -86,11 +97,16 @@ const App = () => {
                             <Route path="/editor/new" component={Editor}/>
                             {/*<Route path="/private-catalogue/:graphic_id/variant/:variant_id/edit" component={Editor}/>*/}
                             <Route path="/catalogue" component={Catalogue}/>
-                            <Route path="/private-catalogue" render={() => <Catalogue private={true}/>}/>
+                            <Route path="/signup" component={SignupForm}/>
+                            <Route path="/catalogue" render={() => <Catalogue private={true}/>}/>
+                            <Route path="/" component={Landing} />
                         </Switch>
-                    </ErrorBoundary>
-                </Main>
+                        </ErrorBoundary>
+                    </Main>
+                    <Footer></Footer>
+                </ScrollContent>
             </Wrapper>
+
         </BrowserRouter>
     );
 };

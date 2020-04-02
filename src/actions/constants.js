@@ -9,7 +9,7 @@ function constants(domain, methods) {
     return obj;
 }
 
-export const USER       = constants('USER',     ['LOGIN', 'CREATE', 'SAVE_LAYOUT', 'VALIDATE']);
+export const USER       = constants('USER',     ['LOGIN', 'LOGOUT', 'CREATE', 'SAVE_LAYOUT', 'VALIDATE']);
 export const SEARCH     = constants('SEARCH',   ['QUERY']);
 export const PRODUCT    = constants('PRODUCT',  ['FETCH', 'GET']);
 export const FILE       = constants('FILE',     ['OPEN']);

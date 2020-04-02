@@ -1,12 +1,13 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {CATALOGUE} from "../../actions/constants";
+import {CATALOGUE, TAGS} from "../../actions/constants";
 import CatalogueItemList from "./CatalogueItemList";
 import {Textinput} from "../gui/Input";
 import TagList from "./TagList";
 import {Row} from "../gui/Grid";
 import Tag from "./Tag";
 import {Checkbox} from "../gui/Checkbox";
+import Searchbar from "./Searchbar";
 
 const queryGraphics = (dispatch, tags = [], terms = [], format = [], system = [], limit = 50, offset = 0) => {
     dispatch({
@@ -21,13 +22,6 @@ const queryGraphics = (dispatch, tags = [], terms = [], format = [], system = []
             order_by: "date",
             order_desc: false
         }
-    })
-};
-
-const searchChanged = (dispatch, value) => {
-    dispatch({
-        type: 'SEARCH_CHANGED',
-        value
     })
 };
 
@@ -52,7 +46,11 @@ const Catalogue = props => {
 
     useEffect(() => {
         // TODO default to saved state
-        queryGraphics(dispatch);
+        !catalogue.searchPending && queryGraphics(dispatch);
+        dispatch({
+            type: TAGS.GET.REQUEST,
+            payload: {limit: 30}
+        })
     }, []);
 
     return (
@@ -62,11 +60,9 @@ const Catalogue = props => {
                     <h1>Katalog</h1>
                 </div>
             </Row>
-            <Row>
+            <Row style={{marginBottom: 24}}>
                 <div className={"col-xs-10 col-xs-offset-2"}>
-                    <Textinput value={catalogue.searchTerms}
-                               label={"Suche"}
-                               onChange={event => searchChanged(dispatch, event.target.value)} />
+                    <Searchbar />
                 </div>
             </Row>
             <Row>

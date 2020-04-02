@@ -87,7 +87,8 @@ const initialCatalogue = {
     offset: 0,
     graphics: [],
     viewedGraphic: {},
-    graphicGetPending: true
+    graphicGetPending: true,
+    searchPending: false
 };
 
 const composeEnhancers =

@@ -18,14 +18,16 @@ const ButtonBase = styled.button`
   background-color: ${props => props.primary ? props.theme.brand_secondary : "white"};
   color: ${props => props.primary ? props.theme.background : "inherit"};
   border: 1px solid ${props => props.theme.middark};
-  padding: 4px ${props => props.theme.spacing[2]};
+  padding: ${props => props.small ?  0 : props.theme.spacing[1]} ${props => props.theme.spacing[2]};
+  text-transform: ${props => props.small ? 'uppercase' : 'none'};
   border-radius: 3px;
   cursor: pointer;
   margin-top: 0;
   position: relative;
-  font-size: 1em;
+  font-size: ${props => props.small ? '0.8em' : '1em'};;
   width: ${props => props.fullWidth ? "100%" : "auto"};
   transition: box-shadow 0.15s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.15s;
+  display: inline-flex;
   
   // & + button {
   //   margin-left: ${props => props.theme.spacing[2]};
@@ -42,7 +44,7 @@ const ButtonBase = styled.button`
     }
   }
   
-  &:hover {
+  &:hover:not(:disabled) {
       background-color: ${props => props.primary ? props.theme.brand_secondary_lighter : props.theme.light};
       box-shadow: ${props => props.theme.middle_shadow};
       ${Label} {
@@ -65,7 +67,7 @@ const Button = React.forwardRef((props, ref) => {
     const label = props.label || props.children;
     const theme = useTheme();
     return (
-        <ButtonBase theme={theme} type={"button"} ref={ref} {...props}>
+        <ButtonBase theme={theme} type={props.type || "button"} ref={ref} {...props}>
             {props.icon &&
             <Icon primary={props.primary}>
                 <i className={"fas fa-" + props.icon}/>

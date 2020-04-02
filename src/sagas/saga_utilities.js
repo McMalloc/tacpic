@@ -73,33 +73,33 @@ export default function createSaga(
     return function* () {
         yield effect(event.REQUEST, function* (action) {
             try {
+                let statusCode = 1000;
+                let authHeader = "";
                 const response = yield call(action => {
+
+                    let headers = { 'Content-Type': 'application/json' };
+                    if (auth) headers.Authorization = 'Bearer ' + localStorage.getItem('jwt');
 
                     return fetch('/' + replaceParam(endpoint, action.payload), {
                         method: method,
-                        headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('jwt'),
-                            'Content-Type': 'application/json',
-                        },
+                        headers,
                         body: method === 'post' ? JSON.stringify(transformRequest(action.payload)) : null // body data type must match "Content-Type" header
-                    }).then(response => response.json());
-
-                    let request = {
-                        method,
-                        url: '/' + replaceParam(endpoint, action.payload) // + (method === 'get' ? buildParams(action.payload) : '')
-                        // url: 'http://'+process.env.REACT_APP_API_HOST+'/' + replaceParam(endpoint, action.payload) // + (method === 'get' ? buildParams(action.payload) : '')
-                    };
-                    if (auth) request.headers = {
-                        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-                    };
-
-                    if (method === 'post') request.data = transformRequest(action.payload);
-                    return axios(request);
+                    }).then(response => {
+                        statusCode = response.status;
+                        authHeader = response.headers.get("authorization");
+                        return response.json()
+                    });
                 }, action);
-                let data = transformResponse(response);
-                yield put({type: event.SUCCESS, data});
+
+                let data = transformResponse(response, statusCode, authHeader);
+                console.log(statusCode);
+                if (statusCode > 204) {
+                    yield put({type: event.FAILURE, message: response, statusCode});
+                } else {
+                    yield put({type: event.SUCCESS, data, statusCode});
+                }
             } catch (error) {
-                console.dir(error);
+                console.log(error);
                 yield put({type: event.FAILURE, error});
             }
         });

@@ -31,7 +31,7 @@ ReactDOM.render(
     document.getElementById('root'));
 
 // for debugging purposes
-// registerServiceWorker();
+registerServiceWorker();
 
 // TODO Note:
 // Using an arrow function in render creates a new function each time the component renders, which may break optimizations based on strict identity comparison.
