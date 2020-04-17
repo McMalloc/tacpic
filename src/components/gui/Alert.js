@@ -13,6 +13,9 @@ const Wrapper = styled.div`
             props.warning ? props.theme.warning :
                 props.danger ? props.theme.danger : "white"
 };
+  a {
+    color: ${props => props.theme.background};
+  }
 `;
 
 const IconContainer = styled.div`

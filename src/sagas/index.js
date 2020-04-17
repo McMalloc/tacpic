@@ -1,4 +1,4 @@
-import {loginWatcher, createWatcher, saveUserLayoutWatcher} from "./user_saga";
+import {logoutWatcher} from "./user_saga";
 import {call, all, takeLatest, takeEvery, put} from "redux-saga/effects";
 import localstorageWatcher from "./localstorage_saga";
 import {
@@ -24,7 +24,7 @@ const id = args => args;
 export default function* root() {
     yield all([
         // call(loginWatcher),
-        // call(createWatcher),
+        call(logoutWatcher),
         call(createSaga(TAGS.GET, 'get', 'tags?limit=:limit', takeLatest, true, null, tags => {
             return tags;
         })),
@@ -34,7 +34,7 @@ export default function* root() {
         })),
         call(createSaga(GRAPHIC.GET, 'get', 'graphics/:id', takeLatest, false, null)),
         call(createSaga(USER.VALIDATE, 'get', 'users/validate', takeLatest, true, null, id)),
-        call(createSaga(USER.LOGOUT, 'post', 'logout', takeLatest, true, id, id)),
+        // call(createSaga(USER.LOGOUT, 'post', 'logout', takeLatest, true, id, id)),
         call(createSaga(USER.CREATE, 'post', 'create-account', takeLatest, false, request => {
             return {
                 login: request.uname,

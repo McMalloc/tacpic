@@ -10,6 +10,7 @@ import {Modal} from "../../gui/Modal";
 import {Alert} from "../../gui/Alert";
 import {useTranslation} from "react-i18next";
 import {useHistory} from "react-router";
+import {NavLink} from "react-router-dom";
 
 const Status = styled.div`
   display: flex;
@@ -62,6 +63,7 @@ const uploadVersion = (dispatch, file) => {
 
 const Metadata = props => {
     const file = useSelector(state => state.editor.file);
+    const logged_in = useSelector(state => state.user.logged_in);
     const tags = useSelector(
         state => state.catalogue.tags.map(tag => {
             return {
@@ -82,8 +84,15 @@ const Metadata = props => {
         [e.currentTarget.name]: e.currentTarget.value
     });
 
+    if (!logged_in) return (
+      <Upper>
+          <Alert info>
+              Bitte <NavLink to={'/login'}>logge dich ein</NavLink> oder <NavLink to={'/signup'}>erstelle ein Konto</NavLink>, um Grafiken zu erstellen.
+          </Alert>
+      </Upper>
+    );
+
     return (
-        <>
         <Upper>
             <div>
                 <Textinput
@@ -210,7 +219,6 @@ const Metadata = props => {
             </Modal>
             }
         </Upper>
-            </>
     );
 };
 

@@ -30,11 +30,14 @@ fieldset {
 
 a.no-styled-link {
   text-decoration: none;
-  //color: inherit;
+  color: inherit;
 }
 
 .extra-margin {
   &:not(:last-child) {
     margin-bottom: 12px;
+  }
+  &.double {
+    margin-bottom: 24px;
   }
 }

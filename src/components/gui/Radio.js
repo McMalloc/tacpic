@@ -26,9 +26,9 @@ const Label = styled.label`
       box-sizing: border-box;
       content: "";
       border-radius: 100%;
-      border: 1px solid ${props => props.active ? props.theme.accent_1 : props.theme.midlight};
+      border: 1px solid ${props => props.active ? props.theme.brand_secondary : props.theme.midlight};
       background-color: ${props => props.theme.background};
-      // background-color: ${props => props.active ? props.theme.accent_1 : props.theme.background};
+      // background-color: ${props => props.active ? props.theme.brand_secondary : props.theme.background};
       transition: background-color 0.1s;
   }  
   
@@ -43,7 +43,7 @@ const Label = styled.label`
       content: "";
       border-radius: 100%;
       opacity: ${props => props.active ? 1 : 0};
-      background-color: ${props => props.theme.accent_1};
+      background-color: ${props => props.theme.brand_secondary};
       transition: opacity 0.1s;
   }
   
@@ -58,8 +58,8 @@ const Input = styled.input`
   margin: 0;
   
   &:checked+label {
-    font-weight: 700;
-    color: ${props => props.theme.accent_1};
+    //font-weight: 700;
+    // color: ${props => props.theme.accent_1};
   } 
   
   &:checked + label:after {

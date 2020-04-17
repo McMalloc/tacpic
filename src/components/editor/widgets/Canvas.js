@@ -25,21 +25,6 @@ const Canvas = props => {
             <Wrapper>
                 <InteractiveSVG/>
             </Wrapper>
-
-            // <Wrapper>
-            //     {/*<Ruler/>*/}
-            //     {this.props.file.backgroundURL &&
-            //         <Background src={"images/beispiele/" + this.props.file.backgroundURL}/>
-            //     }
-            //     <Popover
-            //         preferPlace={"above"}
-            //         tipSize={12}
-            //         onOuterAction={() => this.setState({showHint: false})}
-            //         isOpen={this.state.showHint}
-            //         body={<Hint>Ziehen Sie hier ein Rechteck mit der linken Maustaste auf, um zu beginnen.</Hint>}>
-            //         <InteractiveSVG/>
-            //     </Popover>
-            // </Wrapper>
         )
 
 };

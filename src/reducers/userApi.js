@@ -54,9 +54,9 @@ const userApi = (state = initialState, action) => {
                 login_pending: false,
                 error: action.message
             };
-        case USER.SAVE_LAYOUT.REQUEST:
-            console.log(action.layout);
-            return {...state};
+        case USER.LOGOUT.REQUEST: return {...state};
+        case USER.LOGOUT.SUCCESS:
+            return {...state, logged_in: false};
         default:
             return state;
     }

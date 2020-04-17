@@ -18,9 +18,7 @@ import Pages from "./widgets/Pages";
 import Objects from "./widgets/Objects";
 import Toolbox from "./widgets/Toolbox";
 import Context from "./widgets/Context/Context";
-import {Modal} from "../gui/Modal";
-import {CatalogueItemView} from "../platform/CatalogueItemView";
-import {Alert} from "../gui/Alert";
+import Writer from "./widgets/Writer";
 
 const Wrapper = styled.div`
   display: flex;
@@ -105,6 +103,9 @@ const Editor = props => {
     const uiSettings = useSelector(
         state => state.editor.ui
     );
+    const page = useSelector(
+        state => state.editor.file.pages[uiSettings.currentPage]
+    );
     const dispatch = useDispatch();
     const t = useTranslation().t;
     const theme = useTheme();
@@ -136,7 +137,7 @@ const Editor = props => {
                         <Toggle toggled={showObjects} onClick={() => toggleObjects(!showObjects)} label={"Objekte"}/>
                     </ToolbarSegment>
                     {/*<ToolbarSegment>*/}
-                        <Toggle primary onClick={() => alert('hi')} label={"Neu"}/>
+                    <Toggle primary onClick={() => alert('hi')} label={"Neu"}/>
                     {/*</ToolbarSegment>*/}
                     <ToolbarSegment>
                         <Toggle primary toggled={openedModalSidebar === 0} onClick={() => handleModalSidebar(0)}
@@ -164,12 +165,21 @@ const Editor = props => {
                     </Sidebar>
                     }
 
-                    <FixedSidebar>
-                        <SidebarPanel flex={'0 1 auto'}><Toolbox/></SidebarPanel>
-                        <SidebarPanel flex={'1 1 100%'}><Context/></SidebarPanel>
-                    </FixedSidebar>
 
-                    <Canvas/>
+                    {page.text ?
+                        <>
+                            <FixedSidebar><textarea /></FixedSidebar>
+                            <Writer/>
+                        </>
+                        :
+                        <>
+                            <FixedSidebar>
+                                <SidebarPanel flex={'0 1 auto'}><Toolbox/></SidebarPanel>
+                                <SidebarPanel flex={'1 1 100%'}><Context/></SidebarPanel>
+                            </FixedSidebar>
+                            <Canvas/>
+                        </>
+                    }
 
 
                     <ModalSidebar style={{right: openedModalSidebar === null ? '-500px' : 0}} theme={theme}>

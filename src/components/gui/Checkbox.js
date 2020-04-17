@@ -54,7 +54,7 @@ const Input = styled.input`
   margin: 0;
 
   &:checked + label {
-    font-weight: 700;
+    //font-weight: 700;
     color: ${props => props.theme.brand_secondary};
   }  
 

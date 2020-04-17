@@ -26,8 +26,22 @@
     "password-invalid": "Das Passwort sollte mindestens 8 Zeichen haben.",
     "signup": "Konto anlegen",
     "login": "Anmelden",
-    "my_account": "Mein Konto",
+    "my_account": "Persönlicher Bereich",
     "catalogue": "Katalog"
+  },
+  "account": {
+    "my_lists": "Meine Listen",
+    "my_lists-description": "Private Grafiken und Favouritenlisten",
+    "my_sub": "Mein Abonnement",
+    "my_sub-description": "Abonnement abschließen, kündigen oder ändern",
+    "my_adresses": "Meine Adressen",
+    "my_adresses-description": "Liefer- und Rechnungsadressen anlegen, ändern oder entfernen",
+    "my_account": "Mein Konto",
+    "my_account-description": "Kontosicherheit, Konto deaktivieren, Kontaktdaten",
+    "my_orders": "Meine Bestellungen",
+    "my_orders-description": "Bestellstatus und nachverfolgen, Bestellverlauf und Rechnungen",
+    "my_payment_options": "Bezahlmöglichkeiten",
+    "my_payment_options-description": "Lastschrift oder Paypal einrichten"
   },
   "catalogue": {
     "search": "Suchen",
@@ -41,7 +55,8 @@
     "a4-Landscape": "DIN A4 Querformat",
     "de-de-g0.utb": "Deutsch Vollschrift",
     "de-de-g1.ctb": "Deutsch Langschrift",
-    "de-de-g2.ctb": "Deutsch Kurzschrift"
+    "de-de-g2.ctb": "Deutsch Kurzschrift",
+    "variantview_logged-in-hint": "Bitte <%/login logge dich ein%> oder <%/signup erstelle ein Konto%>, um Grafiken zu bearbeiten."
   },
   "editor": {
     "Context": "Eigenschaften",

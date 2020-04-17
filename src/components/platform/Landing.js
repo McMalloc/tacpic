@@ -41,7 +41,7 @@ const Landing = () => {
 
             <Searchbar/>
 
-            <div style={{marginTop: 36}}>
+            <div style={{marginTop: 36, marginBottom: "50%"}}>
                 <Button onClick={event => {
                     history.push("/catalogue");
                 }}>{t("catalogue:grub")}</Button>&ensp;

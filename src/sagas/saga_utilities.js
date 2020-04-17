@@ -78,7 +78,10 @@ export default function createSaga(
                 const response = yield call(action => {
 
                     let headers = { 'Content-Type': 'application/json' };
-                    if (auth) headers.Authorization = 'Bearer ' + localStorage.getItem('jwt');
+                    if (auth) {
+                        const jwt = localStorage.getItem('jwt');
+                        if (jwt!== null) headers.Authorization = 'Bearer ' + jwt;
+                    }
 
                     return fetch('/' + replaceParam(endpoint, action.payload), {
                         method: method,

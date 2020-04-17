@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {useHistory, useParams, useRouteMatch} from "react-router";
+import {Prompt, useHistory, useParams, useRouteMatch} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "./gui/Button";
 import {VARIANT, FILE, USER} from "../actions/constants";
@@ -42,7 +42,11 @@ const SignupForm = props => {
     return (
         <div className={"container"}>
             <div className={"row extra-margin"}>
-                <h1 className={layout}>{t("general:signup")}</h1>
+                <div className={layout}>
+                <h1>{t("general:signup")}</h1>
+                <p>Taktile Medien &mdash; schnell, gut und einfach</p>
+                    <hr />
+                </div>
             </div>
 
             <div className={"row"}>
@@ -110,6 +114,16 @@ const SignupForm = props => {
                         </>)
                     }
                 </form>
+
+                {/*<div className={layout} >*/}
+                {/*    <img src={"/images/tactile_exploration.png"}/>*/}
+                {/*</div>*/}
+
+
+            <Prompt
+                when={false}
+                message="Are you sure you want to leave?"
+            />
             </div>
         </div>
 

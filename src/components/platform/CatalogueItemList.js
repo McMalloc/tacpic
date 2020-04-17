@@ -45,16 +45,18 @@ const CatalogueItemList = props => {
     return (
         <>
             <FlexRow>
-                {props.graphics && props.graphics.map((graphic, index) => {
+                {props.graphics && props.graphics.length > 0 ? props.graphics.map((graphic, index) => {
                     return (
                         <CatalogueItem key={index} {...graphic} filtered={filtered}
                                        url={`${url}/${graphic.id}/variant/${graphic.variants[0].id}`}/>
                     )
-                })}
-                <CatalogueItemWrapper style={{padding: '48px'}}>
+                }) :
+                    <p>Keine Grafiken gefunden.</p>
+                }
+                <CatalogueItemWrapper style={{paddingTop: '48px'}}>
                     <Button
-                        style={{width: '100%', height: '80%'}}
-                        icon={"plus"}
+                        // style={{width: '100%', height: '80%'}}
+                        icon={"plus"} fullWidth primary
                         onClick={() => handleNewGraphic(dispatch, doRedirect)}>Neue Grafik</Button>
                 </CatalogueItemWrapper>
 

@@ -28,10 +28,7 @@ const ButtonBase = styled.button`
   width: ${props => props.fullWidth ? "100%" : "auto"};
   transition: box-shadow 0.15s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.15s;
   display: inline-flex;
-  
-  // & + button {
-  //   margin-left: ${props => props.theme.spacing[2]};
-  // }
+  justify-content: center;
   
   &:disabled {
     color: ${props => props.theme.grey_1};

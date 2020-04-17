@@ -597,7 +597,6 @@ class InteractiveSVG extends Component {
                     break;
                 case 'ellipse':
                 case 'rect':
-                    console.log(this.state.preview);
                     this.setState({
                         preview: methods[preview.type][this.state.transform](
                             this.state.preview,

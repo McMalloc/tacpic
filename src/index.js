@@ -1,8 +1,8 @@
 // external imports
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from "react-redux";
-import { ThemeProvider } from 'styled-components';
+import {Provider} from "react-redux";
+import {ThemeProvider} from 'styled-components';
 import './i18n/i18n';
 
 // DELETE
@@ -14,7 +14,8 @@ import './index.scss';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import {store} from "./store";
-import { standard } from "./styles/themes"
+import {standard} from "./styles/themes"
+import {BrowserRouter} from "react-router-dom";
 
 if (process.env.NODE_ENV !== 'production') {
     // let axe = require('react-axe');
@@ -25,7 +26,9 @@ if (process.env.NODE_ENV !== 'production') {
 ReactDOM.render(
     <Provider store={store}>
         <ThemeProvider theme={standard}>
-            <App />
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
         </ThemeProvider>
     </Provider>,
     document.getElementById('root'));

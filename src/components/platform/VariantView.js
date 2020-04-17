@@ -8,6 +8,8 @@ import styled, {useTheme} from "styled-components";
 import {useTranslation} from "react-i18next";
 import {Icon} from "../gui/_Icon";
 import {TagView} from "./Tag";
+import {Alert} from "../gui/Alert";
+import {NavLink} from "react-router-dom";
 
 const GraphicView = styled.div`
     img {
@@ -38,9 +40,8 @@ const VariantView = props => {
     let {graphicId, variantId} = useParams();
     let variant = props.variants.find(variant => variant.id == variantId);
     const dispatch = useDispatch();
-    const tags = useSelector(
-        state => state.catalogue.tags
-    );
+    const tags = useSelector(state => state.catalogue.tags);
+    const logged_in = useSelector(state => state.user.logged_in);
 
     if (!variant) return null;
 
@@ -48,13 +49,13 @@ const VariantView = props => {
 
     return (
         <Row>
-            <div className={"col-md-6 col-xl-4 col-xs-12"}>
+            <div className={"col-md-6 col-xl-4"}>
                 <GraphicView {...theme}>
                     <img src={"http://localhost:9292/thumbnails/thumbnail-" + variantId + "-xl.png"}/>
                 </GraphicView>
 
             </div>
-            <div className={"col-md-6 col-xl-8 col-xs-12 xs-first"}>
+            <div className={"col-md-6 col-xl-8 xs-first"}>
                 <h2>{variant.title}</h2>
                 <p>{variant.description}</p>
 
@@ -74,8 +75,25 @@ const VariantView = props => {
 
                 <hr/>
 
+                {!logged_in &&
+                    <Alert info>
+                        {/*{t("catalogue:variantview_logged-in-hint").match(/<%([^%>]*)%>/g).map(match => {*/}
+                        {/*    debugger;*/}
+                        {/*    const route = match.match(/<%([^\s]+)/)[0].replace("<%", "");*/}
+                        {/*    console.log(match, route);*/}
+                        {/*    const content = match.replace(route, "");*/}
+                        {/*    console.log(content);*/}
+                        {/*    return <NavLink to={route}>{content}</NavLink>;*/}
+                        {/*})}*/}
+                        Bitte <NavLink to={'/login'}>logge dich ein</NavLink> oder <NavLink to={'/signup'}>erstelle ein Konto</NavLink>, um Grafiken zu bearbeiten.
+                    </Alert>
+                }
+
                 <div style={{margin: '0 15%'}}>
-                    <Button className={'extra-margin'} fullWidth icon={'pen'} onClick={() => {
+                    <Button className={'extra-margin'}
+                            disabled={!logged_in}
+                            fullWidth
+                            icon={'pen'} onClick={() => {
                         history.push(`/editor/${graphicId}/variants/${variantId}`);
                         dispatch({
                             type: FILE.OPEN.REQUEST,
@@ -84,7 +102,10 @@ const VariantView = props => {
                     }}>Bearbeiten</Button>
 
 
-                    <Button className={'extra-margin'} fullWidth icon={'copy'} onClick={() => {
+                    <Button className={'extra-margin'}
+                            disabled={!logged_in}
+                            fullWidth icon={'copy'}
+                            onClick={() => {
                         history.push(`/editor/${graphicId}`);
                         dispatch({
                             type: FILE.OPEN.REQUEST,

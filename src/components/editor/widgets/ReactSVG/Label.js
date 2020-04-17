@@ -4,6 +4,8 @@ import _ from "lodash";
 import styled from "styled-components";
 import {connect, useDispatch, useSelector} from "react-redux";
 
+//TODO Linebreaks mit absolutem x und relativem y-Wert: https://www.oreilly.com/library/view/svg-text-layout/9781491933817/ch04.html
+
 const Braille = styled.div`
   line-height: 12mm;
   font-family: "HBS6";

@@ -15,11 +15,11 @@ const customStyles = {
     option: (provided, state) => ({
         ...provided,
         fontSize: "0.9em",
-        backgroundColor: state.isSelected ? standard.accent_1 : 'inherit',
+        backgroundColor: state.isSelected ? standard.brand_secondary : 'inherit',
         borderBottom: '1px solid ' + standard.midlight,
         padding: standard.spacing[2],
         ":hover": {
-            backgroundColor: state.isSelected ? standard.accent_1 : standard.accent_1_light,
+            backgroundColor: state.isSelected ? standard.brand_secondary_lighter : standard.grey_5,
             textDecoration: 'underline'
         }
     }),

@@ -26,6 +26,7 @@ const TabItem = styled.button`
   //border-right: 1px solid ${props => props.theme.midlight};
   box-shadow: ${props => props.active ? props.theme.middle_shadow : "none"};
   transition: background-color 0.15s;
+  border-radius: 3px 3px 0 0;
   
   &:hover {
       background-color: ${props => props.active ? "inherit" : props.theme.light};
@@ -39,7 +40,7 @@ const TabItem = styled.button`
     left: 0;
     right: 0;
     bottom: -3px;
-    background-color: ${props => props.active ? props.theme.grey_5 : "transparent"};
+    background-color: ${props => props.active ? "#f5f5f5" : "transparent"};
   }
 `;
 
@@ -53,7 +54,6 @@ class TabPane extends Component {
     };
 
     render() {
-        // let currentPage = <InteractiveSVG />;
         return <Fragment>
             <TabBar role={"tablist"}>
                 {this.props.tabs.map((tab, index) => {

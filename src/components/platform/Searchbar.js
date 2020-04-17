@@ -31,7 +31,6 @@ const Searchbar = () => {
 
     const history = useHistory();
     const location = useLocation();
-    console.log(location);
 
     const [searchTerm, setSearchTerm] = useState(catalogue.filterTerms);
 

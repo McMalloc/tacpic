@@ -67,10 +67,19 @@ export const initialEditor = {
         horizontalGridSpacing: 10,
         showVerticalGrid: false,
         showHorizontalGrid: false,
+        embosserWidth: 210,
+        braillePages: {
+            width: 210,
+            height: 297,
+            marginLeft: 1,
+            marginTop: 1,
+            cellsPerRow: 33,
+            rowsPerPage: 27
+        },
         pages: [
             {
                 name: "Seite 1",
-                text: false, // TODO Textseiten werden anders behandelt, starres Braille-Layout
+                text: true, // TODO Textseiten werden anders behandelt, starres Braille-Layout
                 objects: []
             }
         ]
@@ -93,7 +102,7 @@ const initialCatalogue = {
 
 const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 5 })
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({trace: true, traceLimit: 5})
     || compose;
 
 // performance hack: the current editor page is shared with all file reducers

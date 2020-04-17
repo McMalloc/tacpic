@@ -36,6 +36,7 @@ class Pages extends Component {
                             current={i === this.props.currentPage}
                             markup={page.cache}
                             key={i}
+                            isText={page.text}
                             onClick={() => this.props.changePage(i)}
                             title={page.name} />
                         // TODO: page preview, das neue seite erzeugt
@@ -44,7 +45,8 @@ class Pages extends Component {
 
                 <Lower>
                     <Button icon={"trash-alt"} onClick={() => {}}>Entfernen</Button> &ensp;
-                    <Button primary icon={"plus"} onClick={() => this.props.addPage()}>Neue Seite</Button>
+                    <Button primary icon={"plus"} onClick={() => this.props.addPage(false)}>Neue Grafik-Seite</Button>
+                    <Button primary icon={"plus"} onClick={() => this.props.addPage(true)}>Neue Braille-Seite</Button>
                 </Lower>
             </>
         );
@@ -68,9 +70,10 @@ const mapDispatchToProps = dispatch => {
                 number: nr
             })
         },
-        addPage: () => {
+        addPage: isTextPage => {
             dispatch({
-                type: "PAGE_ADD"
+                type: "PAGE_ADD",
+                isTextPage
             })
         }
     }

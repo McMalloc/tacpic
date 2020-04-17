@@ -115,6 +115,12 @@ const file = (state = {}, action) => {
                 ...state,
                 [action.key]: action.value
             };
+        case 'CHANGE_BRAILLEPAGE':
+            let {marginTop, marginLeft} = action.braillePages;
+            return {
+              ...state,
+              braillePages: {}
+            };
         case FILE.OPEN.SUCCESS:
             let current_file = {...initialEditor.file};
             for (let [key, value] of Object.entries(action.data)) { // assign new values, keep defaults
@@ -140,7 +146,7 @@ const file = (state = {}, action) => {
             return oldState;
         case 'PAGE_ADD':
             oldState = {...state};
-            oldState.pages.push({name: 'Seite ' + (oldState.pages.length + 1), objects: []});
+            oldState.pages.push({name: 'Seite ' + (oldState.pages.length + 1), objects: [], text: action.isTextPage});
             return {...state, file};
         case 'OBJECTS_GROUPED':
             oldState = {...state};

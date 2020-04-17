@@ -1,18 +1,23 @@
 import React, {useEffect} from 'react';
 import Editor from './components/editor/Editor';
-import {BrowserRouter, Route, Link, Switch} from 'react-router-dom'
+import {BrowserRouter, Route, Link, Switch, history} from 'react-router-dom'
 import Login from "./components/Login";
 import {useTranslation} from 'react-i18next';
 import {Navbar, NavbarItem} from "./components/platform/Navbar";
 import Catalogue from "./components/platform/Catalogue";
 import Register from "./components/Register";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {TAGS, USER} from "./actions/constants";
 import AccountWidget from "./components/platform/AccountWidget";
 import styled from "styled-components";
 import SignupForm from "./components/SignupForm";
 import {Footer} from "./components/platform/Footer";
 import Landing from "./components/platform/Landing";
+import Account from "./components/platform/Account";
+import {CatalogueItemView, CatalogueItemViewModal} from "./components/platform/CatalogueItemView";
+import {Icon} from "./components/gui/_Icon";
+import {Modal} from "./components/gui/Modal";
+import {useHistory, useLocation} from "react-router";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -62,10 +67,16 @@ class ErrorBoundary extends React.Component {
     }
 }
 
+const Blank = () => {
+    return null;
+};
+
 const App = () => {
     const t = useTranslation().t;
 
+
     const dispatch = useDispatch();
+    // const history = useHistory();
     useEffect(() => {
         if (localStorage.getItem('jwt') === null) return;
         dispatch({
@@ -76,38 +87,41 @@ const App = () => {
     const navbarItems = [
         {label: t("general:catalogue"), to: '/catalogue'},
         {label: 'Editor', to: '/editor/new'},
-        {label: 'Wissen', to: '/knowledge'},
-        {label: 'Häufige Fragen', to: '/faq'}
+        // {label: 'Wissen', to: '/knowledge'},
+        // {label: 'Häufige Fragen', to: '/faq'}
     ];
 
     return (
-        <BrowserRouter>
+        <>
             <Wrapper>
                 <Navbar items={navbarItems}/>
                 <ScrollContent className="App">
+
                     <Main>
                         <ErrorBoundary>
-                        <Switch>
-                            {/*Renders exclusivly*/}
-                            {/*<Route path="/login" component={Login}/>*/}
-                            <Route path="/register" component={Register}/>
-                            <Route path="/login" component={Login}/>
-                            <Route path="/editor/:graphic_id?/variants/:variant_id?" component={Editor}/>
-                            <Route path="/editor/:graphic_id?" component={Editor}/>
-                            <Route path="/editor/new" component={Editor}/>
-                            {/*<Route path="/private-catalogue/:graphic_id/variant/:variant_id/edit" component={Editor}/>*/}
-                            <Route path="/catalogue" component={Catalogue}/>
-                            <Route path="/signup" component={SignupForm}/>
-                            <Route path="/catalogue" render={() => <Catalogue private={true}/>}/>
-                            <Route path="/" component={Landing} />
-                        </Switch>
+                            <Switch>
+                                {/*Renders exclusivly*/}
+                                {/*<Route path="/register" component={Register}/>*/}
+                                <Route path="/login" component={Login}/>
+                                <Route path="/account" component={Account}/>
+                                <Route path="/editor/:graphic_id?/variants/:variant_id?" component={Editor}/>
+                                <Route path="/editor/:graphic_id?" component={Editor}/>
+                                <Route path="/editor/new" component={Editor}/>
+                                {/*<Route path="/private-catalogue/:graphic_id/variant/:variant_id/edit" component={Editor}/>*/}
+                                <Route path="/catalogue" component={Catalogue}/>
+                                <Route path="/signup" component={SignupForm}/>
+                                <Route path="/catalogue" render={() => <Catalogue private={true}/>}/>
+
+                                <Route path="/" component={Landing}/>
+                                <Route component={Blank}/>
+                            </Switch>
                         </ErrorBoundary>
                     </Main>
                     <Footer></Footer>
                 </ScrollContent>
             </Wrapper>
 
-        </BrowserRouter>
+        </>
     );
 };
 
