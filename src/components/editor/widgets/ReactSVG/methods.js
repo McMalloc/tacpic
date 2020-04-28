@@ -127,7 +127,6 @@ const defaultGetClientBox = object => {
 };
 
 const getBBox = object => {
-    console.log(document.getElementById(object.uuid).getBBox());
     return document.getElementById(object.uuid).getBBox();
 };
 

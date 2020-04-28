@@ -96,9 +96,10 @@
     "toggle_tools-RECT": "Rechteck",
     "toggle_tools-ELLIPSE": "Ellipse",
     "toggle_tools-LINE": "Linie",
-    "toggle_tools-CUBIC": "Kubische Kurve",
+    "toggle_tools-CUBIC": "Kurve",
     "toggle_tools-QUADRATIC": "Quadratische Kurve",
     "toggle_tools-LABEL": "Beschriftung",
+    "toggle_tools-DRAW": "Zeichnen",
     "button_tools-diagram": "Diagramm",
     "toggle_tools-SELECT": "Auswählen",
 

@@ -390,13 +390,11 @@ class InteractiveSVG extends Component {
             let preview = this.state.preview;
             switch (preview.type) {
                 case 'path':
-                    if (this.state.pathClosing) {
                         this.props.addObject(this.state.preview);
                         this.setState({
                             preview: null,
                             pathClosing: false
                         });
-                    }
                     break;
                 case 'ellipse':
                 case 'rect':
