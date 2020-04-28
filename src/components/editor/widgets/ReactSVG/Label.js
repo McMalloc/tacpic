@@ -8,7 +8,7 @@ import {connect, useDispatch, useSelector} from "react-redux";
 
 const Braille = styled.div`
   line-height: 12mm;
-  font-family: "HBS6";
+  font-family: ${props => props.system === 'cb' ? "HBS8" : "HBS6"};
   position: absolute;
   z-index: -1;
   width: 100%;
@@ -71,6 +71,9 @@ const exitEditMode = (dispatch, uuid) => {
 const Label = props => {
     const dispatch = useDispatch();
     const previewMode = useSelector(state => state.editor.ui.previewMode);
+    const system = useSelector(
+        state => state.editor.file.system
+    );
 
     return (
         <g data-transformable={1}
@@ -92,6 +95,7 @@ const Label = props => {
                     {props.displayDots &&
                     <Braille
                         preview={previewMode}
+                        system={system}
                         xmlns="http://www.w3.org/1999/xhtml"
                         offset={props.displayLetters}
                         id={'braille_' + props.uuid}>

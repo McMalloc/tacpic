@@ -96,9 +96,9 @@ const defaultTranslate = (object, x, y) => {
 // TODO: funktioniert noch nciht für Pfade / falscher Origin
 const defaultRotate = (object, deltaX, deltaY) => {
     if (deltaY + deltaX < 0) {
-        object.angle += Math.min(deltaY, deltaX);
+        object.angle += Math.min(deltaY, deltaX)*0.2;
     } else {
-        object.angle += Math.max(deltaY, deltaX);
+        object.angle += Math.max(deltaY, deltaX)*0.2;
     }
 
     return object;
@@ -127,6 +127,7 @@ const defaultGetClientBox = object => {
 };
 
 const getBBox = object => {
+    console.log(document.getElementById(object.uuid).getBBox());
     return document.getElementById(object.uuid).getBBox();
 };
 
@@ -286,11 +287,13 @@ const methods = {
         rotate: defaultRotate,
         scale: defaultScale,
         getClientBox: defaultGetClientBox,
+        getBBox: rectGetBBox,
         create: createEllipse
     },
     label: {
         translate: defaultTranslate,
         getClientBox: defaultGetClientBox,
+        getBBox: rectGetBBox,
         scale: defaultScale,
         create: createLabel,
         rotate: label => label // id function, labels shouldn't be rotated

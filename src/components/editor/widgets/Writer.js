@@ -1,35 +1,60 @@
 import React, {Component, useEffect} from 'react';
 import styled from 'styled-components';
-
-// const Widget = styled.div`
-//   position: relative;
-//   height: 300px;
-// `;
+import {useDispatch, useSelector} from "react-redux";
+import {Upper} from "../../gui/WidgetContainer";
+import {Multiline} from "../../gui/Input";
+import {wrapLines} from "../../../utility/wrapLines";
 
 const Wrapper = styled.div`
   flex: 1 1 auto;
   z-index: 0;
 `;
 
-const Textarea = styled.textarea`
-  height: 100%;
-  padding-right: ${(21/29) * 100}%;
+const Textarea = styled(Multiline)`
+  //height: 100%;
   resize: none;
+  width: 100%;
+  height: 90%;
+  box-sizing: border-box;
 `;
 
+const changeText = (dispatch, text, pageIndex, cellsPerRow) => {
+    let wrapped = [];
+    wrapLines(text, cellsPerRow, true, wrapped);
+    dispatch({
+        type: 'CHANGE_PAGE_CONTENT',
+        content: text,
+        formattedContent: wrapped.join("\n"),
+        pageIndex
+    });
+};
+
 const Writer = props => {
-    let textAreaHeight = 0;
-    useEffect(() => {
-        textAreaHeight = document.getElementById("writer-textarea").offsetHeight;
-    }, []);
-
-    console.log(textAreaHeight * (210 / 290));
+    const dispatch = useDispatch();
+    const currentPageIndex = useSelector(
+        state => state.editor.ui.currentPage
+    );
+    const page = useSelector(
+        state => state.editor.file.pages[currentPageIndex]
+    );
+    const layout = useSelector(
+        state => state.editor.file.braillePages
+    );
+    let wrapped = [];
+    wrapLines(page.braille, layout.cellsPerRow, true, wrapped);
     return (
-        <Wrapper>
-            <Textarea height={textAreaHeight} id={"writer-textarea"} />
-        </Wrapper>
+        <>
+            <Upper>
+                <Textarea
+                    value={page.content}
+                    onChange={event => changeText(dispatch, event.target.value, currentPageIndex, layout.cellsPerRow)}
+                    id={"writer-textarea"}/>
+                <pre>
+                    {wrapped.join("\n")}
+                </pre>
+            </Upper>
+        </>
     )
-
 };
 
 export default Writer;

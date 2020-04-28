@@ -152,6 +152,7 @@ class InteractiveSVG extends Component {
         //  src/components/editor/widgets/ReactSVG/InteractiveSVG.js:105
         // https://stackoverflow.com/questions/39245488/event-path-undefined-with-firefox-and-vue-js
         let target = event.nativeEvent.path[0];
+        console.log(target);
         // check if a group was the actual target since the event first fires
         // on visible elements, and later bubbles up to the group
         for (let i = 0; i < event.nativeEvent.path.length; i++) {
@@ -182,13 +183,20 @@ class InteractiveSVG extends Component {
             this.props.ui.selectedObjects.length !== 0 && this.props.unselect();
         }
         if (target.dataset.role === 'ROTATE') {
+            console.log("rotate");
             this.setState({transform: 'rotate'});
         }
         if (target.dataset.role === 'SCALE') {
             this.setState({transform: 'scale'});
         }
+        if (target.dataset.transformable) {
+
+            // TODO nicht für Pfadsegmente
+            this.setState({transform: 'translate'});
+        }
         let selectedSelf = false;
         let selectedId = null;
+
         if (target.dataset.selectable) {
             if (this.state.preview !== null) {
                 if (findObject(
@@ -201,11 +209,8 @@ class InteractiveSVG extends Component {
             selectedId = target.id;
             this.props.select([selectedId]);
         }
-        if (target.dataset.transformable) {
-            // TODO nicht für Pfadsegmente
-            this.setState({transform: 'translate'});
-        }
 
+        // editing of path
         if (this.state.preview !== null) {
             let preview = this.state.preview;
 
@@ -238,8 +243,9 @@ class InteractiveSVG extends Component {
             }
 
             this.setState({pathClosing: selectedSelf || (target.dataset.role === 'CLOSE-PATH')});
-        } else {
+        } else { // creating of new object
             switch (this.props.ui.tool) {
+                case 'ELLIPSE':
                 case 'RECT':
                     // check if either a previously selected object or the object selected in this callback is relevant
                     // for transformation
@@ -249,7 +255,7 @@ class InteractiveSVG extends Component {
 
                     if (uuid === null || unselected) { // nothing is selected
                         this.setState({
-                            preview: methods.rect.create(
+                            preview: methods[this.props.ui.tool.toLowerCase()].create(
                                 Math.min(mouseDownX, this.state.mouseOffsetX),
                                 Math.min(mouseDownY, this.state.mouseOffsetY),
                                 Math.abs(this.state.mouseOffsetX - mouseDownX),
@@ -259,117 +265,23 @@ class InteractiveSVG extends Component {
                             transform: 'scale'
                         });
                     } else {
-                        this.setState({
-                            preview: findObject(this.props.file.pages[this.props.ui.currentPage].objects, uuid),
-                            transform: 'translate'
-                        });
+                        // this.setState({
+                        //     preview: findObject(this.props.file.pages[this.props.ui.currentPage].objects, uuid),
+                        //     transform: 'translate'
+                        // });
                     }
 
                     break;
+                case 'DRAW':
+                    this.setState({
+                        preview: methods.path.create(
+                            Math.min(mouseDownX, this.state.mouseOffsetX),
+                            Math.min(mouseDownY, this.state.mouseOffsetY)
+                        )
+                    });
+                    break;
+                default: break;
             }}
-
-        /*
-
-        if (target.dataset.transformable) {
-            // TODO nicht für Pfadsegmente
-            this.setState({transform: 'translate'});
-        }
-
-        // Die Abfrage muss eventuell anders erfolgen: Ein Pfad ist eventuell auch geöffnet und bereits abgeschlossen,
-        // außerdem ist ein bereits abgeschlossener Pfad vielleicht auch Ziel eines weiteren Vertex.
-        // Allerdings: ein Klick auf den Canvas deselektiert im Moment ein Objekt.
-        if (this.state.edit !== null) {
-            if (target.dataset.role === 'EDIT-PATH') { // change vertices
-
-                this.setState({
-                    edit: {
-                        index: parseInt(target.dataset.index),
-                        param: parseInt(target.dataset.param),
-                        uuid: this.state.edit.uuid
-                    }
-                })
-
-            } else { // add additional vertices
-                // TODO M lässt sich nicht verschieben, weil ein Klick darauf zum Schließen
-                //  des Pfades registriert wird
-                // TODO Schließen des Pfades durch Klick auf M muss den letzten Punkt auf M
-                //  setzen
-                let pathClosing = target.dataset.role === 'CLOSE-PATH';
-                this.setState({pathClosing});
-
-                let currentPath = findObject(this.props.file.pages[this.props.ui.currentPage].objects, this.state.edit.uuid); // TODO in externes Modul auslagern
-
-                if (this.props.ui.tool === 'LINEAR') {
-                    let appendedPath = methods.path.addPoint(
-                        currentPath,
-                        [mouseDownX, mouseDownY],
-                        'L');
-
-                    this.setState({
-                        edit: {
-                            uuid: appendedPath.uuid,
-                            index: appendedPath.points.length - 1,
-                            param: 0
-                        }
-                    });
-
-                    this.props.changeProp(appendedPath.uuid, 'points',
-                        appendedPath.points
-                    );
-                } else if (this.props.ui.tool === 'QUADRATIC') {
-                    let appendedPath = methods.path.addPoint(
-                        currentPath,
-                        [mouseDownX, mouseDownY],
-                        'Q');
-
-                    this.setState({
-                        edit: {
-                            uuid: appendedPath.uuid,
-                            index: appendedPath.points.length - 1,
-                            param: 0
-                        }
-                    });
-
-                    this.props.changeProp(appendedPath.uuid, 'points',
-                        appendedPath.points
-                    );
-                } else if (this.props.ui.tool === 'CUBIC') {
-                    let appendedPath = methods.path.addPoint(
-                        currentPath,
-                        [mouseDownX, mouseDownY],
-                        'C');
-
-                    this.setState({
-                        edit: {
-                            uuid: appendedPath.uuid,
-                            index: appendedPath.points.length - 1,
-                            param: 2
-                        }
-                    });
-
-                    this.props.changeProp(appendedPath.uuid, 'points',
-                        appendedPath.points
-                    );
-                }
-            }
-
-
-        }
-
-        if (this.props.ui.tool === 'DRAW' && !target.dataset.transformable) {
-            let path = methods.path.create(
-                mouseDownX,
-                mouseDownY,
-                this.props.ui.texture,
-                this.props.ui.fill
-            );
-
-            this.setState({
-                preview: path
-            });
-        }
-
-         */
     };
 
     mouseUpHandler = event => {
@@ -564,6 +476,16 @@ class InteractiveSVG extends Component {
             let preview = this.state.preview;
             switch (preview.type) {
                 case 'path':
+
+                    preview = methods.path.addPoint(
+                        preview,
+                        [this.state.mouseOffsetX, this.state.mouseOffsetY],
+                        'L');
+
+                    this.setState({
+                        preview
+                    });
+                    break;
                     // let kind = preview.points[this.state.edit.index].kind;
                     // after moving the mouse after setting the point, turn it into a C once
                     if (preview.points.length -1 === this.state.edit.index) {

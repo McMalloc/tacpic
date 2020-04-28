@@ -30,6 +30,32 @@ export function* labelWriteWatcher() {
     })
 }
 
+export function* contentEditWatcher() {
+    yield takeLatest('CHANGE_PAGE_CONTENT', function* (action) {
+        try {
+            let system = yield select(state => state.editor.file.system);
+            const response = yield call(() => {
+                return axios({
+                    method: 'POST',
+                    url: '/braille',
+                    data: {
+                        label: action.formattedContent,
+                        system
+                    }
+                });
+            });
+            yield put({
+                type: 'UPDATE_BRAILLE_CONTENT',
+                pageIndex: action.pageIndex,
+                braille: response.data
+            });
+        } catch (error) {
+            console.error(error);
+        }
+
+    })
+}
+
 export function* systemChangeWatcher() {
     yield takeLatest('DOCUMENT_PROP_CHANGED', function* (action) {
         if (action.prop === 'system') {

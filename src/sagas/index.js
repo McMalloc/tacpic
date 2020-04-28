@@ -17,7 +17,7 @@ import {
     formatToggledWatcher,
     systemToggledWatcher
 } from "./catalogue_saga";
-import {labelWriteWatcher, systemChangeWatcher} from "./label_translate_saga";
+import {contentEditWatcher, labelWriteWatcher, systemChangeWatcher} from "./label_translate_saga";
 
 const id = args => args;
 
@@ -57,8 +57,11 @@ export default function* root() {
         call(variantCreateSaga),
         call(localstorageWatcher),
         call(searchChangeWatcher),
+
         call(labelWriteWatcher),
+        call(contentEditWatcher),
         call(systemChangeWatcher),
+
         call(tagToggledWatcher),
         call(formatToggledWatcher),
         call(systemToggledWatcher)

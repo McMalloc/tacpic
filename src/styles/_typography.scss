@@ -20,6 +20,11 @@ body {
   src: url("/webfonts/hbs6brlvs-webfont.woff") format("woff");
 }
 
+@font-face {
+  font-family: "HBS8";
+  src: url("/webfonts/hbs8brlt-webfont.woff") format("woff");
+}
+
 button, input, textarea, select {
   font-family: "Roboto", sans-serif;
 }

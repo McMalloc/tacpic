@@ -19,6 +19,7 @@ import Objects from "./widgets/Objects";
 import Toolbox from "./widgets/Toolbox";
 import Context from "./widgets/Context/Context";
 import Writer from "./widgets/Writer";
+import BraillePage from "./widgets/BraillePage";
 
 const Wrapper = styled.div`
   display: flex;
@@ -168,8 +169,10 @@ const Editor = props => {
 
                     {page.text ?
                         <>
-                            <FixedSidebar><textarea /></FixedSidebar>
-                            <Writer/>
+                            <FixedSidebar>
+                                <Writer/>
+                            </FixedSidebar>
+                            <BraillePage />
                         </>
                         :
                         <>

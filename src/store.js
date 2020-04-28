@@ -67,20 +67,28 @@ export const initialEditor = {
         horizontalGridSpacing: 10,
         showVerticalGrid: false,
         showHorizontalGrid: false,
-        embosserWidth: 210,
+
         braillePages: {
             width: 210,
             height: 297,
             marginLeft: 1,
             marginTop: 1,
             cellsPerRow: 33,
-            rowsPerPage: 27
+            rowsPerPage: 27,
+            pageNumbers: 0
         },
         pages: [
             {
                 name: "Seite 1",
-                text: true, // TODO Textseiten werden anders behandelt, starres Braille-Layout
+                text: false,
                 objects: []
+            },
+            {
+                name: "Seite 2",
+                text: true, // TODO Textseiten werden anders behandelt, starres Braille-Layout
+                content: '',
+                formattedContent: '',
+                braille: ''
             }
         ]
     },

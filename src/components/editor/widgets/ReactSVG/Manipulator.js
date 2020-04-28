@@ -39,6 +39,7 @@ const Manipulator = props => {
             return obj.uuid === uuid
         })
     }));
+
     const {scalingFactor, viewPortX, viewPortY} = useSelector(state => state.editor.ui);
     const dispatch = useDispatch();
 
@@ -78,9 +79,9 @@ const Manipulator = props => {
         <g transform={transformProperty}>
             <rect
                 fill={"transparent"}
-                stroke={'rgba(0,0,255,0.7)'}
-                strokeWidth={3}
-                strokeDasharray={"5,5"}
+                stroke={'rgba(22,255,74,0.28)'}
+                strokeWidth={5}
+                // strokeDasharray={"5,5"}
                 data-transformable={1}
                 data-role={"MANIPULATOR"}
                 onDoubleClick={() => doubleClickHandler(dispatch, selected, props.onModeChange)}

@@ -134,6 +134,8 @@ const Numberinput = props => {
                 <Input disabled={props.disabled}
                        inline={props.inline}
                        type={"number"}
+                       min={props.min}
+                       max={props.max}
                        name={props.name}
                        value={props.value}
                        onChange={props.onChange}/>

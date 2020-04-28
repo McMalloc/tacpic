@@ -9,6 +9,7 @@ import {Upper} from "../../gui/WidgetContainer";
 import Tooltip from "../../gui/Tooltip";
 import Tabs from "../../gui/Tabs";
 import styled from 'styled-components';
+import {Alert} from "../../gui/Alert";
 
 const changeFileProperty = (dispatch, key, value) => {
     dispatch({
@@ -16,6 +17,14 @@ const changeFileProperty = (dispatch, key, value) => {
         key, value
     })
 };
+
+const changeBraillePageProperty = (dispatch, key, value) => {
+    dispatch({
+        type: "CHANGE_BRAILLE_PAGE_PROPERTY",
+        key, value
+    })
+};
+
 const toggleDefaultTitle = (dispatch, state) => {
     dispatch({
         type: "DEFAULT_TITLE_TOGGLE",
@@ -49,6 +58,8 @@ const Document = props => {
         showVerticalGrid,
         showHorizontalGrid,
         title,
+        width,
+        height,
         system,
         defaultTitle,
         braillePages
@@ -191,34 +202,51 @@ const Document = props => {
                     </div>
                     <div className={"col-sm-12"}>
                         <PageGrid>
-                            <GridCell></GridCell>
-                            <GridCell><Numberinput
+                            <GridCell>
+                                {/*<Alert info>*/}
+                                Für A4-Seiten gilt:<br/>
+                                <strong>Max. 28 Zeilen pro Seite<br/>
+                                    max. 34 Zeichen pro Zeile</strong>
+                                {/*</Alert>*/}
+
+                            </GridCell>
+                            <GridCell>
+                                <Numberinput
                                 onChange={event => {
-                                    changeFileProperty(dispatch, 'embosserMarginTop', event.currentTarget.value)
+                                    changeBraillePageProperty(dispatch, 'marginTop', event.currentTarget.value)
                                 }}
                                 value={braillePages.marginTop}
+                                max={Math.min(height === 297 && 28, 10)}
+                                min={0}
                                 sublabel={"in Zeilen"}
                                 label={"Rand oben"}/>
+
                                 <Numberinput
                                     onChange={event => {
-                                        changeFileProperty(dispatch, 'embosserRowsPerPage', event.currentTarget.value)
+                                        changeBraillePageProperty(dispatch, 'rowsPerPage', event.currentTarget.value)
                                     }}
+                                    max={height === 297 && 28}
+                                    min={1}
                                     value={braillePages.rowsPerPage}
                                     label={"Zeilen pro Seite"}/>
                             </GridCell>
 
                             <GridCell><Numberinput
                                 onChange={event => {
-                                    changeFileProperty(dispatch, 'embosserMarginLeft', event.currentTarget.value)
+                                    changeBraillePageProperty(dispatch, 'marginLeft', event.currentTarget.value)
                                 }}
                                 value={braillePages.marginLeft}
+                                max={Math.min(width === 210 && 34, 10)}
+                                min={0}
                                 sublabel={"in Zellen"}
                                 label={"Rand links"}/>
 
                                 <Numberinput
                                     onChange={event => {
-                                        changeFileProperty(dispatch, 'embosserCellsPerRow', event.currentTarget.value)
+                                        changeBraillePageProperty(dispatch, 'cellsPerRow', event.currentTarget.value)
                                     }}
+                                    max={width === 210 && 34}
+                                    min={1}
                                     value={braillePages.cellsPerRow}
                                     label={"Zeichen pro Zeile"}/>
                             </GridCell>
@@ -270,7 +298,7 @@ const Document = props => {
 
             <Row>
                 <div className={"col-sm-12"}>
-                    <Select tip={"help:select_braille-system"} default={"de_k"}
+                    <Select tip={"help:select_braille-system"} default={"de-de-g0.utb"}
                             value={system}
                             onChange={selection => changeFileProperty(dispatch, 'system', selection.value)}
                             label={"editor:select_braille-system"} options={
@@ -278,7 +306,7 @@ const Document = props => {
                             {label: "Deutsch Kurzschrift", value: "de-de-g2.ctb"},
                             {label: "Deutsch Langschrift", value: "de-de-g1.ctb"},
                             {label: "Deutsch Vollschrift", value: "de-de-g0.utb"},
-                            // {label: "Computerbraille 8-Punkt DE Kurzschrift", value: "cb"}
+                            {label: "Computerbraille 8-Punkt DE Kurzschrift", value: "cb"}
                         ]
                     }/>
                 </div>

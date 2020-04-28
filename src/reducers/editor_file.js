@@ -5,6 +5,7 @@ import uuidv4 from "../utility/uuid";
 import deepPull from "../utility/deepPull";
 import {initialEditor} from "../store";
 import {findObject} from "../utility/findObject";
+import {produce} from "immer";
 
 // let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so || rausnehmen, da jetzt vom internen State des Editors verwaltet, ODER?
 const getSelectedObjects = (objects, selected) => {
@@ -115,12 +116,47 @@ const file = (state = {}, action) => {
                 ...state,
                 [action.key]: action.value
             };
-        case 'CHANGE_BRAILLEPAGE':
-            let {marginTop, marginLeft} = action.braillePages;
-            return {
-              ...state,
-              braillePages: {}
-            };
+        case 'CHANGE_BRAILLE_PAGE_PROPERTY':
+            let value = parseInt(action.value);
+            const {marginTop, marginLeft, rowsPerPage, cellsPerRow, width, height} = state.braillePages;
+
+            return produce(state, draftState => {
+                draftState.braillePages[action.key] = value;
+
+                if (width === 210 && height === 297) {
+                    switch (action.key) {
+                        case "marginTop":
+                            if (value + rowsPerPage > 28) draftState.braillePages.rowsPerPage = 28 - value;
+                            break;
+                        case "rowsPerPage":
+                            if (marginTop + value > 28) draftState.braillePages.marginTop = 28 - value;
+                            break;
+                        case "marginLeft":
+                            if (value + cellsPerRow > 34) draftState.braillePages.cellsPerRow = 34 - value;
+                            break;
+                        case "cellsPerRow":
+                            if (marginLeft + value > 34) draftState.braillePages.marginLeft = 34 - value;
+                            break;
+                    }
+                }
+            });
+
+        case 'CHANGE_PAGE_CONTENT':
+            let pageContent = action.content;
+
+            return produce(state, draftState => {
+                draftState.pages[action.pageIndex].content = action.content;
+                // draftState.pages[action.pageIndex].content = pageContent.replace(rowRegex,"$1\n");
+            });
+        case 'UPDATE_BRAILLE_CONTENT':
+            // called when the saga has finished processing the remote braille translation
+            return produce(state, draftState => {
+                draftState.pages[action.pageIndex].braille = action.braille;
+            });
+        case 'UPDATE_BULK_BRAILLE_CONTENT':
+            return produce(state, draftState => {
+                draftState.pages[action.pageIndex].braille = action.braille;
+            });
         case FILE.OPEN.SUCCESS:
             let current_file = {...initialEditor.file};
             for (let [key, value] of Object.entries(action.data)) { // assign new values, keep defaults
@@ -145,9 +181,19 @@ const file = (state = {}, action) => {
 
             return oldState;
         case 'PAGE_ADD':
-            oldState = {...state};
-            oldState.pages.push({name: 'Seite ' + (oldState.pages.length + 1), objects: [], text: action.isTextPage});
-            return {...state, file};
+            return produce(state, draftState => {
+                let newPage = {
+                    name: 'Seite ' + (state.pages.length + 1),
+                    text: action.isTextPage
+                };
+                if (action.isTextPage) {
+                    newPage.content = '';
+                    newPage.braille = '';
+                } else {
+                    newPage.objects = [];
+                }
+                draftState.pages.push(newPage);
+            });
         case 'OBJECTS_GROUPED':
             oldState = {...state};
 

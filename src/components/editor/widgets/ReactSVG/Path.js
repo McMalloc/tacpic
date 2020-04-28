@@ -32,7 +32,7 @@ export default function SVGPath(props) {
                 strokeLinecap={"butt"}
                 style={
                     {
-                        fill: props.pattern.template !== null ? 'url(#pattern-' + props.pattern.template + '-' + props.uuid + '' : props.fill || "transparent",
+                        fill: props.pattern.template !== null ? 'url(#pattern-' + props.pattern.template + '-' + props.uuid + '' : props.fill || "none",
                         // cursor: 'pointer'
                     }
                     }

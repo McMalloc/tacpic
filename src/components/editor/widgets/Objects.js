@@ -17,6 +17,7 @@ const ButtonSet = styled.div`
 
 class Objects extends Component {
     render() {
+        if (!this.props.objects) return null;
         return (
             <>
                 <Upper>
