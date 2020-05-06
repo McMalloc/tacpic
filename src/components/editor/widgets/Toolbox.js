@@ -32,7 +32,7 @@ class Toolbox extends Component {
         return (
             <Upper>
                 <Toolbar>
-                    {["SELECT", "RECT", "ELLIPSE", "CUBIC", /*"QUADRATIC",*/ "LABEL", "DRAW", /*"LINE"*/].map((tool, index) => {
+                    {["SELECT", "RECT", "ELLIPSE", "CUBIC", /*"QUADRATIC",*/ "LABEL", "PATH", /*"LINE"*/].map((tool, index) => {
                         return (
                             <ToolboxToggle key={index}>
                             <Toggle

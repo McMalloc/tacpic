@@ -78,7 +78,7 @@ const Manipulator = props => {
     return (
         <g transform={transformProperty}>
             <rect
-                fill={"transparent"}
+                fill={"none"}
                 stroke={'rgba(22,255,74,0.28)'}
                 strokeWidth={5}
                 // strokeDasharray={"5,5"}

@@ -22,12 +22,12 @@ const createRect = (x = 0, y = 0, width = 100, height = 100, template = 'striped
 };
 
 const rectGetBBox = rect => {
-  return {
-      x: rect.x,
-      y: rect.y,
-      width: rect.width,
-      height: rect.height,
-  }
+    return {
+        x: rect.x,
+        y: rect.y,
+        width: rect.width,
+        height: rect.height,
+    }
 };
 
 const createEllipse = (x = 0, y = 0, width = 100, height = 100, template = 'striped', fill = 'white') => {
@@ -53,6 +53,7 @@ const createLabel = (x = 0, y = 0, width = 100, height = 100, text = 'Neue Besch
         moniker: "Beschriftung",
         displayDots: true,
         displayLetters: true,
+        smooth: true,
         editMode: true,
         isKey: false,
         keyVal: '',
@@ -65,7 +66,8 @@ const createLabel = (x = 0, y = 0, width = 100, height = 100, text = 'Neue Besch
 const createPath = (x = 0, y = 0, template = null, fill = null, moniker = "Kurve") => {
     return {
         uuid: uuidv4(),
-        angle: 0, x: 0, y: 0,
+        angle: 0,
+        x: 0, y: 0,
         moniker,
         editMode: true,
         border: true,
@@ -87,6 +89,11 @@ const createPath = (x = 0, y = 0, template = null, fill = null, moniker = "Kurve
     }
 };
 
+const translatePath = (path, offsetX, offsetY) => {
+    let translatedPath;
+    return path;
+};
+
 const defaultTranslate = (object, x, y) => {
     object.x += x;
     object.y += y;
@@ -96,14 +103,15 @@ const defaultTranslate = (object, x, y) => {
 // TODO: funktioniert noch nciht für Pfade / falscher Origin
 const defaultRotate = (object, deltaX, deltaY) => {
     if (deltaY + deltaX < 0) {
-        object.angle += Math.min(deltaY, deltaX)*0.2;
+        object.angle += Math.min(deltaY, deltaX) * 0.2;
     } else {
-        object.angle += Math.max(deltaY, deltaX)*0.2;
+        object.angle += Math.max(deltaY, deltaX) * 0.2;
     }
 
     return object;
 };
 
+// TODO scaling für Rechtecke: http://phrogz.net/svg/drag_under_transformation.xhtml
 const defaultScale = (object, offsetX, offsetY) => {
     object.width += offsetX;
     object.height += offsetY;
@@ -127,7 +135,21 @@ const defaultGetClientBox = object => {
 };
 
 const getBBox = object => {
-    return document.getElementById(object.uuid).getBBox();
+    let elem = document.getElementById(object.uuid);
+    if (!!elem) {
+        return elem.getBBox();
+    } else {
+        return {x: 0, y: 0, width: 0, height: 0}
+    }
+};
+
+const getPathBBox = path => {
+    // paths need to add their translation parameters to the bbox because
+    // the native getBBox() method will not measure in transform properties
+    let bbox = getBBox(path);
+    bbox.x += path.x;
+    bbox.y += path.y;
+    return bbox;
 };
 
 // TODO durch den Abstand des Reliefs zum Rand ist die bbox verfälscht, muss abgezogen werden
@@ -158,44 +180,9 @@ export const combineBBoxes = (objects, transformed = true) => {
 
 // TODO explizit C statt S anlegen, um späteres verändern zu vereinfachen
 const addPoint = (path, mouseCoords, kind) => {
-    let coords = [];
-    if ((kind === 'S' || kind === 'Q') && mouseCoords.length === 2) {
-        coords[0] = mouseCoords[0];
-        coords[2] = mouseCoords[0];
-        coords[1] = mouseCoords[1];
-        coords[3] = mouseCoords[1];
-    } else if (kind === 'C' && mouseCoords.length === 2) {
-        // add mirroring control point, act as if the point was a 'S'
-        if (path.points.length >= 1) {
-            let lastPoint = path.points[path.points.length - 1];
-            if (lastPoint.kind === 'C') {
-                let mirrored = mirrorPoint(lastPoint.coords[2], lastPoint.coords[3], lastPoint.coords[4], lastPoint.coords[5]);
-                coords[0] = mirrored.x;
-                coords[1] = mirrored.y;
-            } else if (lastPoint.kind === 'Q') {
-                let mirrored = mirrorPoint(lastPoint.coords[0], lastPoint.coords[1], lastPoint.coords[2], lastPoint.coords[3]);
-                coords[0] = mirrored.x;
-                coords[1] = mirrored.y;
-            } else if (lastPoint.kind === 'M') {
-                coords[0] = path.points[0].coords[0];
-                coords[1] = path.points[0].coords[1];
-            }
-        } else { // starting point of a path, M
-            coords[0] = path.points[0].coords[0];
-            coords[1] = path.points[0].coords[1];
-        }
-        coords[2] = mouseCoords[0];
-        coords[3] = mouseCoords[1];
-        coords[4] = mouseCoords[0];
-        coords[5] = mouseCoords[1];
-    } else if (kind === 'L' && mouseCoords.length === 2) {
-        coords[0] = mouseCoords[0];
-        coords[1] = mouseCoords[1];
-    }
-
     path.points.push({
         kind,
-        coords
+        coords: [mouseCoords[0], mouseCoords[1]]
     });
     return path;
 };
@@ -229,17 +216,16 @@ const smoothCubicPoint = (path, index) => {
 };
 
 const cosOfDegs = degs => {
-  return Math.cos(degs*(Math.PI/180));
+    return Math.cos(degs * (Math.PI / 180));
 };
 
 const sinOfDegs = degs => {
-  return Math.sin(degs*(Math.PI/180));
+    return Math.sin(degs * (Math.PI / 180));
 };
 
 const selectionRotate = (objects, deltaX, deltaY) => {
     const selectionBox = combineBBoxes(objects, false);
     objects.forEach(object => {
-
         // fuck it
         methods[object.type].rotate(object, deltaX, deltaY);
         // object.angle = 10;
@@ -248,9 +234,6 @@ const selectionRotate = (objects, deltaX, deltaY) => {
 
         let offsetX = x;// - selectionBox.x - selectionBox.width/2;
         let offsetY = y;// - selectionBox.y - selectionBox.height/2;
-
-        console.log(x, selectionBox.x - selectionBox.width/2);
-        console.log("angle: ", angle);
 
         object.x = offsetX * cosOfDegs(angle) - offsetX * sinOfDegs(angle);// + selectionBox.x + selectionBox.width/2;
         object.y = offsetY * sinOfDegs(angle) + offsetY * cosOfDegs(angle);// + selectionBox.x + selectionBox.width/2;
@@ -273,10 +256,12 @@ const methods = {
     },
     path: {
         translate: defaultTranslate,
+        // translate: translatePath,
         rotate: defaultRotate,
+        scale: p=>p,
         getClientBox: defaultGetClientBox,
         create: createPath,
-        getBBox: getBBox,
+        getBBox: getPathBBox,
         addPoint,
         smoothCubicPoint,
         changePoint

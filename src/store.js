@@ -19,7 +19,7 @@ const initialLayout = 4;
 const fromLS = JSON.parse(localStorage.getItem("custom_layout_" + initialLayout));
 export const initialEditor = {
     ui: {
-        tool: 'DRAW',
+        tool: 'PATH',
         texture: 'striped',
         fill: "#1f78b4",
         mouseCoords: {

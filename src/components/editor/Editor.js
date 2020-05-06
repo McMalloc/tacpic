@@ -127,7 +127,7 @@ const Editor = props => {
     };
 
     const [showPages, togglePages] = useState(false);
-    const [showObjects, toggleObjects] = useState(false);
+    const [showObjects, toggleObjects] = useState(true);
 
     if (uiSettings.initialized) {
         return (

@@ -8,6 +8,7 @@ import SVGLine from "./Line";
 
 // TODO props.uuid als index?
 export default function mapObject(props, index) {
+    if (!props) return null;
     switch (props.type) {
         case "rect":
             return <SVGRect key={index} {...props} />;
@@ -20,7 +21,7 @@ export default function mapObject(props, index) {
                 </SVGGroup>
             );
         case "path":
-            return <SVGPath key={index} {...props} />;
+            return <SVGPath key={index} {...props} inPreview={index === -1}/>;
         case "line":
             return <SVGLine key={index} {...props} />;
         case "ellipse":
