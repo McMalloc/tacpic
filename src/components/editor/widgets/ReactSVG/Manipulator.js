@@ -79,8 +79,8 @@ const Manipulator = props => {
         <g transform={transformProperty}>
             <rect
                 fill={"none"}
-                stroke={'rgba(22,255,74,0.28)'}
-                strokeWidth={5}
+                stroke={'rgba(22,180,74,0.7)'}
+                strokeWidth={1}
                 // strokeDasharray={"5,5"}
                 data-transformable={1}
                 data-role={"MANIPULATOR"}
@@ -90,12 +90,14 @@ const Manipulator = props => {
             />
             {selected.length === 1 &&
             <>
+                {selected[0].type !== 'path' &&
                 <rect
                     x={width / 2 - 5}
                     style={{cursor: "pointer"}}
                     data-role={"ROTATE"}
                     y={-10}
                     width={10} height={10}/>
+                }
 
                 <rect
                     x={width - 5}

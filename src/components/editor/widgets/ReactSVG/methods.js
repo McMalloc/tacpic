@@ -1,8 +1,8 @@
 import {transformCoords} from "./transform";
-import {mirrorPoint} from "../../../../utility/geometry";
+import {cosOfDegs, getMirrorPoint, sinOfDegs} from "../../../../utility/geometry";
 import uuidv4 from "../../../../utility/uuid";
 
-const createRect = (x = 0, y = 0, width = 100, height = 100, template = 'striped', fill = 'white') => {
+const createRect = (x = 0, y = 0, width = 100, height = 100, template = 'diagonal_lines', fill = 'white') => {
     return {
         uuid: uuidv4(),
         x, y, width, height, fill,
@@ -30,7 +30,7 @@ const rectGetBBox = rect => {
     }
 };
 
-const createEllipse = (x = 0, y = 0, width = 100, height = 100, template = 'striped', fill = 'white') => {
+const createEllipse = (x = 0, y = 0, width = 100, height = 100, template = 'diagonal_lines', fill = 'white') => {
     return {
         uuid: uuidv4(),
         x, y, width, height, fill,
@@ -74,6 +74,7 @@ const createPath = (x = 0, y = 0, template = null, fill = null, moniker = "Kurve
         borderWidth: 2,
         startArrow: false,
         endArrow: false,
+        closed: false,
         fill,
         pattern: {
             template,
@@ -152,6 +153,12 @@ const getPathBBox = path => {
     return bbox;
 };
 
+// get offset to path mid point for rotation purposes
+const getOffset = path => {
+    let bbox = getPathBBox(path);
+    return [bbox.width / 2 + bbox.x - path.x, bbox.height / 2 + bbox.y - path.y];
+};
+
 // TODO durch den Abstand des Reliefs zum Rand ist die bbox verfälscht, muss abgezogen werden
 export const combineBBoxes = (objects, transformed = true) => {
     let x1 = Infinity, y1 = Infinity, x2 = 0, y2 = 0;
@@ -203,24 +210,16 @@ const smoothCubicPoint = (path, index) => {
     const ref = path.points[index - 1].coords;
     if (path.points[index - 1].kind === 'M' || path.points[index - 1].kind === 'L')
         return changePoint(path, ref, index);
-    let mirrored = mirrorPoint(ref[2], ref[3], ref[4], ref[5]);
+    let mirrored = getMirrorPoint(ref[2], ref[3], ref[4], ref[5]);
     // if (ref.length === 2) {
     //     const prevRef = path.points[index - 2].coords;
-    //     mirrored = mirrorPoint(prevRef[0], prevRef[1], ref[0], ref[1])
+    //     mirrored = getMirrorPoint(prevRef[0], prevRef[1], ref[0], ref[1])
     //     // return changePoint(path, ref, index)
     // } else {
-    //     mirrored = mirrorPoint(ref[2], ref[3], ref[4], ref[5]);
+    //     mirrored = getMirrorPoint(ref[2], ref[3], ref[4], ref[5]);
     // }
-    // const mirrored = mirrorPoint(ref[ref.length - 3], ref[ref.length - 4], ref[ref.length - 1], ref[ref.length - 2]);
+    // const mirrored = getMirrorPoint(ref[ref.length - 3], ref[ref.length - 4], ref[ref.length - 1], ref[ref.length - 2]);
     return changePoint(path, [mirrored.x, mirrored.y], index);
-};
-
-const cosOfDegs = degs => {
-    return Math.cos(degs * (Math.PI / 180));
-};
-
-const sinOfDegs = degs => {
-    return Math.sin(degs * (Math.PI / 180));
 };
 
 const selectionRotate = (objects, deltaX, deltaY) => {
@@ -258,10 +257,11 @@ const methods = {
         translate: defaultTranslate,
         // translate: translatePath,
         rotate: defaultRotate,
-        scale: p=>p,
+        scale: p => p,
         getClientBox: defaultGetClientBox,
         create: createPath,
         getBBox: getPathBBox,
+        getOffset,
         addPoint,
         smoothCubicPoint,
         changePoint

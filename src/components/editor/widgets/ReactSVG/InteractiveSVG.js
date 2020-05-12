@@ -12,6 +12,7 @@ import methods, {combineBBoxes} from "./methods";
 import {init, transformCoords} from "./transform";
 import SVGGrid from "./Grid";
 import {findObject} from "../../../../utility/findObject";
+import {rotatePoint} from "../../../../utility/geometry";
 
 class InteractiveSVG extends Component {
     svgElement = React.createRef();
@@ -193,6 +194,7 @@ class InteractiveSVG extends Component {
         }
         if (target.dataset.role === 'ROTATE') this.setState({transform: 'rotate'});
         if (target.dataset.role === 'SCALE') this.setState({transform: 'scale'});
+        if (target.dataset.start) this.setState({pathClosing: true});
         if (target.dataset.transformable) this.setState({transform: 'translate'});
 
         if (target.dataset.role === 'EDIT-PATH') this.setState({
@@ -203,7 +205,7 @@ class InteractiveSVG extends Component {
         let selectedId = null;
 
         if (target.dataset.selectable) {
-            selectedId = target.id;
+            selectedId = target.id || target.dataset.uuid;
             this.props.select([selectedId]);
         }
 
@@ -231,7 +233,7 @@ class InteractiveSVG extends Component {
                     }
                     break;
                 case 'PATH':
-                    if (!target.dataset.transformable && !(target.dataset.role === 'EDIT-PATH')) {
+                    if (!target.dataset.transformable && target.dataset.role !== "SCALE" && target.dataset.role !== "ROTATE" && target.dataset.role !== "EDIT-PATH") {
                         this.setState({
                             preview: methods.path.create(
                                 Math.min(mouseDownX, this.state.mouseOffsetX),
@@ -246,15 +248,25 @@ class InteractiveSVG extends Component {
             }
         } else {
             if (this.state.preview.type === 'path') {
-                console.log("Set new linear point");
-                let lastPoint = this.state.preview.points[this.state.preview.points.length - 1].coords;
-                this.setState({
-                    preview: methods.path.addPoint(
-                        this.state.preview,
-                        [this.state.mouseOffsetX, this.state.mouseOffsetY],
-                        'L'
-                    )
-                });
+                if (target.dataset.start) {
+                    let closingPath = {...this.state.preview};
+                    closingPath.closed = true;
+                    this.props.updateObject(closingPath);
+                    this.setState({
+                        preview: null,
+                        edit: null,
+                        editIndex: 0
+                    });
+                } else {
+                    this.setState({
+                        preview: methods.path.addPoint(
+                            this.state.preview,
+                            [this.state.mouseOffsetX, this.state.mouseOffsetY],
+                            'L'
+                        )
+                    });
+                }
+
             }
         }
     };
@@ -273,7 +285,7 @@ class InteractiveSVG extends Component {
         const actuallyMoved = Math.abs(this.state.mouseDownX - this.state.mouseOffsetX) > 3 ||
             Math.abs(this.state.mouseDownY - this.state.mouseOffsetY) > 3;
 
-        if (this.state.preview !== null) { // set preview in stone (store)
+        if (this.state.preview !== null) { // set preview in stone (=store)
             if (this.props.ui.tool === 'PATH') {
                 if (this.state.transform !== null) {
                     this.props.updateObject(this.state.preview);
@@ -289,7 +301,9 @@ class InteractiveSVG extends Component {
             }
             if (this.state.edit !== null) {
                 this.setState({
-                    preview: null
+                    preview: null,
+                    edit: null,
+                    editIndex: -1
                 });
                 this.props.updateObject(this.state.preview);
             }
@@ -314,11 +328,6 @@ class InteractiveSVG extends Component {
                         break;
                 }
             }
-        }
-
-        // switch to selecting
-        if (event.nativeEvent.type === 'mouseup' && this.state.pathClosing) {
-            this.props.switchCursorMode('select');
         }
     };
 
@@ -373,10 +382,15 @@ class InteractiveSVG extends Component {
 
         // update preview of line drawing
         if (preview !== null && preview.type === 'path' && this.state.dragging && this.state.edit !== null) {
+
+            // TODO rotierte Pfade bearbeiten
+            // const [offsetX, offsetY] = methods.path.getOffset(preview);
+            // const [mx, my] = rotatePoint([mouseOffsetX - offsetX, mouseOffsetY - offsetY], -preview.angle);
             this.setState({
                 preview: methods.path.changePoint(
                     this.state.preview,
-                    [this.state.mouseOffsetX, this.state.mouseOffsetY],
+                    [mouseOffsetX - preview.x, mouseOffsetY - preview.y],
+                    // [mx + offsetX, my + offsetY],
                     this.state.editIndex
                 )
             });
@@ -391,7 +405,7 @@ class InteractiveSVG extends Component {
             preview = methods.path.addPoint(
                 preview,
                 [mouseOffsetX, mouseOffsetY],
-                'L');
+                'LF');
 
             this.setState({preview});
         }
@@ -606,6 +620,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             });
         },
         remove: uuids => {
+            if (uuids.length === 0) return;
+            dispatch({
+                type: 'OBJECT_SELECTED',
+                uuids: [null]
+            });
             dispatch({
                 type: 'OBJECT_REMOVED',
                 uuids

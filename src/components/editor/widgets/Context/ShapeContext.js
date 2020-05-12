@@ -73,7 +73,7 @@ const ShapeContext = props => {
 
                     <TexturePalette
                         disabled={nothingSelected}
-                        textures={[null, "striped", "bigdots", "dashed"]}
+                        textures={[null, "diagonal_lines", "full", "vertical_lines", "horizontal_lines", "dashed_lines", "grid", "stair"]}
                         selected={selectedObject.pattern.template}
                         onChange={pattern => changePattern(dispatch, selectedObject.uuid, pattern)}/>
 
@@ -155,6 +155,16 @@ const ShapeContext = props => {
                                               !selectedObject.endArrow)
                                       }}
                                       label={"Pfeilspitze am Ende"}/>
+                            <Checkbox name={"closed-path"}
+                                      checked={selectedObject.closed}
+                                      onChange={() => {
+                                          changeProp(
+                                              dispatch,
+                                              selectedObject.uuid,
+                                              'closed',
+                                              !selectedObject.closed)
+                                      }}
+                                      label={"Form schließen"}/>
                         </>
                     }
                 </fieldset>

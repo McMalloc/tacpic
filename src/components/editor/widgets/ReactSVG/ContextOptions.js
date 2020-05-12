@@ -38,7 +38,7 @@ class ContextOptions extends Component {
                 <legend>Relief</legend>
                 <TexturePalette
                     disabled={this.props.nothingSelected}
-                    textures={[null, "striped", "bigdots", "dashed"]}
+                    textures={[null]}
                     selected={this.props.selectedTexture}
                     onChange={this.changeTexture}/>
 

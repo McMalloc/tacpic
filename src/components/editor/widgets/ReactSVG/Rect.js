@@ -6,20 +6,21 @@ export default function SVGRect(props) {
     const template = props.pattern.template;
 
     // TODO kann das Übergeben von Mustern generalisiert werden?
-    let transformProperty = transform(props.x, props.y, props.angle, props.width, props.height);
+    const transformProperty = transform(props.x, props.y, props.angle, props.width, props.height);
     return (
         <g>
             <rect id={props.uuid}
+                  data-uuid={props.uuid}
                   transform={transformProperty}
                   style={
                       {
                           cursor: 'pointer',
-                          fill: template !== null ? 'url(#pattern-' + template + '-' + props.uuid + '' : props.fill || "transparent"
+                          fill: template !== null ? 'url(#pattern-' + template + '-' + props.uuid + '' : props.fill || "transparent",
+                          stroke: props.pattern.offset ? props.fill : "black",
+                          strokeWidth: props.border ? props.pattern.offset ? 20 : props.borderWidth : 0
                       }}
-                  strokeWidth={props.border ? props.pattern.offset ? 20 : props.borderWidth : 0}
                   data-transformable={1}
                   data-selectable={1}
-                  stroke={props.pattern.offset ? props.fill : "black"}
                   clipPath={props.pattern.offset ? "url(#clip-" + props.uuid + ")" : null}
                   width={props.width}
                   height={props.height}/>
@@ -48,11 +49,6 @@ export default function SVGRect(props) {
             }
 
             {template !== null && patternTemplates[template](props.pattern, props.uuid, props.fill)}
-
-            <text transform={transform(props.x + 2, props.y + 10, 0)} fontSize={9}
-                  fill={'white'}>{props.uuid.substring(0, 4)}</text>
-
-
         </g>
     )
 }

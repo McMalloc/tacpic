@@ -1,6 +1,6 @@
 import React from 'react'
 import './PathManipulator.css';
-import {buildPath} from "./Path";
+import {buildPath} from "./PathGeneration";
 import methods from "./methods";
 import styled from "styled-components";
 
@@ -20,6 +20,8 @@ const Anchor = styled.rect`
   fill: white;
   stroke-width: 0.5px;
   stroke: green;
+  width: 10px;
+  height: 10px;
   
   &:hover {
     fill: green;
@@ -58,13 +60,13 @@ const PathManipulator = props => {
                 d={buildPath(transformedPoints)}
             />
             {transformedPoints.map((point, index) => {
+                if (point.kind === "LF") return null; // don't draw freeform points
                 return <Anchor
-                    x={point.coords[0] - 4}
-                    y={point.coords[1] - 4}
-                    width={8}
-                    height={8}
+                    x={point.coords[0] - 5}
+                    y={point.coords[1] - 5}
                     data-associated-path={props.path.uuid}
                     data-role={"EDIT-PATH"}
+                    data-start={index === 0}
                     data-index={index} />
             })}
         </g>
