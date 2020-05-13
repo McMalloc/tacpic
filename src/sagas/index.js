@@ -7,7 +7,7 @@ import {
     variantCreateSaga
 } from "./variant_saga";
 import {openFileWatcher} from "./file_saga";
-import {CATALOGUE, TAGS, GRAPHIC, USER, VARIANT} from "../actions/constants";
+import {CATALOGUE, TAGS, GRAPHIC, USER, VARIANT, VERSION} from "../actions/constants";
 import createSaga from "./saga_utilities";
 import extractSVG from "../utility/extractSVG";
 import {

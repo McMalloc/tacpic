@@ -3,8 +3,6 @@ import {CATALOGUE} from "../actions/constants";
 import createSaga from "./saga_utilities";
 import {groupBy} from "lodash";
 
-console.log(process.env);
-console.log("hi");
 export const catalogueSearchSaga = createSaga(
     CATALOGUE.SEARCH, 'get',
     'graphics?tags=:tags&search=:terms&system=:system&format=:format&limit=:limit&offset=:offset',

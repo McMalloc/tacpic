@@ -5,19 +5,13 @@ import Login from "./components/Login";
 import {useTranslation} from 'react-i18next';
 import {Navbar, NavbarItem} from "./components/platform/Navbar";
 import Catalogue from "./components/platform/Catalogue";
-import Register from "./components/Register";
 import {useDispatch, useSelector} from "react-redux";
-import {TAGS, USER} from "./actions/constants";
-import AccountWidget from "./components/platform/AccountWidget";
+import {TAGS, USER, VERSION} from "./actions/constants";
 import styled from "styled-components";
 import SignupForm from "./components/SignupForm";
 import {Footer} from "./components/platform/Footer";
 import Landing from "./components/platform/Landing";
 import Account from "./components/platform/Account";
-import {CatalogueItemView, CatalogueItemViewModal} from "./components/platform/CatalogueItemView";
-import {Icon} from "./components/gui/_Icon";
-import {Modal} from "./components/gui/Modal";
-import {useHistory, useLocation} from "react-router";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -78,6 +72,9 @@ const App = () => {
     const dispatch = useDispatch();
     // const history = useHistory();
     useEffect(() => {
+        dispatch({
+            type: VERSION.GET.REQUEST
+        });
         if (localStorage.getItem('jwt') === null) return;
         dispatch({
             type: USER.VALIDATE.REQUEST

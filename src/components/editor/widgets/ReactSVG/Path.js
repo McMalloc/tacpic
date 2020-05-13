@@ -20,7 +20,8 @@ export default function SVGPath(props) {
                     fill: props.pattern.template !== null ? 'url(#pattern-' + props.pattern.template + '-' + props.uuid + '' : props.fill || "none ",
                     cursor: 'pointer',
                     stroke: props.pattern.offset ? props.fill : "black",
-                    strokeWidth: props.border ? props.pattern.offset ? 20 : props.borderWidth / 5 + "mm" : 0
+                    strokeWidth: props.border ? props.pattern.offset ? 20 : props.borderWidth / 5 + "mm" : 0,
+                    strokeDasharray: props.pattern.offset ? null : props.borderStyle
                 }}
                 d={smoothPathC}
                 id={props.uuid}
@@ -32,10 +33,13 @@ export default function SVGPath(props) {
             {props.pattern.offset && props.border &&
             <path
                 id={"stroke-" + props.uuid}
-                style={{fill: "none"}}
-                strokeWidth={props.borderWidth / 5 + "mm"}
-                strokeLinecap={"butt"}
-                stroke={"black"}
+                style={{
+                    fill: "none",
+                    strokeDasharray: props.borderStyle,
+                    strokeWidth: props.borderWidth / 5 + "mm",
+                    strokeLinecap: "butt",
+                    stroke: "black"
+                }}
                 d={smoothPathC}
             />
             }
@@ -48,7 +52,7 @@ export default function SVGPath(props) {
 
             {!props.inPreview &&
             <path
-                stroke={"rgba(100,100,100,0.05)"}
+                stroke={"rgba(100,100,100,0.0)"}
                 strokeWidth={props.border ? 20 : 0}
                 style={
                     {

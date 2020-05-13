@@ -294,7 +294,8 @@ class InteractiveSVG extends Component {
                     });
                 }
             } else {
-                this.props.updateObject(this.state.preview);
+                // when dragged, create new object
+                this.state.dragging && this.props.updateObject(this.state.preview);
                 this.setState({
                     preview: null
                 });
@@ -375,7 +376,9 @@ class InteractiveSVG extends Component {
                 preview: methods[preview.type][this.state.transform](
                     this.state.preview,
                     mouseOffsetX - this.state.mouseOffsetX,
-                    mouseOffsetY - this.state.mouseOffsetY
+                    mouseOffsetY - this.state.mouseOffsetY,
+                    this.state.mouseDownX, this.state.mouseDownY,
+                    mouseOffsetX, mouseOffsetY
                 )
             });
         }

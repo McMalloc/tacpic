@@ -9,6 +9,7 @@ class Context extends Component {
     render() {
         switch (this.props.selectedObject.type) {
             case "path":
+            case "ellipse":
             case "rect":
                 return (
                     <Upper><ShapeContext /></Upper>

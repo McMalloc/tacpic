@@ -20,6 +20,7 @@ export const VARIANT    = constants('VARIANT',   ['GET', 'CREATE', 'UPDATE']);
 export const CATALOGUE  = constants('CATALOGUE',   ['SEARCH']);
 export const TAGS       = constants('TAGS',     ['GET', 'SEARCH', 'CREATE']);
 export const BRAILLE    = constants('BRAILLE',   ['TRANSLATE']);
+export const APP_VERSION    = constants('APP_VERSION',   ['GET']);
 
 export const CANVAS_OBJECT_ADDED = 'CANVAS_OBJECT_ADDED';
 export const CANVAS_OBJECT_REMOVED = 'CANVAS_OBJECT_REMOVED';

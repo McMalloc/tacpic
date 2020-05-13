@@ -14,6 +14,7 @@ import Tooltip from "../../../gui/Tooltip";
 import {findObject} from "../../../../utility/findObject";
 import {useTranslation} from "react-i18next";
 import {Alert} from "../../../gui/Alert";
+import {borderStyles} from "../ReactSVG/constants";
 
 const changePattern = (dispatch, uuid, pattern) => {
     dispatch({
@@ -54,14 +55,10 @@ const ShapeContext = props => {
     return (
         <>
             <Row>
-                <div className={"col-md-6"}>
+                <div className={"col-md-12"}>
                     <Textinput value={selectedObject.moniker}
                                disabled={nothingSelected}
                                onChange={moniker => changeProp(dispatch, selectedObject.uuid, 'moniker', moniker)} label={"Bezeichner"}/>
-                </div>
-                <div className={"col-md-6"}>
-                    <Checkbox disabled={nothingSelected} name={"visible"} label={"Aktiv"}/>
-                    <Checkbox disabled={nothingSelected} name={"locked"} label={"Sperren"}/>
                 </div>
             </Row>
 
@@ -125,13 +122,27 @@ const ShapeContext = props => {
                             option.value)
                     }} value={selectedObject.borderWidth} disabled={!selectedObject.border} label={t("Linienstärke")} options={[
                         {
-                            value: 1,
-                            label: t("1 mm (Hilfslinie)")
+                            value: 0.5,
+                            label: t("0,5 mm (Hilfslinie)")
                         },
                         {
-                            value: 2,
-                            label: t("2 mm")
+                            value: 1.5,
+                            label: t("1,5 mm")
+                        },
+                        {
+                            value: 2.5,
+                            label: t("2,5 mm (dicke Linie)")
                         }]} />
+                    <Checkbox name={"borderStyle"}
+                              checked={selectedObject.borderStyle === borderStyles.default}
+                              onChange={() => {
+                                  changeProp(
+                                      dispatch,
+                                      selectedObject.uuid,
+                                      'borderStyle',
+                                      selectedObject.borderStyle === borderStyles.default ? 'solid' : borderStyles.default)
+                              }}
+                              label={t("Gestrichelt")}/>
 
                     {selectedObject.type === 'path'&&
                         <>

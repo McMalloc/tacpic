@@ -2,6 +2,9 @@ import {transformCoords} from "./transform";
 import {cosOfDegs, getMirrorPoint, sinOfDegs} from "../../../../utility/geometry";
 import uuidv4 from "../../../../utility/uuid";
 
+const defaultStrokeWidth = 1.5;
+const defaultStrokeStyle = "solid";
+
 const createRect = (x = 0, y = 0, width = 100, height = 100, template = 'diagonal_lines', fill = 'white') => {
     return {
         uuid: uuidv4(),
@@ -14,7 +17,8 @@ const createRect = (x = 0, y = 0, width = 100, height = 100, template = 'diagona
             offset: true
         },
         border: true,
-        borderWidth: 2,
+        borderWidth: defaultStrokeWidth,
+        borderStyle: defaultStrokeStyle,
         moniker: "Rechteck",
         angle: 0,
         type: 'rect'
@@ -30,6 +34,15 @@ const rectGetBBox = rect => {
     }
 };
 
+const ellipseGetBBox = ellipse => {
+    return {
+        x: ellipse.x - ellipse.width,
+        y: ellipse.y - ellipse.height,
+        width: ellipse.width * 2,
+        height: ellipse.height * 2,
+    }
+};
+
 const createEllipse = (x = 0, y = 0, width = 100, height = 100, template = 'diagonal_lines', fill = 'white') => {
     return {
         uuid: uuidv4(),
@@ -40,6 +53,9 @@ const createEllipse = (x = 0, y = 0, width = 100, height = 100, template = 'diag
             scaleX: 1,
             scaleY: 1
         },
+        border: true,
+        borderWidth: defaultStrokeWidth,
+        borderStyle: defaultStrokeStyle,
         moniker: "Ellipse",
         angle: 0,
         type: 'ellipse'
@@ -102,13 +118,10 @@ const defaultTranslate = (object, x, y) => {
 };
 
 // TODO: funktioniert noch nciht für Pfade / falscher Origin
-const defaultRotate = (object, deltaX, deltaY) => {
-    if (deltaY + deltaX < 0) {
-        object.angle += Math.min(deltaY, deltaX) * 0.2;
-    } else {
-        object.angle += Math.max(deltaY, deltaX) * 0.2;
-    }
-
+const defaultRotate = (object, deltaX, deltaY, downX, downY, offsetX, offsetY) => {
+    // if (offsetX !== downX && offsetY !== downY) {
+        object.angle = -Math.atan2(offsetX - downX, offsetY - downY) * (180 / Math.PI) + 90;
+    // }
     return object;
 };
 
@@ -271,7 +284,7 @@ const methods = {
         rotate: defaultRotate,
         scale: defaultScale,
         getClientBox: defaultGetClientBox,
-        getBBox: rectGetBBox,
+        getBBox: ellipseGetBBox,
         create: createEllipse
     },
     label: {

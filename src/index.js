@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import {Provider} from "react-redux";
 import {ThemeProvider} from 'styled-components';
 import './i18n/i18n';
+import {version} from "../package.json"
 
 // DELETE
 import deepFilter from './utility/deepPull';
@@ -22,6 +23,7 @@ if (process.env.NODE_ENV !== 'production') {
     // axe(React, ReactDOM, 1000);
 }
 
+window.FRONTEND_VERSION = version;
 // bootstrapping the app
 ReactDOM.render(
     <Provider store={store}>

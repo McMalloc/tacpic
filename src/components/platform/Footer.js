@@ -1,11 +1,8 @@
 import styled, {useTheme} from 'styled-components';
-import React, {Component, Fragment} from "react";
+import React from "react";
 import {useTranslation} from "react-i18next";
-import AccountWidget from "./AccountWidget";
 import {NavLink} from "react-router-dom";
-import {useLocation} from "react-router";
 import {useSelector} from "react-redux";
-import {Icon} from "../gui/_Icon";
 
 const Wrapper = styled.footer`
   display: flex;
@@ -13,6 +10,16 @@ const Wrapper = styled.footer`
   background-color: ${props => props.theme.brand_secondary};
   color: ${props => props.theme.background};
   justify-content: center;
+  position: relative;
+`;
+
+const Version = styled.div`
+  position: absolute;
+  opacity: 0.8;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 90%;
+  align-self: center;
+  right: 10px;
 `;
 
 const Footer = props => {
@@ -22,11 +29,20 @@ const Footer = props => {
         state => state.user
     );
 
+    const backendVersion = useSelector(
+        state => state.meta.backendVersion
+    );
+
     return (
         <Wrapper theme={theme}>
             <NavLink to={"/impressum"} className={"no-styled-link"}>
                 Impressum
             </NavLink>
+            &nbsp;
+
+            <Version>
+                frontend: {window.FRONTEND_VERSION} | backend: {backendVersion}
+            </Version>
 
         </Wrapper>
     )
