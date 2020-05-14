@@ -103,7 +103,7 @@ class Treeview extends Component {
                         </TreeLabel>
                         {node.buttons && node.buttons.map(button =>
                             <Button className={'treeitem-button'} aria-label={button.label} icon={button.icon}
-                            onClick={button.action}>
+                                    onClick={button.action}>
                             </Button>)}
 
                     </TreeItem>
