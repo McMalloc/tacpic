@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import React, {Component} from "react";
 import {times, uniq, without, indexOf} from 'lodash';
 import {Icon} from "./_Icon";
+import {Button} from "./Button";
 
 const Wrapper = styled.div`
   //font-size: 0.9em;
@@ -19,7 +20,16 @@ const Tree = styled.ul`
 `;
 
 const TreeItem = styled.li`
+  display: flex;
+  height: 30px;
   
+  .treeitem-button {
+    display: none;
+  }
+  
+  &:hover .treeitem-button {
+    display: inline;
+  }
 `;
 
 const TreeLabel = styled.button`
@@ -80,23 +90,30 @@ class Treeview extends Component {
         return nodes.map((node, index) => {
             let expanded = !(indexOf(this.state.expandedValues, node.value) >= 0);
             return (
-                <TreeItem depth={depth} key={index}>
+                <>
+                    <TreeItem depth={depth} key={index}>
 
-                    <TreeLabel selected={this.props.selected === node.value} tabIndex={0}
-                               onClick={() => this.props.onSelect && this.props.onSelect(node.value)}>
-                        {node.children && node.children.length > 0 &&
-                        <TreeIcon onClick={() => this.toggle(node.value)} expanded={expanded}><Icon
-                            icon={expanded ? "caret-down" : "caret-right"}/></TreeIcon>
-                        }
-                        {node.label}
-                    </TreeLabel>
+                        <TreeLabel selected={this.props.selected === node.value} tabIndex={0}
+                                   onClick={() => this.props.onSelect && this.props.onSelect(node.value)}>
+                            {node.children && node.children.length > 0 &&
+                            <TreeIcon onClick={() => this.toggle(node.value)} expanded={expanded}><Icon
+                                icon={expanded ? "caret-down" : "caret-right"}/></TreeIcon>
+                            }
+                            {node.label}
+                        </TreeLabel>
+                        {node.buttons && node.buttons.map(button =>
+                            <Button className={'treeitem-button'} aria-label={button.label} icon={button.icon}
+                            onClick={button.action}>
+                            </Button>)}
 
+                    </TreeItem>
                     {node.children && node.children.length > 0 && expanded &&
                     <Tree>
                         {this.renderNode(node.children, depth)}
                     </Tree>
                     }
-                </TreeItem>
+
+                </>
             )
         })
     }

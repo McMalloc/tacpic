@@ -81,6 +81,7 @@ const Navbar = props => {
     return (
         <Wrapper theme={theme}>
             <NavbarItemGroups>
+                <span style={{color: "white", backgroundColor: "red", borderRadius: 3, padding: 3}}> &bull; ALPHA &bull; </span>
                 <NavLink style={{height: 30}} to={"/"}><Logo src={"/images/logo.svg"}/></NavLink>
                 {props.items.map((item, idx) => {
                     return (

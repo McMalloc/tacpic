@@ -1,8 +1,9 @@
 import styled, {useTheme} from 'styled-components';
-import React from "react";
+import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {NavLink} from "react-router-dom";
 import {useSelector} from "react-redux";
+import {USER} from "../../actions/constants";
 
 const Wrapper = styled.footer`
   display: flex;
@@ -28,10 +29,14 @@ const Footer = props => {
     const user = useSelector(
         state => state.user
     );
-
-    const backendVersion = useSelector(
-        state => state.meta.backendVersion
-    );
+    useEffect(() => {
+        fetch("/VERSION.txt").then(response => response.text()).then(data=> {
+            window.FRONTEND_VERSION = data;
+        });
+        fetch("/BACKEND_VERSION.txt").then(response => response.text()).then(data=> {
+            window.BACKEND_VERSION = data;
+        });
+    }, []);
 
     return (
         <Wrapper theme={theme}>
@@ -41,7 +46,7 @@ const Footer = props => {
             &nbsp;
 
             <Version>
-                frontend: {window.FRONTEND_VERSION} | backend: {backendVersion}
+                frontend: <strong>{window.FRONTEND_VERSION}</strong> | backend: <strong>{window.BACKEND_VERSION}</strong>
             </Version>
 
         </Wrapper>

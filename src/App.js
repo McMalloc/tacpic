@@ -6,7 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {Navbar, NavbarItem} from "./components/platform/Navbar";
 import Catalogue from "./components/platform/Catalogue";
 import {useDispatch, useSelector} from "react-redux";
-import {TAGS, USER, VERSION} from "./actions/constants";
+import {TAGS, USER} from "./actions/constants";
 import styled from "styled-components";
 import SignupForm from "./components/SignupForm";
 import {Footer} from "./components/platform/Footer";
@@ -72,9 +72,6 @@ const App = () => {
     const dispatch = useDispatch();
     // const history = useHistory();
     useEffect(() => {
-        dispatch({
-            type: VERSION.GET.REQUEST
-        });
         if (localStorage.getItem('jwt') === null) return;
         dispatch({
             type: USER.VALIDATE.REQUEST
