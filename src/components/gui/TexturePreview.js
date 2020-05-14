@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import patternTemplates from "../editor/widgets/ReactSVG/Patterns.js";
 import {useTranslation} from "react-i18next";
+import {createPattern} from "../editor/widgets/ReactSVG/Patterns";
 
 // TODO: Minimieren-Button
 const Wrapper = styled.div`
@@ -39,7 +40,7 @@ const TexturePreview = props => {
                         width={props.width || 42}
                         height={props.height || 42}
                     />
-                    {patternTemplates[props.template]({scaleX: 1, scaleY: 1, angle: 0}, "preview-" + props.template)}
+                    {createPattern(props.template, "preview-" + props.template)}
                     </>
                     :
                     <>

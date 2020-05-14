@@ -86,18 +86,17 @@ const file = (state = {}, action) => {
 
             return oldState;
         case 'OBJECT_PROP_CHANGED':
-            oldState = cloneDeep(state);
-
             // TODO nested Objects / andere ausgewählte Seite
-            filter(oldState.pages[action.shared_currentPage].objects,
-                {uuid: action.uuid}).forEach(object => {
-                object[action.prop] = action.value;
+            return produce(state, draftState => {
+                filter(draftState.pages[action.shared_currentPage].objects,
+                    {uuid: action.uuid}).forEach(object => {
+                    object[action.prop] = action.value;
 
-                if (action.prop === "isKey") {// && object.keyVal.length === 0) {
-                    object.keyVal = object.text.slice(0, 3);
-                }
+                    if (action.prop === "isKey") {// && object.keyVal.length === 0) {
+                        object.keyVal = object.text.slice(0, 3);
+                    }
+                });
             });
-            return oldState;
         case 'BRAILLE_BULK_TRANSLATED':
             oldState = cloneDeep(state);
 

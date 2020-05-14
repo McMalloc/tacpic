@@ -11,9 +11,6 @@ const createRect = (x = 0, y = 0, width = 100, height = 100, template = 'diagona
         x, y, width, height, fill,
         pattern: {
             template,
-            angle: 0,
-            scaleX: 1,
-            scaleY: 1,
             offset: true
         },
         border: true,
@@ -49,9 +46,7 @@ const createEllipse = (x = 0, y = 0, width = 100, height = 100, template = 'diag
         x, y, width, height, fill,
         pattern: {
             template,
-            angle: 0,
-            scaleX: 1,
-            scaleY: 1
+            offset: true
         },
         border: true,
         borderWidth: defaultStrokeWidth,
@@ -94,9 +89,7 @@ const createPath = (x = 0, y = 0, template = null, fill = null, moniker = "Kurve
         fill,
         pattern: {
             template,
-            angle: 0,
-            scaleX: 1,
-            scaleY: 1
+            offset: true
         },
         points: [{
             kind: 'M',
@@ -119,9 +112,7 @@ const defaultTranslate = (object, x, y) => {
 
 // TODO: funktioniert noch nciht für Pfade / falscher Origin
 const defaultRotate = (object, deltaX, deltaY, downX, downY, offsetX, offsetY) => {
-    // if (offsetX !== downX && offsetY !== downY) {
-        object.angle = -Math.atan2(offsetX - downX, offsetY - downY) * (180 / Math.PI) + 90;
-    // }
+    object.angle = -Math.atan2(offsetX - downX, offsetY - downY) * (180 / Math.PI) + 90;
     return object;
 };
 

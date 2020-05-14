@@ -1,7 +1,7 @@
 import React from 'react'
 import transform from "./transform";
 import './Path.css';
-import patternTemplates from "./Patterns";
+import patternTemplates, {createPattern} from "./Patterns";
 import {getRotation} from "../../../../utility/geometry";
 import methods from "./methods";
 import {buildPath, cubicCommand} from "./PathGeneration";
@@ -74,7 +74,7 @@ export default function SVGPath(props) {
             }
 
             {props.pattern.template !== null &&
-            patternTemplates[props.pattern.template](props.pattern, props.uuid, props.fill)
+            createPattern(props.pattern.template, props.uuid, props.fill)
             }
         </g>
     )

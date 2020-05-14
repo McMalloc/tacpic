@@ -16,16 +16,14 @@ import {useTranslation} from "react-i18next";
 import {Alert} from "../../../gui/Alert";
 import {borderStyles} from "../ReactSVG/constants";
 
-const changePattern = (dispatch, uuid, pattern) => {
+const changePattern = (dispatch, uuid, pattern, offset) => {
     dispatch({
         type: 'OBJECT_PROP_CHANGED',
         uuid,
         prop: 'pattern',
         value: {
             template: pattern,
-            angle: 0,
-            scaleX: 1,
-            scaleY: 1
+            offset
         }
     });
 };
@@ -70,9 +68,9 @@ const ShapeContext = props => {
 
                     <TexturePalette
                         disabled={nothingSelected}
-                        textures={[null, "diagonal_lines", "full", "vertical_lines", "horizontal_lines", "dashed_lines", "grid", "stair"]}
+                        textures={[null, "diagonal_lines", "full", "vertical_lines", "horizontal_lines", "dashed_lines", "grid", "stair", "dotted"]}
                         selected={selectedObject.pattern.template}
-                        onChange={pattern => changePattern(dispatch, selectedObject.uuid, pattern)}/>
+                        onChange={pattern => changePattern(dispatch, selectedObject.uuid, pattern, selectedObject.pattern.offset)}/>
 
                     <Checkbox name={"padding"}
                               checked={selectedObject.pattern.offset}

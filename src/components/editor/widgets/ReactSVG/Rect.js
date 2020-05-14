@@ -1,11 +1,10 @@
 import React from 'react'
 import transform from "./transform";
-import patternTemplates from "./Patterns";
+import patternTemplates, {createPattern} from "./Patterns";
 
 export default function SVGRect(props) {
     const template = props.pattern.template;
 
-    // TODO kann das Übergeben von Mustern generalisiert werden?
     const transformProperty = transform(props.x, props.y, props.angle, props.width, props.height);
     return (
         <g>
@@ -50,7 +49,7 @@ export default function SVGRect(props) {
             </clipPath>
             }
 
-            {template !== null && patternTemplates[template](props.pattern, props.uuid, props.fill)}
+            {template !== null && createPattern(template, props.uuid, props.fill, props.angle)}
         </g>
     )
 }
