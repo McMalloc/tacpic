@@ -30,7 +30,7 @@ const Footer = props => {
         state => state.user
     );
     useEffect(() => {
-        fetch("/VERSION.txt").then(response => response.text()).then(data=> {
+        fetch("/FRONTEND_VERSION.txt").then(response => response.text()).then(data=> {
             window.FRONTEND_VERSION = data;
         });
         fetch("/BACKEND_VERSION.txt").then(response => response.text()).then(data=> {

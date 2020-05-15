@@ -1,10 +1,10 @@
 import React from 'react'
 import transform from "./transform";
-import patternTemplates, {createPattern} from "./Patterns";
+import {createPattern} from "./Patterns";
 
 export default function SVGEllipse(props) {
     const template = props.pattern.template;
-    const transformProperty = transform(props.x, props.y, props.angle, props.width, props.height);
+    const transformProperty = transform(props.x, props.y, props.angle, 0, 0);
 
     return (
         <g>
@@ -49,7 +49,7 @@ export default function SVGEllipse(props) {
                 />
             </clipPath>
             }
-            {template !== null && createPattern(props.pattern.template, props.uuid, props.fill)}
+            {template !== null && createPattern(props.pattern.template, props.uuid, props.fill, props.angle)}
         </g>
     )
 }
