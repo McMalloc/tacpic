@@ -6,6 +6,7 @@ import extractSVG from "../utility/extractSVG";
 export const variantGetSaga = createSaga(
     VARIANT.GET, 'get', 'variants/:id', takeLatest, true, undefined,
     variant => {
+        const deserializedDocument = JSON.parse(variant.current_version.document);
         return {
             variant_id: variant.id,
             graphic_id: variant.parent_graphic.id,
@@ -16,7 +17,10 @@ export const variantGetSaga = createSaga(
             graphicDescription: variant.parent_graphic.description,
             tags: variant.tags,
             lastVersionHash: variant.current_version.hash,
-            pages: JSON.parse(variant.current_version.document)
+            pages: deserializedDocument.pages,
+            braillePages: deserializedDocument.braillePages,
+            keyedTextures: deserializedDocument.keyedTextures,
+            keyedStrokes: deserializedDocument.keyedStrokes
         };
     }
 );

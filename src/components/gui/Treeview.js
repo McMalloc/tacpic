@@ -21,7 +21,7 @@ const Tree = styled.ul`
 
 const TreeItem = styled.li`
   display: flex;
-  height: 30px;
+  min-height: 30px;
   
   .treeitem-button {
     display: none;

@@ -5,6 +5,7 @@ import Label from "./Label";
 import React from "react";
 import Ellipse from "./Ellipse";
 import SVGLine from "./Line";
+import Key from "./Key";
 
 // TODO props.uuid als index?
 export default function mapObject(props, index) {
@@ -12,6 +13,8 @@ export default function mapObject(props, index) {
     switch (props.type) {
         case "rect":
             return <SVGRect key={index} {...props} />;
+        case "key":
+            return <Key key={index} {...props} />;
         case "group":
             return (
                 <SVGGroup key={index} {...props}>

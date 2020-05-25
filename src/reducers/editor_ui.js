@@ -79,11 +79,6 @@ const ui = (state = {}, action) => {
                 })
 
             };
-        case 'KEY_TEXTURE_ADDED':
-            oldState = cloneDeep(state);
-            console.log(action.label);
-            oldState.openedFile.keyedTextures[action.texture] = action.label;
-            return oldState;
         default:
             return state;
     }

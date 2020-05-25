@@ -57,8 +57,8 @@ export const initialEditor = {
         lastVersionHash: null,
 
         backgroundURL: "",
-        keyedTextures: {},
-
+        keyedStrokes: [],
+        keyedTextures: [],
         medium: 'swell',
         system: 'de-de-g2.ctb', // name of the liblouis translation table
         width: 210,

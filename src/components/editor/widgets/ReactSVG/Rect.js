@@ -4,12 +4,19 @@ import patternTemplates, {createPattern} from "./Patterns";
 
 export default function SVGRect(props) {
     const template = props.pattern.template;
+    const xVectorUnits = Number.isInteger(props.x);
+    const yVectorUnits = Number.isInteger(props.y);
 
-    const transformProperty = transform(props.x, props.y, props.angle, props.width, props.height);
+    const transformProperty = transform(
+        xVectorUnits ? props.x : 0,
+        yVectorUnits ? props.y : 0,
+        props.angle, props.width, props.height);
     return (
         <g>
             <rect id={props.uuid}
                   data-uuid={props.uuid}
+                  x={xVectorUnits ? null : props.x}
+                  y={yVectorUnits ? null : props.y}
                   transform={transformProperty}
                   style={
                       {
@@ -19,8 +26,8 @@ export default function SVGRect(props) {
                           strokeWidth: props.border ? props.pattern.offset ? 20 : props.borderWidth : 0,
                           strokeDasharray: props.pattern.offset ? null : props.borderStyle
                       }}
-                  data-transformable={1}
-                  data-selectable={1}
+                  data-transformable={!props.inactive}
+                  data-selectable={true}
                   clipPath={props.pattern.offset ? "url(#clip-" + props.uuid + ")" : null}
                   width={props.width}
                   height={props.height}/>
@@ -30,10 +37,12 @@ export default function SVGRect(props) {
                 id={"stroke-" + props.uuid}
                 transform={transformProperty}
                 style={{fill: "none"}}
+                x={xVectorUnits ? null : props.x}
+                y={yVectorUnits ? null : props.y}
                 strokeWidth={props.borderWidth}
                 strokeDasharray={props.borderStyle}
-                data-transformable={1}
-                data-selectable={1}
+                data-transformable={!props.inactive}
+                data-selectable={true}
                 stroke={"black"}
                 width={props.width}
                 height={props.height}

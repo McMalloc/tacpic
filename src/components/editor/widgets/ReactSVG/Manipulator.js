@@ -34,11 +34,7 @@ const startEditing = (dispatch, uuid) => {
 };
 
 const Manipulator = props => {
-    const selected = useSelector(state => state.editor.ui.selectedObjects.map(uuid => {
-        return state.editor.file.pages[state.editor.ui.currentPage].objects.find(obj => {
-            return obj.uuid === uuid
-        })
-    }));
+    const selected = [props.selected];
 
     const {scalingFactor, viewPortX, viewPortY} = useSelector(state => state.editor.ui);
     const dispatch = useDispatch();
@@ -54,8 +50,8 @@ const Manipulator = props => {
         width = bbox.width * scalingFactor;
         height = bbox.height * scalingFactor;
         transformProperty = transform(
-            bbox.x * scalingFactor + viewPortX,
-            bbox.y * scalingFactor + viewPortY,
+            bbox.x * scalingFactor + viewPortX - 1,
+            bbox.y * scalingFactor + viewPortY - 1,
             selected[0].angle,
             width,
             height
@@ -77,16 +73,35 @@ const Manipulator = props => {
 
     return (
         <g transform={transformProperty}>
+            {/*<defs>*/}
+            {/*    <filter id="f1" x="0" y="0" width="200%" height="200%">*/}
+            {/*        <feBlend result="blend" in="SourceGraphic" in2="MAIN-CANVAS" mode="normal" />*/}
+            {/*        <feColorMatrix in="blend" type="matrix" values="-1 0 0 0 1*/}
+            {/*                                                  0 -1 0 0 1*/}
+            {/*                                                  0 0 -1 0 1*/}
+            {/*                                                  0 0 0 1 0"/>*/}
+            {/*    </filter>*/}
+            {/*</defs>*/}
             <rect
                 fill={"none"}
-                stroke={'rgba(22,180,74,0.7)'}
-                strokeWidth={1}
-                // strokeDasharray={"5,5"}
+                // filter="url(#f1)"
+                // style={{backdropFilter: "invert(70%)"}}
+                stroke={'rgba(0,0,0,0.3)'}
+                strokeWidth={5}
+                strokeDasharray={"10,10"}
+                width={width + 2}
+                height={height + 2}
+            />
+            <rect
+                fill={"none"}
+                // filter="url(#f1)"
+                stroke={'green'}
+                strokeWidth={2}
                 data-transformable={1}
                 data-role={"MANIPULATOR"}
                 onDoubleClick={() => doubleClickHandler(dispatch, selected, props.onModeChange)}
-                width={width}
-                height={height}
+                width={width + 2}
+                height={height + 2}
             />
             {selected.length === 1 &&
             <>

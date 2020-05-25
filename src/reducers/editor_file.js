@@ -19,7 +19,7 @@ const getSelectedObjects = (objects, selected) => {
 };
 
 const file = (state = {}, action) => {
-    let objects, oldState;
+    let objects, oldState, index;
     switch (action.type) {
         case VARIANT.UPDATE.REQUEST:
             return {...state, state: 'updating'};
@@ -57,14 +57,26 @@ const file = (state = {}, action) => {
 
             return oldState;
         case 'OBJECT_UPDATED':
-            oldState = {...state};
-            objects = findObject(oldState.pages[action.shared_currentPage].objects, action.preview.uuid);
-            if (objects === void 0) { // add if not present TODO: delete old adding method
-                oldState.pages[action.shared_currentPage].objects.push(action.preview);
-            } else {
-                objects = action.preview;
-            }
-            return oldState;
+            // oldState = {...state};
+            // objects = findObject(oldState.pages[action.shared_currentPage].objects, action.preview.uuid);
+            // if (objects === void 0) { // add if not present TODO: delete old adding method
+            //     oldState.pages[action.shared_currentPage].objects.push(action.preview);
+            // } else {
+            //     objects = action.preview;
+            // }
+            // return oldState;
+
+            return produce(state, draftState => {
+                index = draftState
+                    .pages[action.shared_currentPage]
+                    .objects
+                    .findIndex(obj=> obj.uuid === action.preview.uuid);
+                if (index === -1) { // add if not present TODO: delete old adding method
+                    draftState.pages[action.shared_currentPage].objects.push(action.preview);
+                } else {
+                    draftState.pages[action.shared_currentPage].objects[index] = action.preview;
+                }
+            });
         case 'OBJECT_TRANSLATED':
             // TODO sauberer für nested objects
             oldState = {...state};
@@ -192,6 +204,17 @@ const file = (state = {}, action) => {
                     newPage.objects = [];
                 }
                 draftState.pages.push(newPage);
+            });
+        case 'KEY_TEXTURE_CHANGED':
+            return produce(state, draftState => {
+                const index = draftState.keyedTextures.findIndex(entry => entry.pattern === action.pattern);
+                if (index !== -1) {
+                    // Texture is already added, update label
+                    draftState.keyedTextures[index].label = action.label;
+                } else {
+                    // add new texture
+                    draftState.keyedTextures.push({pattern: action.pattern, label: action.label});
+                }
             });
         case 'OBJECTS_GROUPED':
             oldState = {...state};

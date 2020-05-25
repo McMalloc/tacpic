@@ -6,7 +6,7 @@ import Objects from "./Objects";
 // import History from "./History";
 import Pages from "./Pages";
 import Proofing from "./Proofing";
-import Key from "./Key";
+import Key from "./Keyedit";
 import Category from "./Category";
 import Importer from "./Importer";
 import Document from "./Document";

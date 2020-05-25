@@ -10,7 +10,8 @@ const iconMap = {
     SELECT: 'hand-pointer',
     RECT: 'vector-square',
     ELLIPSE: 'circle',
-    CUBIC: 'bezier-curve',
+    PATH: 'bezier-curve',
+    KEY: 'key',
     QUADRATIC: 'bezier-curve',
     LABEL: 'font'
 };
@@ -32,7 +33,7 @@ class Toolbox extends Component {
         return (
             <Upper>
                 <Toolbar>
-                    {["SELECT", "RECT", "ELLIPSE", "CUBIC", /*"QUADRATIC",*/ "LABEL", "PATH", /*"LINE"*/].map((tool, index) => {
+                    {["SELECT", "KEY", "RECT", "ELLIPSE", /*"CUBIC", "QUADRATIC",*/ "LABEL", "PATH", /*"LINE"*/].map((tool, index) => {
                         return (
                             <ToolboxToggle key={index}>
                             <Toggle

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import connect from "react-redux/es/connect/connect";
 import Manipulator from "./Manipulator";
 
+import {cloneDeep} from "lodash";
 import mapObject from "./index";
 import ContextOptions from "./ContextOptions";
 import {switchCursorMode} from "../../../../actions";
@@ -13,6 +14,7 @@ import {init, transformCoords} from "./transform";
 import SVGGrid from "./Grid";
 import {findObject} from "../../../../utility/findObject";
 import {rotatePoint} from "../../../../utility/geometry";
+import Key from "./Key";
 
 class InteractiveSVG extends Component {
     svgElement = React.createRef();
@@ -64,7 +66,6 @@ class InteractiveSVG extends Component {
     };
 
     keyDownHandler = event => {
-        console.log(event.which);
         switch (event.which) {// TODO use constants instead of magic numbers
             case 38: // up
                 event.stopPropagation();
@@ -195,10 +196,13 @@ class InteractiveSVG extends Component {
         if (target.dataset.role === 'ROTATE') this.setState({transform: 'rotate'});
         if (target.dataset.role === 'SCALE') this.setState({transform: 'scale'});
         if (target.dataset.start) this.setState({pathClosing: true});
-        if (target.dataset.transformable) this.setState({transform: 'translate'});
+        if (target.dataset.transformable === "true") this.setState({transform: 'translate'});
 
         if (target.dataset.role === 'EDIT-PATH') this.setState({
             edit: target.dataset.associatedPath,
+            preview: {...findObject(
+                    this.props.file.pages[this.props.ui.currentPage].objects,
+                    target.dataset.associatedPath)},
             editIndex: parseInt(target.dataset.index)
         });
 
@@ -209,7 +213,7 @@ class InteractiveSVG extends Component {
             this.props.select([selectedId]);
         }
 
-        if (this.state.preview === null) {
+        if (this.state.preview === null && target.dataset.selectable !== 'true') {
             switch (this.props.ui.tool) {
                 case 'ELLIPSE':
                 case 'RECT':
@@ -243,10 +247,13 @@ class InteractiveSVG extends Component {
                     }
 
                     break;
+                case 'KEY':
+                    this.props.addKey(mouseDownX, mouseDownY);
+                    break;
                 default:
                     break;
             }
-        } else {
+        } else if (this.state.preview !== null) { //todo
             if (this.state.preview.type === 'path') {
                 if (target.dataset.start) {
                     let closingPath = {...this.state.preview};
@@ -351,30 +358,26 @@ class InteractiveSVG extends Component {
             });
         }
 
-        // set preview
-        if (this.state.dragging && this.state.transform !== null) {
-            this.setState({
-                preview: findObject(
-                    this.props.file.pages[this.props.ui.currentPage].objects,
-                    this.props.ui.selectedObjects[0])
-            });
-        }
-
-        // set preview for path editing
-        if (this.state.dragging && this.state.edit !== null) {
-            this.setState({
-                preview: findObject(
-                    this.props.file.pages[this.props.ui.currentPage].objects,
-                    this.state.edit)
-            });
-        }
-
-        // update previews of objects
         let preview = this.state.preview;
-        if (preview !== null && this.state.dragging && this.state.transform !== null) {
+        // set preview
+        if (this.state.dragging &&
+            this.state.transform !== null &&
+            preview === null) {
+            console.log("copy from state to preview");
+            this.setState({
+                preview: {...findObject(
+                    this.props.file.pages[this.props.ui.currentPage].objects,
+                    this.props.ui.selectedObjects[0])}
+            });
+        } else if (
+            preview !== null &&
+            this.state.dragging &&
+            this.state.transform !== null &&
+            this.state.edit === null) {
+            // update previews of objects
             this.setState({
                 preview: methods[preview.type][this.state.transform](
-                    this.state.preview,
+                    {...preview},
                     mouseOffsetX - this.state.mouseOffsetX,
                     mouseOffsetY - this.state.mouseOffsetY,
                     this.state.mouseDownX, this.state.mouseDownY,
@@ -385,13 +388,13 @@ class InteractiveSVG extends Component {
 
         // update preview of line drawing
         if (preview !== null && preview.type === 'path' && this.state.dragging && this.state.edit !== null) {
-
             // TODO rotierte Pfade bearbeiten
             // const [offsetX, offsetY] = methods.path.getOffset(preview);
             // const [mx, my] = rotatePoint([mouseOffsetX - offsetX, mouseOffsetY - offsetY], -preview.angle);
+            console.log("update path");
             this.setState({
                 preview: methods.path.changePoint(
-                    this.state.preview,
+                    cloneDeep(preview),
                     [mouseOffsetX - preview.x, mouseOffsetY - preview.y],
                     // [mx + offsetX, my + offsetY],
                     this.state.editIndex
@@ -451,6 +454,7 @@ class InteractiveSVG extends Component {
                           stroke={'rgba(0,0,0,0.0)'} fill={'white'}/>
                     {
                         this.props.file.pages[this.props.ui.currentPage].objects.map((object, index) => {
+                            if (this.state.preview && this.state.preview.uuid === object.uuid) return null;
                             return mapObject(object, index);
                         })
                     }
@@ -480,7 +484,7 @@ class InteractiveSVG extends Component {
                 {/*}*/}
 
                 <Manipulator
-                    onModeChange={this.onModeChange}
+                    onModeChange={this.onModeChange} selected={this.state.preview === null ? selectedObject : this.state.preview}
                 />
 
                 {this.state.dragging && this.state.transform === null && this.state.edit === null &&
@@ -641,12 +645,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 value
             });
         },
-        // changePoint: uuid => {
-        //     dispatch({
-        //         type: 'PATH_POINT_CHANGED',
-        //         uuid,
-        //     })
-        // }
+        addKey: (x, y) => {
+            dispatch({
+                type: 'OBJECT_UPDATED',
+                preview: methods.key.create(x, y)
+            });
+        }
     }
 };
 

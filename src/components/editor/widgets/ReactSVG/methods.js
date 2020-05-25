@@ -99,9 +99,16 @@ const createPath = (x = 0, y = 0, template = null, fill = null, moniker = "Kurve
     }
 };
 
-const translatePath = (path, offsetX, offsetY) => {
-    let translatedPath;
-    return path;
+const createKey = (x = 0, y = 0, moniker = "Legende") => {
+    return {
+        uuid: uuidv4(),
+        x, y,
+        moniker,
+        editMode: true,
+        border: true,
+        borderWidth: 2,
+        type: 'key'
+    }
 };
 
 const defaultTranslate = (object, x, y) => {
@@ -140,6 +147,17 @@ const defaultGetClientBox = object => {
 };
 
 const getBBox = object => {
+    let elem = document.getElementById(object.uuid);
+    //TODO konsistent machen, nur das data-attribut benutzen
+    if (elem === null) elem = document.querySelector(`[data-uuid='${object.uuid}']`);
+    if (!!elem) {
+        return elem.getBBox();
+    } else {
+        return {x: 0, y: 0, width: 0, height: 0}
+    }
+};
+
+const getKeyBBox = object => {
     let elem = document.getElementById(object.uuid);
     if (!!elem) {
         return elem.getBBox();
@@ -202,6 +220,7 @@ const addPoint = (path, mouseCoords, kind) => {
 // param 2 CP_E: control point of end point
 // param 4 E: end point
 const changePoint = (path, coords, index = path.points.length - 1, param = 0, kind) => {
+    console.log(path);
     path.points[index].coords[param] = coords[0];
     if (!!kind) {
         path.points[index].kind = kind;
@@ -247,6 +266,7 @@ const selectionRotate = (objects, deltaX, deltaY) => {
 
 // TODO sollten hier auch Methoden rein, die beschreiben,
 //  was beispielsweise bei einem Mousedown oder Doppelklick passiert?
+const id = obj => obj;
 
 const methods = {
     rect: {
@@ -284,7 +304,13 @@ const methods = {
         getBBox: rectGetBBox,
         scale: defaultScale,
         create: createLabel,
-        rotate: label => label // id function, labels shouldn't be rotated
+        rotate: id
+    },
+    key: {
+        create: createKey,
+        translate: defaultTranslate,
+        rotate: id,
+        getBBox: getBBox,
     },
     selection: {
         rotate: selectionRotate

@@ -4,6 +4,7 @@ import ShapeContext from "./ShapeContext";
 import LabelContext from "./LabelContext";
 import {find} from 'lodash';
 import {Upper} from "../../../gui/WidgetContainer";
+import Keyedit from "../Keyedit";
 
 class Context extends Component {
     render() {
@@ -17,6 +18,10 @@ class Context extends Component {
             case "label":
                 return (
                     <Upper><LabelContext /></Upper>
+                );
+            case "key":
+                return (
+                    <Upper><Keyedit /></Upper>
                 );
             default:
                 return (
