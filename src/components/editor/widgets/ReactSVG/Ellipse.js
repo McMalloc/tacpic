@@ -20,8 +20,8 @@ export default function SVGEllipse(props) {
                     strokeDasharray: props.pattern.offset ? null : props.borderStyle
                 }}
                 clipPath={props.pattern.offset ? "url(#clip-" + props.uuid + ")" : null}
-                data-transformable={1}
-                data-selectable={1}
+                data-transformable={!props.inactive}
+                data-selectable={true}
                 rx={props.width}
                 ry={props.height}
             />
@@ -33,8 +33,8 @@ export default function SVGEllipse(props) {
                 style={{fill: "none"}}
                 strokeWidth={props.borderWidth}
                 strokeDasharray={props.borderStyle}
-                data-transformable={1}
-                data-selectable={1}
+                data-transformable={!props.inactive}
+                data-selectable={true}
                 stroke={"black"}
                 rx={props.width}
                 ry={props.height}

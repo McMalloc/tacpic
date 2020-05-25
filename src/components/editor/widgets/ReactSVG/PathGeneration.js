@@ -46,13 +46,10 @@ export const cubicCommand = (point, index, all, closed) => {
     let prev = [0,0];
     if (index === 1 && closed) {
         prev = all[all.length-2];
-        console.log("erster kurvenpunkt & geschlossen");
-        console.log(prev);
     } else {
         prev = all[index - 2];
         if (index === 1) {
-            console.log("erster kurvenpunkt");
-            console.log(prev);
+
         }
     }
     const [cpsX, cpsY] = getControlPoint(all[index - 1], prev, point);

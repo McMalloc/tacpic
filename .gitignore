@@ -21,7 +21,7 @@
 
 # temporary copyright issues
 /public/webfonts/*
-/public/VERSION.txt
+/public/FRONTEND_VERSION.txt
 
 package-lock.json
 npm-debug.log*

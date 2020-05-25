@@ -84,6 +84,7 @@ const patterns = {
 };
 
 export const createPattern = (type, uuid, fill, angle) => {
+    if (!type) return null;
     const {width, height, objects} = patterns[type];
     return (
         <pattern patternUnits={"userSpaceOnUse"} id={`pattern-${type}-${uuid}`}

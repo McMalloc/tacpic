@@ -11,7 +11,7 @@ import Toggle from "../gui/Toggle";
 import {Button} from "../gui/Button";
 import Document from "./widgets/Document";
 import Importer from "./widgets/Importer";
-import Key from "./widgets/Key";
+import Key from "./widgets/Keyedit";
 import Verbalizer from "./widgets/Verbalizer";
 import Metadata from "./widgets/Metadata";
 import Pages from "./widgets/Pages";
@@ -127,7 +127,7 @@ const Editor = props => {
     };
 
     const [showPages, togglePages] = useState(false);
-    const [showObjects, toggleObjects] = useState(true);
+    const [showObjects, toggleObjects] = useState(false);
 
     if (uiSettings.initialized) {
         return (
@@ -145,8 +145,8 @@ const Editor = props => {
                                 label={"Einrichten"}/>
                         <Toggle primary toggled={openedModalSidebar === 1} onClick={() => handleModalSidebar(1)}
                                 label={"Importieren"}/>
-                        <Toggle primary toggled={openedModalSidebar === 2} onClick={() => handleModalSidebar(2)}
-                                label={"Legende"}/>
+                        {/*<Toggle primary toggled={openedModalSidebar === 2} onClick={() => handleModalSidebar(2)}*/}
+                        {/*        label={"Legende"}/>*/}
                         <Toggle primary toggled={openedModalSidebar === 3} onClick={() => handleModalSidebar(3)}
                                 label={"Bildbeschreibung"}/>
                         <Toggle primary toggled={openedModalSidebar === 4} onClick={() => handleModalSidebar(4)}

@@ -25,8 +25,8 @@ export default function SVGPath(props) {
                 }}
                 d={smoothPathC}
                 id={props.uuid}
-                data-transformable={1}
-                data-selectable={1}
+                data-transformable={!props.inactive}
+                data-selectable={true}
                 clipPath={props.pattern.offset ? "url(#clip-" + props.uuid + ")" : null}
             />
 
@@ -62,8 +62,8 @@ export default function SVGPath(props) {
                 data-uuid={props.uuid}
                 className={"no-print"}
                 d={smoothPathC}
-                data-transformable={1}
-                data-selectable={1}
+                data-transformable={!props.inactive}
+                data-selectable={true}
             />
             }
 
