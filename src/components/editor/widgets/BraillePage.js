@@ -32,7 +32,7 @@ const Wrapper = styled.div`
   //width: ${a4Width}mm;
   //height: ${a4height}mm;
   
-  font-family: ${props => props.system === 'cb' ? "HBS8" : "HBS6"};
+  font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
   font-size: 10mm;
   white-space: pre;
 `;

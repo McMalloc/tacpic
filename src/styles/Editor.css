@@ -1,14 +1,3 @@
-@font-face {
-    font-family: "BrailleDEComputer";
-    src: url("/webfonts/BrailleDEComputer.woff");
-}
-
-.braille--PRELOAD {
-    font-family: "BrailleDEComputer";
-    /*@todo: ziemlich hacky*/
-    /*https://github.com/bramstein/fontfaceobserver*/
-}
-
 svg text {
     -webkit-user-select: none;
     -moz-user-select: none;

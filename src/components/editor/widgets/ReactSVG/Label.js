@@ -9,7 +9,7 @@ import {connect, useDispatch, useSelector} from "react-redux";
 const Braille = styled.div`
   line-height: 12mm;
   font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
-  //font-family: ${props => props.system === 'cb' ? "HBS8" : "HBS6"};
+  //font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
   position: absolute;
   z-index: -1;
   width: 100%;

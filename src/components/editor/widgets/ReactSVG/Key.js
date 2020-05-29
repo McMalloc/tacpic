@@ -9,7 +9,7 @@ import {patternsInUseSelector} from "../../../../reducers/selectors";
 
 const Braille = styled.text`
   line-height: 12mm;
-  font-family: ${props => props.system === 'cb' ? "HBS8" : "HBS6"};
+  font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
   white-space: pre-wrap;
   color: ${props => props.preview ? 'black' : 'lightgrey'};
   font-size: 10mm;
