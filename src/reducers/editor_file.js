@@ -1,5 +1,5 @@
 import {cloneDeep, filter, includes, find, compact} from "lodash"
-import {VARIANT, FILE} from "../actions/constants";
+import {VARIANT, FILE, GRAPHIC} from "../actions/constants";
 import methods from "../components/editor/widgets/ReactSVG/methods";
 import uuidv4 from "../utility/uuid";
 import deepPull from "../utility/deepPull";
@@ -28,19 +28,17 @@ const file = (state = {}, action) => {
         case VARIANT.UPDATE.FAILURE:
             return {...state, state: 'failure'};
 
+        case GRAPHIC.CREATE.REQUEST:
         case VARIANT.CREATE.REQUEST:
             return {...state, state: 'updating'};
+        case GRAPHIC.CREATE.SUCCESS:
+            return {...state, state: 'success', variant_id: action.data.default_variant.id, graphic_id: action.data.created_graphic.id};
         case VARIANT.CREATE.SUCCESS:
             console.log(action);
             return {...state, state: 'success', variant_id: action.data.variant_id};
+        case GRAPHIC.CREATE.FAILURE:
         case VARIANT.CREATE.FAILURE:
             return {...state, state: 'failure'};
-
-        case 'OBJECT_ADDED':
-            oldState = cloneDeep(state);
-            oldState.pages[action.shared_currentPage].objects.push(action.object);
-
-            return oldState;
         case 'OBJECT_ROTATED':
             oldState = {...state};
             objects = getSelectedObjects(oldState.pages[action.shared_currentPage].objects, action.uuids);
@@ -57,15 +55,6 @@ const file = (state = {}, action) => {
 
             return oldState;
         case 'OBJECT_UPDATED':
-            // oldState = {...state};
-            // objects = findObject(oldState.pages[action.shared_currentPage].objects, action.preview.uuid);
-            // if (objects === void 0) { // add if not present TODO: delete old adding method
-            //     oldState.pages[action.shared_currentPage].objects.push(action.preview);
-            // } else {
-            //     objects = action.preview;
-            // }
-            // return oldState;
-
             return produce(state, draftState => {
                 index = draftState
                     .pages[action.shared_currentPage]
@@ -202,6 +191,7 @@ const file = (state = {}, action) => {
                     newPage.braille = '';
                 } else {
                     newPage.objects = [];
+                    newPage.render = '';
                 }
                 draftState.pages.push(newPage);
             });
@@ -250,7 +240,7 @@ const file = (state = {}, action) => {
             });
             objects.splice(groupIndex, 1);
             return oldState;
-        case 'CACHE_SVG':
+        case 'CACHE_SVG': // TODO deprecated
             oldState = {...state};
             oldState.pages[action.pageNumber].cache = action.markup;
             return {
@@ -259,6 +249,13 @@ const file = (state = {}, action) => {
             };
         case 'NEW_GRAPHIC_STARTED':
             return {...initialEditor.file};
+        case 'SET_PAGE_RENDERINGS':
+            return produce(state, draftState => {
+                draftState.pages.map((page, index) => {
+                    if (page.text) return page;
+                    page.rendering = action.renderings[index];
+                })
+            });
         case 'DOCUMENT_PROP_CHANGED':
             return {...state, [action.prop]: action.value};
         default:

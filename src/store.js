@@ -81,6 +81,7 @@ export const initialEditor = {
             {
                 name: "Seite 1",
                 text: false,
+                rendering: '',
                 objects: []
             },
             {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import styled from 'styled-components';
 
 // TODO: Anpassen an Viewport / Dokumentengröße
@@ -45,25 +45,38 @@ const Indicator = styled.div`
   border: 1px solid ${props => props.theme.brand_secondary};
 `;
 
-
-const TexturePreview = props => {
+export const GraphicPagePreview = props => {
+    const elem = document.getElementById("page-" + props.index);
+    if (elem === null) return null;
+    const { width, height} = elem.getBBox();
     return (
         <Wrapper onClick={props.onClick}>
             <SVG
                 current={props.current}
-                viewBox={"0 0 " + props.width + " " + props.height}
+                viewBox={`0 0 ${width} ${height}`}
                 width={props.width > props.height ? 60 : parseInt(60 * props.width / props.height)}
-                height={props.width < props.height ? 60 : parseInt(60 * props.height / props.width)}
-                dangerouslySetInnerHTML={{__html: props.markup}}/>
-            {props.isText &&
-            <Indicator>
-                <i className={"fa fa-braille"} />
-            </Indicator>
-            }
+                height={props.width < props.height ? 60 : parseInt(60 * props.height / props.width)}>
+
+                <use href={"#page-" + props.index}/>
+            </SVG>
             <Title current={props.current}>{props.title}</Title>
         </Wrapper>
-
     )
 };
 
-export default TexturePreview;
+export const BraillePagePreview = props => {
+    return (
+        <Wrapper onClick={props.onClick}>
+            <SVG
+                width={props.width > props.height ? 60 : parseInt(60 * props.width / props.height)}
+                height={props.width < props.height ? 60 : parseInt(60 * props.height / props.width)}>
+            </SVG>
+
+            <Indicator>
+                <i className={"fa fa-braille"}/>
+            </Indicator>
+
+            <Title current={props.current}>{props.title}</Title>
+        </Wrapper>
+    )
+};

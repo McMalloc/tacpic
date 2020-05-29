@@ -25,6 +25,11 @@ body {
   src: url("/webfonts/hbs8brlt-webfont.woff") format("woff");
 }
 
+@font-face {
+  font-family: "tacpic swell braille";
+  src: url("/webfonts/tacpic_swellbraille.woff") format("woff");
+}
+
 button, input, textarea, select {
   font-family: "Roboto", sans-serif;
 }

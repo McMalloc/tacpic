@@ -21,6 +21,7 @@
 
 # temporary copyright issues
 /public/webfonts/*
+!public/webfonts/tacpic_swellbraille.woff
 /public/FRONTEND_VERSION.txt
 
 package-lock.json

@@ -11,6 +11,7 @@ import {Alert} from "../../gui/Alert";
 import {useTranslation} from "react-i18next";
 import {useHistory} from "react-router";
 import {NavLink} from "react-router-dom";
+import {renderSVG} from "./ReactSVG";
 
 const Status = styled.div`
   display: flex;
@@ -39,7 +40,6 @@ const Indicator = styled.span`
             return props.theme.midlight;
     }
 }};
-  
 `;
 
 const uploadVersion = (dispatch, file) => {
@@ -85,11 +85,12 @@ const Metadata = props => {
     });
 
     if (!logged_in) return (
-      <Upper>
-          <Alert info>
-              Bitte <NavLink to={'/login'}>logge dich ein</NavLink> oder <NavLink to={'/signup'}>erstelle ein Konto</NavLink>, um Grafiken zu erstellen.
-          </Alert>
-      </Upper>
+        <Upper>
+            <Alert info>
+                Bitte <NavLink to={'/login'}>logge dich ein</NavLink> oder <NavLink to={'/signup'}>erstelle ein
+                Konto</NavLink>, um Grafiken zu erstellen.
+            </Alert>
+        </Upper>
     );
 
     return (
@@ -132,7 +133,9 @@ const Metadata = props => {
                         dispatch({
                             type: "CHANGE_FILE_PROPERTY",
                             key: 'tags',
-                            value: selection.map(tag => {return {tag_id: tag.value, name: tag.label}})
+                            value: selection.map(tag => {
+                                return {tag_id: tag.value, name: tag.label}
+                            })
                         })
                     }}
                     onCreateOption={(option) => {
@@ -145,7 +148,9 @@ const Metadata = props => {
                         })
                     }}
                     options={tags}
-                    value={variantTags.map(tag => {return {value: tag.tag_id, label: tag.name}})}
+                    value={variantTags.map(tag => {
+                        return {value: tag.tag_id, label: tag.name}
+                    })}
                     sublabel={"editor:input_catalogue-tags-sub"}/>
 
                 <Multiline
@@ -176,7 +181,10 @@ const Metadata = props => {
                 <p>Ich stimme der Veröffentlichung unter der liberalen <a target={"blank"}
                                                                           href={"https://creativecommons.org/licenses/by/4.0/deed.de"}>CC-BY-SA
                     3.0 Lizenz</a> zu.</p>
-                <Button onClick={() => {toggleFileModal(true); uploadVersion(dispatch, file)}}
+                <Button onClick={() => {
+                    toggleFileModal(true);
+                    uploadVersion(dispatch, file)
+                }}
                         primary fullWidth
                         label={file.graphic_id === null ?
                             t("editor:input_catalogue-publish") :
@@ -192,7 +200,10 @@ const Metadata = props => {
                            label: "Weiter bearbeiten",
                            align: "left",
                            disabled: file.state === 'updating',
-                           action: () => toggleFileModal(false)
+                           action: () => {
+                               history.push(`/editor/${file.graphic_id}/variants/${file.variant_id}`)
+                               toggleFileModal(false);
+                           }
                        },
                        {
                            label: "Zurück zum Katalog",

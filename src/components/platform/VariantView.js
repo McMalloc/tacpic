@@ -10,16 +10,7 @@ import {Icon} from "../gui/_Icon";
 import {TagView} from "./Tag";
 import {Alert} from "../gui/Alert";
 import {NavLink} from "react-router-dom";
-
-const GraphicView = styled.div`
-    img {
-      width: 100%;
-      height: auto;
-    }
-    
-    border: 1px solid ${props => props.grey_6};
-    box-shadow: ${props => props.distant_shadow};
-`;
+import Carousel from "../gui/Carousel";
 
 const mapFormat = (width, height) => {
     width = parseInt(width);
@@ -50,25 +41,35 @@ const VariantView = props => {
     return (
         <Row>
             <div className={"col-md-6 col-xl-4"}>
-                <GraphicView {...theme}>
-                    <img src={"http://localhost:9292/thumbnails/thumbnail-" + variantId + "-xl.png"}/>
-                </GraphicView>
-
+                <Carousel>
+                    {variant.document.pages.map((page, index) => {
+                        if (page.text) {
+                            // TODO ordentliche Komponente; wie kann die Größe garantiert werden?
+                            return <div style={{backgroundColor: 'white', padding: 6}}>{page.content}</div>
+                        } else {
+                            return <img src={`http://localhost:9292/thumbnails/${graphicId}-${variantId}-${index}-xl.png`}/>
+                        }
+                    })}
+                </Carousel>
             </div>
             <div className={"col-md-6 col-xl-8 xs-first"}>
                 <h2>{variant.title}</h2>
                 <p>{variant.description}</p>
 
                 <p>
-                    <Icon title={"Abmessungen oder Format"} icon={"expand-alt"}/> {t('catalogue:' + mapFormat(variant.width, variant.height))} <small>({variant.width}&#8202;cm&#8200;&times;&#8200;{variant.height}&#8202;cm)</small>
+                    <Icon title={"Abmessungen oder Format"}
+                          icon={"expand-alt"}/> {t('catalogue:' + mapFormat(variant.width, variant.height))}
+                    <small>({variant.width}&#8202;cm&#8200;&times;&#8200;{variant.height}&#8202;cm)</small>
                     <br/>
-                    <Icon title={"Braille-System"} icon={"braille"}/> {t('catalogue:' + variant.system)} {/*TODO: mapping, kann auch für die select box genutzt werden*/}
+                    <Icon title={"Braille-System"}
+                          icon={"braille"}/> {t('catalogue:' + variant.system)} {/*TODO: mapping, kann auch für die select box genutzt werden*/}
                 </p>
 
                 <p>
                     {tags.map((tag) => {
                         if (variant.tags.includes(tag.tag_id)) {
-                            return <TagView style={{fontSize: '100%'}} theme={theme} key={tag.tag_id}>{tag.name}</TagView>
+                            return <TagView style={{fontSize: '100%'}} theme={theme}
+                                            key={tag.tag_id}>{tag.name}</TagView>
                         } else return null;
                     })}
                 </p>
@@ -76,17 +77,10 @@ const VariantView = props => {
                 <hr/>
 
                 {!logged_in &&
-                    <Alert info>
-                        {/*{t("catalogue:variantview_logged-in-hint").match(/<%([^%>]*)%>/g).map(match => {*/}
-                        {/*    debugger;*/}
-                        {/*    const route = match.match(/<%([^\s]+)/)[0].replace("<%", "");*/}
-                        {/*    console.log(match, route);*/}
-                        {/*    const content = match.replace(route, "");*/}
-                        {/*    console.log(content);*/}
-                        {/*    return <NavLink to={route}>{content}</NavLink>;*/}
-                        {/*})}*/}
-                        Bitte <NavLink to={'/login'}>logge dich ein</NavLink> oder <NavLink to={'/signup'}>erstelle ein Konto</NavLink>, um Grafiken zu bearbeiten.
-                    </Alert>
+                <Alert info>
+                    Bitte <NavLink to={'/login'}>logge dich ein</NavLink> oder <NavLink to={'/signup'}>erstelle ein
+                    Konto</NavLink>, um Grafiken zu bearbeiten.
+                </Alert>
                 }
 
                 <div style={{margin: '0 15%'}}>
@@ -106,12 +100,12 @@ const VariantView = props => {
                             disabled={!logged_in}
                             fullWidth icon={'copy'}
                             onClick={() => {
-                        history.push(`/editor/${graphicId}`);
-                        dispatch({
-                            type: FILE.OPEN.REQUEST,
-                            id: variant.id, mode: "new"
-                        })
-                    }}>Neue Variante aus dieser</Button>
+                                history.push(`/editor/${graphicId}`);
+                                dispatch({
+                                    type: FILE.OPEN.REQUEST,
+                                    id: variant.id, mode: "new"
+                                })
+                            }}>Neue Variante aus dieser</Button>
 
                     <Button fullWidth icon={'download'} onClick={() => {
                         window.location = 'http://localhost:9292/variants/' + variantId + '/pdf';

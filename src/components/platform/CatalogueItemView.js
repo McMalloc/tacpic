@@ -78,15 +78,17 @@ const Wrapper = styled.div`
     overflow: hidden;
 `;
 
-const VariantPreview = ({title, id, description, tags}) => {
+const VariantPreview = ({title, id, description, tags, document}) => {
     let selectedVariantId = useParams().variantId;
+    let graphicId = useParams().graphicId;
     const theme = useTheme();
     const allTags = useSelector(
         state => state.catalogue.tags
     );
+    const thumbnailCandidate = document.pages.findIndex(page=>!page.text)
     return (
         <VariantPreviewStyled {...theme} active={id === parseInt(selectedVariantId)}>
-            <img src={`http://localhost:9292/thumbnails/thumbnail-${id}-sm.png`}/>
+            <img src={`http://localhost:9292/thumbnails/${graphicId}-${id}-${thumbnailCandidate}-sm.png`}/>
             {/*<VariantListingPreview bgUrl={`http://localhost:9292/static/thumbnails/thumbnail-${id}-sm.png`} />*/}
             <div className={'variant-info'}>
                 <strong>{title}</strong><br/>

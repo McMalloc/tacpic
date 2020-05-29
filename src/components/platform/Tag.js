@@ -13,7 +13,7 @@ const toggleTag = (dispatch, value, id) => {
 
 export const TagView = styled.span`
   display: inline-block;
-  text-transform: uppercase;
+  //text-transform: uppercase;
   color: ${props=>props.theme.brand_secondary};
   background-color: ${props=>props.theme.grey_5};
   padding: ${props=>props.theme.base_padding} ${props=>props.theme.large_padding};

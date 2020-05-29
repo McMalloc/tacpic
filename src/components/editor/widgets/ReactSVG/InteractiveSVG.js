@@ -15,6 +15,7 @@ import SVGGrid from "./Grid";
 import {findObject} from "../../../../utility/findObject";
 import {rotatePoint} from "../../../../utility/geometry";
 import Key from "./Key";
+import {SVGPage} from "./SVGPage";
 
 class InteractiveSVG extends Component {
     svgElement = React.createRef();
@@ -200,9 +201,11 @@ class InteractiveSVG extends Component {
 
         if (target.dataset.role === 'EDIT-PATH') this.setState({
             edit: target.dataset.associatedPath,
-            preview: {...findObject(
+            preview: {
+                ...findObject(
                     this.props.file.pages[this.props.ui.currentPage].objects,
-                    target.dataset.associatedPath)},
+                    target.dataset.associatedPath)
+            },
             editIndex: parseInt(target.dataset.index)
         });
 
@@ -329,7 +332,7 @@ class InteractiveSVG extends Component {
                             Math.abs(this.state.mouseOffsetY - this.state.mouseDownY)
                         );
 
-                        this.props.addObject(label);
+                        this.props.updateObject(label);
                         setTimeout(() => {
                             document.getElementById("editable_" + label.uuid) && document.getElementById("editable_" + label.uuid).focus();
                         }, 200);
@@ -365,9 +368,11 @@ class InteractiveSVG extends Component {
             preview === null) {
             console.log("copy from state to preview");
             this.setState({
-                preview: {...findObject(
-                    this.props.file.pages[this.props.ui.currentPage].objects,
-                    this.props.ui.selectedObjects[0])}
+                preview: {
+                    ...findObject(
+                        this.props.file.pages[this.props.ui.currentPage].objects,
+                        this.props.ui.selectedObjects[0])
+                }
             });
         } else if (
             preview !== null &&
@@ -420,13 +425,14 @@ class InteractiveSVG extends Component {
     };
 
     render() {
-        let selectedObject = findObject(
-            this.props.file.pages[this.props.ui.currentPage].objects,
-            this.props.ui.selectedObjects[0]);
+        const visibleObjects = this.props.file.pages[this.props.ui.currentPage].objects;
+        let selectedObject = !!visibleObjects ? findObject(
+            visibleObjects,
+            this.props.ui.selectedObjects[0]) : undefined;
         return (
-            // <div style={{position: 'relative', width: '100%', height: '100%'}}>
             <svg
                 xmlns={"http://www.w3.org/2000/svg"}
+                version={"1.2"}
                 width={'100%'} height={'100%'}
                 data-role={"CANVAS"}
                 id={"MAIN-CANVAS"}
@@ -442,35 +448,29 @@ class InteractiveSVG extends Component {
                 tabIndex={0}
                 style={{touchAction: 'none'}}>
 
-                <g id={'VIEWBOX'}
-                   style={{transition: 'transform 0.1s'}}
-                   transform={`
+                <g id={"VIEWBOX"} transform={`
                        translate(${this.props.ui.viewPortX} ${this.props.ui.viewPortY}) 
                        scale(${this.props.ui.scalingFactor})`}>
 
-                    <rect data-role={"CANVAS"} x={0} y={0}
-                          width={this.props.file.width + "mm"}
-                          height={this.props.file.height + "mm"}
-                          stroke={'rgba(0,0,0,0.0)'} fill={'white'}/>
-                    {
-                        this.props.file.pages[this.props.ui.currentPage].objects.map((object, index) => {
-                            if (this.state.preview && this.state.preview.uuid === object.uuid) return null;
-                            return mapObject(object, index);
-                        })
-                    }
+
+                    {this.props.file.pages.map((page, index) => {
+                        if (index === this.props.ui.currentPage) return null;
+                        return (
+                                <SVGPage page={index} excludes={[]}/>
+                        )
+                    })}
+
+                    <SVGPage page={this.props.ui.currentPage}
+                             excludes={this.state.preview ? [this.state.preview.uuid] : []}/>
 
                     {this.state.preview !== null &&
                     mapObject(this.state.preview, -1)
                     }
 
                     {this.state.preview !== null && this.state.preview.type === 'path' && !this.state.dragging &&
-
-                    <path stroke={"black"} strokeWidth={1}
-                          d={`M ${this.state.lastMouseUpX} ${this.state.lastMouseUpY} L ${this.state.mouseOffsetX} ${this.state.mouseOffsetY}`}/>
-
-
+                        <path stroke={"black"} strokeWidth={1}
+                              d={`M ${this.state.lastMouseUpX} ${this.state.lastMouseUpY} L ${this.state.mouseOffsetX} ${this.state.mouseOffsetY}`}/>
                     }
-
                 </g>
 
                 {/*{this.state.preview !== null && this.state.preview.type === 'path' &&*/}
@@ -484,7 +484,8 @@ class InteractiveSVG extends Component {
                 {/*}*/}
 
                 <Manipulator
-                    onModeChange={this.onModeChange} selected={this.state.preview === null ? selectedObject : this.state.preview}
+                    onModeChange={this.onModeChange}
+                    selected={this.state.preview === null ? selectedObject : this.state.preview}
                 />
 
                 {this.state.dragging && this.state.transform === null && this.state.edit === null &&

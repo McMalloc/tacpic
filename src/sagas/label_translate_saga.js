@@ -1,5 +1,4 @@
-import {put, takeLatest, select} from "redux-saga/effects";
-import {call} from "redux-saga/dist/redux-saga-effects-npm-proxy.esm";
+import {put, takeLatest, select, call, debounce} from "redux-saga/effects";
 import axios from "axios";
 
 export function* labelWriteWatcher() {
@@ -31,7 +30,7 @@ export function* labelWriteWatcher() {
 }
 
 export function* contentEditWatcher() {
-    yield takeLatest('CHANGE_PAGE_CONTENT', function* (action) {
+    yield debounce(1000, 'CHANGE_PAGE_CONTENT', function* (action) {
         try {
             let system = yield select(state => state.editor.file.system);
             const response = yield call(() => {

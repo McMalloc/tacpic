@@ -8,7 +8,8 @@ import {connect, useDispatch, useSelector} from "react-redux";
 
 const Braille = styled.div`
   line-height: 12mm;
-  font-family: ${props => props.system === 'cb' ? "HBS8" : "HBS6"};
+  font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
+  //font-family: ${props => props.system === 'cb' ? "HBS8" : "HBS6"};
   position: absolute;
   z-index: -1;
   width: 100%;
@@ -76,10 +77,10 @@ const Label = props => {
     );
 
     return (
-        <g data-transformable={1}
+        <g data-transformable={true}
            id={props.uuid}
            data-group={1}
-           data-selectable={1}
+           data-selectable={true}
            data-editable={1}
            data-in_edit_mode={props.editMode}
            transform={transform(props.x, props.y, props.angle)}>
@@ -87,8 +88,9 @@ const Label = props => {
                            width={props.width}
                            height={props.height}>
                 {/*Bug in WebKit macht die relative Positionierung nötig*/}
-                <Container xmlns="http://www.w3.org/1999/xhtml"
+                <Container xmlns={"http://www.w3.org/1999/xhtml"}
                            preview={previewMode}
+                           className={"label-container"}
                            border={props.border}
                            onMouseDown={event => props.editMode && event.stopPropagation()}
                            style={{position: 'relative'}}>
@@ -96,7 +98,8 @@ const Label = props => {
                     <Braille
                         preview={previewMode}
                         system={system}
-                        xmlns="http://www.w3.org/1999/xhtml"
+                        className={"label-braille"}
+                        xmlns={"http://www.w3.org/1999/xhtml"}
                         offset={props.displayLetters}
                         id={'braille_' + props.uuid}>
                         {props.fullCharPrefix && '%'}{props.isKey ? props.keyVal : props.braille}
@@ -106,8 +109,9 @@ const Label = props => {
                     {props.displayLetters &&
                     <Black style={{height: props.height}}
                            preview={previewMode}
-                           xmlns="http://www.w3.org/1999/xhtml"
+                           xmlns={"http://www.w3.org/1999/xhtml"}
                            disabled={!props.editMode}
+                           className={"label-black"}
                            onChange={event => changeText(dispatch, event.target.value, props.uuid)}
                            onBlur={() => exitEditMode(dispatch, props.uuid)}
                            tabIndex={1}

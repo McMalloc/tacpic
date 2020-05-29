@@ -20,6 +20,7 @@ import Toolbox from "./widgets/Toolbox";
 import Context from "./widgets/Context/Context";
 import Writer from "./widgets/Writer";
 import BraillePage from "./widgets/BraillePage";
+import {Radiobar, RadiobarSegment} from "../gui/Radiobar";
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,35 +28,6 @@ const Wrapper = styled.div`
   position: relative;
   flex: 1 1 auto;
   background-color: ${props => props.theme.brand_secondary};
-`;
-
-const Toolbar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 20;
-  padding: ${props => props.theme.base_padding} ${props => props.theme.large_padding};
-`;
-
-const ToolbarSegment = styled.div`
-  display: flex;
-  
-  button {
-    
-    &:not(:first-child) {
-      border-left: 0;
-    }
-        
-    &:first-child {
-      border-radius: ${props => props.theme.border_radius} 0 0 ${props => props.theme.border_radius};
-    }
-    
-    &:last-child {
-      border-radius: 0 ${props => props.theme.border_radius} ${props => props.theme.border_radius} 0;
-    }
-    
-    border-radius: 0;
-  }
 `;
 
 const PanelWrapper = styled.div`
@@ -132,15 +104,15 @@ const Editor = props => {
     if (uiSettings.initialized) {
         return (
             <Wrapper>
-                <Toolbar>
-                    <ToolbarSegment>
+                <Radiobar>
+                    <RadiobarSegment>
                         <Toggle toggled={showPages} onClick={() => togglePages(!showPages)} label={"Seiten"}/>
                         <Toggle toggled={showObjects} onClick={() => toggleObjects(!showObjects)} label={"Objekte"}/>
-                    </ToolbarSegment>
+                    </RadiobarSegment>
                     {/*<ToolbarSegment>*/}
                     <Toggle primary onClick={() => alert('hi')} label={"Neu"}/>
                     {/*</ToolbarSegment>*/}
-                    <ToolbarSegment>
+                    <RadiobarSegment>
                         <Toggle primary toggled={openedModalSidebar === 0} onClick={() => handleModalSidebar(0)}
                                 label={"Einrichten"}/>
                         <Toggle primary toggled={openedModalSidebar === 1} onClick={() => handleModalSidebar(1)}
@@ -151,8 +123,8 @@ const Editor = props => {
                                 label={"Bildbeschreibung"}/>
                         <Toggle primary toggled={openedModalSidebar === 4} onClick={() => handleModalSidebar(4)}
                                 label={"Veröffentlichen"}/>
-                    </ToolbarSegment>
-                </Toolbar>
+                    </RadiobarSegment>
+                </Radiobar>
                 <PanelWrapper>
 
                     {/*<ToggleSidebar>*/}
@@ -165,7 +137,6 @@ const Editor = props => {
                         {showObjects && <SidebarPanel flex={'4 0 auto'}><Objects/></SidebarPanel>}
                     </Sidebar>
                     }
-
 
                     {page.text ?
                         <>
@@ -180,9 +151,11 @@ const Editor = props => {
                                 <SidebarPanel flex={'0 1 auto'}><Toolbox/></SidebarPanel>
                                 <SidebarPanel flex={'1 1 100%'}><Context/></SidebarPanel>
                             </FixedSidebar>
-                            <Canvas/>
+
                         </>
                     }
+
+                    <Canvas hide={page.text}/>
 
 
                     <ModalSidebar style={{right: openedModalSidebar === null ? '-500px' : 0}} theme={theme}>

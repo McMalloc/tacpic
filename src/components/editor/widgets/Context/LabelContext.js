@@ -8,8 +8,16 @@ import {find} from "lodash";
 import styled from "styled-components";
 import {useTranslation} from "react-i18next";
 
-const BraillePreview = styled.p`
+const BraillePreviewHBS = styled.p`
   font-family: "HBS6Visual";
+  margin-top: 6px;
+  font-size: 28pt;
+  white-space: pre-wrap;
+  line-height: 18pt;
+`;
+
+const BraillePreviewVP = styled.p`
+  font-family: "Braille29 DE";
   margin-top: 6px;
   font-size: 28pt;
   white-space: pre-wrap;
@@ -73,7 +81,8 @@ const LabelContext = props => {
                 </div>
                 <div>
                     <div>Vorschau</div>
-                    <BraillePreview>{selectedObject.braille}</BraillePreview>
+                    <BraillePreviewHBS>{selectedObject.braille}</BraillePreviewHBS>
+                    <BraillePreviewVP>{selectedObject.braille}</BraillePreviewVP>
                 </div>
                 <div>
                     <div>Braillecode in Schwarzschrift</div>
