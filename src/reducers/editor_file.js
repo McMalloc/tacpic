@@ -240,7 +240,7 @@ const file = (state = {}, action) => {
             });
             objects.splice(groupIndex, 1);
             return oldState;
-        case 'CACHE_SVG': // TODO deprecated
+        case 'CACHE_SVG':
             oldState = {...state};
             oldState.pages[action.pageNumber].cache = action.markup;
             return {
