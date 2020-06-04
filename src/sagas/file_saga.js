@@ -1,5 +1,5 @@
 import {put, takeLatest, take, race} from "redux-saga/effects";
-import {FILE, VARIANT} from "../actions/constants";
+import {FILE, VARIANT} from "../actions/action_constants";
 
 export function* openFileWatcher() {
     yield takeLatest(FILE.OPEN.REQUEST, function* (action) {

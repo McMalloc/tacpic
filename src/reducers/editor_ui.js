@@ -1,6 +1,6 @@
 import {cloneDeep} from "lodash"
 import layouts from "../components/editor/widgets/layouts.js"
-import {VERSION, VARIANT} from "../actions/constants";
+import {VERSION, VARIANT} from "../actions/action_constants";
 
 let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so
 let lastObjectsProps = [];

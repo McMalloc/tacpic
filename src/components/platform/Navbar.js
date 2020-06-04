@@ -1,4 +1,4 @@
-import styled, {useTheme} from 'styled-components';
+import styled, {useTheme} from 'styled-components/macro';
 import React, {Component, Fragment} from "react";
 import {useTranslation} from "react-i18next";
 import AccountWidget from "./AccountWidget";
@@ -7,7 +7,7 @@ import {useLocation} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {Icon} from "../gui/_Icon";
 import {Button} from "../gui/Button";
-import {USER} from "../../actions/constants";
+import {USER} from "../../actions/action_constants";
 
 
 const Wrapper = styled.nav`

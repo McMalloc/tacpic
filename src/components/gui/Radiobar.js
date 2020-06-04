@@ -4,7 +4,7 @@ export const Radiobar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: 20;
+  //z-index: 20;
   padding: ${props => props.theme.base_padding} ${props => props.theme.large_padding};
 `;
 

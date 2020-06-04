@@ -1,7 +1,7 @@
 import {storiesOf, forceReRender} from "@storybook/react";
 import React from "react";
 import {Ribbon} from "../components/gui/Ribbon";
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {StateDecorator, State, Store} from "@sambego/storybook-state";
 
 const Content = styled.div`

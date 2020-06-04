@@ -1,90 +1,77 @@
 import React, {Component} from 'react';
-import {connect} from "react-redux";
+import {connect, useDispatch, useSelector} from "react-redux";
 import {Button} from "../../gui/Button";
-import PagePreview, {BraillePagePreview, GraphicPagePreview} from "../../gui/PagePreview";
-import styled from 'styled-components';
+import {BraillePagePreview, GraphicPagePreview} from "../../gui/PagePreview";
+import styled from 'styled-components/macro';
 import {Lower, Upper} from "../../gui/WidgetContainer";
 
-// const Wrapper = styled.div`
-//   display: flex;
-//   //align-items: flex-start;
-//   flex-direction: column;
-//   height: 100%;
-// `;
-//
-// const Upper = styled.div`
-//   display: flex;
-//   flex-wrap: wrap;
-//   flex: 1 1 auto;
-// `;
-//
-// const Lower = styled.div`
-//   align-self: flex-end;
-//   display: flex;
-// `;
+const changePage = (dispatch, nr) => {
+    dispatch({
+        type: "PAGE_CHANGE",
+        number: nr
+    })
+};
+const addPage = (dispatch, isTextPage) => {
+    dispatch({
+        type: "PAGE_ADD",
+        isTextPage
+    })
+};
+const removePage = (dispatch, index) => {
+    dispatch({
+        type: "PAGE_CHANGE",
+        number: Math.max(index - 1, 0)
+    })
+    dispatch({
+        type: "PAGE_REMOVE",
+        index
+    })
+}
 
-class Pages extends Component {
-    render() {
-        return (
-            <>
-                <Upper>
-                    {this.props.file.pages.map((page, i) => {
+const Wrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`
+
+const Pages = props => {
+    const {width, height, pages} = useSelector(state=>state.editor.file);
+    const currentPage = useSelector(state=>state.editor.ui.currentPage);
+    const dispatch = useDispatch();
+    return (
+        <>
+            <Upper>
+                <Wrapper>
+                {pages.map((page, i) => {
                         return (
                             page.text ?
                                 <BraillePagePreview
-                                    width={this.props.width}
-                                    height={this.props.height}
-                                    current={i === this.props.currentPage}
+                                    width={width}
+                                    height={height}
+                                    current={i === currentPage}
                                     key={i} index={i}
-                                    onClick={() => this.props.changePage(i)}
+                                    onClick={() => changePage(dispatch, i)}
+                                    {...page}/>
+                                :
+                                <GraphicPagePreview
+                                    width={width}
+                                    height={height}
+                                    current={i === currentPage}
+                                    key={i} index={i}
+                                    onClick={() => changePage(dispatch, i)}
                                     title={page.name}/>
-                                    :
-                            <GraphicPagePreview
-                                width={this.props.width}
-                                height={this.props.height}
-                                current={i === this.props.currentPage}
-                                key={i} index={i}
-                                onClick={() => this.props.changePage(i)}
-                                title={page.name}/>
+                        )
+                    }
+                )}
+                </Wrapper>
+            </Upper>
 
-                        )}
-                    )}
-                </Upper>
-
-                <Lower style={{flexDirection: "column"}}>
-                    <Button icon={"trash-alt"} onClick={() => {}}>Entfernen</Button>
-                    <Button primary icon={"image"} onClick={() => this.props.addPage(false)}>Neue Grafik-Seite</Button>
-                    <Button primary icon={"braille"} onClick={() => this.props.addPage(true)}>Neue Braille-Seite</Button>
-                </Lower>
-            </>
-        );
-    }
+            <Lower style={{flexDirection: "column"}}>
+                <Button icon={"trash-alt"} onClick={() => removePage(dispatch, currentPage)}>Entfernen</Button>
+                <Button primary icon={"image"} onClick={() => addPage(dispatch, false)}>Neue Grafik-Seite</Button>
+                {/*<Button primary icon={"braille"} onClick={() => addPage(dispatch, true)}>Neue Braille-Seite</Button>*/}
+            </Lower>
+        </>
+    );
 }
 
-const mapStateToProps = state => {
-    return {
-        file: state.editor.file,
-        width: state.editor.file.width,
-        height: state.editor.file.height,
-        currentPage: state.editor.ui.currentPage
-    }
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        changePage: nr => {
-            dispatch({
-                type: "PAGE_CHANGE",
-                number: nr
-            })
-        },
-        addPage: isTextPage => {
-            dispatch({
-                type: "PAGE_ADD",
-                isTextPage
-            })
-        }
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Pages);
+export default Pages;

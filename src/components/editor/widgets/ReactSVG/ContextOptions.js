@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import connect from "react-redux/es/connect/connect";
 import Palette from "../../../gui/Palette";
 import TexturePalette from "../../../gui/TexturePalette";
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {find, isUndefined} from 'lodash';
 
 const Container = styled.div`

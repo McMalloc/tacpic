@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import React from "react";
 import AtlSelect from 'react-select'
 import AtlCrSelect from 'react-select/creatable'

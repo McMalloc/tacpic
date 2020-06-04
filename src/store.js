@@ -28,7 +28,7 @@ export const initialEditor = {
             offsetX: 0,
             offsetY: 0
         },
-        currentPage: 0,
+        currentPage: 1,
         scalingFactor: 1,
         viewPortX: 50,
         viewPortY: 50,
@@ -88,8 +88,8 @@ export const initialEditor = {
                 name: "Seite 2",
                 text: true, // TODO Textseiten werden anders behandelt, starres Braille-Layout
                 content: '',
-                formattedContent: '',
-                braille: ''
+                braille: '',
+                formattedBraille: ''
             }
         ]
     },

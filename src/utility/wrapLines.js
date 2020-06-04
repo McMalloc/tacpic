@@ -18,26 +18,36 @@
 // TODO: reimplementieren
 //
 
-export const wrapLines = (s, n, useSpaces, a) => {
-    a = a || [];
-    if (s.length <= n) {
-        a.push(s);
-        return a;
+import {chunk} from "lodash";
+
+const lastSpaceRgx = /[\s|\n](?!.*[\s|\n])/;
+const lastNewlineRgx = /\n(?!.*\n)/;
+export const wrapLines = (text, maxRows, useSpaces, result) => {
+    result = result || [];
+    if (text.length <= maxRows) {
+        result.push(text.trim());
+        return result;
     }
-    let line = s.substring(0, n);
-    if (! useSpaces) { // insert newlines anywhere
-        a.push(line);
-        return wrapLines(s.substring(n), n, useSpaces, a);
+    let line = text.substring(0, maxRows);
+    if (!useSpaces) { // insert newlines anywhere
+        result.push(line.trim());
+        return wrapLines(text.substring(maxRows), maxRows, useSpaces, result);
     }
-    else { // attempt to insert newlines after whitespace
-        let lastSpaceRgx = /\s(?!.*\s)/;
+    else { // attempt to insert newlines after whitespace or manually inserted newlines
         let idx = line.search(lastSpaceRgx);
-        let nextIdx = n;
+        let possibleManualNewline = line.search(lastNewlineRgx);
+        let nextIdx = maxRows;
         if (idx > 0) {
-            line = line.substring(0, idx);
+            line = line.substring(0, possibleManualNewline > 0 ? possibleManualNewline : idx);
             nextIdx = idx;
         }
-        a.push(line);
-        return wrapLines(s.substring(nextIdx), n, useSpaces, a);
+        result.push(line.trim());
+        return wrapLines(text.substring(nextIdx), maxRows, useSpaces, result);
     }
 };
+
+export const wrapAndChunk = (text, maxChars, maxRows) => {
+    let wrapped = [];
+    wrapLines(text, maxRows, true, wrapped);
+    return chunk(wrapped, maxRows);
+}

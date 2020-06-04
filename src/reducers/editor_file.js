@@ -1,11 +1,13 @@
 import {cloneDeep, filter, includes, find, compact} from "lodash"
-import {VARIANT, FILE, GRAPHIC} from "../actions/constants";
+import {VARIANT, FILE, GRAPHIC} from "../actions/action_constants";
 import methods from "../components/editor/widgets/ReactSVG/methods";
 import uuidv4 from "../utility/uuid";
 import deepPull from "../utility/deepPull";
 import {initialEditor} from "../store";
 import {findObject} from "../utility/findObject";
 import {produce} from "immer";
+import {A4_HEIGHT, A4_MAX_CHARS_PER_ROW, A4_MAX_ROWS_PER_PAGE, A4_WIDTH, PAGE_NUMBER_BOTTOM} from "../config/constants";
+import {wrapAndChunk} from "../utility/wrapLines";
 
 // let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so || rausnehmen, da jetzt vom internen State des Editors verwaltet, ODER?
 const getSelectedObjects = (objects, selected) => {
@@ -99,18 +101,23 @@ const file = (state = {}, action) => {
                 });
             });
         case 'BRAILLE_BULK_TRANSLATED':
-            oldState = cloneDeep(state);
-
-            oldState.pages.forEach(page => {
-                page.objects.forEach(object => {
-                    if (object.type === 'label') {
-                        let translated = action.labels.find(label => label.uuid === object.uuid);
-                        object.braille = translated.braille;
+            return produce(state, draftState => {
+                draftState.pages.forEach((page, index) => {
+                    if (page.text) {
+                        const translated = action.labels.find(label => label.uuid === "__PAGE_" + 1).braille;
+                        page.braille = translated;
+                        page.formatted = wrapAndChunk(translated, draftState.braillePages.cellsPerRow, draftState.braillePages.rowsPerPage);
+                    } else {
+                        page.objects.forEach(object => {
+                            if (object.type === 'label') {
+                                let translated = action.labels.find(label => label.uuid === object.uuid);
+                                object.braille = translated.braille;
+                            }
+                        })
                     }
-                })
-            });
 
-            return oldState;
+                });
+            });
         case 'CHANGE_FILE_PROPERTY':
             return {
                 ...state,
@@ -118,44 +125,43 @@ const file = (state = {}, action) => {
             };
         case 'CHANGE_BRAILLE_PAGE_PROPERTY':
             let value = parseInt(action.value);
-            const {marginTop, marginLeft, rowsPerPage, cellsPerRow, width, height} = state.braillePages;
+            const {marginTop, marginLeft, rowsPerPage, cellsPerRow, width, height, pageNumbers} = state.braillePages;
 
             return produce(state, draftState => {
                 draftState.braillePages[action.key] = value;
 
-                if (width === 210 && height === 297) {
+                if (width === A4_WIDTH && height === A4_HEIGHT) {
                     switch (action.key) {
                         case "marginTop":
-                            if (value + rowsPerPage > 28) draftState.braillePages.rowsPerPage = 28 - value;
+                            if (value + rowsPerPage > A4_MAX_ROWS_PER_PAGE) draftState.braillePages.rowsPerPage = A4_MAX_ROWS_PER_PAGE - value;
                             break;
                         case "rowsPerPage":
-                            if (marginTop + value > 28) draftState.braillePages.marginTop = 28 - value;
+                            if (marginTop + value > A4_MAX_ROWS_PER_PAGE) draftState.braillePages.marginTop = A4_MAX_ROWS_PER_PAGE - value;
                             break;
                         case "marginLeft":
-                            if (value + cellsPerRow > 34) draftState.braillePages.cellsPerRow = 34 - value;
+                            if (value + cellsPerRow > A4_MAX_CHARS_PER_ROW) draftState.braillePages.cellsPerRow = A4_MAX_CHARS_PER_ROW - value;
                             break;
                         case "cellsPerRow":
-                            if (marginLeft + value > 34) draftState.braillePages.marginLeft = 34 - value;
+                            if (marginLeft + value > A4_MAX_CHARS_PER_ROW) draftState.braillePages.marginLeft = A4_MAX_CHARS_PER_ROW - value;
+                            break;
+                        case "pageNumbers":
+                            if (value === PAGE_NUMBER_BOTTOM && rowsPerPage + marginTop >= A4_MAX_ROWS_PER_PAGE) { // one more row for space when page numbering at the bottom is enabled
+                                draftState.braillePages.rowsPerPage = draftState.braillePages.rowsPerPage - 1;
+                            }
                             break;
                     }
                 }
             });
 
         case 'CHANGE_PAGE_CONTENT':
-            let pageContent = action.content;
-
             return produce(state, draftState => {
                 draftState.pages[action.pageIndex].content = action.content;
-                // draftState.pages[action.pageIndex].content = pageContent.replace(rowRegex,"$1\n");
             });
         case 'UPDATE_BRAILLE_CONTENT':
             // called when the saga has finished processing the remote braille translation
             return produce(state, draftState => {
                 draftState.pages[action.pageIndex].braille = action.braille;
-            });
-        case 'UPDATE_BULK_BRAILLE_CONTENT':
-            return produce(state, draftState => {
-                draftState.pages[action.pageIndex].braille = action.braille;
+                draftState.pages[action.pageIndex].formatted = action.formatted;
             });
         case FILE.OPEN.SUCCESS:
             let current_file = {...initialEditor.file};
@@ -188,12 +194,17 @@ const file = (state = {}, action) => {
                 };
                 if (action.isTextPage) {
                     newPage.content = '';
+                    newPage.formatted = '';
                     newPage.braille = '';
                 } else {
                     newPage.objects = [];
                     newPage.render = '';
                 }
-                draftState.pages.push(newPage);
+                draftState.pages.splice(draftState.pages.length - 1, 0, newPage);
+            });
+        case 'PAGE_REMOVE':
+            return produce(state, draftState => {
+                draftState.pages.splice(action.index, 1);
             });
         case 'KEY_TEXTURE_CHANGED':
             return produce(state, draftState => {
@@ -240,13 +251,6 @@ const file = (state = {}, action) => {
             });
             objects.splice(groupIndex, 1);
             return oldState;
-        case 'CACHE_SVG':
-            oldState = {...state};
-            oldState.pages[action.pageNumber].cache = action.markup;
-            return {
-                ...state,
-                file: oldState
-            };
         case 'NEW_GRAPHIC_STARTED':
             return {...initialEditor.file};
         case 'SET_PAGE_RENDERINGS':
@@ -256,8 +260,6 @@ const file = (state = {}, action) => {
                     page.rendering = action.renderings[index];
                 })
             });
-        case 'DOCUMENT_PROP_CHANGED':
-            return {...state, [action.prop]: action.value};
         default:
             return state;
     }

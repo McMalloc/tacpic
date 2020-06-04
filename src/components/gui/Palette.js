@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import React, {Component} from "react";
 import Swatch from "./Swatch";
 import {Icon} from "./_Icon";

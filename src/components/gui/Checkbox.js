@@ -1,6 +1,7 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import React, {Component, Fragment} from "react";
 import {useTranslation} from "react-i18next";
+import {Sub} from "./_Label";
 
 const Label = styled.label`
   //font-size: 0.9em;
@@ -88,6 +89,9 @@ const Checkbox = props => {
                      type={"checkbox"} />
                  <Label disabled={props.disabled} checked={props.checked} htmlFor={props.name + "-cb"}>
                      {t(props.label)}
+                     {props.sublabel &&
+                     <><br/><Sub>{t(props.sublabel)}</Sub></>
+                     }
                  </Label>
             </Wrapper>
         )

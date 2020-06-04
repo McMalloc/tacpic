@@ -1,4 +1,4 @@
-import {CANVAS_OBJECT_ADDED, CANVAS_OBJECT_REMOVED} from "../actions/constants";
+import {CANVAS_OBJECT_ADDED, CANVAS_OBJECT_REMOVED} from "../actions/action_constants";
 // import undoable from "./undoable";
 import {every, filter} from 'lodash';
 

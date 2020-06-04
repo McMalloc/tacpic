@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import '../../styles/Editor.css';
-import styled, {useTheme} from 'styled-components';
+import styled, {useTheme} from 'styled-components/macro';
 import {useTranslation} from "react-i18next";
-import {FILE} from "../../actions/constants";
+import {FILE} from "../../actions/action_constants";
 import {useParams} from "react-router";
 import Canvas from "./widgets/Canvas";
 import Toggle from "../gui/Toggle";
@@ -27,12 +27,22 @@ const Wrapper = styled.div`
   flex-direction: column;
   position: relative;
   flex: 1 1 auto;
+  max-height: 100%;
   background-color: ${props => props.theme.brand_secondary};
 `;
 
 const PanelWrapper = styled.div`
   display: flex;
-  flex: 1 1 auto;
+  flex: 0 1 100%;
+  flex-direction: row;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+`;
+
+const CanvasWrapper = styled.div`
+  display: flex;
+  flex: 1 0 auto;
   position: relative;
   overflow: hidden;
 `;
@@ -65,8 +75,9 @@ const FixedSidebar = styled(Sidebar)`
 `;
 
 const SidebarPanel = styled.div`
-  flex: ${props => props.flex};
+  flex: ${props => props.flexGrow}  1 30%;
   display: flex;
+  overflow: auto;
   flex-direction: column;
   border-bottom: 2px solid ${props => props.theme.brand_secondary_light};
 `;
@@ -98,7 +109,7 @@ const Editor = props => {
         index === openedModalSidebar ? toggleModalSidebar(null) : toggleModalSidebar(index);
     };
 
-    const [showPages, togglePages] = useState(false);
+    const [showPages, togglePages] = useState(true);
     const [showObjects, toggleObjects] = useState(false);
 
     if (uiSettings.initialized) {
@@ -126,37 +137,46 @@ const Editor = props => {
                     </RadiobarSegment>
                 </Radiobar>
                 <PanelWrapper>
-
-                    {/*<ToggleSidebar>*/}
-                    {/*    */}
-                    {/*</ToggleSidebar>*/}
+                    {/*<div style={{*/}
+                    {/*    backgroundColor: "lightgreen",*/}
+                    {/*    width: "100%",*/}
+                    {/*    margin: 10,*/}
+                    {/*    boxSizing: "border-box",*/}
+                    {/*    height: "10000px"*/}
+                    {/*}}>...*/}
+                    {/*</div>*/}
 
                     {(showPages || showObjects) &&
                     <Sidebar>
-                        {showPages && <SidebarPanel flex={'1 0 auto'}><Pages/></SidebarPanel>}
-                        {showObjects && <SidebarPanel flex={'4 0 auto'}><Objects/></SidebarPanel>}
+                        {showPages && <SidebarPanel flexGrow={'1'}><Pages/></SidebarPanel>}
+                        {showObjects && <SidebarPanel flexGrow={'4'}><Objects/></SidebarPanel>}
                     </Sidebar>
                     }
 
                     {page.text ?
                         <>
                             <FixedSidebar>
-                                <Writer/>
+                                <SidebarPanel flexGrow={'1'}>
+                                    <Writer/>
+                                </SidebarPanel>
                             </FixedSidebar>
-                            <BraillePage />
                         </>
                         :
                         <>
                             <FixedSidebar>
-                                <SidebarPanel flex={'0 1 auto'}><Toolbox/></SidebarPanel>
-                                <SidebarPanel flex={'1 1 100%'}><Context/></SidebarPanel>
+                                <SidebarPanel flexGrow={'0'}><Toolbox/></SidebarPanel>
+                                <SidebarPanel flexGrow={'1'}><Context/></SidebarPanel>
                             </FixedSidebar>
 
                         </>
                     }
 
-                    <Canvas hide={page.text}/>
-
+                    <CanvasWrapper>
+                        <Canvas hide={page.text}/>
+                        {page.text &&
+                        <BraillePage/>
+                        }
+                    </CanvasWrapper>
 
                     <ModalSidebar style={{right: openedModalSidebar === null ? '-500px' : 0}} theme={theme}>
                         {openedModalSidebar === 0 && <Document/>}
@@ -167,6 +187,8 @@ const Editor = props => {
                     </ModalSidebar>
 
                 </PanelWrapper>
+
+
 
             </Wrapper>
         );

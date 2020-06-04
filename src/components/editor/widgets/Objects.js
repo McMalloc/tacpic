@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect, useDispatch, useSelector} from "react-redux";
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {Treeview} from "../../gui/Treeview";
 import {Button} from "../../gui/Button";
 import {Row} from "../../gui/Grid";

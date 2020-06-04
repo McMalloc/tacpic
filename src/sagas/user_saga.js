@@ -1,6 +1,6 @@
 import {takeLatest, call, put} from 'redux-saga/effects';
 import axios from 'axios';
-import {USER} from "../actions/constants";
+import {USER} from "../actions/action_constants";
 
 
 

@@ -8,8 +8,15 @@ import {Numberinput, Textinput} from "../../gui/Input";
 import {Upper} from "../../gui/WidgetContainer";
 import Tooltip from "../../gui/Tooltip";
 import Tabs from "../../gui/Tabs";
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {Alert} from "../../gui/Alert";
+import {
+    A4_HEIGHT,
+    A4_MAX_CHARS_PER_ROW,
+    A4_MAX_ROWS_PER_PAGE,
+    A4_WIDTH,
+    PAGE_NUMBER_BOTTOM
+} from "../../../config/constants";
 
 const changeFileProperty = (dispatch, key, value) => {
     dispatch({
@@ -40,12 +47,20 @@ const PageGrid = styled.div`
 
 const GridCell = styled.div`
     flex: 0 0 50%;                       /* don't grow, don't shrink, width */
-    //height: 50px;
     margin-bottom: 5px;
     &.page-image-container {
       text-align: center;
+      position: relative;
       img {
         width: 70%;
+      }
+      div.page-number {
+        position: absolute;
+        bottom: 12px;
+        width: 100%;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
       }
     }
 `;
@@ -205,8 +220,8 @@ const Document = props => {
                             <GridCell>
                                 {/*<Alert info>*/}
                                 Für A4-Seiten gilt:<br/>
-                                <strong>Max. 28 Zeilen pro Seite<br/>
-                                    max. 34 Zeichen pro Zeile</strong>
+                                <strong>Max. {A4_MAX_ROWS_PER_PAGE} Zeilen pro Seite<br/>
+                                    max. {A4_MAX_CHARS_PER_ROW} Zeichen pro Zeile</strong>
                                 {/*</Alert>*/}
 
                             </GridCell>
@@ -216,7 +231,7 @@ const Document = props => {
                                     changeBraillePageProperty(dispatch, 'marginTop', event.currentTarget.value)
                                 }}
                                 value={braillePages.marginTop}
-                                max={Math.min(height === 297 && 28, 10)}
+                                max={Math.min(height === A4_HEIGHT && A4_MAX_ROWS_PER_PAGE - (braillePages.pageNumbers > 0 ? 1 : 0), 10)}
                                 min={0}
                                 sublabel={"in Zeilen"}
                                 label={"Rand oben"}/>
@@ -225,7 +240,7 @@ const Document = props => {
                                     onChange={event => {
                                         changeBraillePageProperty(dispatch, 'rowsPerPage', event.currentTarget.value)
                                     }}
-                                    max={height === 297 && 28}
+                                    max={height === A4_HEIGHT && A4_MAX_ROWS_PER_PAGE - (braillePages.pageNumbers > 0 ? 1 : 0)}
                                     min={1}
                                     value={braillePages.rowsPerPage}
                                     label={"Zeilen pro Seite"}/>
@@ -236,7 +251,7 @@ const Document = props => {
                                     changeBraillePageProperty(dispatch, 'marginLeft', event.currentTarget.value)
                                 }}
                                 value={braillePages.marginLeft}
-                                max={Math.min(width === 210 && 34, 10)}
+                                max={Math.min(width === A4_WIDTH && A4_MAX_CHARS_PER_ROW, 10)}
                                 min={0}
                                 sublabel={"in Zellen"}
                                 label={"Rand links"}/>
@@ -245,12 +260,15 @@ const Document = props => {
                                     onChange={event => {
                                         changeBraillePageProperty(dispatch, 'cellsPerRow', event.currentTarget.value)
                                     }}
-                                    max={width === 210 && 34}
+                                    max={width === A4_WIDTH && A4_MAX_CHARS_PER_ROW}
                                     min={1}
                                     value={braillePages.cellsPerRow}
                                     label={"Zeichen pro Zeile"}/>
                             </GridCell>
-                            <GridCell className={"page-image-container"}><img src={"/images/page.svg"}/></GridCell>
+                            <GridCell className={"page-image-container"}>
+                                <img src={"/images/page.svg"}/>
+                                {braillePages.pageNumbers > 0 && <div className={"page-number"}>#</div>}
+                            </GridCell>
 
                             <GridCell></GridCell>
                             <GridCell></GridCell>
@@ -271,11 +289,11 @@ const Document = props => {
                     <div className={"col-sm-6"}>
                         <Checkbox
                             name={"cb_pagenumbers"}
-                            checked={defaultTitle}
+                            checked={braillePages.pageNumbers > 0}
                             onChange={() => {
-                                toggleDefaultTitle(!defaultTitle)
+                                changeBraillePageProperty(dispatch, "pageNumbers", braillePages.pageNumbers === 0 ? PAGE_NUMBER_BOTTOM : 0)
                             }}
-                            label={"Seitenzahlen"}/>
+                            label={"Seitenzahlen"} sublabel={"verringern die mögliche Anzahl an Zeilen auf 22"}/>
                     </div>
                 </Row>
             </fieldset>

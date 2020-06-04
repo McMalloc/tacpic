@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {USER} from "../actions/constants";
+import {USER} from "../actions/action_constants";
 import {Button} from "./gui/Button";
 import {Modal} from "./gui/Modal";
 import {Form} from "./gui/Form";

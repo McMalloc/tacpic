@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {useTranslation} from "react-i18next";
 
 const Label = styled.span`

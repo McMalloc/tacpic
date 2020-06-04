@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import patternTemplates from "../editor/widgets/ReactSVG/Patterns.js";
 import {useTranslation} from "react-i18next";
 import {Icon} from "./_Icon";

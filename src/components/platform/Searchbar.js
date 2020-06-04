@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Textinput} from "../gui/Input";
 import {Button} from "../gui/Button";
 import {useHistory, useLocation} from "react-router";
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 const Bar = styled.form`
   display: flex;

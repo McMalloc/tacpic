@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {Qid} from "../../gui/Qid";
 import {Row} from "../../gui/Grid";
 import {Numberinput} from "../../gui/Input";

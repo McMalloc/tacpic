@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import Classifier from "../../gui/Classifier";
 import cats from "../../../content/categories.json";
 import {Button} from "../../gui/Button";
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import Select from "../../gui/Select";
 import Divider from "../../gui/Divider";
 import {Row} from "../../gui/Grid";

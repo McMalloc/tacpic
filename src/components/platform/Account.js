@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect, Route, Switch} from "react-router-dom";
-import {USER} from "../../actions/constants";
+import {USER} from "../../actions/action_constants";
 import Card from "../gui/Card";
 import {Button} from "../gui/Button";
 import Login from "../Login";

@@ -1,30 +1,19 @@
 import React, {Component, useEffect} from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {useDispatch, useSelector} from "react-redux";
-import {Upper} from "../../gui/WidgetContainer";
+import {Lower, Upper} from "../../gui/WidgetContainer";
 import {Multiline} from "../../gui/Input";
-import {wrapLines} from "../../../utility/wrapLines";
+import {Alert} from "../../gui/Alert";
 
 const Wrapper = styled.div`
   flex: 1 1 auto;
   z-index: 0;
 `;
 
-const Textarea = styled(Multiline)`
-  //height: 100%;
-  resize: none;
-  width: 100%;
-  height: 90%;
-  box-sizing: border-box;
-`;
-
-const changeText = (dispatch, text, pageIndex, cellsPerRow) => {
-    let wrapped = [];
-    wrapLines(text, cellsPerRow, true, wrapped);
+const changeText = (dispatch, text, pageIndex) => {
     dispatch({
         type: 'CHANGE_PAGE_CONTENT',
         content: text,
-        formattedContent: wrapped.join("\n"),
         pageIndex
     });
 };
@@ -37,22 +26,22 @@ const Writer = props => {
     const page = useSelector(
         state => state.editor.file.pages[currentPageIndex]
     );
-    const layout = useSelector(
-        state => state.editor.file.braillePages
-    );
-    let wrapped = [];
-    wrapLines(page.braille, layout.cellsPerRow, true, wrapped);
     return (
         <>
             <Upper>
-                <Textarea
+                <Multiline
+                    rows={20}
+                    // style={{height: "100%", margin: 0}}
+                    label={"Inhalt der Braille-Seiten"}
                     value={page.content}
-                    onChange={event => changeText(dispatch, event.target.value, currentPageIndex, layout.cellsPerRow)}
+                    onChange={event => changeText(dispatch, event.target.value, currentPageIndex)}
                     id={"writer-textarea"}/>
-                <pre>
-                    {wrapped.join("\n")}
-                </pre>
+                {page.formatted && page.formatted.length <= 1 &&
+                <Alert info>Brailleseiten werden automatisch angefügt, sobald die Textlänge dies nötig macht.</Alert>
+                }
             </Upper>
+            <Lower>
+                {page.content.split(" ").length} Wörter</Lower>
         </>
     )
 };

@@ -1,6 +1,9 @@
 import React, {Component, useEffect} from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {useSelector} from "react-redux";
+import {wrapLines} from "../../../utility/wrapLines";
+import {chunk} from "lodash";
+import {toBrailleNumbers} from "../../../utility/toBrailleNumber";
 
 // const Widget = styled.div`
 //   position: relative;
@@ -10,24 +13,31 @@ import {useSelector} from "react-redux";
 const brailleCellWidth = 2.5;
 const brailleCellHeight = 5;
 
-const maxRowsPerA4Page = 28; // todo zentralisieren
+const maxRowsPerA4Page = 28; // TODO zentralisieren
 const maxCellsPerA4Row = 34;
 
 const a4Width = 210;
 const a4height = 297;
 
 const Wrapper = styled.div`
-  //flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  flex: 1 1 auto;
+`;
+
+const Page = styled.div`
   z-index: 0;
   
-  //padding: 0;
+  //padding: 5mm 2.5mm;
   padding-top: ${props => brailleCellHeight * props.marginTop}mm;
   padding-left: ${props => brailleCellWidth * props.marginLeft}mm;
-  padding-right: ${props => a4Width - brailleCellHeight * (props.marginTop + props.rowsPerPage)}mm;
-  padding-bottom: ${props => a4height - brailleCellWidth * (props.marginLeft + props.cellsPerRow)}mm;
+  padding-right: ${props => brailleCellWidth * (maxCellsPerA4Row - props.cellsPerRow)}mm;
+  padding-bottom: ${props => brailleCellHeight * (maxRowsPerA4Page - props.rowsPerPage)}mm;
   margin: ${props => props.theme.large_padding};
   background-color: white;
   box-sizing: border-box;
+  width: fit-content;
   
   //width: ${a4Width}mm;
   //height: ${a4height}mm;
@@ -35,35 +45,48 @@ const Wrapper = styled.div`
   font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
   font-size: 10mm;
   white-space: pre;
+  position: relative;
 `;
 
-const Margin = styled.div`
+const PageTitle = styled.div`
+  margin: ${props => props.theme.large_padding};
+  color: ${props => props.theme.background};
+`;
+
+const Pagenumber = styled.div`
+  position: absolute;
+  bottom: 0;
   width: 100%;
-  height: 100%;
-  border: 2px solid grey;
-  box-sizing: border-box;
+  text-align: center;
 `;
 
 const BraillePage = props => {
-    const currentPageIndex = useSelector(
-        state => state.editor.ui.currentPage
-    );
-    const system = useSelector(
-        state => state.editor.file.system
-    );
-    const page = useSelector(
-        state => state.editor.file.pages[currentPageIndex]
-    );
-    const layout = useSelector(
-        state => state.editor.file.braillePages
-    );
+    const currentPageIndex = useSelector(state => state.editor.ui.currentPage);
+    const system = useSelector(state => state.editor.file.system);
+    const page = useSelector(state => state.editor.file.pages[currentPageIndex]);
+    const layout = useSelector(state => state.editor.file.braillePages);
+    // TODO in props stecken, der Editor weiß ohnehin Bescheid
 
     return (
-        <Wrapper {...layout} system={system}>
-            <Margin>
-                {page.braille}
-            </Margin>
+        <Wrapper>
+            {/*<h1>&emsp;Vorschau</h1>*/}
+            <div>
+                {page.formatted && page.formatted.map((pageChunk, index) => {
+                    return (<a>
+                            <PageTitle id={`braillepage_preview_${currentPageIndex}_${index}`}>Seite #{index + 1}</PageTitle>
+                            <Page {...layout} system={system}>
+
+                                    {pageChunk.map((line) => <><span>{line}</span><br/></>)}
+
+                                {layout.pageNumbers > 0 &&
+                                <Pagenumber>{toBrailleNumbers(index + 1)}</Pagenumber>
+                                }
+                            </Page></a>
+                    )
+                })}
+            </div>
         </Wrapper>
+
     )
 
 };

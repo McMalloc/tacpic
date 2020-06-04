@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {Multiline, Textinput} from "../../gui/Input";
 import Select from "../../gui/Select";
 import {Button} from "../../gui/Button";
 import {Upper} from "../../gui/WidgetContainer";
-import {GRAPHIC, VERSION, VARIANT} from "../../../actions/constants";
+import {GRAPHIC, VERSION, VARIANT} from "../../../actions/action_constants";
 import {Modal} from "../../gui/Modal";
 import {Alert} from "../../gui/Alert";
 import {useTranslation} from "react-i18next";

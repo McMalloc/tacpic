@@ -51,7 +51,7 @@ export default props => {
         <g>
             <g id={`container-${props.uuid}`} transform={`translate(${props.x}, ${props.y + lineHeightOffset})`}>
                 <Braille>
-                    Legende
+                    legende
                 </Braille>
                 <Black y={8}>Legende</Black>
                 {keyedTextures.map((entry, index) => {

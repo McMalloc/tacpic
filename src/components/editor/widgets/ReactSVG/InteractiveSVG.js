@@ -8,7 +8,7 @@ import ContextOptions from "./ContextOptions";
 import {switchCursorMode} from "../../../../actions";
 import PathIndicator from "./PathManipulator";
 
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import methods, {combineBBoxes} from "./methods";
 import {init, transformCoords} from "./transform";
 import SVGGrid from "./Grid";

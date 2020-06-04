@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import React, {Component} from "react";
 import {times, uniq, without, indexOf} from 'lodash';
 import {Icon} from "./_Icon";

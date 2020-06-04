@@ -6,7 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {Navbar, NavbarItem} from "./components/platform/Navbar";
 import Catalogue from "./components/platform/Catalogue";
 import {useDispatch, useSelector} from "react-redux";
-import {TAGS, USER} from "./actions/constants";
+import {TAGS, USER} from "./actions/action_constants";
 import styled from "styled-components";
 import SignupForm from "./components/SignupForm";
 import {Footer} from "./components/platform/Footer";
@@ -15,20 +15,15 @@ import Account from "./components/platform/Account";
 
 const ScrollContent = styled.div`
   display: flex;
-  height: 100vh;
+  flex-grow: 1;
   flex-direction: column;
   overflow: auto;
 `;
 
 const Wrapper = styled.div`
   display: flex;
-  height: 100vh;
+  height: 100%;
   flex-direction: column;
-`;
-
-const Main = styled.div`
-  flex: 1;
-  display: flex;
 `;
 
 class ErrorBoundary extends React.Component {
@@ -86,36 +81,30 @@ const App = () => {
     ];
 
     return (
-        <>
             <Wrapper>
                 <Navbar items={navbarItems}/>
                 <ScrollContent className="App">
-
-                    <Main>
                         <ErrorBoundary>
                             <Switch>
                                 {/*Renders exclusivly*/}
                                 {/*<Route path="/register" component={Register}/>*/}
                                 <Route path="/login" component={Login}/>
                                 <Route path="/account" component={Account}/>
+                                <Route path="/catalogue" component={Catalogue}/>
+                                <Route path="/signup" component={SignupForm}/>
+                                {/*<Route path="/catalogue" render={() => <Catalogue private={true}/>}/>*/}
+
                                 <Route path="/editor/:graphic_id?/variants/:variant_id?" component={Editor}/>
                                 <Route path="/editor/:graphic_id?" component={Editor}/>
                                 <Route path="/editor/new" component={Editor}/>
-                                {/*<Route path="/private-catalogue/:graphic_id/variant/:variant_id/edit" component={Editor}/>*/}
-                                <Route path="/catalogue" component={Catalogue}/>
-                                <Route path="/signup" component={SignupForm}/>
-                                <Route path="/catalogue" render={() => <Catalogue private={true}/>}/>
 
                                 <Route path="/" component={Landing}/>
                                 <Route component={Blank}/>
                             </Switch>
                         </ErrorBoundary>
-                    </Main>
-                    <Footer></Footer>
                 </ScrollContent>
+                <Footer />
             </Wrapper>
-
-        </>
     );
 };
 

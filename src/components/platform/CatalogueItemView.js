@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {Route, Switch, useParams, useRouteMatch} from "react-router";
 import {Modal} from "../gui/Modal";
-import {GRAPHIC} from "../../actions/constants";
+import {GRAPHIC} from "../../actions/action_constants";
 import {Link} from "react-router-dom";
 import VariantView from "./VariantView";
 import {Container, Row} from "../gui/Grid";

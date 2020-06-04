@@ -7,7 +7,7 @@ import {
     variantCreateSaga
 } from "./variant_saga";
 import {openFileWatcher} from "./file_saga";
-import {CATALOGUE, TAGS, GRAPHIC, USER, VARIANT, VERSION} from "../actions/constants";
+import {CATALOGUE, TAGS, GRAPHIC, USER, VARIANT, VERSION} from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {
     searchChangeWatcher,
@@ -16,7 +16,7 @@ import {
     formatToggledWatcher,
     systemToggledWatcher
 } from "./catalogue_saga";
-import {contentEditWatcher, labelWriteWatcher, systemChangeWatcher} from "./label_translate_saga";
+import {contentEditWatcher, labelWriteWatcher, layoutEditWatcher, systemChangeWatcher} from "./label_translate_saga";
 import axios from "axios";
 import {renderWatcher} from "./render_saga";
 // import {renderWatcher} from "./render_saga";
@@ -58,6 +58,7 @@ export default function* root() {
         call(labelWriteWatcher),
         call(contentEditWatcher),
         call(systemChangeWatcher),
+        call(layoutEditWatcher),
 
         call(tagToggledWatcher),
         call(formatToggledWatcher),

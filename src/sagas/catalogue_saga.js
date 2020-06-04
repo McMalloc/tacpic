@@ -1,5 +1,5 @@
 import {put, race, take, takeLatest, select, takeMaybe, fork} from "redux-saga/effects";
-import {CATALOGUE} from "../actions/constants";
+import {CATALOGUE} from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {groupBy} from "lodash";
 

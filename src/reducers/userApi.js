@@ -1,4 +1,4 @@
-import {USER} from '../actions/constants';
+import {USER} from '../actions/action_constants';
 
 let initialState = {
     logged_in: false,

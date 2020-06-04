@@ -1,5 +1,5 @@
 import {put, select, debounce} from "redux-saga/effects";
-import {FILE} from "../actions/constants";
+import {FILE} from "../actions/action_constants";
 import {extractSVG} from "../components/editor/widgets/ReactSVG";
 
 // TODO pauschal auch Durchführen vor dem Speichern

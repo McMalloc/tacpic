@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import {Padding, p, px} from 'styled-components-spacing';
 import {connect, useDispatch, useSelector} from "react-redux";
 import {OBJECT} from "../constants";

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Prompt, useHistory, useParams, useRouteMatch} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "./gui/Button";
-import {VARIANT, FILE, USER} from "../actions/constants";
+import {VARIANT, FILE, USER} from "../actions/action_constants";
 import {Row} from "./gui/Grid";
 import styled, {useTheme} from "styled-components";
 import {useTranslation} from "react-i18next";

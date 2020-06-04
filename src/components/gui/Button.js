@@ -1,4 +1,4 @@
-import styled, {useTheme} from 'styled-components';
+import styled, {useTheme} from 'styled-components/macro';
 import React, {Component} from "react";
 import {fadeIn, slideFromAbove} from "./Animations";
 import {useTranslation} from 'react-i18next';

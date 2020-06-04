@@ -52,6 +52,7 @@
     "@storybook/addon-links": "^5.2.6",
     "@storybook/addon-notes": "^5.2.6",
     "@storybook/react": "^5.2.6",
+    "babel-plugin-macros": "^2.8.0",
     "csv-loader": "^3.0.2",
     "faker": "^4.1.0",
     "papaparse": "^5.1.0",

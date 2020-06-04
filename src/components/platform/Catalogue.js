@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {CATALOGUE, TAGS} from "../../actions/constants";
+import {CATALOGUE, TAGS} from "../../actions/action_constants";
 import CatalogueItemList from "./CatalogueItemList";
 import {Textinput} from "../gui/Input";
 import TagList from "./TagList";
@@ -54,7 +54,7 @@ const Catalogue = props => {
     }, []);
 
     return (
-        <div className={"container container-fluid"} style={{width: '100%'}}>
+        <div className={"container container-fluid"}>
             <Row>
                 <div className={"col-xs-10 col-xs-offset-2"}>
                     <h1>Katalog</h1>

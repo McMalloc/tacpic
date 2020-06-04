@@ -1,5 +1,5 @@
 import createSaga from "./saga_utilities";
-import {VARIANT} from "../actions/constants";
+import {VARIANT} from "../actions/action_constants";
 import {takeLatest} from "redux-saga/effects";
 import {extractSVG} from "../components/editor/widgets/ReactSVG";
 

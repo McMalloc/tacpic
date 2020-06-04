@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import React, {Component} from "react";
 import {createPortal} from "react-dom";
 import {fadeIn, slideFromAbove} from "./Animations";

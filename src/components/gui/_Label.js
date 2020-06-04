@@ -1,4 +1,4 @@
-import styled, {useTheme} from 'styled-components';
+import styled, {useTheme} from 'styled-components/macro';
 import React, {useContext} from "react";
 import {useTranslation} from 'react-i18next';
 import {Icon} from "./_Icon";
@@ -15,7 +15,7 @@ const Main = styled.label`
   }
 `;
 
-const Sub = styled.span`
+export const Sub = styled.span`
   font-size: 0.9em;
   margin: ${props => props.theme.spacing[1]} 0;
   color: ${props => props.theme.brand_secondary};

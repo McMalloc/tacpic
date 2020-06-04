@@ -1,4 +1,4 @@
-import {CATALOGUE, VERSION, TAGS, GRAPHIC} from '../actions/constants';
+import {CATALOGUE, VERSION, TAGS, GRAPHIC} from '../actions/action_constants';
 import {createReducer} from "./index";
 
 // let catalogueApiCallbacks = {};

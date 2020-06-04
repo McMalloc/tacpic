@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import Divider from "../../gui/Divider";
 import {Button} from "../../gui/Button";
 import {Padding} from "styled-components-spacing";
