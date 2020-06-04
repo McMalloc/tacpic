@@ -1,5 +1,3 @@
-
-
 export const standard = {
     brand_primary: "#FCE400",
     brand_primary_light: "#FBED95",
@@ -9,7 +7,6 @@ export const standard = {
     brand_secondary_verylight: "#99c1cd",
     accent_1: "#D2E7D4",
     accent_2: "#B6D5F1",
-
 
     background: "#fff",
     foreground: "#231F20",

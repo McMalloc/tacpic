@@ -8,7 +8,7 @@ const Bar = styled.div`
 `;
 
 const Item = styled.div`
-  flex: 0 32%;
+  flex: 0 ${props => (100 / props.columns)-1}%;
   //max-width: 150px;
   //margin-bottom: ${props => props.theme.spacing[2]};
   margin-bottom: 2%; /* (100-32*3)/2 */
@@ -22,7 +22,7 @@ const Toolbar = props => {
     return (
         <Bar>
             {props.children.map((item, index) => {
-                return <Item key={index}>{item}</Item>
+                return <Item columns={props.columns || 3} key={index}>{item}</Item>
             })}
         </Bar>
     )

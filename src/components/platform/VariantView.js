@@ -11,6 +11,7 @@ import {TagView} from "./Tag";
 import {Alert} from "../gui/Alert";
 import {NavLink} from "react-router-dom";
 import Carousel from "../gui/Carousel";
+import Toolbar from "../gui/Toolbar";
 
 const mapFormat = (width, height) => {
     width = parseInt(width);
@@ -47,7 +48,8 @@ const VariantView = props => {
                             // TODO ordentliche Komponente; wie kann die Größe garantiert werden?
                             return <div style={{backgroundColor: 'white', padding: 6}}>{page.content}</div>
                         } else {
-                            return <img src={`http://localhost:9292/thumbnails/${graphicId}-${variantId}-${index}-xl.png`}/>
+                            return <img
+                                src={`http://localhost:9292/thumbnails/${graphicId}-${variantId}-${index}-xl.png`}/>
                         }
                     })}
                 </Carousel>
@@ -55,26 +57,37 @@ const VariantView = props => {
             <div className={"col-md-6 col-xl-8 xs-first"}>
                 <h2>{variant.title}</h2>
                 <p>{variant.description}</p>
-
                 <p>
-                    <Icon title={"Abmessungen oder Format"}
-                          icon={"expand-alt"}/> {t('catalogue:' + mapFormat(variant.width, variant.height))}
-                    <small>({variant.width}&#8202;cm&#8200;&times;&#8200;{variant.height}&#8202;cm)</small>
-                    <br/>
-                    <Icon title={"Braille-System"}
-                          icon={"braille"}/> {t('catalogue:' + variant.system)} {/*TODO: mapping, kann auch für die select box genutzt werden*/}
+                    <table>
+                        <tr>
+                            <td className={"icon-cell"}><Icon title={"Abmessungen oder Format"}
+                                      icon={"expand-alt"}/></td>
+                            <td>Format</td>
+                            <td className={"important"}>{t('catalogue:' + mapFormat(variant.width, variant.height))}&ensp;
+                                <small>({variant.width}&#8202;cm&#8200;&times;&#8200;{variant.height}&#8202;cm)</small> {/*TODO: mapping, kann auch für die select box genutzt werden*/}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className={"icon-cell"}><Icon title={"Braille-System"}
+                                      icon={"braille"}/></td>
+                            <td>Braillesystem</td>
+                            <td className={"important"}>{t('catalogue:' + variant.system)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className={"icon-cell"}><Icon title={"Schlagworte"}
+                                      icon={"tag"}/></td>
+                            <td>Schlagworte</td>
+                            <td>{tags.map((tag) => {
+                                if (variant.tags.includes(tag.tag_id)) {
+                                    return <TagView style={{fontSize: '100%'}} theme={theme}
+                                                    key={tag.tag_id}>{tag.name}</TagView>
+                                } else return null;
+                            })}
+                            </td>
+                        </tr>
+                    </table>
                 </p>
-
-                <p>
-                    {tags.map((tag) => {
-                        if (variant.tags.includes(tag.tag_id)) {
-                            return <TagView style={{fontSize: '100%'}} theme={theme}
-                                            key={tag.tag_id}>{tag.name}</TagView>
-                        } else return null;
-                    })}
-                </p>
-
-                <hr/>
 
                 {!logged_in &&
                 <Alert info>
@@ -83,7 +96,7 @@ const VariantView = props => {
                 </Alert>
                 }
 
-                <div style={{margin: '0 15%'}}>
+                <Toolbar columns={2}>
                     <Button className={'extra-margin'}
                             disabled={!logged_in}
                             fullWidth
@@ -95,6 +108,9 @@ const VariantView = props => {
                         })
                     }}>Bearbeiten</Button>
 
+                    <Button fullWidth icon={'download'} onClick={() => {
+                        window.location = 'http://localhost:9292/variants/' + variantId + '/pdf';
+                    }}>PDF herunterladen</Button>
 
                     <Button className={'extra-margin'}
                             disabled={!logged_in}
@@ -108,9 +124,10 @@ const VariantView = props => {
                             }}>Neue Variante aus dieser</Button>
 
                     <Button fullWidth icon={'download'} onClick={() => {
-                        window.location = 'http://localhost:9292/variants/' + variantId + '/pdf';
-                    }}>Herunterladen</Button>
-                </div>
+                        window.location = 'http://localhost:9292/variants/' + variantId + '/brf';
+                    }}>Brailletext herunterladen</Button>
+
+                </Toolbar>
             </div>
 
 

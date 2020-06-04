@@ -16,7 +16,7 @@ const Wrapper = styled.span`
 const Icon = props => {
     return (
         typeof props.icon !== 'undefined' && props.icon !== null ?
-                <Wrapper title={props.title} rotation={props.rotation}><i className={"fas fa-" + props.icon}/></Wrapper> : null
+                <Wrapper className={"icon"} title={props.title} rotation={props.rotation}><i className={"fas fa-" + props.icon}/></Wrapper> : null
     )
 
 };

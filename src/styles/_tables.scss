@@ -1,0 +1,26 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  tr:hover {
+    background-color: rgba(255,255,255,0.6);
+    color: #1b1e21;
+  }
+
+  tr td {
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+
+    &.icon-cell {
+      text-align: center;
+      padding: 3px 8px;
+    }
+
+    &.important {
+      font-weight: bold;
+      small {
+        font-weight: normal;
+      }
+    }
+  }
+}
