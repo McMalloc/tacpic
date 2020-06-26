@@ -11,7 +11,9 @@ import styled from "styled-components";
 import SignupForm from "./components/SignupForm";
 import {Footer} from "./components/platform/Footer";
 import Landing from "./components/platform/Landing";
-import Account from "./components/platform/Account";
+import Account from "./components/platform/account/Account";
+import Basket from "./components/platform/Basket";
+import Category from "./components/editor/widgets/Category";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -71,6 +73,8 @@ const App = () => {
         dispatch({
             type: USER.VALIDATE.REQUEST
         });
+
+        // let heidelpay = new window.heidelpay('s-pub-xxxxxxxxxx', {locale: 'de-DE'});
     });
 
     const navbarItems = [
@@ -90,6 +94,7 @@ const App = () => {
                                 {/*<Route path="/register" component={Register}/>*/}
                                 <Route path="/login" component={Login}/>
                                 <Route path="/account" component={Account}/>
+                                <Route path="/basket" component={Basket}/>
                                 <Route path="/catalogue" component={Catalogue}/>
                                 <Route path="/signup" component={SignupForm}/>
                                 {/*<Route path="/catalogue" render={() => <Catalogue private={true}/>}/>*/}

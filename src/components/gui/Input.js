@@ -14,16 +14,19 @@ const Numberwrapper = styled.div`
   
   input {
     text-align: right;
+    width: ${props => props.inline ? '100px' : props.width};
   }
 `;
 
 const Input = styled.input`
   font-size: 1em;
   font-weight: 700;
-  color: ${props => props.disabled ? props.theme.middark : props.theme.brand_secondary};;
+  color: ${props => props.disabled ? props.theme.middark : props.theme.brand_secondary};
+ 
   display: ${props => props.inline ? "inline" : "block"};
   width: ${props => props.inline ? "inherit" : "100%"};
   box-sizing: border-box;
+  height: 30px;
   border: 1px solid ${props => props.theme.midlight};
   border-radius: 3px;
   background-color: ${props => props.disabled ? "transparent" : props.theme.background};
@@ -36,6 +39,11 @@ const Input = styled.input`
   
   &::placeholder {
     font-style: italic;
+  }
+  
+  &:focus, &:active {
+    box-shadow: 0 0 0 1px 3px ${props => props.theme.primary};
+    //border-color: #2684FF;
   }
   
   &:after {
@@ -94,6 +102,7 @@ const Textinput = props => {
         <Wrapping
             tip={props.tip}
             sublabel={props.sublabel}
+            required={props.required}
             label={props.label}
             noMargin={props.noMargin}
             disabled={props.disabled}
@@ -126,9 +135,8 @@ const Textinput = props => {
 };
 
 const Numberinput = props => {
-
     return (
-        <Label tip={props.tip} inline={props.inline} disabled={props.disabled} label={props.label}
+        <Label tip={props.tip} inline={props.inline} required={props.required} disabled={props.disabled} label={props.label}
                sublabel={props.sublabel}>
             <Numberwrapper inline={props.inline}>
                 <Input disabled={props.disabled}
@@ -143,12 +151,11 @@ const Numberinput = props => {
             </Numberwrapper>
         </Label>
     )
-
 };
 
 const Multiline = props => {
     return (
-        <Label tip={props.tip} sublabel={props.sublabel} disabled={props.disabled} label={props.label}>
+        <Label tip={props.tip} sublabel={props.sublabel} required={props.required} disabled={props.disabled} label={props.label}>
             <Textarea
                 rows={props.rows || 3}
                 disabled={props.disabled}

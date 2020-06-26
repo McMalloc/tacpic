@@ -5,7 +5,7 @@ import {useTranslation} from 'react-i18next';
 
 const Label = styled.span`
   // padding: ${props => props.noPad ? 0 : props.theme.large_padding} ${props => props.noPad ? 0 : props.primary ? "16px" : props.theme.large_padding};
-  padding-left: ${props => props.icon ? props.theme.spacing[2] : 0};
+  padding-left: ${props => props.icon ? (props.large ? props.theme.spacing[3] : props.theme.spacing[2]) : 0};
   display: inline-block;
 `;
 
@@ -18,13 +18,13 @@ const ButtonBase = styled.button`
   background-color: ${props => props.primary ? props.theme.brand_secondary : "white"};
   color: ${props => props.primary ? props.theme.background : "inherit"};
   border: 1px solid ${props => props.theme.middark};
-  padding: ${props => props.small ?  0 : props.theme.spacing[1]} ${props => props.theme.spacing[2]};
+  padding: ${props => props.small ?  0 : (props.large ? "8px 18px" : `${props.theme.spacing[1]} ${props.theme.spacing[2]}`)};
   text-transform: ${props => props.small ? 'uppercase' : 'none'};
   border-radius: 3px;
   cursor: pointer;
   margin-top: 0;
   position: relative;
-  font-size: ${props => props.small ? '0.8em' : '1em'};;
+  font-size: ${props => props.small ? '0.8em' : '1em'};
   width: ${props => props.fullWidth ? "100%" : "auto"};
   transition: box-shadow 0.15s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.15s;
   display: inline-flex;

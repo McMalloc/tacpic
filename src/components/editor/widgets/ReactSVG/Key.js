@@ -47,6 +47,7 @@ export default props => {
 
     let skippedPatterns = 0;
 
+    // TODO eingetragene labels müssen auch von liblouis übersetzt werden
     return (
         <g>
             <g id={`container-${props.uuid}`} transform={`translate(${props.x}, ${props.y + lineHeightOffset})`}>

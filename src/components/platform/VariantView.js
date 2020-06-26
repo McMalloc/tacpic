@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import {useHistory, useParams, useRouteMatch} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "../gui/Button";
-import {VARIANT, FILE} from "../../actions/action_constants";
+import {VARIANT, FILE, GRAPHIC} from "../../actions/action_constants";
 import {Row} from "../gui/Grid";
 import styled, {useTheme} from "styled-components";
 import {useTranslation} from "react-i18next";
@@ -12,6 +12,11 @@ import {Alert} from "../gui/Alert";
 import {NavLink} from "react-router-dom";
 import Carousel from "../gui/Carousel";
 import Toolbar from "../gui/Toolbar";
+import {Radio} from "../gui/Radio";
+import Select from "../gui/Select";
+import {Numberinput} from "../gui/Input";
+import {Currency} from "../gui/Currency";
+import {template} from "lodash";
 
 const mapFormat = (width, height) => {
     width = parseInt(width);
@@ -21,6 +26,22 @@ const mapFormat = (width, height) => {
     if (width === 297 && height === 420) return 'a3-portrait';
     if (width === 420 && height === 297) return 'a3-landscape';
 };
+
+const addToCart = (dispatch, variantId, quantity, product) => {
+    console.log(quantity)
+    dispatch({
+        type: 'ITEM_ADDED_TO_BASKET',
+        productId: product,
+        contentId: parseInt(variantId),
+        quantity: parseInt(quantity)
+    })
+}
+
+const Details = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
 
 const VariantView = props => {
     // The `path` lets us build <Route> paths that are
@@ -34,13 +55,15 @@ const VariantView = props => {
     const dispatch = useDispatch();
     const tags = useSelector(state => state.catalogue.tags);
     const logged_in = useSelector(state => state.user.logged_in);
+    const [product, setProduct] = useState('graphic');
+    const [quantity, setQuantity] = useState(1);
 
     if (!variant) return null;
 
     // TODO Suchbegriff aus Store holen und in Variantenbeschreibung hervorheben
 
     return (
-        <Row>
+        <Row style={{height: '100%'}}>
             <div className={"col-md-6 col-xl-4"}>
                 <Carousel>
                     {variant.document.pages.map((page, index) => {
@@ -49,86 +72,126 @@ const VariantView = props => {
                             return <div style={{backgroundColor: 'white', padding: 6}}>{page.content}</div>
                         } else {
                             return <img
-                                src={`http://localhost:9292/thumbnails/${graphicId}-${variantId}-${index}-xl.png`}/>
+                                src={`/thumbnails/${variant.file_name}-THUMBNAIL-xl-p${index}.png`}/>
                         }
                     })}
                 </Carousel>
             </div>
-            <div className={"col-md-6 col-xl-8 xs-first"}>
-                <h2>{variant.title}</h2>
-                <p>{variant.description}</p>
-                <p>
-                    <table>
-                        <tr>
-                            <td className={"icon-cell"}><Icon title={"Abmessungen oder Format"}
-                                      icon={"expand-alt"}/></td>
-                            <td>Format</td>
-                            <td className={"important"}>{t('catalogue:' + mapFormat(variant.width, variant.height))}&ensp;
-                                <small>({variant.width}&#8202;cm&#8200;&times;&#8200;{variant.height}&#8202;cm)</small> {/*TODO: mapping, kann auch für die select box genutzt werden*/}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className={"icon-cell"}><Icon title={"Braille-System"}
-                                      icon={"braille"}/></td>
-                            <td>Braillesystem</td>
-                            <td className={"important"}>{t('catalogue:' + variant.system)}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className={"icon-cell"}><Icon title={"Schlagworte"}
-                                      icon={"tag"}/></td>
-                            <td>Schlagworte</td>
-                            <td>{tags.map((tag) => {
-                                if (variant.tags.includes(tag.tag_id)) {
-                                    return <TagView style={{fontSize: '100%'}} theme={theme}
-                                                    key={tag.tag_id}>{tag.name}</TagView>
-                                } else return null;
-                            })}
-                            </td>
-                        </tr>
-                    </table>
-                </p>
+            <Details className={"col-md-6 col-xl-8 xs-first"}>
+                <div>
+                    <h2>{variant.title}</h2>
+                    <p>{variant.description}</p>
+                </div>
+                <div>
+                    <p>
+                        <table>
+                            <tr>
+                                <td className={"icon-cell"}><Icon title={"Format der Grafikseiten"}
+                                                                  icon={"file-image"}/></td>
+                                <td>Grafikseiten</td>
+                                <td className={"important"}>
+                                    {variant.graphic_no_of_pages} {variant.graphic_no_of_pages === 1 ? 'Seite' : 'Seiten'} {t(`catalogue:${variant.graphic_format}-${variant.graphic_landscape ? 'landscape' : 'portrait'}`)}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className={"icon-cell"}><Icon title={"Format der Brailleseiten"}
+                                                                  icon={"braille"}/></td>
+                                <td>Brailleseiten</td>
+                                <td className={"important"}>
+                                    {variant.braille_no_of_pages} {variant.braille_no_of_pages === 1 ? 'Seite' : 'Seiten'} {t(`catalogue:${variant.braille_format}-portrait`)}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className={"icon-cell"}>&ensp;</td>
+                                <td>Braillesystem:</td>
+                                <td className={"important"}>{t('catalogue:' + variant.system)}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                {variant.tags.length && variant.tags.length > 0 ?
+                                    <>
+                                        <td>Schlagworte:</td>
+                                        <td>{tags.map((tag) => {
+                                            if (variant.tags.includes(tag.tag_id)) {
+                                                return <TagView style={{fontSize: '100%'}} theme={theme}
+                                                                key={tag.tag_id}>{tag.name}</TagView>
+                                            } else return null;
+                                        })}
+                                        </td>
+                                    </>
+                                    :
+                                    <td className={"disabled"} colSpan={2}>Keine Schlagworte für diese Variante.</td>
+                                }
+                            </tr>
+                        </table>
+                    </p>
 
-                {!logged_in &&
-                <Alert info>
-                    Bitte <NavLink to={'/login'}>logge dich ein</NavLink> oder <NavLink to={'/signup'}>erstelle ein
-                    Konto</NavLink>, um Grafiken zu bearbeiten.
-                </Alert>
-                }
+                    <p>
+                        <Radio onChange={setProduct} value={product} name={"graphic_only_or_both"} options={[
+                            {label: template(t(`catalogue:graphics_and_braille`))({amount: variant.braille_no_of_pages + variant.graphic_no_of_pages}), value: "graphic"},
+                            {label: template(t(`catalogue:graphics_only`))({amount: variant.graphic_no_of_pages}) + ` - ${((variant.quote - variant.quote_graphics_only) / 100).toFixed(2).replace('.', ',')} €)`, value: "graphic_nobraille"}]}>
+                        </Radio>
+                        <Numberinput
+                            // disabled={}
+                            inline
+                            onChange={event => {
+                                setQuantity(event.currentTarget.value)
+                            }}
+                            value={quantity}
+                            label={t(`catalogue:Stück`)}/>
 
-                <Toolbar columns={2}>
-                    <Button className={'extra-margin'}
-                            disabled={!logged_in}
-                            fullWidth
-                            icon={'pen'} onClick={() => {
-                        history.push(`/editor/${graphicId}/variants/${variantId}`);
-                        dispatch({
-                            type: FILE.OPEN.REQUEST,
-                            id: variant.id, mode: "edit"
-                        })
-                    }}>Bearbeiten</Button>
+                        <Currency amount={(product === 'graphic' ? variant.quote : variant.quote_graphics_only) * quantity} />
 
-                    <Button fullWidth icon={'download'} onClick={() => {
-                        window.location = 'http://localhost:9292/variants/' + variantId + '/pdf';
-                    }}>PDF herunterladen</Button>
+                        {quantity !== 1 &&
+                            <div>Einzelpreis: <Currency amount={(product === 'graphic' ? variant.quote : variant.quote_graphics_only)} /></div>
+                        }
+                        <div>{t("zzgl. Versand")}</div>
 
-                    <Button className={'extra-margin'}
-                            disabled={!logged_in}
-                            fullWidth icon={'copy'}
-                            onClick={() => {
-                                history.push(`/editor/${graphicId}`);
-                                dispatch({
-                                    type: FILE.OPEN.REQUEST,
-                                    id: variant.id, mode: "new"
-                                })
-                            }}>Neue Variante aus dieser</Button>
+                        <Button onClick={() => addToCart(dispatch, variantId, quantity, product)} label={t("catalogue:In den Warenkorb")} large primary icon={"basket-arrow-down"}/>
+                    </p>
 
-                    <Button fullWidth icon={'download'} onClick={() => {
-                        window.location = 'http://localhost:9292/variants/' + variantId + '/brf';
-                    }}>Brailletext herunterladen</Button>
+                    {!logged_in &&
+                    <Alert info>
+                        Bitte <NavLink to={'/login'}>logge dich ein</NavLink> oder <NavLink to={'/signup'}>erstelle ein
+                        Konto</NavLink>, um Grafiken zu bearbeiten.
+                    </Alert>
+                    }
 
-                </Toolbar>
-            </div>
+                    <Toolbar columns={2}>
+                        <Button className={'extra-margin'}
+                                disabled={!logged_in}
+                                fullWidth
+                                icon={'pen'} onClick={() => {
+                            history.push(`/editor/${graphicId}/variants/${variantId}`);
+                            dispatch({
+                                type: FILE.OPEN.REQUEST,
+                                id: variant.id, mode: "edit"
+                            })
+                        }}>Bearbeiten</Button>
+
+                        <Button fullWidth icon={'download'} onClick={() => {
+                            window.location = 'http://localhost:9292/variants/' + variantId + '/pdf';
+                        }}>PDF herunterladen</Button>
+
+                        {/*<Button className={'extra-margin'}*/}
+                        {/*        disabled={!logged_in}*/}
+                        {/*        fullWidth icon={'copy'}*/}
+                        {/*        onClick={() => {*/}
+                        {/*            history.push(`/editor/${graphicId}`);*/}
+                        {/*            dispatch({*/}
+                        {/*                type: FILE.OPEN.REQUEST,*/}
+                        {/*                id: variant.id, mode: "new"*/}
+                        {/*            })*/}
+                        {/*        }}>Neue Variante aus dieser</Button>*/}
+
+                        <Button fullWidth icon={'download'} onClick={() => {
+                            window.location = 'http://localhost:9292/variants/' + variantId + '/brf';
+                        }}>Brailletext herunterladen</Button>
+
+                    </Toolbar>
+                </div>
+            </Details>
 
 
         </Row>

@@ -1,13 +1,14 @@
 import styled, {useTheme} from 'styled-components/macro';
 import React, {Component, Fragment} from "react";
 import {useTranslation} from "react-i18next";
-import AccountWidget from "./AccountWidget";
+import AccountWidget from "./account/AccountWidget";
 import {NavLink} from "react-router-dom";
 import {useLocation} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {Icon} from "../gui/_Icon";
 import {Button} from "../gui/Button";
 import {USER} from "../../actions/action_constants";
+import {template} from "lodash";
 
 
 const Wrapper = styled.nav`
@@ -76,6 +77,7 @@ const Navbar = props => {
     const location = useLocation();
     const theme = useTheme();
     const user = useSelector(state => state.user);
+    const basket = useSelector(state => state.catalogue.basket);
     const dispatch = useDispatch();
 
     return (
@@ -94,19 +96,15 @@ const Navbar = props => {
             <NavbarItemGroups>
                 {user.logged_in ?
                     <>
+                        <NavbarItem theme={theme} to={'/basket'}>
+                            <Icon icon={"shopping-cart"}/>&nbsp;
+                            {template(t("general:Warenkorb"))({quantity: basket.length})}
+                        </NavbarItem>
+                        &ensp;<span style={{borderLeft: "1px solid lightgrey"}}>&ensp;</span>
                         <NavbarItem theme={theme} to={'/account'}>
-                            {/*<span style={{fontSize: '1.4em'}}>*/}
                             <Icon icon={"user-circle"}/>&nbsp;
-                            {/*</span>*/}
                             {t("general:my_account")}
                         </NavbarItem>
-
-                        {/*<Button small onClick={() => {*/}
-                        {/*    dispatch({*/}
-                        {/*        type: USER.LOGOUT.REQUEST*/}
-                        {/*    })*/}
-                        {/*}*/}
-                        {/*}>Ausloggen</Button>*/}
                     </>
                     :
                     <>
@@ -115,10 +113,6 @@ const Navbar = props => {
                                 {t("general:signup")}
                             </Button>
                         </NavLink>
-
-                        {/*<EmphasizedNavbarItem theme={theme} to={'/signup'}>*/}
-                        {/*    {t("general:signup")}*/}
-                        {/*</EmphasizedNavbarItem>*/}
                         <NavbarItem theme={theme} to={'/login'}>
                             {t("general:login")}
                         </NavbarItem>

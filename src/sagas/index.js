@@ -1,4 +1,4 @@
-import {logoutWatcher} from "./user_saga";
+import {logoutWatcher, userCreateSaga, userLoginSaga, userLogoutSaga, userValidateSaga} from "./user_saga";
 import {call, all, takeLatest, takeEvery, put, select} from "redux-saga/effects";
 import localstorageWatcher from "./localstorage_saga";
 import {
@@ -7,7 +7,7 @@ import {
     variantCreateSaga
 } from "./variant_saga";
 import {openFileWatcher} from "./file_saga";
-import {CATALOGUE, TAGS, GRAPHIC, USER, VARIANT, VERSION} from "../actions/action_constants";
+import {CATALOGUE, TAGS, GRAPHIC, USER, VARIANT, VERSION, ORDER, VARIANTS, ADDRESS} from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {
     searchChangeWatcher,
@@ -17,36 +17,34 @@ import {
     systemToggledWatcher
 } from "./catalogue_saga";
 import {contentEditWatcher, labelWriteWatcher, layoutEditWatcher, systemChangeWatcher} from "./label_translate_saga";
-import axios from "axios";
 import {renderWatcher} from "./render_saga";
-// import {renderWatcher} from "./render_saga";
 
-const id = args => args;
+export const id = args => args;
 
 export default function* root() {
     yield all([
-        // call(loginWatcher),
-        call(logoutWatcher),
         call(createSaga(TAGS.GET, 'get', 'tags?limit=:limit', takeLatest, true, null, id)),
+        call(createSaga(VARIANTS.GET, 'get', 'graphics?variants=:ids', takeLatest, false, id, response => {
+            return response.map(variant => {
+                return {
+                    id: variant.variant_id,
+                    title: variant.variant_title,
+                    braille_format: variant.braille_format,
+                    braille_no_of_pages: variant.braille_no_of_pages,
+                    graphic_format: variant.graphic_format,
+                    graphics_no_of_pages: variant.graphics_no_of_pages,
+                    file_name: variant.file_name,
+                    created_at: variant.created_at,
+                    description: variant.variant_description
+                }
+            });
+        })),
         call(createSaga(GRAPHIC.CREATE, 'post', 'graphics', takeLatest, true, id)),
+        call(createSaga(ORDER.QUOTE, 'post', 'orders/quote', takeLatest, false, id)),
+        call(createSaga(ORDER.CREATE, 'post', 'orders', takeLatest, true, id)),
         call(createSaga(GRAPHIC.GET, 'get', 'graphics/:id', takeLatest, false, id, id)),
-        call(createSaga(USER.VALIDATE, 'get', 'users/validate', takeLatest, true, null, id)),
-        // call(createSaga(USER.LOGOUT, 'post', 'logout', takeLatest, true, id, id)),
-        call(createSaga(USER.CREATE, 'post', 'create-account', takeLatest, false, request => {
-            return {
-                login: request.uname,
-                "login-confirm": request.uname,
-                password: request.pwd,
-                "password-confirm": request.pwdConfirm,
-            }
-        }, (response, statusCode, headers) => {
-            localStorage.setItem('jwt', headers.authorization);
-            return response;
-        })),
-        call(createSaga(USER.LOGIN, 'post', 'login', takeLatest, false, request => request, (response, statusCode, authHeader) => {
-            localStorage.setItem('jwt', authHeader);
-            return response;
-        })),
+        call(createSaga(ADDRESS.GET, 'get', 'users/addresses', takeLatest, true, id, id)),
+        call(createSaga(ADDRESS.CREATE, 'post', 'users/addresses', takeLatest, true, id, id)),
         call(variantGetSaga),
         call(openFileWatcher),
         call(catalogueSearchSaga),
@@ -54,6 +52,11 @@ export default function* root() {
         call(variantCreateSaga),
         call(localstorageWatcher),
         call(searchChangeWatcher),
+
+        call(logoutWatcher),
+        call(userLoginSaga),
+        call(userValidateSaga),
+        call(userCreateSaga),
 
         call(labelWriteWatcher),
         call(contentEditWatcher),

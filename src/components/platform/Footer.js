@@ -34,17 +34,17 @@ const Footer = props => {
     const user = useSelector(
         state => state.user
     );
-    const [versions, setVersions] = useState(0);
+    // const [versions, setVersions] = useState(0);
     useEffect(() => {
         fetch("/FRONTEND_VERSION.txt").then(response => response.text()).then(data=> {
             window.FRONTEND_VERSION = data;
-            setVersions(Math.min(versions + 1, 2));
+            // setVersions(Math.min(versions + 1, 2));
         });
         fetch("/BACKEND_VERSION.txt").then(response => response.text()).then(data=> {
             window.BACKEND_VERSION = data;
-            setVersions(Math.min(versions + 1, 2));
+            // setVersions(Math.min(versions + 1, 2));
         });
-    }, [versions]);
+    }, []);
 
     return (
         <Wrapper theme={theme}>

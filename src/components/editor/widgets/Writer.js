@@ -18,6 +18,7 @@ const changeText = (dispatch, text, pageIndex) => {
     });
 };
 
+// TODO Ladespinner während Übersetzung, vllt. globale Lösung als Notification
 const Writer = props => {
     const dispatch = useDispatch();
     const currentPageIndex = useSelector(

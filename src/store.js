@@ -89,7 +89,7 @@ export const initialEditor = {
                 text: true, // TODO Textseiten werden anders behandelt, starres Braille-Layout
                 content: '',
                 braille: '',
-                formattedBraille: ''
+                formatted: []
             }
         ]
     },
@@ -106,7 +106,34 @@ const initialCatalogue = {
     graphics: [],
     viewedGraphic: {},
     graphicGetPending: true,
-    searchPending: false
+    searchPending: false,
+    quotedVariants: [],
+    quote: {
+        items: []
+    }, // quote is the basket with added prices and packaging and postage items
+    basket: [
+        {
+            contentId: 9,
+            productId: 'graphic_nobraille',
+            quantity: 1
+        },
+        {
+            contentId: 3,
+            productId: 'graphic',
+            quantity: 2
+        },
+        {
+            contentId: 1,
+            productId: 'graphic',
+            quantity: 5
+        },
+        {
+            contentId: 8,
+            productId: 'graphic',
+            quantity: 2
+        },
+    ]
+    // basket: []
 };
 
 const composeEnhancers =

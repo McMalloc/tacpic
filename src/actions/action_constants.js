@@ -17,9 +17,12 @@ export const RESSOURCES = action_constants('RESSOURCES',['GET']);
 export const VERSION    = action_constants('VERSION',   ['GET', 'CREATE']);
 export const GRAPHIC    = action_constants('GRAPHIC',   ['GET', 'CREATE']);
 export const VARIANT    = action_constants('VARIANT',   ['GET', 'CREATE', 'UPDATE']);
+export const VARIANTS   = action_constants('VARIANTS',   ['GET']); // get multiple variants and info about their parent graphics without versions
 export const CATALOGUE  = action_constants('CATALOGUE',   ['SEARCH']);
 export const TAGS       = action_constants('TAGS',     ['GET', 'SEARCH', 'CREATE']);
 export const BRAILLE    = action_constants('BRAILLE',   ['TRANSLATE']);
+export const ORDER      = action_constants('ORDER',   ['QUOTE', 'CREATE', 'GET']);
+export const ADDRESS    = action_constants('ADDRESS',   ['GET', 'CREATE', 'CHANGE']);
 
 export const CANVAS_OBJECT_ADDED = 'CANVAS_OBJECT_ADDED';
 export const CANVAS_OBJECT_REMOVED = 'CANVAS_OBJECT_REMOVED';

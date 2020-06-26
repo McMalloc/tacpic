@@ -35,6 +35,7 @@ const CatalogueItemList = props => {
     function handleClick() {
         history.push(url);
     }
+
     if (redirect) {
         return <Redirect push to="/editor/new"/>;
     }
@@ -46,11 +47,11 @@ const CatalogueItemList = props => {
         <>
             <FlexRow>
                 {props.graphics && props.graphics.length > 0 ? props.graphics.map((graphic, index) => {
-                    return (
-                        <CatalogueItem key={index} {...graphic} filtered={filtered}
-                                       url={`${url}/${graphic.id}/variant/${graphic.variants[0].id}`}/>
-                    )
-                }) :
+                        return (
+                            <CatalogueItem key={index} {...graphic} filtered={filtered}
+                                           url={`${url}/${graphic.id}/variant/${graphic.variants[0].id}`}/>
+                        )
+                    }) :
                     <p>Keine Grafiken gefunden.</p>
                 }
                 <CatalogueItemWrapper style={{paddingTop: '48px'}}>

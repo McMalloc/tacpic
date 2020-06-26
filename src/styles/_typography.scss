@@ -27,8 +27,7 @@ body {
 
 @font-face {
   font-family: "tacpic swell braille";
-  src: url("/webfonts/tacpic_swellbraille.woff") format("woff");
-  //src: url("/webfonts/hbs6brlt-webfont.woff") format("woff");
+  src: url("/webfonts/tacpic_swellbraille_euro6.woff") format("woff");
 }
 
 button, input, textarea, select {
@@ -58,6 +57,11 @@ legend {
 
 small {
   font-size: 15px;
+}
+
+.disabled {
+  color: #777;
+  font-style: italic;
 }
 
 p {

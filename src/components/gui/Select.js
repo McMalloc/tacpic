@@ -10,7 +10,8 @@ import {find} from "lodash";
 const customStyles = {
     control: (provided, state) => ({
         ...provided,
-        borderColor: standard.midlight
+        borderColor: standard.midlight,
+        fontWeight: 'bold',
     }),
     option: (provided, state) => ({
         ...provided,
@@ -55,7 +56,6 @@ const Select = props => {
                                     controlHeight: 29,
                                     menuGutter: 2
                                 }
-
                         })}
                         // components={{ Input: CustomInput }}
                         isMulti={props.isMulti}

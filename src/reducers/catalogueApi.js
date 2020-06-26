@@ -1,5 +1,6 @@
-import {CATALOGUE, VERSION, TAGS, GRAPHIC} from '../actions/action_constants';
+import {CATALOGUE, VERSION, TAGS, GRAPHIC, ORDER, VARIANTS} from '../actions/action_constants';
 import {createReducer} from "./index";
+import {produce} from "immer";
 
 // let catalogueApiCallbacks = {};
 // createReducer(GRAPHIC.GET, catalogueApiCallbacks);
@@ -60,6 +61,36 @@ const catalogueApi = (state = {}, action) => {
                 ...state,
                 tags: action.data
             };
+        case VARIANTS.GET.SUCCESS:
+            return {
+                ...state,
+                quotedVariants: action.data
+            };
+        case ORDER.QUOTE.SUCCESS:
+            return {
+                ...state,
+                quote: action.data
+            };
+        case 'ITEM_ADDED_TO_BASKET':
+            return produce(state, draftState => {
+                let isUpdate = false;
+                state.basket.forEach((item, index) => {
+                    if (action.contentId === item.contentId && action.productId === item.productId) {
+                        isUpdate = isUpdate || true;
+                        draftState.basket[index].quantity += action.quantity; // TODO quantity 0 = remove
+                    }
+                })
+
+                if (!isUpdate) {
+                    draftState.basket.push({
+                        contentId: action.contentId,
+                        productId: action.productId,
+                        quantity: action.quantity,
+                    })
+                }
+
+
+            });
         case 'TAG_TOGGLED':
             const tagIndex = state.filterTags.indexOf(action.id);
             let filterTags = [...state.filterTags];

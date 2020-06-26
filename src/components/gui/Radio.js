@@ -79,43 +79,29 @@ const Wrapper = styled.div`
 
 
 // TODO: wie checkbox neu machen
-class Radio extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {value: props.default ? props.default : ''};
-        this.handleChange = this.handleChange.bind(this);
-    }
+const Radio = props => {
+    return (
+        <>
+            {props.options && props.options.map((option, index) => {
+                return (
+                    <Wrapper key={index}>
+                        <Input
+                            onChange={event => props.onChange(event.target.value)}
+                            name={props.name}
+                            id={props.name + "-" + option.value}
+                            checked={option.value === props.value}
+                            value={option.value}
+                            type={"radio"}/>
+                        <Label active={option.value === props.value}
+                               htmlFor={props.name + "-" + option.value}>
+                            {option.label}
+                        </Label>
+                    </Wrapper>
 
-    handleChange(event) {
-        this.setState({value: event.target.value});
-    }
-
-    render() {
-        // Use a portal to render the children into the element
-        return (
-            <Fragment>
-                {this.props.options ? this.props.options.map((option, index) => {
-                    return (
-                        <Wrapper key={index}>
-                            <Input
-                                onChange={this.handleChange}
-                                name={this.props.name}
-                                id={this.props.name + "-" + option.value}
-                                checked={option.value === this.state.value}
-                                value={option.value}
-                                type={"radio"}/>
-                            <Label active={option.value === this.state.value} htmlFor={this.props.name + "-" + option.value}>
-                                {option.label}
-                            </Label>
-                        </Wrapper>
-
-                    )
-                }) : null}
-            </Fragment>
-
-
-        )
-    }
+                )
+            })}
+        </>
+    )
 }
 
 export {Radio}

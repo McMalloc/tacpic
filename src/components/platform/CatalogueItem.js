@@ -44,12 +44,14 @@ const Info = styled.div`
 
 export default props => {
     const theme = useTheme();
+    const thumbnailURL =
+        `/thumbnails/${props.variants[0].file_name}-THUMBNAIL-sm-p0.png`
     return (
         <Wrapper theme={theme}>
             <Link className={'no-styled-link'} to={props.url}>
                 <Tile>
                     <Preview
-                        thumbnailURL={`http://localhost:9292/thumbnails/${props.id}-${props.variants[0].id}-0-sm.png`} />
+                        thumbnailURL={thumbnailURL} />
                     <Info>
                         <strong>{props.title}</strong> <br/>
                         <small>

@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
-import {Route, Switch, useParams, useRouteMatch} from "react-router";
+import {Route, Switch, useHistory, useParams, useRouteMatch} from "react-router";
 import {Modal} from "../gui/Modal";
-import {GRAPHIC} from "../../actions/action_constants";
+import {FILE, GRAPHIC} from "../../actions/action_constants";
 import {Link} from "react-router-dom";
 import VariantView from "./VariantView";
 import {Container, Row} from "../gui/Grid";
@@ -9,6 +9,8 @@ import styled, {useTheme} from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
 import {TagView} from "./Tag";
 import {Icon} from "../gui/_Icon";
+import {Button} from "../gui/Button";
+import Toolbar from "../gui/Toolbar";
 
 const VariantPreviewStyled = styled.div`
   display: flex;
@@ -44,12 +46,17 @@ const VariantPreviewStyled = styled.div`
   }
 `;
 
+const NewVariantButtonContainer = styled.div`
+  padding: 6px;
+`;
+
 const VariantColumn = styled.div`
     //flex: 0 0 auto;
     overflow-y: auto;
     height: 100%;
     padding: 0;
     flex-direction: column;
+    display: flex;
     border-right: 1px solid ${props => props.theme.brand_secondary_light};
     position: relative;
     
@@ -72,13 +79,14 @@ const DetailsColumn = styled.div`
 const Wrapper = styled.div`
     background-color: ${props => props.theme.grey_6};
     display: flex;
+    height: 100%;
     flex-direction: row;
     flex-wrap: wrap;
     flex: 1 1 auto;
     overflow: hidden;
 `;
 
-const VariantPreview = ({title, id, description, tags, document}) => {
+const VariantPreview = ({title, id, description, tags, document, file_name}) => {
     let selectedVariantId = useParams().variantId;
     let graphicId = useParams().graphicId;
     const theme = useTheme();
@@ -88,7 +96,7 @@ const VariantPreview = ({title, id, description, tags, document}) => {
     const thumbnailCandidate = document.pages.findIndex(page=>!page.text)
     return (
         <VariantPreviewStyled {...theme} active={id === parseInt(selectedVariantId)}>
-            <img src={`http://localhost:9292/thumbnails/${graphicId}-${id}-${thumbnailCandidate}-sm.png`}/>
+            <img src={`http://localhost:9292/thumbnails/${file_name}-THUMBNAIL-xl-p${thumbnailCandidate}.png`}/>
             {/*<VariantListingPreview bgUrl={`http://localhost:9292/static/thumbnails/thumbnail-${id}-sm.png`} />*/}
             <div className={'variant-info'}>
                 <strong>{title}</strong><br/>
@@ -150,7 +158,10 @@ const CatalogueItemViewModal = props => {
 const CatalogueItemView = props => {
     let {path, url} = useRouteMatch();
     const theme = useTheme();
-    const {variantId} = useParams();
+    let {graphicId, variantId} = useParams();
+    const logged_in = useSelector(state => state.user.logged_in);
+    const dispatch = useDispatch();
+    const history = useHistory();
 
     return (
         <Wrapper theme={theme}>
@@ -158,8 +169,8 @@ const CatalogueItemView = props => {
 
                 {props.variants.length > 1 &&
                 <VariantColumn className={"col-xs-12 col-md-4 col-lg-3"}>
-                    <div className={'heading'}><strong>Verfügbare Varianten</strong> ({props.variants.length} gesamt)
-                    </div>
+                    <div className={'heading'}>
+                        <strong>Verfügbare Varianten</strong> ({props.variants.length} gesamt)</div>
                     <div>
                         {props.variants.map((variant, index) => {
                             return (
@@ -169,6 +180,19 @@ const CatalogueItemView = props => {
                             )
                         })}
                     </div>
+                    <NewVariantButtonContainer>
+                        <Button className={'extra-margin'}
+                        disabled={!logged_in}
+                        fullWidth icon={'copy'}
+                        onClick={() => {
+                        history.push(`/editor/${graphicId}`);
+                        dispatch({
+                            type: FILE.OPEN.REQUEST,
+                            id: variantId, mode: "new"
+                        })
+                    }}>Neue Variante aus Auswahl</Button>
+                    </NewVariantButtonContainer>
+
                 </VariantColumn>
                 }
                 <DetailsColumn className={props.variants.length > 1 && "col-xs-12 col-md-8 col-lg-9"} theme={theme}>

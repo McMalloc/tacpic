@@ -6,12 +6,11 @@ const buildParams = (paramObj) => {
     if (!paramObj) return paramString;
 
     paramString += '?';
-    console.log(paramObj);
     for (const param in paramObj) {
         if (!paramObj.hasOwnProperty(param)) break;
         //
         // if (paramObj[param].length !== undefined && paramObj[param].length === 0) break;
-        console.log(param, paramObj[param]);
+
         paramString += `${param}=${paramObj[param].toString()}&`
     }
 
@@ -94,8 +93,9 @@ export default function createSaga(
                     });
                 }, action);
 
+                console.log(event.REQUEST + " called")
+
                 let data = transformResponse(response, statusCode, authHeader);
-                console.log(statusCode);
                 if (statusCode > 204) {
                     yield put({type: event.FAILURE, message: response, statusCode});
                 } else {

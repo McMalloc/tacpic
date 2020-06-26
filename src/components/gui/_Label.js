@@ -8,6 +8,7 @@ const Main = styled.label`
   display: ${props => props.inline ? "inline" : "block"};
   color: ${props => props.disabled ? props.theme.middark : "inherit"};
   margin-bottom: ${props => props.noMargin ? 0 : props.theme.spacing[3]};
+  // color: ${props => props.required ? "blue" : "inherit"};
   
   &:hover:first-line {
     //border-color: ${props => props.theme.brand_secondary};
@@ -25,10 +26,11 @@ export const Sub = styled.span`
 `;
 
 const Label = props => {
+    console.log(props.required)
     const theme = useTheme();
     const { t } = useTranslation();
     return (
-        <Main theme={theme} data-tip={t(props.tip)} {...props}>{t(props.label)}
+        <Main theme={theme} data-tip={t(props.tip)} required={props.required} {...props}>{t(props.label)} {props.required && <span aria-hidden={true}>*</span>}
             {props.sublabel &&
             <><br/><Sub>{t(props.sublabel)}</Sub></>
             }

@@ -42,7 +42,7 @@ const TagList = props => {
                     <div key={taxonomy_id}>
                         <strong>{t(`catalogue-taxonomy-${taxonomy_id}`)}</strong>
                         <ul style={{paddingLeft: 0}}>
-                            {groupedTags[taxonomy_id].map(tag => {
+                            {groupedTags[taxonomy_id] && groupedTags[taxonomy_id].map(tag => {
                                 return <Tag key={tag.tag_id} {...tag}/>
                             })}
                         </ul>

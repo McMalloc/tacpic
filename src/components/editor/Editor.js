@@ -21,6 +21,8 @@ import Context from "./widgets/Context/Context";
 import Writer from "./widgets/Writer";
 import BraillePage from "./widgets/BraillePage";
 import {Radiobar, RadiobarSegment} from "../gui/Radiobar";
+import Intro from "./widgets/Intro";
+import Category from "./widgets/Category";
 
 const Wrapper = styled.div`
   display: flex;
@@ -145,6 +147,7 @@ const Editor = props => {
                     {/*    height: "10000px"*/}
                     {/*}}>...*/}
                     {/*</div>*/}
+
 
                     {(showPages || showObjects) &&
                     <Sidebar>
