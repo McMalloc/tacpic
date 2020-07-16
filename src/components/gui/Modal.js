@@ -68,6 +68,7 @@ const ModalFooter = styled.div`
   border-top: 2px solid ${props => props.theme.grey_5};
   padding: ${props => props.theme.large_padding};
   flex: 0 0 auto;
+  //background-color: ${props => props.theme.grey_5};
   background-color: ${props => props.theme.background};
 `;
 
@@ -95,7 +96,7 @@ class Modal extends Component {
     render() {
         // Use a portal to render the children into the element
         return createPortal(
-            <Backdrop onClick={this.props.dismiss}>
+            <Backdrop id={"modal-backdrop"} onClick={this.props.dismiss}>
                 <Window fitted={this.props.fitted} onClick={event=>event.stopPropagation()}>
                     <ModalHeader>
                         <ModalTitle>{this.props.title}</ModalTitle>
@@ -112,12 +113,17 @@ class Modal extends Component {
                             // TODO: kein float fürs Layout nutzen
                             return (
                                 <span key={index} style={{float: action.align}}>
-                                    <Button disabled={action.disabled} {...buttonProps} onClick={action.action}>{action.label}</Button>
+                                    <Button disabled={action.disabled} {...buttonProps}
+                                            form={action.submitFor || false}
+                                            onClick={action.action}>
+                                        {action.label}
+                                    </Button>
                                 </span>
                             )
                         })}</ModalFooter>
                     }
                 </Window>
+                <div id={"modal-portal-target"}></div>
             </Backdrop>,
             // A DOM element
             this.el,

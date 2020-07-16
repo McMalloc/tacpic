@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useHistory, useParams, useRouteMatch} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "../gui/Button";
-import {VARIANT, FILE, GRAPHIC} from "../../actions/action_constants";
+import {VARIANT, FILE, GRAPHIC, ITEM_ADDED_TO_BASKET} from "../../actions/action_constants";
 import {Row} from "../gui/Grid";
 import styled, {useTheme} from "styled-components";
 import {useTranslation} from "react-i18next";
@@ -17,6 +17,7 @@ import Select from "../gui/Select";
 import {Numberinput} from "../gui/Input";
 import {Currency} from "../gui/Currency";
 import {template} from "lodash";
+import * as moment from 'moment'
 
 const mapFormat = (width, height) => {
     width = parseInt(width);
@@ -27,13 +28,13 @@ const mapFormat = (width, height) => {
     if (width === 420 && height === 297) return 'a3-landscape';
 };
 
-const addToCart = (dispatch, variantId, quantity, product) => {
-    console.log(quantity)
+const addToBasket = (dispatch, variantId, quantity, product, index = null) => {
     dispatch({
-        type: 'ITEM_ADDED_TO_BASKET',
+        type: ITEM_ADDED_TO_BASKET,
         productId: product,
         contentId: parseInt(variantId),
-        quantity: parseInt(quantity)
+        quantity: parseInt(quantity),
+        index
     })
 }
 
@@ -81,6 +82,7 @@ const VariantView = props => {
                 <div>
                     <h2>{variant.title}</h2>
                     <p>{variant.description}</p>
+                    <p><small>Erstellt am {moment(variant.created_at).format("DD.MM.yyyy, hh:mm")}</small></p>
                 </div>
                 <div>
                     <p>
@@ -148,7 +150,7 @@ const VariantView = props => {
                         }
                         <div>{t("zzgl. Versand")}</div>
 
-                        <Button onClick={() => addToCart(dispatch, variantId, quantity, product)} label={t("catalogue:In den Warenkorb")} large primary icon={"basket-arrow-down"}/>
+                        <Button onClick={() => addToBasket(dispatch, variantId, quantity, product)} label={t("catalogue:In den Warenkorb")} large primary icon={"basket-arrow-down"}/>
                     </p>
 
                     {!logged_in &&
@@ -174,16 +176,16 @@ const VariantView = props => {
                             window.location = 'http://localhost:9292/variants/' + variantId + '/pdf';
                         }}>PDF herunterladen</Button>
 
-                        {/*<Button className={'extra-margin'}*/}
-                        {/*        disabled={!logged_in}*/}
-                        {/*        fullWidth icon={'copy'}*/}
-                        {/*        onClick={() => {*/}
-                        {/*            history.push(`/editor/${graphicId}`);*/}
-                        {/*            dispatch({*/}
-                        {/*                type: FILE.OPEN.REQUEST,*/}
-                        {/*                id: variant.id, mode: "new"*/}
-                        {/*            })*/}
-                        {/*        }}>Neue Variante aus dieser</Button>*/}
+                        <Button className={'extra-margin'}
+                                disabled={!logged_in}
+                                fullWidth icon={'copy'}
+                                onClick={() => {
+                                    history.push(`/editor/${graphicId}`);
+                                    dispatch({
+                                        type: FILE.OPEN.REQUEST,
+                                        id: variant.id, mode: "new"
+                                    })
+                                }}>Neue Variante aus dieser</Button>
 
                         <Button fullWidth icon={'download'} onClick={() => {
                             window.location = 'http://localhost:9292/variants/' + variantId + '/brf';

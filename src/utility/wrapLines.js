@@ -20,34 +20,34 @@
 
 import {chunk} from "lodash";
 
-const lastSpaceRgx = /[\s|\n](?!.*[\s|\n])/;
-const lastNewlineRgx = /\n(?!.*\n)/;
-export const wrapLines = (text, maxRows, useSpaces, result) => {
+const lastSpaceRgx = /\s(?!.*\s)/;
+// const lastSpaceRgx = /[\s|\n](?!.*[\s|\n])/;
+const lastNewlineRgx = /\s(?!.*\s)/;
+export const wrapLines = (text, maxChars, result) => {
     result = result || [];
-    if (text.length <= maxRows) {
+    if (text.length <= maxChars) {
         result.push(text.trim());
         return result;
     }
-    let line = text.substring(0, maxRows);
-    if (!useSpaces) { // insert newlines anywhere
-        result.push(line.trim());
-        return wrapLines(text.substring(maxRows), maxRows, useSpaces, result);
+    let line = text.substring(0, maxChars).trim();
+
+    const idx = line.search(lastSpaceRgx);
+    const manualBreakIdx = line.search(/\n/);
+    const manualParagraphs = (line.match(/\n/g) || []).length - 1;
+
+    let nextIdx = maxChars;
+    if (idx > 0 || manualBreakIdx > 0) {
+        nextIdx = idx > 0 && manualBreakIdx > 0 ? Math.min(idx, manualBreakIdx) : idx;
+        line = line.substring(0, nextIdx);
     }
-    else { // attempt to insert newlines after whitespace or manually inserted newlines
-        let idx = line.search(lastSpaceRgx);
-        let possibleManualNewline = line.search(lastNewlineRgx);
-        let nextIdx = maxRows;
-        if (idx > 0) {
-            line = line.substring(0, possibleManualNewline > 0 ? possibleManualNewline : idx);
-            nextIdx = idx;
-        }
-        result.push(line.trim());
-        return wrapLines(text.substring(nextIdx), maxRows, useSpaces, result);
-    }
+    result.push(line.trim());
+    for (let i = 0; i < manualParagraphs; i++) result.push("");
+    return wrapLines(text.substring(nextIdx), maxChars, result);
+
 };
 
 export const wrapAndChunk = (text, maxChars, maxRows) => {
     let wrapped = [];
-    wrapLines(text, maxRows, true, wrapped);
+    wrapLines(text, maxChars, wrapped);
     return chunk(wrapped, maxRows);
 }

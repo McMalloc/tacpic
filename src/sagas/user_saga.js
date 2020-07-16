@@ -1,6 +1,6 @@
 import {takeLatest, call, put} from 'redux-saga/effects';
 import axios from 'axios';
-import {USER} from "../actions/action_constants";
+import {ADDRESS, CLEAR_USER, USER} from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 
 export const userValidateSaga = createSaga(USER.VALIDATE, 'get', 'users/validate', takeLatest, true);
@@ -19,7 +19,7 @@ export const userCreateSaga = createSaga(USER.CREATE, 'post', 'create-account', 
 
 export const userLoginSaga = createSaga(USER.LOGIN, 'post', 'login', takeLatest, false, request=>request, (response, statusCode, authHeader) => {
     localStorage.setItem('jwt', authHeader);
-    return response;
+    return JSON.parse(/^\{(.*?)\}/.exec(response)[0]); // catch rodauths weird login response
 });
 
 // TODO doesnt work

@@ -8,6 +8,7 @@ const Label = styled.label`
   align-self: center;
   margin-bottom: 0.5em;
   transition: font-weight 0.2s, color 0.2s;
+  cursor: pointer;
   
   &:checked {
     text-decoration: underline;
@@ -18,32 +19,26 @@ const Label = styled.label`
   }
   
   &:before {
-      width: 1em;
-      height: 1em;
       position: relative;
       margin-right: 0.5em;
+      //padding: 0 0.5em;
       align-self: center;
-      box-sizing: border-box;
-      content: "";
-      border-radius: 100%;
-      border: 1px solid ${props => props.active ? props.theme.brand_secondary : props.theme.midlight};
-      background-color: ${props => props.theme.background};
-      // background-color: ${props => props.active ? props.theme.brand_secondary : props.theme.background};
+      font-family: 'Font Awesome 5 Free';
+      text-decoration: none!important;
+      font-weight: 400;
+      content: "\f111";
+      opacity: ${props => props.active ? 0 : 1};
       transition: background-color 0.1s;
   }  
   
   &:after {
-      width: 0.5em;
-      height: 0.5em;
-      left: 0.25em;
       position: absolute;
       margin-right: 0.5em;
       align-self: center;
-      box-sizing: border-box;
-      content: "";
-      border-radius: 100%;
-      opacity: ${props => props.active ? 1 : 0};
-      background-color: ${props => props.theme.brand_secondary};
+      text-decoration: none!important;
+      content: "\f192";
+      font-family: 'Font Awesome 5 Free';
+      opacity: 0;
       transition: opacity 0.1s;
   }
   
@@ -52,18 +47,22 @@ const Label = styled.label`
   }
 `;
 
+const BigLabel = styled(Label)`
+
+`;
+
 const Input = styled.input`
   opacity: 0;
   width: 0;
   margin: 0;
   
   &:checked+label {
-    //font-weight: 700;
+    font-weight: bold;
     // color: ${props => props.theme.accent_1};
   } 
   
   &:checked + label:after {
-    content: "";
+    opacity: 1;
   }  
   
   &:focus + label {
@@ -74,7 +73,7 @@ const Input = styled.input`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  height: 26px;
+  //height: 26px;
 `;
 
 
@@ -84,7 +83,7 @@ const Radio = props => {
         <>
             {props.options && props.options.map((option, index) => {
                 return (
-                    <Wrapper key={index}>
+                    <Wrapper data-active={option.value === props.value} key={index}>
                         <Input
                             onChange={event => props.onChange(event.target.value)}
                             name={props.name}
@@ -92,12 +91,17 @@ const Radio = props => {
                             checked={option.value === props.value}
                             value={option.value}
                             type={"radio"}/>
-                        <Label active={option.value === props.value}
-                               htmlFor={props.name + "-" + option.value}>
-                            {option.label}
-                        </Label>
+                        {option.component ?
+                            <BigLabel active={option.value === props.value} htmlFor={props.name + "-" + option.value}>
+                                {option.component}
+                            </BigLabel>
+                            :
+                            <Label active={option.value === props.value}
+                                   htmlFor={props.name + "-" + option.value}>
+                                {option.label}
+                            </Label>
+                        }
                     </Wrapper>
-
                 )
             })}
         </>

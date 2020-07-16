@@ -1,12 +1,13 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect, Route, Switch} from "react-router-dom";
-import {USER} from "../../../actions/action_constants";
-import Card from "../../gui/Card";
-import {Button} from "../../gui/Button";
+import {USER} from "../../actions/action_constants";
+import Card from "../gui/Card";
+import {Button} from "../gui/Button";
 import Addresses from "./Addresses";
-import {Footer} from "../Footer";
+import {Footer} from "./Footer";
 import {useLocation} from "react-router";
+import {Container, Row} from "../gui/Grid";
 
 const Account = props => {
     const user = useSelector(
@@ -59,19 +60,21 @@ const Account = props => {
                 // <Alert info>Nicht eingeloggt.</Alert>
                 null
                 :
-                <div className={"container"}>
-                    <div className={"row"}>
+                <Container>
+                    <Row>
                         <div className={"col-md-12"}>
                             <h1>Mein Konto</h1>
                         </div>
-                    </div>
+                    </Row>
 
-                    <Switch>
-                        <Route exact path="/account" render={() => home}/>
-                        <Route path="/account/orders" render={() => <span>hii</span>}/>
-                        <Route path="/account/addresses" component={Addresses}/>
-                    </Switch>
-                </div>
+                    <Row>
+                        <Switch>
+                            <Route exact path="/account" render={() => home}/>
+                            <Route path="/account/orders" render={() => <span>hii</span>}/>
+                            <Route path="/account/addresses" component={Addresses}/>
+                        </Switch>
+                    </Row>
+                </Container>
             }
         </>
     );

@@ -31,7 +31,7 @@ const Dropzone = styled.div`
     position: absolute;
     bottom: 1rem;
     right: 1rem;
-    font-family: FontAwesome;
+    font-family: 'Font Awesome 5 Free';
     content: "\\f063";
     color: ${props => props.hovering ? props.theme.accent_1 : "transparent"};
     font-size: 6em;

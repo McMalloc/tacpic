@@ -72,7 +72,7 @@ const Container = styled.div`
       position: absolute;
       content: '\\f061';
       //content: "hi";
-      font-family: FontAwesome;
+      font-family: 'Font Awesome 5 Free';
       font-size: 130%;
       ${p(2)};
       bottom: 0;

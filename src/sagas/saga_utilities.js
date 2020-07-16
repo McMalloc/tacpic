@@ -1,4 +1,4 @@
-import {call, put} from "redux-saga/effects";
+import {call, put, select} from "redux-saga/effects";
 import axios from "axios";
 
 const buildParams = (paramObj) => {
@@ -32,6 +32,11 @@ const replaceParam = (path, paramObj) => {
     return path;
 };
 
+const crawlState = (state, path) => {
+    if (path.length === 0) return state;
+    return crawlState(state[path[0]], path.slice(1));
+}
+
 /**
  * A redux saga effect
  * @typedef {Function} SagaEffect
@@ -59,6 +64,7 @@ const replaceParam = (path, paramObj) => {
  *   saved in `localStorage`
  * @param {Function} transformRequest A function to transform the data from the API upon a SUCCESS event. Leave undefined for identity.
  * @param {Function} transformResponse A function to transform the data to the API upon a REQUEST event. Leave undefined for identity.
+ * @param {Array<String>} appendedStatePath String of property names to select a property from the state which will be appended to the payload.
  * @return {Saga} The callable saga.
  */
 export default function createSaga(
@@ -68,9 +74,15 @@ export default function createSaga(
     effect,
     auth,
     transformRequest = args => { return args },
-    transformResponse = args => { return args }) {
+    transformResponse = args => { return args },
+    appendedStatePath = []) {
     return function* () {
         yield effect(event.REQUEST, function* (action) {
+            console.log(action);
+            if (appendedStatePath.length > 0) {
+                action.payload[appendedStatePath[appendedStatePath.length - 1]] =
+                    yield select(state=>crawlState(state, appendedStatePath));
+            }
             try {
                 let statusCode = 1000;
                 let authHeader = "";
@@ -89,15 +101,20 @@ export default function createSaga(
                     }).then(response => {
                         statusCode = response.status;
                         authHeader = response.headers.get("authorization");
-                        return response.json()
+                        return response.text();
                     });
                 }, action);
 
-                console.log(event.REQUEST + " called")
+                let parsedResponse;
+                try {
+                    parsedResponse = JSON.parse(response)
+                } catch {
+                    parsedResponse = response;
+                }
 
-                let data = transformResponse(response, statusCode, authHeader);
+                let data = transformResponse(parsedResponse, statusCode, authHeader);
                 if (statusCode > 204) {
-                    yield put({type: event.FAILURE, message: response, statusCode});
+                    yield put({type: event.FAILURE, message: parsedResponse, statusCode});
                 } else {
                     yield put({type: event.SUCCESS, data, statusCode});
                 }

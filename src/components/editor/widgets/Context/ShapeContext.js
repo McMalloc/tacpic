@@ -73,7 +73,7 @@ const ShapeContext = props => {
                         onChange={pattern => changePattern(dispatch, selectedObject.uuid, pattern, selectedObject.pattern.offset)}/>
 
                     <Checkbox name={"padding"}
-                              checked={selectedObject.pattern.offset}
+                              value={selectedObject.pattern.offset}
                               disabled={!selectedObject.border || selectedObject.pattern.template == null}
                               onChange={() => {
                                   changeProp(
@@ -103,7 +103,7 @@ const ShapeContext = props => {
                 <fieldset>
                     <legend>Kontur</legend>
                     <Checkbox name={"border"}
-                              checked={selectedObject.border}
+                              value={selectedObject.border}
                               onChange={() => {
                                   changeProp(
                                       dispatch,
@@ -132,7 +132,7 @@ const ShapeContext = props => {
                             label: t("2,5 mm (dicke Linie)")
                         }]} />
                     <Checkbox name={"borderStyle"}
-                              checked={selectedObject.borderStyle === borderStyles.default}
+                              value={selectedObject.borderStyle === borderStyles.default}
                               onChange={() => {
                                   changeProp(
                                       dispatch,
@@ -145,7 +145,7 @@ const ShapeContext = props => {
                     {selectedObject.type === 'path'&&
                         <>
                             <Checkbox name={"arrow-start"}
-                                      checked={selectedObject.startArrow}
+                                      value={selectedObject.startArrow}
                                       onChange={() => {
                                           changeProp(
                                               dispatch,

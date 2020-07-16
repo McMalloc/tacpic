@@ -33,8 +33,9 @@ const Input = styled.input`
   padding: 5px ${props => props.theme.spacing[1]};
   cursor: ${props => props.disabled ? "not-allowed" : "text"};
   
-  &:invalid {
+  &.dirty:invalid {
     border-radius: 3px 3px 0 0;
+    //box-shadow: 0 0 5px 2px red;
   }
   
   &::placeholder {
@@ -43,7 +44,7 @@ const Input = styled.input`
   
   &:focus, &:active {
     box-shadow: 0 0 0 1px 3px ${props => props.theme.primary};
-    //border-color: #2684FF;
+    border-color: #2684FF;
   }
   
   &:after {
@@ -76,6 +77,7 @@ const validate = (validations, value) => {
 
 const getMessages = (validities, t, validations) => {
     let invalidityMessages = [];
+    if (validations.length === 0) return [];
     validities.forEach((validity, index) => {
         if (!validity) invalidityMessages.push(t(validations[index].message));
     });
@@ -89,6 +91,10 @@ const report = (element, messages) => {
 
 const Textinput = props => {
     let validations = !!props.validations ? [...props.validations] : [];
+
+    props.required && validations.push({
+        fn: val => /.+/.test(val), message: "general:required", callback: () => {}
+    })
 
     const [validities, setValidities] = useState(validations.map(() => false));
     const [pristine, setPristine] = useState(true);
@@ -112,13 +118,14 @@ const Textinput = props => {
                 disabled={props.disabled}
                 inline={props.inline}
                 autocomplete={props.autocomplete}
+                className={pristine ? "pristine" : "dirty"}
                 required={props.required}
                 placeholder={t(props.placeholder) || ""}
                 onInput={event => {
                     setValidities(validate(validations, event.currentTarget.value));
                 }}
                 onBlur={event => {
-                    event.target.value.length !== 0 && setPristine(false);
+                    setPristine(false);
                     report(event.target, getMessages(validities, t, validations));
                     props.onBlur && props.onBlur(event);
                 }}

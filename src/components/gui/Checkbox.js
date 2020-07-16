@@ -28,8 +28,8 @@ const Label = styled.label`
       box-sizing: border-box;
       content: "";
       border-radius: ${props => props.theme.border_radius};
-      border: 1px solid ${props => props.disabled ? props.theme.grey_4 : props.checked ? props.theme.brand_secondary : props.theme.midlight};
-      background-color: ${props => props.disabled ? "transparent" : props.checked ? props.theme.brand_secondary : "white"};
+      border: 1px solid ${props => props.disabled ? props.theme.grey_4 : props.theme.midlight};
+      background-color: ${props => props.disabled ? "transparent" : "white"};
       transition: background-color 0.1s;
   }
   
@@ -57,6 +57,12 @@ const Input = styled.input`
   &:checked + label {
     //font-weight: 700;
     color: ${props => props.theme.brand_secondary};
+    font-weight: bold;
+    
+    &:before {
+      background-color: ${props => props.theme.brand_secondary};
+      border-color: ${props => props.theme.brand_secondary};
+    }
   }  
 
   &:checked + label:after {
@@ -72,7 +78,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: ${props => props.theme.spacing[1]};
-  //height: 26px;
 `;
 
 const Checkbox = props => {
@@ -85,7 +90,8 @@ const Checkbox = props => {
                      disabled={props.disabled}
                      aria-disabled={props.disabled}
                      id={props.name + "-cb"}
-                     checked={props.checked}
+                     checked={props.value}
+                     value={props.value}
                      type={"checkbox"} />
                  <Label disabled={props.disabled} checked={props.checked} htmlFor={props.name + "-cb"}>
                      {t(props.label)}

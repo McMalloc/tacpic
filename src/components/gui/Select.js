@@ -64,8 +64,10 @@ const Select = props => {
                         isDisabled={props.disabled}
                         onCreateOption={props.onCreateOption}
                         onChange={props.onChange}
-                        menuPortalTarget={document.body}
-                        options={props.options}/></Label>
+                        // menuIsOpen={true}
+                        menuPortalTarget={document.getElementById("modal-portal-target")}
+                        options={props.options}/>
+                </Label>
             </div>
     )
     

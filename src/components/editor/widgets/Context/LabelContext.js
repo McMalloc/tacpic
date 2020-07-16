@@ -94,7 +94,7 @@ const LabelContext = props => {
             {/*<Row>*/}
             {/*    <div className={"col-xs-6"}>*/}
                     <Checkbox name={"is-key"}
-                              checked={selectedObject.isKey}
+                              value={selectedObject.isKey}
                               onChange={() => changeProp(
                                   dispatch,
                                   selectedObject.uuid,
@@ -124,12 +124,12 @@ const LabelContext = props => {
                     <legend>Punktschrift</legend>
                     {/*<Checkbox default={this.props.texture !== null} name={"relief"} label={"Füllung fühlbar reliefieren"}/>*/}
                     <Checkbox name={"display-dots"}
-                              checked={selectedObject.displayDots}
+                              value={selectedObject.displayDots}
                               onChange={() => changeProp(dispatch, selectedObject.uuid, "displayDots", !selectedObject.displayDots)}
                               label={"Beschriftung in Punktschrift"}/>
 
                     <Checkbox name={"full-character"}
-                              checked={selectedObject.fullCharPrefix}
+                              value={selectedObject.fullCharPrefix}
                               onChange={() => changeProp(dispatch, selectedObject.uuid, "fullCharPrefix", !selectedObject.fullCharPrefix)}
                               label={"editor:cb_braille-full-character"}/>
 
@@ -137,7 +137,7 @@ const LabelContext = props => {
                     {/*          label={"editor:cb_braille-dot-grid"}/>*/}
 
                     <Checkbox name={"show-border"}
-                              checked={selectedObject.border}
+                              value={selectedObject.border}
                               onChange={() => changeProp(dispatch, selectedObject.uuid, "border", !selectedObject.border)}
                               label={"editor:cb_braille-show-border"}/>
                 </fieldset>

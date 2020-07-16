@@ -130,7 +130,7 @@ const Document = props => {
                     <div className={"col-sm-6"}>
                         <Checkbox
                             name={"cb_vertical-grid"}
-                            checked={showVerticalGrid}
+                            value={showVerticalGrid}
                             onChange={() => {
                                 changeFileProperty(dispatch, 'showVerticalGrid', !showVerticalGrid)
                             }}
@@ -155,7 +155,7 @@ const Document = props => {
                     <div className={"col-sm-6"}>
                         <Checkbox
                             name={"cb_horizontal-grid"}
-                            checked={showHorizontalGrid}
+                            value={showHorizontalGrid}
                             onChange={() => {
                                 changeFileProperty(dispatch, 'showHorizontalGrid', !showHorizontalGrid)
                             }}
@@ -192,7 +192,7 @@ const Document = props => {
                     <div className={"col-sm-6"}>
                         <Checkbox
                             name={"cb_title"}
-                            checked={defaultTitle}
+                            value={defaultTitle}
                             onChange={() => {
                                 toggleDefaultTitle(!defaultTitle)
                             }}
@@ -289,7 +289,7 @@ const Document = props => {
                     <div className={"col-sm-6"}>
                         <Checkbox
                             name={"cb_pagenumbers"}
-                            checked={braillePages.pageNumbers > 0}
+                            value={braillePages.pageNumbers > 0}
                             onChange={() => {
                                 changeBraillePageProperty(dispatch, "pageNumbers", braillePages.pageNumbers === 0 ? PAGE_NUMBER_BOTTOM : 0)
                             }}

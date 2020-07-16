@@ -1,7 +1,7 @@
 import styled, {useTheme} from 'styled-components/macro';
 import React, {Component, Fragment} from "react";
 import {useTranslation} from "react-i18next";
-import AccountWidget from "./account/AccountWidget";
+import AccountWidget from "./AccountWidget";
 import {NavLink} from "react-router-dom";
 import {useLocation} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
@@ -17,9 +17,8 @@ const Wrapper = styled.nav`
    padding: 6px;
   width: 100%;
   box-sizing: border-box;
-  //border-bottom: 1px solid ${props => props.theme.brand_secondary};
+  border-bottom: 1px solid ${props => props.theme.grey_5};
   justify-content: space-between;
-  //box-shadow: 0 2px 2px rgba(0,0,0,0.1);
 `;
 
 const NavbarItem = styled(NavLink)`
@@ -94,12 +93,12 @@ const Navbar = props => {
                 })}
             </NavbarItemGroups>
             <NavbarItemGroups>
+                <NavbarItem theme={theme} to={'/basket'}>
+                    <Icon icon={"shopping-cart"}/>&nbsp;
+                    {template(t("general:Warenkorb"))({quantity: basket.length})}
+                </NavbarItem>
                 {user.logged_in ?
                     <>
-                        <NavbarItem theme={theme} to={'/basket'}>
-                            <Icon icon={"shopping-cart"}/>&nbsp;
-                            {template(t("general:Warenkorb"))({quantity: basket.length})}
-                        </NavbarItem>
                         &ensp;<span style={{borderLeft: "1px solid lightgrey"}}>&ensp;</span>
                         <NavbarItem theme={theme} to={'/account'}>
                             <Icon icon={"user-circle"}/>&nbsp;

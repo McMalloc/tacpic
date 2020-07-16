@@ -22,7 +22,7 @@ const ImageWrapper = styled.div`
   &:after {
     position: absolute;
     content: "\f061";
-    font-family: FontAwesome;
+    font-family: 'Font Awesome 5 Free';
     font-size: 200%;
     ${p(2)};
     bottom: 0;

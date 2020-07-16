@@ -113,6 +113,26 @@ const initialCatalogue = {
     }, // quote is the basket with added prices and packaging and postage items
     basket: [
         {
+            contentId: 2,
+            productId: 'graphic_nobraille',
+            quantity: 1
+        },
+        {
+            contentId: 4,
+            productId: 'graphic_nobraille',
+            quantity: 1
+        },
+        {
+            contentId: 9,
+            productId: 'graphic',
+            quantity: 1
+        },
+        {
+            contentId: 8,
+            productId: 'graphic_nobraille',
+            quantity: 6
+        },
+        {
             contentId: 9,
             productId: 'graphic_nobraille',
             quantity: 1
@@ -121,6 +141,16 @@ const initialCatalogue = {
             contentId: 3,
             productId: 'graphic',
             quantity: 2
+        },
+        {
+            contentId: 6,
+            productId: 'graphic',
+            quantity: 5
+        },
+        {
+            contentId: 1,
+            productId: 'graphic_nobraille',
+            quantity: 3
         },
         {
             contentId: 1,

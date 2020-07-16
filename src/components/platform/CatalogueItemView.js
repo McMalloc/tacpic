@@ -93,7 +93,7 @@ const VariantPreview = ({title, id, description, tags, document, file_name}) => 
     const allTags = useSelector(
         state => state.catalogue.tags
     );
-    const thumbnailCandidate = document.pages.findIndex(page=>!page.text)
+    const thumbnailCandidate = document.pages.findIndex(page => !page.text)
     return (
         <VariantPreviewStyled {...theme} active={id === parseInt(selectedVariantId)}>
             <img src={`http://localhost:9292/thumbnails/${file_name}-THUMBNAIL-xl-p${thumbnailCandidate}.png`}/>
@@ -170,7 +170,8 @@ const CatalogueItemView = props => {
                 {props.variants.length > 1 &&
                 <VariantColumn className={"col-xs-12 col-md-4 col-lg-3"}>
                     <div className={'heading'}>
-                        <strong>Verfügbare Varianten</strong> ({props.variants.length} gesamt)</div>
+                        <strong>Verfügbare Varianten</strong> ({props.variants.length} gesamt)
+                    </div>
                     <div>
                         {props.variants.map((variant, index) => {
                             return (
@@ -182,15 +183,15 @@ const CatalogueItemView = props => {
                     </div>
                     <NewVariantButtonContainer>
                         <Button className={'extra-margin'}
-                        disabled={!logged_in}
-                        fullWidth icon={'copy'}
-                        onClick={() => {
-                        history.push(`/editor/${graphicId}`);
-                        dispatch({
-                            type: FILE.OPEN.REQUEST,
-                            id: variantId, mode: "new"
-                        })
-                    }}>Neue Variante aus Auswahl</Button>
+                                disabled={!logged_in}
+                                fullWidth icon={'copy'}
+                                onClick={() => {
+                                    history.push(`/editor/${graphicId}`);
+                                    dispatch({
+                                        type: FILE.OPEN.REQUEST,
+                                        id: variantId, mode: "new"
+                                    })
+                                }}>Neue Variante aus Auswahl</Button>
                     </NewVariantButtonContainer>
 
                 </VariantColumn>

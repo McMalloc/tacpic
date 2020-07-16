@@ -1,4 +1,13 @@
-import {CATALOGUE, VERSION, TAGS, GRAPHIC, ORDER, VARIANTS} from '../actions/action_constants';
+import {
+    CATALOGUE,
+    VERSION,
+    TAGS,
+    GRAPHIC,
+    ORDER,
+    VARIANTS,
+    ITEM_ADDED_TO_BASKET,
+    ITEM_REMOVED_FROM_BASKET
+} from '../actions/action_constants';
 import {createReducer} from "./index";
 import {produce} from "immer";
 
@@ -61,7 +70,7 @@ const catalogueApi = (state = {}, action) => {
                 ...state,
                 tags: action.data
             };
-        case VARIANTS.GET.SUCCESS:
+        case VARIANTS.GET.SUCCESS: // TODO action beschreibt nicht, was sich im Store ändert
             return {
                 ...state,
                 quotedVariants: action.data
@@ -71,13 +80,19 @@ const catalogueApi = (state = {}, action) => {
                 ...state,
                 quote: action.data
             };
-        case 'ITEM_ADDED_TO_BASKET':
+        case ITEM_REMOVED_FROM_BASKET:
+            return produce(state, draftState => {
+                draftState.basket.splice(action.index, 1);
+            });
+        case ITEM_ADDED_TO_BASKET:
             return produce(state, draftState => {
                 let isUpdate = false;
                 state.basket.forEach((item, index) => {
-                    if (action.contentId === item.contentId && action.productId === item.productId) {
+                    if (action.index === index) {
                         isUpdate = isUpdate || true;
-                        draftState.basket[index].quantity += action.quantity; // TODO quantity 0 = remove
+                        draftState.basket[index].quantity = action.quantity; // TODO quantity 0 = remove
+                        draftState.basket[index].contentId = action.contentId;
+                        draftState.basket[index].productId = action.productId;
                     }
                 })
 

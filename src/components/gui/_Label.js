@@ -26,7 +26,6 @@ export const Sub = styled.span`
 `;
 
 const Label = props => {
-    console.log(props.required)
     const theme = useTheme();
     const { t } = useTranslation();
     return (

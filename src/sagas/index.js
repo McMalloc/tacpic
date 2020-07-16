@@ -18,6 +18,7 @@ import {
 } from "./catalogue_saga";
 import {contentEditWatcher, labelWriteWatcher, layoutEditWatcher, systemChangeWatcher} from "./label_translate_saga";
 import {renderWatcher} from "./render_saga";
+import {addressRemoveSaga} from "./address_saga";
 
 export const id = args => args;
 
@@ -28,7 +29,9 @@ export default function* root() {
             return response.map(variant => {
                 return {
                     id: variant.variant_id,
+                    graphic_id: variant.graphic_id,
                     title: variant.variant_title,
+                    graphic_title: variant.graphic_title,
                     braille_format: variant.braille_format,
                     braille_no_of_pages: variant.braille_no_of_pages,
                     graphic_format: variant.graphic_format,
@@ -41,10 +44,14 @@ export default function* root() {
         })),
         call(createSaga(GRAPHIC.CREATE, 'post', 'graphics', takeLatest, true, id)),
         call(createSaga(ORDER.QUOTE, 'post', 'orders/quote', takeLatest, false, id)),
-        call(createSaga(ORDER.CREATE, 'post', 'orders', takeLatest, true, id)),
         call(createSaga(GRAPHIC.GET, 'get', 'graphics/:id', takeLatest, false, id, id)),
         call(createSaga(ADDRESS.GET, 'get', 'users/addresses', takeLatest, true, id, id)),
         call(createSaga(ADDRESS.CREATE, 'post', 'users/addresses', takeLatest, true, id, id)),
+        call(createSaga(ADDRESS.REMOVE, 'post', 'users/addresses/delete/:id', takeLatest, true, id, id)),
+        call(createSaga(ORDER.CREATE, 'post', 'orders', takeLatest, true, id, id, ['catalogue', 'basket'])),
+
+        call(addressRemoveSaga),
+
         call(variantGetSaga),
         call(openFileWatcher),
         call(catalogueSearchSaga),
