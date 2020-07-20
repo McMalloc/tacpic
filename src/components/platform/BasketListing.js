@@ -28,59 +28,64 @@ const removeItem = (dispatch, index) => {
     })
 }
 
-const ItemRow = styled.tr`
-    [data-role="remove-btn"] {
-          opacity: 0.0;
-        }
-    input[type="number"] {
-      border-color: transparent;
-    }
+const ItemPanel = styled.div`
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid ${props => props.theme.grey_4};
+  background-color: white;
 
-    &:hover {
-    background-color: ${props=>props.theme.grey_6};
-        input[type="number"] {
-          border-color: inherit;
-        }
-        [data-role="remove-btn"] {
-          opacity: 1;
-        }
+  .upper {
+    display: flex;
+    
+    .left {
+      flex: 1 1 30%;
+      height: 100px;
+       img {
+            box-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+          }
+    }
+    .right {
+      flex: 2 1 70%;
+    }
+  }
+  .lower {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+`;
+
+const MetaItemTable = styled.table`
+  td {
+    border: none;
+  }
+  
+  .overline {
+    border-top: 2px solid ${props => props.theme.grey_4};
   }
 `
 
-const PreviewCell = styled.td`
-  text-align: center;
-  background-color: ${props=>props.theme.grey_6};
-  border-left: 1px solid rgba(0,0,0,0.2);
-  border-right: 1px solid rgba(0,0,0,0.2);
-  img {
-    box-shadow: 1px 1px 4px rgba(0,0,0,0.5);
-  }
-`;
+const ItemRow = styled.tr`
+
+`
 
 const MetaItemRow = styled.tr`
   text-align: right;
   &:last-child {
     font-weight: bold;
-    
-    td {
-      border: none;
-    }
+   
     
     td:last-child {
       font-size: 150%;
       text-decoration: underline;
-      color: ${props=>props.theme.brand_secondary};
+      color: ${props => props.theme.brand_secondary};
     }
   }
 `;
-
-const Header = styled.tr`
-  border-bottom: 2px solid ${props=>props.theme.grey_4};
-`;
-
 const PriceCell = styled.td`
   text-align: right;
-
+  min-width: min-content;
+  width: 200px;
 `;
 
 const BasketListing = () => {
@@ -109,87 +114,83 @@ const BasketListing = () => {
     if (quote.items.length === 0) return null;
 
     return (
-        <table>
-            <Header>
-            <th>Menge</th>
-            <th></th>
-            <th colSpan={2}>Produkt</th>
-            <th>Preis</th>
-            </Header>
+        <>
             {quote.items.map((quoteItem, index) => {
                 const correspondingVariant = quotedVariants.find(v => v.id === quoteItem.content_id);
                 if (!correspondingVariant) return null
                 return (
-                    <ItemRow>
-                        <td><Numberinput min={1} value={quoteItem.quantity}
-                                         inline
-                                         onChange={event => updateBasket(dispatch, quoteItem.content_id, event.target.value, quoteItem.product_id, index)}/>
-                        </td>
-                        <td><Button onClick={() => removeItem(dispatch, index)} icon={"times"} data-role={"remove-btn"}
+                    <ItemPanel>
+                        <div className={'upper'}>
+                            <div className={'left'}>
+                                <img style={{height: '70px', width: 'auto'}}
+                                     src={`/thumbnails/${correspondingVariant.file_name}-THUMBNAIL-sm-p0.png`}/>
+                            </div>
+                            <div className={'right'}>
+                                <Link
+                                    to={`/catalogue/${correspondingVariant.graphic_id}/variant/${correspondingVariant.id}`}>
+                                    {correspondingVariant.graphic_title} ({correspondingVariant.title})
+                                </Link>
+                                <p>
+                                    {correspondingVariant.graphics_no_of_pages} {correspondingVariant.graphic_format} Grafik,&ensp;
+                                    {correspondingVariant.system}
+                                </p>
+
+                            </div>
+                        </div>
+                        <div className={'middle'}>
+                            <Radio
+                                onChange={value => updateBasket(dispatch, quoteItem.content_id, quoteItem.quantity, value, index)}
+                                name={"product_type_" + index}
+                                value={quoteItem.product_id} options={[
+                                {
+                                    label: `mit Bildbeschreibung als Brailleprägung (${correspondingVariant.braille_no_of_pages} Seiten)`,
+                                    value: "graphic"
+                                },
+                                {label: "Bildbeschreibung nur in E-Mail", value: "graphic_nobraille"}
+                            ]}/>
+                        </div>
+                        <div className={'lower'}>
+                            <Button onClick={() => removeItem(dispatch, index)} icon={"times"} data-role={"remove-btn"}
                                     label={"Entfernen"}/>
-                        </td>
-                        <td>
-                            <Link
-                                to={`/catalogue/${correspondingVariant.graphic_id}/variant/${correspondingVariant.id}`}>
-                                {correspondingVariant.graphic_title} ({correspondingVariant.title})
-                            </Link>
-                            <br/>
-                            <small>
-                                <div data-role={"product-select"}>
-                                    <Radio
-                                        onChange={value => updateBasket(dispatch, quoteItem.content_id, quoteItem.quantity, value, index)}
-                                        name={"product_type_" + index}
-                                        value={quoteItem.product_id} options={[
-                                        {label: "mit Bildbeschreibung als Brailleprägung", value: "graphic"},
-                                        {label: "Bildbeschreibung nur in E-Mail", value: "graphic_nobraille"}
-                                    ]}/>
-                                </div>
-
-                            </small>
-
-                        </td>
-                        <PreviewCell><img style={{height: '70px', width: 'auto'}}
-                                          src={`/thumbnails/${correspondingVariant.file_name}-THUMBNAIL-sm-p0.png`}/>
-                        </PreviewCell>
-                        <PriceCell><Currency amount={quoteItem.gross_price * quoteItem.quantity}/></PriceCell>
-                    </ItemRow>
+                            <Numberinput min={1} value={quoteItem.quantity} label={'Stück'}
+                                         inline noMargin
+                                         onChange={event => updateBasket(dispatch, quoteItem.content_id, event.target.value, quoteItem.product_id, index)}/>
+                            <Currency amount={quoteItem.gross_price * quoteItem.quantity}/>
+                        </div>
+                    </ItemPanel>
                 )
             })}
-            <MetaItemRow>
-                <td></td>
+            <MetaItemTable>
+                <MetaItemRow>
 
-                <td colSpan={2}>Zwischensumme</td><td></td>
-                <PriceCell><Currency
-                    amount={quote.items.reduce((acc, current) => acc + current.gross_price * current.quantity, 0)}/>
-                </PriceCell>
-            </MetaItemRow>
-            <MetaItemRow>
-                <td></td>
+                    <td>Zwischensumme Artikel</td>
+                    <PriceCell><Currency
+                        amount={quote.items.reduce((acc, current) => acc + current.gross_price * current.quantity, 0)}/>
+                    </PriceCell>
+                </MetaItemRow>
+                <MetaItemRow>
 
-                <td colSpan={2}>{quote.packaging_item.product_id}</td><td></td>
-                <PriceCell><Currency amount={quote.packaging_item.gross_price}/></PriceCell>
-            </MetaItemRow>
-            <MetaItemRow>
-                <td></td>
+                    <td>{quote.packaging_item.product_id}</td>
+                    <PriceCell><Currency amount={quote.packaging_item.gross_price}/></PriceCell>
+                </MetaItemRow>
+                <MetaItemRow>
 
-                <td colSpan={2}>{quote.postage_item.product_id}</td><td></td>
-                <PriceCell><Currency amount={quote.postage_item.gross_price}/></PriceCell>
-            </MetaItemRow>
-            <MetaItemRow>
-                <td></td>
+                    <td>{quote.postage_item.product_id}</td>
+                    <PriceCell><Currency amount={quote.postage_item.gross_price}/></PriceCell>
+                </MetaItemRow>
+                <MetaItemRow>
 
-                <td colSpan={2}>7% Mehrwertsteuer</td><td></td>
-                <PriceCell><Currency amount={quote.gross_total - quote.net_total}/></PriceCell>
-            </MetaItemRow>
-            <MetaItemRow>
-                <td></td>
+                    <td>7% Mehrwertsteuer</td>
+                    <PriceCell><Currency amount={quote.gross_total - quote.net_total}/></PriceCell>
+                </MetaItemRow>
+                <MetaItemRow>
 
-                <td colSpan={2}><strong>Gesamt</strong></td><td></td>
-                <PriceCell><strong><Currency amount={quote.gross_total}/></strong>
-                </PriceCell>
-            </MetaItemRow>
-        </table>
-
+                    <td className={'overline'}><strong>Gesamt</strong></td>
+                    <PriceCell className={'overline'}><strong><Currency amount={quote.gross_total}/></strong>
+                    </PriceCell>
+                </MetaItemRow>
+            </MetaItemTable>
+        </>
     );
 };
 

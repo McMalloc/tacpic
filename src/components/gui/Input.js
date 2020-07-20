@@ -143,7 +143,7 @@ const Textinput = props => {
 
 const Numberinput = props => {
     return (
-        <Label tip={props.tip} inline={props.inline} required={props.required} disabled={props.disabled} label={props.label}
+        <Label tip={props.tip} inline={props.inline} required={props.required} noMargin={props.noMargin} disabled={props.disabled} label={props.label}
                sublabel={props.sublabel}>
             <Numberwrapper inline={props.inline}>
                 <Input disabled={props.disabled}

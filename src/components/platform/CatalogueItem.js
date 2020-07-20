@@ -32,11 +32,11 @@ const Preview = styled.div`
   background-position: center;
   height: 100%;
   background-size: contain;
-  //background-color: ${props => props.theme.grey_6};
+  background-color: ${props => props.theme.background};
 `;
 
 const Info = styled.div`
-  background-color: ${props => props.theme.grey_6};
+  background-color: ${props => props.theme.background};
   padding: 8px;
   color: ${props => props.theme.foreground};
   border-radius: 0 0 ${props => props.theme.border_radius} ${props => props.theme.border_radius};

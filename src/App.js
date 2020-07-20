@@ -26,6 +26,7 @@ const ScrollContent = styled.div`
 const Wrapper = styled.div`
   display: flex;
   height: 100%;
+  background-color: ${props=>props.theme.grey_6};
   flex-direction: column;
 `;
 
