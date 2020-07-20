@@ -74,7 +74,6 @@ const MetaItemRow = styled.tr`
   &:last-child {
     font-weight: bold;
    
-    
     td:last-child {
       font-size: 150%;
       text-decoration: underline;

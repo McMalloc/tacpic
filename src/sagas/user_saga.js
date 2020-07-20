@@ -12,8 +12,8 @@ export const userCreateSaga = createSaga(USER.CREATE, 'post', 'create-account', 
         password: request.pwd,
         "password-confirm": request.pwdConfirm,
     }
-}, (response, statusCode, headers) => {
-    localStorage.setItem('jwt', headers.authorization);
+}, (response, statusCode, authHeader) => {
+    localStorage.setItem('jwt', authHeader);
     return response;
 });
 

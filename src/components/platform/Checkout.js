@@ -14,6 +14,7 @@ import {Radio} from "../gui/Radio";
 import AddressForm, {defaults as addressDefaults} from "./AddressForm";
 import {Checkbox} from "../gui/Checkbox";
 import LoginForm from "../LoginForm";
+import StepIndicator from "../gui/StepIndicator";
 
 // TODO Kommentar anfügen
 
@@ -167,20 +168,13 @@ const Checkout = props => {
     </section>
 
     const steps = ["Anmeldung", "Addresse", "Bezahlmethode", "Überprüfen"]
-    const breadcrumbs = <div>{[0, 1, 2, 3].map(n => {
-        if (n === step) {
-            return <strong>{n + 1} {steps[n]}</strong>
-        } else {
-            return <span>{n + 1} {steps[n]}</span>
-        }
-    })}</div>
 
     return (
         <Container>
             <Row>
                 <div className={"col-xs-6"}>
 
-                    {breadcrumbs}
+                    <StepIndicator steps={steps} current={step}/>
 
                     {/*<p>Current Information</p>*/}
                     {/*<ul>*/}
