@@ -7,6 +7,7 @@ const Tile = styled.div`
   transition: box-shadow 0.15s, border-color 0.15s;
   border: 1px solid whitesmoke;
   display: flex;
+  background-color: ${props => props.theme.background};
   flex-direction: column;
   height: 100%;
   

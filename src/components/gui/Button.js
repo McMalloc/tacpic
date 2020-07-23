@@ -22,6 +22,7 @@ const ButtonBase = styled.button`
   text-transform: ${props => props.small ? 'uppercase' : 'none'};
   border-radius: 3px;
   cursor: pointer;
+  float: ${props=>props.rightAction ? 'right' : 'none'};
   margin-top: 0;
   position: relative;
   font-size: ${props => props.small ? '0.8em' : '1em'};

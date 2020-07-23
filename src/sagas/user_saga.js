@@ -19,7 +19,8 @@ export const userCreateSaga = createSaga(USER.CREATE, 'post', 'create-account', 
 
 export const userLoginSaga = createSaga(USER.LOGIN, 'post', 'login', takeLatest, false, request=>request, (response, statusCode, authHeader) => {
     localStorage.setItem('jwt', authHeader);
-    return JSON.parse(/^\{(.*?)\}/.exec(response)[0]); // catch rodauths weird login response
+    if (statusCode === 200) return JSON.parse(/^\{(.*?)\}/.exec(response)[0]); // catch rodauths weird login response
+    return response;
 });
 
 // TODO doesnt work

@@ -1,10 +1,10 @@
-import {ADDRESS, CLEAR_USER, USER} from '../actions/action_constants';
+import {ADDRESS, CLEAR_USER, ORDER, USER} from '../actions/action_constants';
 
 let initialState = {
     logged_in: false,
     login_pending: false,
     addresses: [],
-    error: {}
+    error: null
 };
 
 const userApi = (state = initialState, action) => {
@@ -61,6 +61,10 @@ const userApi = (state = initialState, action) => {
         case ADDRESS.GET.SUCCESS:
             return {...state,
                 addresses: action.data
+            };
+        case ORDER.INDEX.SUCCESS:
+            return {...state,
+                orders: action.data
             };
         default:
             return state;

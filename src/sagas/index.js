@@ -48,8 +48,10 @@ export default function* root() {
         call(createSaga(GRAPHIC.GET, 'get', 'graphics/:id', takeLatest, false, id, id)),
         call(createSaga(ADDRESS.GET, 'get', 'users/addresses', takeLatest, true, id, id)),
         call(createSaga(ADDRESS.CREATE, 'post', 'users/addresses', takeLatest, true, id, id)),
-        call(createSaga(ADDRESS.REMOVE, 'post', 'users/addresses/delete/:id', takeLatest, true, id, id)),
+        call(createSaga(ADDRESS.UPDATE, 'post', 'users/addresses/:id', takeLatest, true, id, id)),
+        call(createSaga(ADDRESS.REMOVE, 'post', 'users/addresses/inactivate/:id', takeLatest, true, id, id)),
         call(createSaga(ORDER.CREATE, 'post', 'orders', takeLatest, true, id, id, ['catalogue', 'basket'])),
+        call(createSaga(ORDER.INDEX, 'get', 'orders', takeLatest, true, id, id)),
 
         call(addressRemoveSaga),
 

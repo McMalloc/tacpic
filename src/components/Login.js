@@ -16,7 +16,6 @@ const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-
 
 const Login = props => {
     const {t} = useTranslation();
-
     const user = useSelector(state => state.user);
     if (user.logged_in) {
         return <Redirect push to="/catalogue"/>;
@@ -31,9 +30,11 @@ const Login = props => {
             <div className={"row"}>
                 <LoginForm />
                 <>
-                    <div style={{textAlign: "center"}}>
+
+                    <div className={'full-width align-center'}>
+                        <br />
                         <p>
-                            &emsp;Haben Sie noch kein Konto? <NavLink to={"/signup"}>Hier registrieren.</NavLink>
+                            Haben Sie noch kein Konto? <NavLink to={"/signup"}>Hier registrieren.</NavLink>
                         </p>
                     </div>
                 </>

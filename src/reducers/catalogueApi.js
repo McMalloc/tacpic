@@ -6,7 +6,7 @@ import {
     ORDER,
     VARIANTS,
     ITEM_ADDED_TO_BASKET,
-    ITEM_REMOVED_FROM_BASKET
+    ITEM_REMOVED_FROM_BASKET, ORDER_RESET
 } from '../actions/action_constants';
 import {createReducer} from "./index";
 import {produce} from "immer";
@@ -79,6 +79,34 @@ const catalogueApi = (state = {}, action) => {
             return {
                 ...state,
                 quote: action.data
+            };
+        case ORDER.CREATE.REQUEST:
+            return {
+                ...state,
+                order: {
+                    pending: true,
+                    successful: false,
+                    key: action.payload.idempotencyKey
+                }
+            };
+        case ORDER.CREATE.SUCCESS:
+            return {
+                ...state,
+                basket: [],
+                order: {
+                    pending: false,
+                    successful: true
+                }
+            };
+        case ORDER_RESET:
+            return {
+                ...state,
+                order: {
+                    pending: false,
+                    key: null,
+                    successful: false,
+                    error: null
+                }
             };
         case ITEM_REMOVED_FROM_BASKET:
             return produce(state, draftState => {

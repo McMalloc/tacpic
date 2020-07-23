@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "../gui/Button";
 import {useTranslation} from "react-i18next";
@@ -15,40 +15,49 @@ import AddressForm, {defaults as addressDefaults} from "./AddressForm";
 import {Checkbox} from "../gui/Checkbox";
 import LoginForm from "../LoginForm";
 import StepIndicator from "../gui/StepIndicator";
+import uuidv4 from "../../utility/uuid";
+import {useHistory} from "react-router";
 
 // TODO Kommentar anfügen
 
-const placeOrder = (dispatch, shippingAddress, invoiceAddress, paymentMethod) => {
+const placeOrder = (dispatch, shippingAddress, invoiceAddress, paymentMethod, idempotencyKey) => {
     dispatch({
         type: ORDER.CREATE.REQUEST,
-        payload: {shippingAddress, invoiceAddress, paymentMethod}
+        payload: {shippingAddress, invoiceAddress, paymentMethod, idempotencyKey}
     })
 }
 
 const Checkout = props => {
     const user = useSelector(state => state.user);
-    const invoiceAddresses = user.addresses.filter(address => address.is_invoice_address);
-    const shippingAddresses = user.addresses.filter(address => !address.is_invoice_address);
+    const history = useHistory();
+    const invoiceAddresses = user.addresses.filter(address => address.is_invoice_addr);
+    const shippingAddresses = user.addresses.filter(address => !address.is_invoice_addr);
+    const idempotencyKey = uuidv4();
+    const orderState = useSelector(state => state.catalogue.order);
+
+    if (!orderState.pending && orderState.successful) history.push('/order-completed');
 
     const {t} = useTranslation();
     const dispatch = useDispatch();
     useEffect(() => {
+        document.getElementsByClassName("App")[0].scrollTo(0, 0);
         dispatch({type: ADDRESS.GET.REQUEST})
     }, []);
 
+    // const [step, changeStep] = useState(3);
     const [step, changeStep] = useState(0);
     const [autoLoggedin, setAutologgedin] = useState(false);
 
     const [enterShippingAddress, setEnterShippingAddress] = useState(false); // new shipping address?
     const [validShippingAddress, setValidShippingAddress] = useState(false);
-    const [shippingAddress, setShippingAddress] = useState(addressDefaults);
+    const [shippingAddress, setShippingAddress] = useState({});
 
     const showShippingAddressForm = shippingAddresses.length === 0 || enterShippingAddress;
 
     const [useInvoiceAddress, setUseInvoiceAddress] = useState(false);
     const [enterInvoiceAddress, setEnterInvoiceAddress] = useState(false); // new invoice address?
     const [validInvoiceAddress, setValidInvoiceAddress] = useState(false);
-    const [invoiceAddress, setInvoiceAddress] = useState({...addressDefaults, is_invoice_addr: true});
+    const [invoiceAddress, setInvoiceAddress] = useState({is_invoice_addr: true});
     const showInvoiceAddressForm = invoiceAddresses.length === 0 || enterInvoiceAddress;
 
     const [paymentMethod, setPaymentMethod] = useState(null);
@@ -68,7 +77,7 @@ const Checkout = props => {
                     setValidShippingAddress(document.getElementById("shipping-address-form").checkValidity())
                 }}
                 id={"shipping-address-form"}>
-                <AddressForm modelCallback={model => setShippingAddress(model)} initial={{is_invoice_address: false}}/>
+                <AddressForm modelCallback={model => setShippingAddress(model)} initial={shippingAddress}/>
             </form>}
 
             {!showShippingAddressForm &&
@@ -76,7 +85,10 @@ const Checkout = props => {
 
             {shippingAddresses.length > 0 && <>
                 <h3>Hinterlegte Lieferadressen</h3>
-                <Radio name={"checkout-address-radio"} onChange={value => setShippingAddress({...shippingAddress, id: parseInt(value)})}
+                <Radio name={"checkout-shipping-address-radio"} onChange={value => {
+                    setEnterShippingAddress(false);
+                    setShippingAddress({...shippingAddress, id: parseInt(value)})
+                }}
                        value={shippingAddress.id}
                        options={shippingAddresses.map(address => {
                            return {
@@ -95,19 +107,23 @@ const Checkout = props => {
             {useInvoiceAddress && <>
                 {showInvoiceAddressForm && <form
                     onChange={() => {
-                        invoiceAddress.id !== null && setShippingAddress({...invoiceAddress, id: null});
+                        invoiceAddress.id !== null && setInvoiceAddress({...invoiceAddress, id: null});
                         setValidInvoiceAddress(document.getElementById("invoice-address-form").checkValidity())
                     }}
                     id={"invoice-address-form"}>
-                    <AddressForm modelCallback={model => setInvoiceAddress(model)} initial={shippingAddress}/>
+                    <AddressForm modelCallback={model => setInvoiceAddress(model)} initial={invoiceAddress}/>
                 </form>}
                 {!showInvoiceAddressForm &&
                 <Button label={"Neue Rechnungsaddresse"} onClick={() => setEnterInvoiceAddress(true)}/>}
 
                 {invoiceAddresses.length > 0 && <>
                     <h3>Hinterlegte Rechnungsadressen</h3>
-                    <Radio name={"checkout-address-radio"} onChange={value => setInvoiceAddress(parseInt(value))}
-                           value={invoiceAddress}
+                    <Radio name={"checkout-invoice-address-radio"}
+                           onChange={value => {
+                               setEnterInvoiceAddress(false);
+                               setInvoiceAddress({...invoiceAddress, id: parseInt(value)})
+                           }}
+                           value={invoiceAddress.id}
                            options={invoiceAddresses.map(address => {
                                return {
                                    component: <AddressView {...address} />,
@@ -117,13 +133,14 @@ const Checkout = props => {
                 </>}
 
             </>}
+            <br/>
             {back}
-            <Button label={"Weiter zur Bezahlmethode"} onClick={() => changeStep(2)} primary
+            <Button label={"Weiter zur Bezahlmethode"} onClick={() => changeStep(2)} primary rightAction
                     disabled={!((shippingAddress.id !== null || validShippingAddress) && (!useInvoiceAddress || (invoiceAddress !== null || validInvoiceAddress)))}/>
         </section>
 
     const paymentSection = <section>
-        <Radio value={paymentMethod} onChange={setPaymentMethod} options={[
+        <Radio padded value={paymentMethod} onChange={setPaymentMethod} options={[
             {
                 component: <div>Rechnung<br/><small>Sie erhalten zusammen mit der Ware eine Rechnung,
                     die Sie innerhalb von 14 Tagen begleichen.</small></div>, value: "invoice"
@@ -134,37 +151,40 @@ const Checkout = props => {
                 value: "paypal"
             }
         ]}/>
+        <br/>
         {back}
-        <Button label={"Weiter zur Übersicht"} onClick={() => changeStep(3)} primary
+        <Button label={"Weiter zur Übersicht"} onClick={() => changeStep(3)} primary rightAction
                 disabled={paymentMethod === null}/>
     </section>
 
     const checkSection = <section>
-        <h2>Überprüfen</h2>
+        {/*<h2>Überprüfen</h2>*/}
         <div>Eingeloggt als {user.email}</div>
-        <div>
-            <h3>Lieferadresse</h3>
-            <AddressView {...user.addresses.find(address => address.id === shippingAddress)} />
-        </div>
+        <p>
+            <strong>Lieferadresse</strong><br/>
+            <AddressView {...(shippingAddress.id !== null ? user.addresses.find(address => address.id === shippingAddress.id) : shippingAddress)} />
+        </p>
 
-        <div>
-            <h3>Bezahlmethode</h3>
-            {paymentMethod}
-        </div>
-
-        {!!invoiceAddress &&
-        <div>
-            <h3>Rechnungsadresse</h3>
-            <AddressView {...user.addresses.find(address => address.id === invoiceAddress)} />
-        </div>
+        {useInvoiceAddress &&
+        <p>
+            <strong>Rechnungsadresse</strong><br/>
+            <AddressView {...(invoiceAddress.id !== null ? user.addresses.find(address => address.id === invoiceAddress.id) : invoiceAddress)} />
+        </p>
         }
 
+        <p>
+            <strong>Bezahlmethode</strong><br/>
+            {t('commerce:' + paymentMethod)}
+        </p>
+
+
+        <br/>
         {back}
         <Button label={"Kostenpflichtig bestellen"}
                 icon={"handshake"}
-                onClick={() => placeOrder(dispatch, shippingAddress, useInvoiceAddress ? invoiceAddress : null, paymentMethod)}
-                primary large
-                disabled={paymentMethod === null}/>
+                onClick={() => placeOrder(dispatch, shippingAddress, useInvoiceAddress ? invoiceAddress : null, paymentMethod, idempotencyKey)}
+                primary large rightAction
+                disabled={paymentMethod === null || orderState.pending}/>
     </section>
 
     const steps = ["Anmeldung", "Addresse", "Bezahlmethode", "Überprüfen"]
@@ -172,40 +192,48 @@ const Checkout = props => {
     return (
         <Container>
             <Row>
-                <div className={"col-xs-6"}>
+                <div className={"col-sm-5"}>
+                    <div style={{position: 'sticky', top: 12}}>
 
-                    <StepIndicator steps={steps} current={step}/>
+                        <StepIndicator steps={steps} current={step}/>
 
-                    {/*<p>Current Information</p>*/}
-                    {/*<ul>*/}
-                    {/*    <li><AddressView {...user.addresses.find(address => address.id === shippingAddress)} /></li>*/}
-                    {/*    <li><AddressView {...user.addresses.find(address => address.id === invoiceAddress)} /></li>*/}
-                    {/*    <li>{paymentMethod}</li>*/}
-                    {/*</ul>*/}
+                        {/*<p>Current Information</p>*/}
+                        {/*<ul>*/}
+                        {/*    <li><AddressView {...user.addresses.find(address => address.id === shippingAddress)} /></li>*/}
+                        {/*    <li><AddressView {...user.addresses.find(address => address.id === invoiceAddress)} /></li>*/}
+                        {/*    <li>{paymentMethod}</li>*/}
+                        {/*</ul>*/}
 
-                    {step === 0 &&
-                    <div>Anmeldung
-                        {user.logged_in ?
-                            <><p>Eingeloggt als {user.email}</p>
-                                <Button label={"Ausloggen"} onClick={event => dispatch({type: USER.LOGOUT.REQUEST})}/>
-                                <Button label={"Weiter zur Addresse"} onClick={() => changeStep(1)} primary
-                                        disabled={!user.logged_in}/>
-                            </>
-                            :
-                            <>
-                                <LoginForm/>
-                                <Button label={"Als Gast fortfahren"} onClick={() => changeStep(1)}/>
-                            </>
+                        {step === 0 &&
+                        <div>
+                            {user.logged_in ?
+                                <><p>Eingeloggt als {user.email}</p>
+                                    <Button label={"Ausloggen"}
+                                            onClick={event => dispatch({type: USER.LOGOUT.REQUEST})}/>
+                                    <Button label={"Weiter zur Addresse"} onClick={() => changeStep(1)} primary
+                                            rightAction
+                                            disabled={!user.logged_in}/>
+                                </>
+                                :
+                                <>
+                                    <LoginForm/>
+                                    <Button label={"Als Gast fortfahren"} onClick={() => changeStep(1)}/>
+                                </>
+                            }
+                        </div>
+
                         }
+                        {step === 1 && addressSection}
+                        {step === 2 && paymentSection}
+                        {step === 3 && checkSection}
                     </div>
-
-                    }
-                    {step === 1 && addressSection}
-                    {step === 2 && paymentSection}
-                    {step === 3 && checkSection}
                 </div>
-                <div className={"col-xs-6"}>
+                <div className={"col-sm-6 col-sm-offset-1"}>
+                    <h2>Warenkorb</h2>
                     <BasketListing/>
+                    <br />
+                    <br />
+                    <br />
                 </div>
             </Row>
 

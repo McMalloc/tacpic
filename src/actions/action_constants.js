@@ -21,11 +21,12 @@ export const VARIANTS   = action_constants('VARIANTS',   ['GET']); // get multip
 export const CATALOGUE  = action_constants('CATALOGUE',   ['SEARCH']);
 export const TAGS       = action_constants('TAGS',     ['GET', 'SEARCH', 'CREATE']);
 export const BRAILLE    = action_constants('BRAILLE',   ['TRANSLATE']);
-export const ORDER      = action_constants('ORDER',   ['QUOTE', 'CREATE', 'GET']);
-export const ADDRESS    = action_constants('ADDRESS',   ['GET', 'CREATE', 'UPDATE', 'REMOVE']);
+export const ORDER      = action_constants('ORDER',   ['QUOTE', 'CREATE', 'GET', 'INDEX']);
+export const ADDRESS    = action_constants('ADDRESS',   ['GET', 'CREATE', 'UPDATE', 'REMOVE']); // TODO rename GET to ADDRESS.INDEX
 
 export const CANVAS_OBJECT_ADDED = 'CANVAS_OBJECT_ADDED';
 export const CANVAS_OBJECT_REMOVED = 'CANVAS_OBJECT_REMOVED';
 export const CANVAS_OBJECT_MODIFIED = 'CANVAS_OBJECT_REMOVED';
 export const ITEM_ADDED_TO_BASKET = 'ITEM_ADDED_TO_BASKET';
 export const ITEM_REMOVED_FROM_BASKET = 'ITEM_REMOVED_FROM_BASKET';
+export const ORDER_RESET = 'ORDER_RESET';

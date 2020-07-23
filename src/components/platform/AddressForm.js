@@ -13,7 +13,7 @@ import {EWR, GERMAN_STATES} from "../../config/constants";
 
 const submitAddress = (dispatch, address) => {
     dispatch({
-        type: ADDRESS.CREATE.REQUEST,
+        type: address.id === null ? ADDRESS.CREATE.REQUEST : ADDRESS.UPDATE.REQUEST,
         payload: address
     })
 }
@@ -35,14 +35,15 @@ export const defaults = {
 
 const AddressForm = props => {
     const dispatch = useDispatch();
-    const [address, changeAddress] = useState({...props.initial, ...defaults});
+    const [address, changeAddress] = useState({...defaults, ...props.initial});
 
     const setState = event => {
         const updatedModel = {...address, [event.target.name]: event.target.value};
-        props.modelCallback(updatedModel);
-        console.log(updatedModel)
+        props.modelCallback && props.modelCallback(updatedModel);
         changeAddress(updatedModel);
     }
+
+    console.log(props.initial);
 
     const form = <>
         {/*// < id={props.id} style={{width: props.modal ? 600 : 'auto'}} className={"container"}>*/}
@@ -109,7 +110,7 @@ const AddressForm = props => {
             </div>
         </Row>
 
-        {!('is_invoice_address' in props.initial) &&
+        {('is_invoice_addr' in props.initial) &&
         <Row>
             <div className={"col-xs-12"}>
                 <Checkbox onChange={event => {
@@ -149,16 +150,11 @@ const AddressForm = props => {
                     }
                 }
             ]} title={"Adresse hinzufügen"}>
-                {form}
+                <form id={"address-edit-form"}>{form}</form>
             </Modal>
         )
     } else {
         return form
-        //     {form}
-        //     <div>
-        //         <Button primary onClick={() => props.submit(address)} label={"Adresse anlegen"} />
-        //     </div>
-        // </div>
     }
 };
 

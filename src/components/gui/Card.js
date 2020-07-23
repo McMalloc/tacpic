@@ -24,7 +24,6 @@ const Title = styled.div`
 
 const Description = styled.div`
  padding: ${props => props.theme.large_padding};
- background-color: ${props => props.theme.grey_6};
  display: flex;
  flex: 1 1 100%;
 `;
@@ -42,7 +41,6 @@ const Card = props => {
                 <Description>{t(props.description)}</Description>
             </Tile>
         </NavLink>
-
     )
 };
 

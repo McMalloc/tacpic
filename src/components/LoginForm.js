@@ -22,8 +22,8 @@ const Login = props => {
     const user = useSelector(state => state.user);
 
     // input states
-    const [uname, setUname] = useState("robi@bobi.de");
-    const [pwd, setPwd] = useState("12345678");
+    const [uname, setUname] = useState(null);
+    const [pwd, setPwd] = useState(null);
 
     // input validities
     const [emailValid, setEmailValid] = useState(false);
@@ -59,14 +59,14 @@ const Login = props => {
                 onChange={event => setPwd(event.target.value)}
                 name={'pwd'}/>
 
-            {/*{user.error !== null &&*/}
-            {/*<><Alert warning>{t("auth:" + user.error["field-error"][1])}</Alert><br/></>*/}
-            {/*}*/}
+            {user.error !== null &&
+            <><Alert warning>{t("auth:" + user.error["field-error"][1])}</Alert><br/></>
+            }
 
             {user.login_pending ?
                 <Icon icon={"cog fa-spin"}/>
             :
-                <div style={{textAlign: "center"}}>
+                <div className={'align-center'}>
                     {/*<input type={"submit"} value={"login"}/>*/}
                     <Button primary //disabled={!(emailValid && passwordValid)}
                             type={'submit'}>{t("general:login")}</Button>

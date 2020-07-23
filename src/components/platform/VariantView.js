@@ -129,30 +129,6 @@ const VariantView = props => {
                         </table>
                     </p>
 
-                    <p>
-                        <Radio onChange={setProduct} value={product} name={"graphic_only_or_both"} options={[
-                            {label: template(t(`catalogue:graphics_and_braille`))({amount: variant.braille_no_of_pages + variant.graphic_no_of_pages}), value: "graphic"},
-                            {label: template(t(`catalogue:graphics_only`))({amount: variant.graphic_no_of_pages}) + ` - ${((variant.quote - variant.quote_graphics_only) / 100).toFixed(2).replace('.', ',')} €)`, value: "graphic_nobraille"}]}>
-                        </Radio>
-                        <Numberinput
-                            // disabled={}
-                            inline
-                            onChange={event => {
-                                setQuantity(event.currentTarget.value)
-                            }}
-                            value={quantity}
-                            label={t(`catalogue:Stück`)}/>
-
-                        <Currency amount={(product === 'graphic' ? variant.quote : variant.quote_graphics_only) * quantity} />
-
-                        {quantity !== 1 &&
-                            <div>Einzelpreis: <Currency amount={(product === 'graphic' ? variant.quote : variant.quote_graphics_only)} /></div>
-                        }
-                        <div>{t("zzgl. Versand")}</div>
-
-                        <Button onClick={() => addToBasket(dispatch, variantId, quantity, product)} label={t("catalogue:In den Warenkorb")} large primary icon={"basket-arrow-down"}/>
-                    </p>
-
                     {!logged_in &&
                     <Alert info>
                         Bitte <NavLink to={'/login'}>logge dich ein</NavLink> oder <NavLink to={'/signup'}>erstelle ein
@@ -176,6 +152,7 @@ const VariantView = props => {
                             window.location = 'http://localhost:9292/variants/' + variantId + '/pdf';
                         }}>PDF herunterladen</Button>
 
+                        {props.variants.length < 2 &&
                         <Button className={'extra-margin'}
                                 disabled={!logged_in}
                                 fullWidth icon={'copy'}
@@ -186,12 +163,53 @@ const VariantView = props => {
                                         id: variant.id, mode: "new"
                                     })
                                 }}>Neue Variante aus dieser</Button>
+                        }
 
                         <Button fullWidth icon={'download'} onClick={() => {
-                            window.location = 'http://localhost:9292/variants/' + variantId + '/brf';
+                            window.location = `http://${window.location.hostname}:9292/variants/${variantId}/brf`;
                         }}>Brailletext herunterladen</Button>
 
                     </Toolbar>
+
+                    <hr />
+
+                    <p>
+                        <h3>Bestellen</h3>
+                        <Radio onChange={setProduct} value={product} name={"graphic_only_or_both"} options={[
+                            {label: template(t(`catalogue:graphics_and_braille`))({amount: variant.braille_no_of_pages + variant.graphic_no_of_pages}), value: "graphic"},
+                            {label: template(t(`catalogue:graphics_only`))({amount: variant.graphic_no_of_pages}) + ` - ${((variant.quote - variant.quote_graphics_only) / 100).toFixed(2).replace('.', ',')} €)`, value: "graphic_nobraille"}]}>
+                        </Radio>
+
+                        <br />
+
+                        <div style={{display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between'}}>
+                            <Numberinput
+                                // disabled={}
+                                inline noMargin
+                                onChange={event => {
+                                    setQuantity(event.currentTarget.value)
+                                }}
+                                value={quantity}
+                                label={t(`catalogue:Stück`)}/>
+
+                                <div>
+                                    <Currency amount={(product === 'graphic' ? variant.quote : variant.quote_graphics_only) * quantity} />
+
+                                    {quantity !== 1 &&
+                                    <small><br />Einzelpreis: <Currency amount={(product === 'graphic' ? variant.quote : variant.quote_graphics_only)} />
+                                    </small>
+                                    }
+                                    <small><br/>{t("zzgl. Versand")}</small>
+                                </div>
+
+
+                            <Button
+                                onClick={() => addToBasket(dispatch, variantId, quantity, product)}
+                                label={t("catalogue:In den Warenkorb")}
+                                large primary icon={"cart-plus"}/>
+                        </div>
+
+                    </p>
                 </div>
             </Details>
 

@@ -5,7 +5,7 @@ import {useTranslation} from "react-i18next";
 import styled from 'styled-components/macro';
 
 const Wrapper = styled.div`
-  padding: ${props => props.theme.base_padding};
+  //padding: ${props => props.theme.base_padding};
 `;
 
 const AddressView = props => {
@@ -14,7 +14,7 @@ const AddressView = props => {
     return (<Wrapper>
         {props.first_name} {props.last_name} <br />
         {props.street} {props.house_number} <br />
-        {props.zip} {props.city} ({t(props.state)}) <br />
+        {props.zip} {props.city} {props.state && <span>({t(props.state)})</span>} <br />
         {t(props.country)}
     </Wrapper>)
 }

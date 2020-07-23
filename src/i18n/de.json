@@ -12,7 +12,8 @@
     "select_medium": "Unterschiedliche Medien bieten unterschiedliche Möglichkeiten. Der Editor wird für bestimmte Produktionstechniken Funktionen einschränken, sodass Sie keine Vorlage gestalten, die z.B. mit Schwellpapier gar nicht produzierbar ist."
   },
   "auth": {
-    "invalid login, already an account with this login": "Es gibt bereits ein Konto unter dieser E-Mail-Adresse."
+    "invalid login, already an account with this login": "Es gibt bereits ein Konto unter dieser E-Mail-Adresse.",
+    "no matching login": "Kein Benutzerkonto mit dieser E-Mail-Adresse / Passwort bekannt."
   },
   "general": {
     "username": "Nutzername",
@@ -35,14 +36,17 @@
     "my_lists-description": "Private Grafiken und Favouritenlisten",
     "my_sub": "Mein Abonnement",
     "my_sub-description": "Abonnement abschließen, kündigen oder ändern",
-    "my_addresses": "Meine Adressen",
-    "my_addresses-description": "Liefer- und Rechnungsadressen anlegen, ändern oder entfernen",
+    "addresses": "Meine Adressen",
+    "addresses-description": "Liefer- und Rechnungsadressen anlegen, ändern oder entfernen",
     "my_account": "Mein Konto",
     "my_account-description": "Kontosicherheit, Konto deaktivieren, Kontaktdaten",
-    "my_orders": "Meine Bestellungen",
-    "my_orders-description": "Bestellstatus und nachverfolgen, Bestellverlauf und Rechnungen",
-    "my_payment_options": "Bezahlmöglichkeiten",
-    "my_payment_options-description": "Lastschrift oder Paypal einrichten"
+    "orders": "Meine Bestellungen",
+    "orders-description": "Bestellstatus und nachverfolgen, Bestellverlauf und Rechnungen",
+    "order-status-0": "Offen",
+    "order-status-1": "Abgeschlossen",
+    "order-status-2": "Warte auf Bezahlung",
+    "payment_options": "Bezahlmöglichkeiten",
+    "payment_options-description": "Lastschrift oder Paypal einrichten"
   },
   "commerce": {
     "checkout": "Zahlungspflichtig bestellen",
@@ -51,6 +55,7 @@
     "add-to-list": "Auf die Liste",
     "transform-to-list": "In Liste umwandeln",
     "total": "Summe (<%=amount%> Artikel)",
+    "invoice": "Rechnung",
     "shipping": "zzgl. Versand"
   },
   "catalogue": {

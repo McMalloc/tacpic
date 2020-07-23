@@ -5,6 +5,7 @@
 @import 'styles/_tooltip.scss';
 @import 'styles/_tables.scss';
 @import 'styles/_elements.scss';
+@import 'styles/_helper.scss';
 
 // resets not covered by normalized
 //TODO: flexbox vendor-prefixen für IE10 https://caniuse.com/#feat=flexbox
@@ -50,6 +51,6 @@ a.no-styled-link {
   }
 }
 
-label {
-  //cursor: inherit!important; // need so user agent stylesheet does not override styles for interactive elements
+#modal-portal-target {
+  z-index: 9000;
 }

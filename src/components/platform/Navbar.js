@@ -82,7 +82,12 @@ const Navbar = props => {
     return (
         <Wrapper theme={theme}>
             <NavbarItemGroups>
-                <span style={{color: "white", backgroundColor: "red", borderRadius: 3, padding: 3}}> &bull; ALPHA &bull; </span>
+                <span style={{
+                    color: "white",
+                    backgroundColor: "red",
+                    borderRadius: 3,
+                    padding: 3
+                }}> &bull; ALPHA &bull; </span>
                 <NavLink style={{height: 30}} to={"/"}><Logo src={"/images/logo.svg"}/></NavLink>
                 {props.items.map((item, idx) => {
                     return (
@@ -93,10 +98,13 @@ const Navbar = props => {
                 })}
             </NavbarItemGroups>
             <NavbarItemGroups>
+                {basket.length > 0 &&
                 <NavbarItem theme={theme} to={'/basket'}>
                     <Icon icon={"shopping-cart"}/>&nbsp;
                     {template(t("general:Warenkorb"))({quantity: basket.length})}
                 </NavbarItem>
+                }
+
                 {user.logged_in ?
                     <>
                         &ensp;<span style={{borderLeft: "1px solid lightgrey"}}>&ensp;</span>
@@ -107,7 +115,7 @@ const Navbar = props => {
                     </>
                     :
                     <>
-                        <NavLink to={'/signup?redirect=' + location.pathname}>
+                        <NavLink className={"no-styled-link"} to={'/signup?redirect=' + location.pathname}>
                             <Button primary>
                                 {t("general:signup")}
                             </Button>

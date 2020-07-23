@@ -3,7 +3,6 @@ import React, {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {NavLink} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {USER} from "../../actions/action_constants";
 
 const Wrapper = styled.footer`
   display: flex;
@@ -11,7 +10,9 @@ const Wrapper = styled.footer`
   background-color: ${props => props.theme.brand_secondary};
   color: ${props => props.theme.background};
   justify-content: center;
+  height: 36px;
   position: relative;
+  align-items: center;
 `;
 
 const Version = styled.div`
@@ -19,7 +20,7 @@ const Version = styled.div`
   opacity: 0.8;
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
   font-size: 90%;
-  align-self: center;
+  //align-self: center;
   right: 10px;
   background-color: red;
   text-shadow: 1px 1px 0 black;

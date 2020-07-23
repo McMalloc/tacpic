@@ -60,7 +60,7 @@ const ModalClose = styled.div`
 const ModalContent = styled.div`
   padding: ${props => props.noPadding ? 0 : props.theme.large_padding};
   flex: 1 1 auto;
-  display: flex;
+  //display: flex;
   overflow: hidden; 
 `;
 
@@ -123,7 +123,6 @@ class Modal extends Component {
                         })}</ModalFooter>
                     }
                 </Window>
-                <div id={"modal-portal-target"}></div>
             </Backdrop>,
             // A DOM element
             this.el,

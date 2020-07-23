@@ -29,7 +29,8 @@ const Label = props => {
     const theme = useTheme();
     const { t } = useTranslation();
     return (
-        <Main theme={theme} data-tip={t(props.tip)} required={props.required} {...props}>{t(props.label)} {props.required && <span aria-hidden={true}>*</span>}
+        <Main theme={theme} data-tip={t(props.tip)} required={props.required} {...props}>
+            {t(props.label)}&nbsp;{props.required && <span aria-hidden={true}>*</span>}
             {props.sublabel &&
             <><br/><Sub>{t(props.sublabel)}</Sub></>
             }

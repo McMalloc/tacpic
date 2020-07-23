@@ -8,11 +8,10 @@ import Addresses from "./Addresses";
 import {Footer} from "./Footer";
 import {useLocation} from "react-router";
 import {Container, Row} from "../gui/Grid";
+import Orders from "./account/Orders";
 
 const Account = props => {
-    const user = useSelector(
-        state => state.user
-    );
+    const user = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     // if (!user.logged_in) {
@@ -20,7 +19,6 @@ const Account = props => {
     // }
 
     let location = useLocation();
-    console.log(location);
 
     const menues = [
         // {key: "my_lists", icon: "list"},
@@ -32,7 +30,7 @@ const Account = props => {
     ];
 
     const home = <>
-        <div className={"row"}>
+        <Row>
             {menues.map(menu => {
                 return (
                     <div className={"col-md-4 col-lg-3 col-sm-6 col-xs-12 extra-margin double"}>
@@ -44,14 +42,14 @@ const Account = props => {
 
                 )
             })}
-        </div>
-        <div className={"row"}>
+        </Row>
+        <Row>
             <div className={"col-sm-12"} style={{textAlign: "center"}}>
                 <Button onClick={event => dispatch({type: USER.LOGOUT.REQUEST})}>
                     Ausloggen
                 </Button>
             </div>
-        </div>
+        </Row>
     </>;
 
     return (
@@ -63,17 +61,17 @@ const Account = props => {
                 <Container>
                     <Row>
                         <div className={"col-md-12"}>
-                            <h1>Mein Konto</h1>
+                            <h1>Persönlicher Bereich</h1>
                         </div>
                     </Row>
 
-                    <Row>
+                    {/*<Row>*/}
                         <Switch>
                             <Route exact path="/account" render={() => home}/>
-                            <Route path="/account/orders" render={() => <span>hii</span>}/>
+                            <Route path="/account/orders" component={Orders}/>
                             <Route path="/account/addresses" component={Addresses}/>
                         </Switch>
-                    </Row>
+                    {/*</Row>*/}
                 </Container>
             }
         </>

@@ -73,6 +73,11 @@ const Input = styled.input`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
+  margin-bottom: ${props=>props.padded ? props.theme.large_padding : 0};
+  
+  &:last-child {
+    margin-bottom: inherit;
+  }  
   //height: 26px;
 `;
 
@@ -83,7 +88,7 @@ const Radio = props => {
         <>
             {props.options && props.options.map((option, index) => {
                 return (
-                    <Wrapper data-active={option.value === props.value} key={index}>
+                    <Wrapper data-active={option.value === props.value} padded={props.padded} key={index}>
                         <Input
                             onChange={event => props.onChange(event.target.value)}
                             name={props.name}

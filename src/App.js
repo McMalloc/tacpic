@@ -15,6 +15,7 @@ import Account from "./components/platform/Account";
 import Basket from "./components/platform/Basket";
 import Category from "./components/editor/widgets/Category";
 import Checkout from "./components/platform/Checkout";
+import {OrderCompleted} from "./components/platform/OrderCompleted";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -98,6 +99,7 @@ const App = () => {
                                 <Route path="/account" component={Account}/>
                                 <Route path="/basket" component={Basket}/>
                                 <Route path="/checkout" component={Checkout}/>
+                                <Route path="/order-completed" component={OrderCompleted}/>
                                 <Route path="/catalogue" component={Catalogue}/>
                                 <Route path="/signup" component={SignupForm}/>
                                 {/*<Route path="/catalogue" render={() => <Catalogue private={true}/>}/>*/}
@@ -112,6 +114,8 @@ const App = () => {
                         </ErrorBoundary>
                 </ScrollContent>
                 <Footer />
+
+                <div id="modal-portal-target"></div>
             </Wrapper>
     );
 };
