@@ -22,7 +22,7 @@ const Login = props => {
     }
 
     return (
-        <div className={"container"}>
+        <>
             <div className={"row extra-margin"}>
                 <h1 className={layout}>{t("general:login")}</h1>
             </div>
@@ -39,7 +39,7 @@ const Login = props => {
                     </div>
                 </>
             </div>
-        </div>
+        </>
 
     );
 };

@@ -41,7 +41,7 @@ const addToBasket = (dispatch, variantId, quantity, product, index = null) => {
 const Details = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  //justify-content: space-between;
 `;
 
 const VariantView = props => {
@@ -183,6 +183,7 @@ const VariantView = props => {
                         <br />
 
                         <div style={{display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between'}}>
+                        {/*<div style={{display: 'flex'}}>*/}
                             <Numberinput
                                 // disabled={}
                                 inline noMargin

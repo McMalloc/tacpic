@@ -7,7 +7,7 @@ import {
     variantCreateSaga
 } from "./variant_saga";
 import {openFileWatcher} from "./file_saga";
-import {CATALOGUE, TAGS, GRAPHIC, USER, VARIANT, VERSION, ORDER, VARIANTS, ADDRESS} from "../actions/action_constants";
+import {CATALOGUE, TAGS, GRAPHIC, USER, VARIANT, VERSION, ORDER, VARIANTS, ADDRESS, APP} from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {
     searchChangeWatcher,
@@ -52,6 +52,9 @@ export default function* root() {
         call(createSaga(ADDRESS.REMOVE, 'post', 'users/addresses/inactivate/:id', takeLatest, true, id, id)),
         call(createSaga(ORDER.CREATE, 'post', 'orders', takeLatest, true, id, id, ['catalogue', 'basket'])),
         call(createSaga(ORDER.INDEX, 'get', 'orders', takeLatest, true, id, id)),
+
+        call(createSaga(APP.VERSION, 'get', 'FRONTEND_VERSION.txt', takeLatest, false, id, response=>"FRONTEND:" + response)),
+        call(createSaga(APP.VERSION, 'get', 'BACKEND_VERSION.txt', takeLatest, false, id, response=>"BACKEND:" + response)),
 
         call(addressRemoveSaga),
 

@@ -54,7 +54,7 @@ const Catalogue = props => {
     }, []);
 
     return (
-        <div className={"container container-fluid"}>
+        <>
             <Row>
                 <div className={"col-xs-10 col-xs-offset-2"}>
                     <h1>Katalog</h1>
@@ -78,6 +78,7 @@ const Catalogue = props => {
                                           checked={catalogue.filterFormat.includes('a3')}
                                           label={'DIN A3'}/>
                     </div>
+                    <br />
                     <div>
                         <strong>Schriftsystem</strong>
                                 <Checkbox onChange={() => toggleSystem(dispatch, 'de-de-g0.utb')}
@@ -93,6 +94,7 @@ const Catalogue = props => {
                                           checked={catalogue.filterSystem.includes('de-de-g2.ctb')}
                                           label={'Kurzschrift'}/>
                     </div>
+                    <br />
 
                     <TagList/>
                 </div>
@@ -101,7 +103,7 @@ const Catalogue = props => {
                 </div>
             </Row>
 
-        </div>
+        </>
     )
 };
 

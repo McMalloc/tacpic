@@ -8,9 +8,9 @@ import {useHistory} from "react-router";
 import CenterWrapper from "../gui/_CenterWrapper";
 
 const Form = styled.div`
-  width: 500px;
+  //width: 500px;
   box-sizing: border-box;
-  max-width: 100%;
+  //max-width: 100%;
   padding: ${props=>props.theme.large_padding};
 `;
 
@@ -18,8 +18,7 @@ const BigLogo = styled.img`
   width: 300px;
 `;
 
-// const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4";
-
+const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 vertical-center-wrapper align-center";
 
 const Landing = () => {
     const t = useTranslation().t;
@@ -28,14 +27,14 @@ const Landing = () => {
     const history = useHistory();
 
     return (
-        <CenterWrapper>
+        <div className={layout}>
             <Form>
                 <div>
                     <BigLogo src={"/images/logo.svg"} alt={"tapic Logo"} />
                 </div>
 
                 <Searchbar/>
-<br /><hr /><br />
+<br /><br /><br />
                 <div style={{marginBottom: "50%"}}>
                     <Button onClick={event => {
                         history.push("/catalogue");
@@ -48,7 +47,7 @@ const Landing = () => {
             </Form>
 
 
-        </CenterWrapper>
+        </div>
     );
 };
 

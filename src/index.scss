@@ -6,6 +6,7 @@
 @import 'styles/_tables.scss';
 @import 'styles/_elements.scss';
 @import 'styles/_helper.scss';
+@import 'styles/_layout.scss';
 
 // resets not covered by normalized
 //TODO: flexbox vendor-prefixen für IE10 https://caniuse.com/#feat=flexbox
@@ -40,15 +41,6 @@ fieldset {
 a.no-styled-link {
   text-decoration: none;
   color: inherit;
-}
-
-.extra-margin {
-  &:not(:last-child) {
-    margin-bottom: 12px;
-  }
-  &.double {
-    margin-bottom: 24px;
-  }
 }
 
 #modal-portal-target {

@@ -29,7 +29,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   position: relative;
   flex: 1 1 auto;
-  max-height: 100%;
+  height: 100%;
   background-color: ${props => props.theme.brand_secondary};
 `;
 

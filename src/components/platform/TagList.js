@@ -17,13 +17,13 @@ const TagList = props => {
     const [input, setInput] = useState({});
 
     if (!tags) {
-        return <p>Schlagworte werden geladen</p>;
+        return <p>{t('Schlagworte werden geladen.')}</p>;
     }
 
-    if (tags.length === 0) return <p>Keine Schlagworte vorhanden.</p>;
+    if (tags.length === 0) return <em>Keine Schlagworte vorhanden.</em>;
 
     let groupedTags = groupBy(tags, 'taxonomy_id');
-    const named_taxonomies = [1]; // most important taxonomies
+    const named_taxonomies = []; // most important taxonomies
     const misc_taxonomies = difference(
         Object.keys(groupedTags).map(id => parseInt(id)),
         named_taxonomies);
@@ -41,22 +41,17 @@ const TagList = props => {
                 return (
                     <div key={taxonomy_id}>
                         <strong>{t(`catalogue-taxonomy-${taxonomy_id}`)}</strong>
-                        <ul style={{paddingLeft: 0}}>
-                            {groupedTags[taxonomy_id] && groupedTags[taxonomy_id].map(tag => {
-                                return <Tag key={tag.tag_id} {...tag}/>
-                            })}
-                        </ul>
+                        {groupedTags[taxonomy_id] && groupedTags[taxonomy_id].map(tag => {
+                            return <Tag key={tag.tag_id} {...tag}/>
+                        })}
                     </div>
                 )
             })}
-
-            <strong>misc</strong>
-            <ul style={{paddingLeft: 0}}>
-                {misc.map(tag => {
-                        return <Tag key={tag.tag_id} {...tag}/>
-                    }
-                )}
-            </ul>
+            <strong>Schlagworte</strong>
+            {misc.map(tag => {
+                    return <Tag key={tag.tag_id} {...tag}/>
+                }
+            )}
         </>
     )
 };

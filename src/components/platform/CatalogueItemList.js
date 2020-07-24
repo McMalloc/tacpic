@@ -6,12 +6,36 @@ import styled from "styled-components";
 import {Button} from "../gui/Button";
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect} from "react-router-dom";
+import {Icon} from "../gui/_Icon";
+import {Alert} from "../gui/Alert";
 
 const FlexRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin: -6px;
 `;
+
+const AddButton = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  height: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-weight: bold;
+  text-shadow: 0 0 3px white;
+  background:url(
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAK0lEQVQYV2P8////f0ZGRkYGKADzYRwQDRIA0SgqwAIwbXAVUGMY0QVAqgGzDxf+fIja2gAAAABJRU5ErkJggg==
+   ) repeat;
+  border-radius: ${props => props.theme.border_radius};
+  border: 3px solid ${props => props.theme.grey_5};
+  
+  &:hover {
+    background-color: ${props => props.theme.background};
+  }
+`
 
 const handleNewGraphic = (dispatch, doRedirect) => {
     doRedirect(true);
@@ -43,22 +67,24 @@ const CatalogueItemList = props => {
     // TODO hier in der Componente Viewportbreite abfragen und davon abhängig,
     //  auf wieviele Spalten die Grafiken verteilt werden
 
+    if (!(props.graphics && props.graphics.length > 0)) return <Alert info>Keine Grafiken gefunden.</Alert>;
+
     return (
         <>
             <FlexRow>
-                {props.graphics && props.graphics.length > 0 ? props.graphics.map((graphic, index) => {
+                {props.graphics && props.graphics.length > 0 && props.graphics.map((graphic, index) => {
                         return (
                             <CatalogueItem key={index} {...graphic} filtered={filtered}
                                            url={`${url}/${graphic.id}/variant/${graphic.variants[0].id}`}/>
                         )
-                    }) :
-                    <p>Keine Grafiken gefunden.</p>
+                    })
                 }
-                <CatalogueItemWrapper style={{paddingTop: '48px'}}>
-                    <Button
-                        // style={{width: '100%', height: '80%'}}
-                        icon={"plus"} fullWidth primary
-                        onClick={() => handleNewGraphic(dispatch, doRedirect)}>Neue Grafik</Button>
+
+                <CatalogueItemWrapper>
+                    <AddButton onClick={() => handleNewGraphic(dispatch, doRedirect)}>
+                        <span><Icon icon={'plus'}/></span>
+                        <span>Neue Grafik</span>
+                    </AddButton>
                 </CatalogueItemWrapper>
 
             </FlexRow>

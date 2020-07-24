@@ -26,6 +26,7 @@ const Version = styled.div`
   text-shadow: 1px 1px 0 black;
   padding: 1px 3px;
   border-radius: 2px;
+  font-weight: bold;
   border: 1px solid white;
 `;
 
@@ -35,17 +36,9 @@ const Footer = props => {
     const user = useSelector(
         state => state.user
     );
-    // const [versions, setVersions] = useState(0);
-    useEffect(() => {
-        fetch("/FRONTEND_VERSION.txt").then(response => response.text()).then(data=> {
-            window.FRONTEND_VERSION = data;
-            // setVersions(Math.min(versions + 1, 2));
-        });
-        fetch("/BACKEND_VERSION.txt").then(response => response.text()).then(data=> {
-            window.BACKEND_VERSION = data;
-            // setVersions(Math.min(versions + 1, 2));
-        });
-    }, []);
+    const version = useSelector(
+        state => state.app.version
+    );
 
     return (
         <Wrapper theme={theme}>
@@ -55,7 +48,7 @@ const Footer = props => {
             &nbsp;
 
             <Version>
-                frontend: <strong>{window.FRONTEND_VERSION}</strong> | backend: <strong>{window.BACKEND_VERSION}</strong>
+                {version}
             </Version>
 
         </Wrapper>

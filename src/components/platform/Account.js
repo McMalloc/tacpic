@@ -13,13 +13,11 @@ import Orders from "./account/Orders";
 const Account = props => {
     const user = useSelector(state => state.user);
     const dispatch = useDispatch();
-
-    // if (!user.logged_in) {
-    //     return <Redirect push to="/login"/>;
-    // }
-
     let location = useLocation();
 
+    if (!user.logged_in) {
+        return <Redirect push to="/login"/>;
+    }
     const menues = [
         // {key: "my_lists", icon: "list"},
         // {key: "my_sub", icon: "retweet"},
@@ -58,7 +56,7 @@ const Account = props => {
                 // <Alert info>Nicht eingeloggt.</Alert>
                 null
                 :
-                <Container>
+                <>
                     <Row>
                         <div className={"col-md-12"}>
                             <h1>Persönlicher Bereich</h1>
@@ -72,7 +70,7 @@ const Account = props => {
                             <Route path="/account/addresses" component={Addresses}/>
                         </Switch>
                     {/*</Row>*/}
-                </Container>
+                </>
             }
         </>
     );

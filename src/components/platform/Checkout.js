@@ -4,7 +4,7 @@ import {Button} from "../gui/Button";
 import {useTranslation} from "react-i18next";
 import {template} from "lodash";
 import {ADDRESS, ORDER, USER, VARIANTS} from "../../actions/action_constants";
-import {Container, Row} from "../gui/Grid";
+import {Row} from "../gui/Grid";
 import {Alert} from "../gui/Alert";
 import Addresses from "./Addresses";
 import Basket from "./Basket";
@@ -190,7 +190,6 @@ const Checkout = props => {
     const steps = ["Anmeldung", "Addresse", "Bezahlmethode", "Überprüfen"]
 
     return (
-        <Container>
             <Row>
                 <div className={"col-sm-5"}>
                     <div style={{position: 'sticky', top: 12}}>
@@ -217,7 +216,7 @@ const Checkout = props => {
                                 :
                                 <>
                                     <LoginForm/>
-                                    <Button label={"Als Gast fortfahren"} onClick={() => changeStep(1)}/>
+                                    {/*<Button label={"Als Gast fortfahren"} onClick={() => changeStep(1)}/>*/}
                                 </>
                             }
                         </div>
@@ -236,8 +235,6 @@ const Checkout = props => {
                     <br />
                 </div>
             </Row>
-
-        </Container>
 
     );
 };

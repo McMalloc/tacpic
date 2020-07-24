@@ -1,21 +1,21 @@
 import React, {useEffect} from 'react';
 import Editor from './components/editor/Editor';
-import {BrowserRouter, Route, Link, Switch, history} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 import Login from "./components/Login";
 import {useTranslation} from 'react-i18next';
-import {Navbar, NavbarItem} from "./components/platform/Navbar";
+import {Navbar} from "./components/platform/Navbar";
 import Catalogue from "./components/platform/Catalogue";
 import {useDispatch, useSelector} from "react-redux";
-import {TAGS, USER} from "./actions/action_constants";
-import styled from "styled-components";
+import {USER, APP} from "./actions/action_constants";
+import styled from "styled-components/macro";
 import SignupForm from "./components/SignupForm";
 import {Footer} from "./components/platform/Footer";
 import Landing from "./components/platform/Landing";
 import Account from "./components/platform/Account";
 import Basket from "./components/platform/Basket";
-import Category from "./components/editor/widgets/Category";
 import Checkout from "./components/platform/Checkout";
 import {OrderCompleted} from "./components/platform/OrderCompleted";
+import {useHistory} from "react-router";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -67,18 +67,21 @@ const Blank = () => {
 
 const App = () => {
     const t = useTranslation().t;
-
-
     const dispatch = useDispatch();
-    // const history = useHistory();
+    const history = useHistory();
     useEffect(() => {
         if (localStorage.getItem('jwt') === null) return;
         dispatch({
             type: USER.VALIDATE.REQUEST
         });
+        dispatch({
+            type: APP.VERSION.REQUEST
+        })
 
         // let heidelpay = new window.heidelpay('s-pub-xxxxxxxxxx', {locale: 'de-DE'});
-    });
+    }, []);
+
+    console.log(history);
 
     const navbarItems = [
         {label: t("general:catalogue"), to: '/catalogue'},
@@ -90,7 +93,8 @@ const App = () => {
     return (
             <Wrapper>
                 <Navbar items={navbarItems}/>
-                <ScrollContent className="App">
+                <ScrollContent>
+                    <div className={"App" + (!/editor/.test(history.location.pathname) ? " padded-top container container-fluid" : "")}>
                         <ErrorBoundary>
                             <Switch>
                                 {/*Renders exclusivly*/}
@@ -112,6 +116,7 @@ const App = () => {
                                 <Route component={Blank}/>
                             </Switch>
                         </ErrorBoundary>
+                    </div>
                 </ScrollContent>
                 <Footer />
 

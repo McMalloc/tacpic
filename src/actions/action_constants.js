@@ -9,6 +9,7 @@ function action_constants(domain, methods) {
     return obj;
 }
 
+export const APP        = action_constants('APP',     ['VERSION']);
 export const USER       = action_constants('USER',     ['LOGIN', 'LOGOUT', 'CREATE', 'SAVE_LAYOUT', 'VALIDATE']);
 export const SEARCH     = action_constants('SEARCH',   ['QUERY']);
 export const PRODUCT    = action_constants('PRODUCT',  ['FETCH', 'GET']);
@@ -30,3 +31,4 @@ export const CANVAS_OBJECT_MODIFIED = 'CANVAS_OBJECT_REMOVED';
 export const ITEM_ADDED_TO_BASKET = 'ITEM_ADDED_TO_BASKET';
 export const ITEM_REMOVED_FROM_BASKET = 'ITEM_REMOVED_FROM_BASKET';
 export const ORDER_RESET = 'ORDER_RESET';
+export const RESET_USER_ERRORS = 'RESET_USER_ERRORS';

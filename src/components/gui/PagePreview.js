@@ -21,11 +21,7 @@ const Placeholder = styled.div`
   margin-right: -8px;
   box-shadow: ${props => props.first ? 'none' : '-2px 0px 4px rgba(0,0,0,0.3)'};
   text-align: center;
-  content: " ";
-  //color: inherit;
-  //&:last-child {
-  //  margin: 0;
-  //}
+  content: "_";
 `;
 
 const Title = styled.label`

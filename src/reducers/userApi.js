@@ -1,4 +1,4 @@
-import {ADDRESS, CLEAR_USER, ORDER, USER} from '../actions/action_constants';
+import {ADDRESS, CLEAR_USER, ORDER, RESET_USER_ERRORS, USER} from '../actions/action_constants';
 
 let initialState = {
     logged_in: false,
@@ -58,6 +58,8 @@ const userApi = (state = initialState, action) => {
         case USER.LOGOUT.REQUEST: return {...state};
         case USER.LOGOUT.SUCCESS:
             return {...state, logged_in: false, addresses: [], email: null, displayName: null, id: null};
+        case RESET_USER_ERRORS:
+            return {...state, error: null};
         case ADDRESS.GET.SUCCESS:
             return {...state,
                 addresses: action.data
