@@ -8,9 +8,6 @@ const buildParams = (paramObj) => {
     paramString += '?';
     for (const param in paramObj) {
         if (!paramObj.hasOwnProperty(param)) break;
-        //
-        // if (paramObj[param].length !== undefined && paramObj[param].length === 0) break;
-
         paramString += `${param}=${paramObj[param].toString()}&`
     }
 

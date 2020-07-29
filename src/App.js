@@ -16,6 +16,7 @@ import Basket from "./components/platform/Basket";
 import Checkout from "./components/platform/Checkout";
 import {OrderCompleted} from "./components/platform/OrderCompleted";
 import {useHistory} from "react-router";
+import {APP_TITLE} from "./env";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -77,6 +78,7 @@ const App = () => {
         dispatch({
             type: APP.VERSION.REQUEST
         })
+        document.title = APP_TITLE
 
         // let heidelpay = new window.heidelpay('s-pub-xxxxxxxxxx', {locale: 'de-DE'});
     }, []);
