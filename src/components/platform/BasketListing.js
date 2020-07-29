@@ -12,6 +12,7 @@ import {Link} from "react-router-dom";
 import styled from 'styled-components/macro';
 import Tile from "../gui/_Tile";
 import CenterWrapper from "../gui/_CenterWrapper";
+import {API_URL} from "../../env.json";
 // import {CSSTransition} from "react-transition-group";
 
 const updateBasket = (dispatch, variantId, quantity, product, index) => {
@@ -124,7 +125,7 @@ const BasketListing = () => {
                             <div className={'upper'}>
                                 <div className={'left'}>
                                     <img style={{height: '70px', width: 'auto'}}
-                                         src={`/thumbnails/${correspondingVariant.file_name}-THUMBNAIL-sm-p0.png`}/>
+                                         src={`${API_URL}/thumbnails/${correspondingVariant.file_name}-THUMBNAIL-sm-p0.png`}/>
                                 </div>
                                 <div className={'right'}>
                                     <Link

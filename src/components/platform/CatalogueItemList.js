@@ -26,6 +26,7 @@ const AddButton = styled.div`
   cursor: pointer;
   font-weight: bold;
   text-shadow: 0 0 3px white;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.35);
   background:url(
 data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAK0lEQVQYV2P8////f0ZGRkYGKADzYRwQDRIA0SgqwAIwbXAVUGMY0QVAqgGzDxf+fIja2gAAAABJRU5ErkJggg==
    ) repeat;

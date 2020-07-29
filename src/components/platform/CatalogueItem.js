@@ -2,6 +2,7 @@ import React from "react";
 import styled, {useTheme} from "styled-components";
 import {Link} from "react-router-dom";
 import Tile from "../gui/_Tile";
+import {API_URL} from "../../env.json"
 
 const Wrapper = styled.div`
   padding: 6px;
@@ -45,7 +46,7 @@ const Info = styled.div`
 export default props => {
     const theme = useTheme();
     const thumbnailURL =
-        `/thumbnails/${props.variants[0].file_name}-THUMBNAIL-sm-p0.png`
+        `${API_URL}/thumbnails/${props.variants[0].file_name}-THUMBNAIL-sm-p0.png`
     return (
         <Wrapper theme={theme}>
             <Link className={'no-styled-link'} to={props.url}>

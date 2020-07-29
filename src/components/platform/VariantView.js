@@ -18,6 +18,7 @@ import {Numberinput} from "../gui/Input";
 import {Currency} from "../gui/Currency";
 import {template} from "lodash";
 import * as moment from 'moment'
+import {API_URL} from "../../env.json";
 
 const mapFormat = (width, height) => {
     width = parseInt(width);
@@ -73,7 +74,7 @@ const VariantView = props => {
                             return <div style={{backgroundColor: 'white', padding: 6}}>{page.content}</div>
                         } else {
                             return <img
-                                src={`/thumbnails/${variant.file_name}-THUMBNAIL-xl-p${index}.png`}/>
+                                src={`${API_URL}/thumbnails/${variant.file_name}-THUMBNAIL-xl-p${index}.png`}/>
                         }
                     })}
                 </Carousel>

@@ -17,11 +17,6 @@ import {store} from "./store";
 import {standard} from "./styles/themes"
 import {BrowserRouter} from "react-router-dom";
 
-if (process.env.NODE_ENV !== 'production') {
-    // let axe = require('react-axe');
-    // axe(React, ReactDOM, 1000);
-}
-
 // bootstrapping the app
 ReactDOM.render(
     <Provider store={store}>

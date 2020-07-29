@@ -11,6 +11,7 @@ import {TagView} from "./Tag";
 import {Icon} from "../gui/_Icon";
 import {Button} from "../gui/Button";
 import Toolbar from "../gui/Toolbar";
+import {API_URL} from "../../env.json";
 
 const VariantPreviewStyled = styled.div`
   display: flex;
@@ -96,7 +97,7 @@ const VariantPreview = ({title, id, description, tags, document, file_name}) => 
     const thumbnailCandidate = document.pages.findIndex(page => !page.text)
     return (
         <VariantPreviewStyled {...theme} active={id === parseInt(selectedVariantId)}>
-            <img src={`http://localhost:9292/thumbnails/${file_name}-THUMBNAIL-xl-p${thumbnailCandidate}.png`}/>
+            <img src={`${API_URL}/thumbnails/${file_name}-THUMBNAIL-xl-p${thumbnailCandidate}.png`}/>
             {/*<VariantListingPreview bgUrl={`http://localhost:9292/static/thumbnails/thumbnail-${id}-sm.png`} />*/}
             <div className={'variant-info'}>
                 <strong>{title}</strong><br/>

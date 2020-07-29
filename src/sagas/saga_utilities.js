@@ -1,5 +1,5 @@
 import {call, put, select} from "redux-saga/effects";
-import axios from "axios";
+import {API_URL} from '../env'
 
 const buildParams = (paramObj) => {
     let paramString = '';
@@ -94,7 +94,7 @@ export default function createSaga(
                         if (jwt!== null) headers.Authorization = 'Bearer ' + jwt;
                     }
 
-                    return fetch('/' + replaceParam(endpoint, action.payload), {
+                    return fetch(API_URL + '/' + replaceParam(endpoint, action.payload), {
                         method: method,
                         headers,
                         body: method === 'post' ? JSON.stringify(transformRequest(action.payload)) : null // body data type must match "Content-Type" header
