@@ -2,6 +2,7 @@ import {put, takeLatest, select, call, debounce} from "redux-saga/effects";
 import axios from "axios";
 import {wrapAndChunk, wrapLines} from "../utility/wrapLines";
 import {chunk} from "lodash";
+import {API_URL} from "../env"
 
 export function* labelWriteWatcher() {
     yield takeLatest('OBJECT_PROP_CHANGED', function* (action) {
@@ -11,7 +12,7 @@ export function* labelWriteWatcher() {
                 const response = yield call(() => {
                     return axios({
                         method: 'POST',
-                        url: '/braille',
+                        url: API_URL + '/braille',
                         data: {
                             label: action.value,
                             system
@@ -39,7 +40,7 @@ export function* contentEditWatcher() {
             const response = yield call(() => {
                 return axios({
                     method: 'POST',
-                    url: '/braille',
+                    url: API_URL + '/braille',
                     data: {
                         label: action.content,
                         system
@@ -115,7 +116,7 @@ export function* systemChangeWatcher() {
                 const response = yield call(() => {
                     return axios({
                         method: 'POST',
-                        url: '/braille?bulk=true',
+                        url: API_URL + '/braille?bulk=true',
                         data: {
                             labels: labels,
                             system

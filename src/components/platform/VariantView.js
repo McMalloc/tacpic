@@ -150,7 +150,7 @@ const VariantView = props => {
                         }}>Bearbeiten</Button>
 
                         <Button fullWidth icon={'download'} onClick={() => {
-                            window.location = 'http://localhost:9292/variants/' + variantId + '/pdf';
+                            window.location = `${API_URL}/variants/${variantId}/pdf`;
                         }}>PDF herunterladen</Button>
 
                         {props.variants.length < 2 &&
@@ -167,7 +167,7 @@ const VariantView = props => {
                         }
 
                         <Button fullWidth icon={'download'} onClick={() => {
-                            window.location = `http://${window.location.hostname}:9292/variants/${variantId}/brf`;
+                            window.location = `${API_URL}/variants/${variantId}/brf`;
                         }}>Brailletext herunterladen</Button>
 
                     </Toolbar>
