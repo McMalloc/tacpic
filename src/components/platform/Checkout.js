@@ -50,17 +50,17 @@ const Checkout = props => {
 
     const [enterShippingAddress, setEnterShippingAddress] = useState(false); // new shipping address?
     const [validShippingAddress, setValidShippingAddress] = useState(false);
-    const [shippingAddress, setShippingAddress] = useState({});
+    const [shippingAddress, setShippingAddress] = useState({id: null});
 
     const showShippingAddressForm = shippingAddresses.length === 0 || enterShippingAddress;
 
     const [useInvoiceAddress, setUseInvoiceAddress] = useState(false);
     const [enterInvoiceAddress, setEnterInvoiceAddress] = useState(false); // new invoice address?
     const [validInvoiceAddress, setValidInvoiceAddress] = useState(false);
-    const [invoiceAddress, setInvoiceAddress] = useState({is_invoice_addr: true});
+    const [invoiceAddress, setInvoiceAddress] = useState({is_invoice_addr: true, id: null});
     const showInvoiceAddressForm = invoiceAddresses.length === 0 || enterInvoiceAddress;
 
-    const [paymentMethod, setPaymentMethod] = useState(null);
+    const [paymentMethod, setPaymentMethod] = useState('invoice');
 
     if (user.logged_in && step === 0 && !autoLoggedin) {
         changeStep(1);
@@ -136,19 +136,22 @@ const Checkout = props => {
             <br/>
             {back}
             <Button label={"Weiter zur Bezahlmethode"} onClick={() => changeStep(2)} primary rightAction
-                    disabled={!((shippingAddress.id !== null || validShippingAddress) && (!useInvoiceAddress || (invoiceAddress !== null || validInvoiceAddress)))}/>
+                    disabled={!((shippingAddress.id !== null || validShippingAddress)
+                        && (!useInvoiceAddress || (invoiceAddress.id !== null || validInvoiceAddress)))}/>
+                    <br />
         </section>
 
     const paymentSection = <section>
-        <Radio padded value={paymentMethod} onChange={setPaymentMethod} options={[
+        <Radio padded value={paymentMethod} name={'payment-method'} onChange={setPaymentMethod} options={[
             {
-                component: <div>Rechnung<br/><small>Sie erhalten zusammen mit der Ware eine Rechnung,
+                label: <div>Rechnung<br/><small>Sie erhalten zusammen mit der Ware eine Rechnung,
                     die Sie innerhalb von 14 Tagen begleichen.</small></div>, value: "invoice"
             },
             {
-                label: <div>PayPal<br/><small>Sie werden nach Abschluss des Bestellvorgangs zu PayPal
+                label: <div>PayPal (zur Zeit noch nicht verfügbar)<br/><small>Sie werden nach Abschluss des Bestellvorgangs zu PayPal
                     weitergeleitet. Sie benötigen ein PayPal-Benutzerkonto.</small></div>,
-                value: "paypal"
+                value: "paypal",
+                disabled: true
             }
         ]}/>
         <br/>

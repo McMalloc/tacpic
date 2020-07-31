@@ -56,7 +56,8 @@
     "transform-to-list": "In Liste umwandeln",
     "total": "Summe (<%=amount%> Artikel)",
     "invoice": "Rechnung",
-    "shipping": "zzgl. Versand"
+    "shipping": "zzgl. Versand",
+    "postage_reduced": "Verpackung und Versand"
   },
   "catalogue": {
     "search": "Suchen",

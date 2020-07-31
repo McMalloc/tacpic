@@ -19,6 +19,7 @@ import {
 import {contentEditWatcher, labelWriteWatcher, layoutEditWatcher, systemChangeWatcher} from "./label_translate_saga";
 import {renderWatcher} from "./render_saga";
 import {addressRemoveSaga} from "./address_saga";
+import {basketChangeSaga} from "./basket_saga";
 
 export const id = args => args;
 
@@ -57,6 +58,7 @@ export default function* root() {
         call(createSaga(APP.VERSION, 'get', 'BACKEND_VERSION.txt', takeLatest, false, id, response=>"BACKEND:" + response)),
 
         call(addressRemoveSaga),
+        call(basketChangeSaga),
 
         call(variantGetSaga),
         call(openFileWatcher),

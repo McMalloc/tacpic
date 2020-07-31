@@ -117,7 +117,7 @@ const initialCatalogue = {
     quote: {
         items: []
     }, // quote is the basket with added prices and packaging and postage items
-    basket: []
+    basket: JSON.parse(localStorage.getItem("basket")) || []
 };
 
 const composeEnhancers =

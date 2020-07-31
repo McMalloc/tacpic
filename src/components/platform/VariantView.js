@@ -166,6 +166,7 @@ const VariantView = props => {
                                 }}>Neue Variante aus dieser</Button>
                         }
 
+
                         <Button fullWidth icon={'download'} onClick={() => {
                             window.location = `${API_URL}/variants/${variantId}/brf`;
                         }}>Brailletext herunterladen</Button>

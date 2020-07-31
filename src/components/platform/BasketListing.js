@@ -171,19 +171,19 @@ const BasketListing = () => {
                         amount={quote.items.reduce((acc, current) => acc + current.gross_price * current.quantity, 0)}/>
                     </PriceCell>
                 </MetaItemRow>
+                {/*<MetaItemRow>*/}
+
+                {/*    <td>{quote.packaging_item.product_id}</td>*/}
+                {/*    <PriceCell><Currency amount={quote.packaging_item.gross_price}/></PriceCell>*/}
+                {/*</MetaItemRow>*/}
                 <MetaItemRow>
 
-                    <td>{quote.packaging_item.product_id}</td>
-                    <PriceCell><Currency amount={quote.packaging_item.gross_price}/></PriceCell>
-                </MetaItemRow>
-                <MetaItemRow>
-
-                    <td>{quote.postage_item.product_id}</td>
+                    <td>{t('commerce:' + quote.postage_item.product_id)}</td>
                     <PriceCell><Currency amount={quote.postage_item.gross_price}/></PriceCell>
                 </MetaItemRow>
                 <MetaItemRow>
 
-                    <td>7% Mehrwertsteuer</td>
+                    <td>{t('inkl. 7% Mehrwertsteuer')}</td>
                     <PriceCell><Currency amount={quote.gross_total - quote.net_total}/></PriceCell>
                 </MetaItemRow>
                 <MetaItemRow>

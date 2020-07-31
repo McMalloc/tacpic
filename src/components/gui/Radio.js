@@ -75,6 +75,17 @@ const Wrapper = styled.div`
   flex-direction: row;
   margin-bottom: ${props=>props.padded ? props.theme.large_padding : 0};
   
+  &.disabled-option {
+    color: ${props => props.theme.grey_3};
+    
+    label {
+      cursor: inherit;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+  
   &:last-child {
     margin-bottom: inherit;
   }  
@@ -88,10 +99,11 @@ const Radio = props => {
         <>
             {props.options && props.options.map((option, index) => {
                 return (
-                    <Wrapper data-active={option.value === props.value} padded={props.padded} key={index}>
+                    <Wrapper className={option.disabled ? 'disabled-option' : ''} data-active={option.value === props.value} padded={props.padded} key={index}>
                         <Input
-                            onChange={event => props.onChange(event.target.value)}
+                            onChange={event => !option.disabled && props.onChange(event.target.value)}
                             name={props.name}
+                            disabled={option.disabled}
                             id={props.name + "-" + option.value}
                             checked={option.value === props.value}
                             value={option.value}
