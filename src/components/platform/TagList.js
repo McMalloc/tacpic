@@ -23,9 +23,10 @@ const TagList = props => {
     if (tags.length === 0) return <em>Keine Schlagworte vorhanden.</em>;
 
     let groupedTags = groupBy(tags, 'taxonomy_id');
+
     const named_taxonomies = []; // most important taxonomies
     const misc_taxonomies = difference(
-        Object.keys(groupedTags).map(id => parseInt(id)),
+        Object.keys(groupedTags).map(id => id),
         named_taxonomies);
 
     let misc = [];

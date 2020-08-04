@@ -83,7 +83,7 @@ const VariantView = props => {
                 <div>
                     <h2>{variant.title}</h2>
                     <p>{variant.description}</p>
-                    <p><small>Erstellt am {moment(variant.created_at).format("DD.MM.yyyy, hh:mm")}</small></p>
+                    <p><small>Erstellt am {moment(variant.created_at).format("DD.MM.YYYY, HH:mm")} Uhr</small></p>
                 </div>
                 <div>
                     <p>

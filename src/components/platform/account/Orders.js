@@ -33,7 +33,6 @@ const Orders = () => {
                 <td></td>
                 </thead>
                 {orders.map(order => {
-                    console.log(moment(order.created_at));
                     return <tr>
                         <td>
                             {moment(order.created_at).format("DD.MM.yyyy")}

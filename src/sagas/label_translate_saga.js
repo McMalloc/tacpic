@@ -62,7 +62,6 @@ export function* contentEditWatcher() {
 
 export function* layoutEditWatcher() {
     yield takeLatest('CHANGE_BRAILLE_PAGE_PROPERTY', function* (action) {
-        console.log("CHANGE_BRAILLE_PAGE_PROPERTY");
         try {
             let layout = yield select(state => state.editor.file.braillePages);
             let pages = yield select(state => state.editor.file.pages);
@@ -88,7 +87,6 @@ export function* layoutEditWatcher() {
 export function* systemChangeWatcher() {
     yield takeLatest('CHANGE_FILE_PROPERTY', function* (action) {
         // TODO auch Brailleseiten neu übersetzen
-        console.log(action);
         if (action.key === 'system') {
             try {
                 let system = action.value;

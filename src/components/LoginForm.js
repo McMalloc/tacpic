@@ -31,7 +31,6 @@ const Login = props => {
 
     return (
         <form className={layout} onSubmit={(event) => {
-            console.log("submit");
             event.preventDefault();
             dispatch({
                 // emailValid && passwordValid && dispatch({

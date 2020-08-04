@@ -22,8 +22,8 @@ export const TagView = styled.span`
   font-size: 14px;
   
   &::before {
-    font-family: 'Font Awesome 5 Free';
-    content: "\uf02b";
+    font-family: 'Font Awesome 5 Free', FontAwesome;
+    content: "\\f02b";
     padding-right: 3px;
   }
 `;

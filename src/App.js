@@ -83,8 +83,6 @@ const App = () => {
         // let heidelpay = new window.heidelpay('s-pub-xxxxxxxxxx', {locale: 'de-DE'});
     }, []);
 
-    console.log(history);
-
     const navbarItems = [
         {label: t("general:catalogue"), to: '/catalogue'},
         {label: 'Editor', to: '/editor/new'},
