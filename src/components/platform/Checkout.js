@@ -30,8 +30,9 @@ const placeOrder = (dispatch, shippingAddress, invoiceAddress, paymentMethod, id
 const Checkout = props => {
     const user = useSelector(state => state.user);
     const history = useHistory();
-    const invoiceAddresses = user.addresses.filter(address => address.is_invoice_addr);
-    const shippingAddresses = user.addresses.filter(address => !address.is_invoice_addr);
+    // const invoiceAddresses = user.addresses.filter(address => address.is_invoice_addr);
+    // const shippingAddresses = user.addresses.filter(address => !address.is_invoice_addr);
+    const addresses = user.addresses;
     const idempotencyKey = uuidv4();
     const orderState = useSelector(state => state.catalogue.order);
 
@@ -52,13 +53,13 @@ const Checkout = props => {
     const [validShippingAddress, setValidShippingAddress] = useState(false);
     const [shippingAddress, setShippingAddress] = useState({id: null});
 
-    const showShippingAddressForm = shippingAddresses.length === 0 || enterShippingAddress;
+    const showShippingAddressForm = addresses.length === 0 || enterShippingAddress;
 
     const [useInvoiceAddress, setUseInvoiceAddress] = useState(false);
     const [enterInvoiceAddress, setEnterInvoiceAddress] = useState(false); // new invoice address?
     const [validInvoiceAddress, setValidInvoiceAddress] = useState(false);
     const [invoiceAddress, setInvoiceAddress] = useState({is_invoice_addr: true, id: null});
-    const showInvoiceAddressForm = invoiceAddresses.length === 0 || enterInvoiceAddress;
+    const showInvoiceAddressForm = enterInvoiceAddress;
 
     const [paymentMethod, setPaymentMethod] = useState('invoice');
 
@@ -83,14 +84,14 @@ const Checkout = props => {
             {!showShippingAddressForm &&
             <Button label={"Neue Addresse"} onClick={() => setEnterShippingAddress(true)}/>}
 
-            {shippingAddresses.length > 0 && <>
-                <h3>Hinterlegte Lieferadressen</h3>
+            {addresses.length > 0 && <>
+                <h3>Hinterlegte Adressen</h3>
                 <Radio name={"checkout-shipping-address-radio"} onChange={value => {
                     setEnterShippingAddress(false);
                     setShippingAddress({...shippingAddress, id: parseInt(value)})
                 }}
                        value={shippingAddress.id}
-                       options={shippingAddresses.map(address => {
+                       options={addresses.map(address => {
                            return {
                                component: <AddressView {...address} />,
                                value: address.id
@@ -116,15 +117,14 @@ const Checkout = props => {
                 {!showInvoiceAddressForm &&
                 <Button label={"Neue Rechnungsaddresse"} onClick={() => setEnterInvoiceAddress(true)}/>}
 
-                {invoiceAddresses.length > 0 && <>
-                    <h3>Hinterlegte Rechnungsadressen</h3>
+                {addresses.length > 0 && <>
                     <Radio name={"checkout-invoice-address-radio"}
                            onChange={value => {
                                setEnterInvoiceAddress(false);
                                setInvoiceAddress({...invoiceAddress, id: parseInt(value)})
                            }}
                            value={invoiceAddress.id}
-                           options={invoiceAddresses.map(address => {
+                           options={addresses.map(address => {
                                return {
                                    component: <AddressView {...address} />,
                                    value: address.id

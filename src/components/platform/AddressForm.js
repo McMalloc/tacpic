@@ -38,12 +38,11 @@ const AddressForm = props => {
     const [address, changeAddress] = useState({...defaults, ...props.initial});
 
     const setState = event => {
-        const updatedModel = {...address, [event.target.name]: event.target.value};
+        const updatedModel = {...address, [event.target.name]: event.target.value, id: null};
+        console.dir(updatedModel);
         props.modelCallback && props.modelCallback(updatedModel);
         changeAddress(updatedModel);
     }
-
-    console.log(props.initial);
 
     const form = <>
         {/*// < id={props.id} style={{width: props.modal ? 600 : 'auto'}} className={"container"}>*/}
@@ -112,23 +111,23 @@ const AddressForm = props => {
             </div>
         </Row>
 
-        {('is_invoice_addr' in props.initial) &&
-        <Row>
-            <div className={"col-xs-12"}>
-                <Checkbox onChange={event => {
-                    changeAddress({
-                        ...address,
-                        is_invoice_addr: event.target.checked,
-                        country: !event.target.checked ? "DEU" : address.country
-                    });
-                }}
-                          value={address.is_invoice_addr}
-                          name={"is_invoice_addr"}
-                          label={"Es handelt sich ausschließlich um eine Rechnungsadresse (d.h. sie taucht nicht in der Auswahl für die Lieferadresse auf)."}/>
+        {/*{('is_invoice_addr' in props.initial) &&*/}
+        {/*<Row>*/}
+        {/*    <div className={"col-xs-12"}>*/}
+        {/*        <Checkbox onChange={event => {*/}
+        {/*            changeAddress({*/}
+        {/*                ...address,*/}
+        {/*                is_invoice_addr: event.target.checked,*/}
+        {/*                country: !event.target.checked ? "DEU" : address.country*/}
+        {/*            });*/}
+        {/*        }}*/}
+        {/*                  value={address.is_invoice_addr}*/}
+        {/*                  name={"is_invoice_addr"}*/}
+        {/*                  label={"Es handelt sich ausschließlich um eine Rechnungsadresse (d.h. sie taucht nicht in der Auswahl für die Lieferadresse auf)."}/>*/}
 
-            </div>
-        </Row>
-        }
+        {/*    </div>*/}
+        {/*</Row>*/}
+        {/*}*/}
         </>
     {/*</form>*/}
 
