@@ -54,8 +54,8 @@ export default function* root() {
         call(createSaga(ORDER.CREATE, 'post', 'orders', takeLatest, true, id, id, ['catalogue', 'basket'])),
         call(createSaga(ORDER.INDEX, 'get', 'orders', takeLatest, true, id, id)),
 
-        call(createSaga(APP.VERSION, 'get', 'FRONTEND_VERSION.txt', takeLatest, false, id, response=>"FRONTEND:" + response)),
-        call(createSaga(APP.VERSION, 'get', 'BACKEND_VERSION.txt', takeLatest, false, id, response=>"BACKEND:" + response)),
+        call(createSaga(APP.FRONTEND, 'get', 'FRONTEND.json', takeLatest, false, id, id)),
+        call(createSaga(APP.BACKEND, 'get', 'BACKEND.json', takeLatest, false, id, id)),
 
         call(addressRemoveSaga),
         call(basketChangeSaga),

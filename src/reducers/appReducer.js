@@ -10,6 +10,14 @@ const appReducer = (state = initialState, action) => {
             return {
                 version: state.version + action.data
             }
+        case APP.FRONTEND.SUCCESS:
+            return {
+                frontend: action.data
+            }
+        case APP.BACKEND.SUCCESS:
+            return {
+                backend: action.data
+            }
         default:
             return state;
     }

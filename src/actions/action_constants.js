@@ -9,7 +9,7 @@ function action_constants(domain, methods) {
     return obj;
 }
 
-export const APP        = action_constants('APP',     ['VERSION']);
+export const APP        = action_constants('APP',     ['FRONTEND', 'BACKEND', 'VERSION']);
 export const USER       = action_constants('USER',     ['LOGIN', 'LOGOUT', 'CREATE', 'SAVE_LAYOUT', 'VALIDATE']);
 export const SEARCH     = action_constants('SEARCH',   ['QUERY']);
 export const PRODUCT    = action_constants('PRODUCT',  ['FETCH', 'GET']);

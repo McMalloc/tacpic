@@ -95,7 +95,9 @@ const AddressForm = props => {
 
         <Row>
             <div className={"col-xs-6"}>
-                <Select required onChange={(label, value) => changeAddress({...address, state: value})}
+                <Select onChange={({label, value}) => {
+                    changeAddress({...address, state: value})
+                }}
                         value={address.state} name={"state"} label={"Bundesland"}
                         options={GERMAN_STATES}/>
             </div>

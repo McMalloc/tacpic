@@ -10,9 +10,14 @@ let initialState = {
 const userApi = (state = initialState, action) => {
     switch (action.type) {
         case USER.VALIDATE.REQUEST:
+            return {
+                ...state,
+                login_pending: true
+            };
         case USER.LOGIN.REQUEST:
             return {
                 ...state,
+                email: action.payload.login,
                 login_pending: true
             };
         case USER.VALIDATE.SUCCESS:
@@ -41,6 +46,7 @@ const userApi = (state = initialState, action) => {
         case USER.CREATE.REQUEST:
             return {
                 ...state,
+                email: action.payload.uname,
                 login_pending: true
             };
         case USER.CREATE.SUCCESS:

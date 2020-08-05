@@ -48,7 +48,9 @@ const Footer = props => {
             &nbsp;
 
             <Version>
-                {version}
+                <NavLink to={"/stats"} className={"no-styled-link"}>
+                    {version}
+                </NavLink>
             </Version>
 
         </Wrapper>

@@ -20,6 +20,7 @@ src/env.json
 .idea
 
 /public/FRONTEND_VERSION.txt
+/public/FRONTEND.txt
 
 package-lock.json
 npm-debug.log*

@@ -17,6 +17,7 @@ import Checkout from "./components/platform/Checkout";
 import {OrderCompleted} from "./components/platform/OrderCompleted";
 import {useHistory} from "react-router";
 import {APP_TITLE} from "./env";
+import Stats from "./components/platform/Stats";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -76,7 +77,10 @@ const App = () => {
             type: USER.VALIDATE.REQUEST
         });
         dispatch({
-            type: APP.VERSION.REQUEST
+            type: APP.FRONTEND.REQUEST
+        })
+        dispatch({
+            type: APP.BACKEND.REQUEST
         })
         document.title = APP_TITLE
 
@@ -111,6 +115,8 @@ const App = () => {
                                 <Route path="/editor/:graphic_id?/variants/:variant_id?" component={Editor}/>
                                 <Route path="/editor/:graphic_id?" component={Editor}/>
                                 <Route path="/editor/new" component={Editor}/>
+
+                                <Route path="/stats" component={Stats}/>
 
                                 <Route path="/" component={Landing}/>
                                 <Route component={Blank}/>

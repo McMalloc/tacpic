@@ -105,7 +105,8 @@ export default function createSaga(
                 let parsedResponse;
                 try {
                     parsedResponse = JSON.parse(response)
-                } catch {
+                } catch (e) {
+                    console.error(e);
                     parsedResponse = response;
                 }
 
