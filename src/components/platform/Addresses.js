@@ -1,16 +1,21 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {ADDRESS} from "../../actions/action_constants";
+import {ADDRESS, USER} from "../../actions/action_constants";
 import {Checkbox} from "../gui/Checkbox";
 import {Container, Row} from "../gui/Grid";
 import AddressForm from "./AddressForm";
 import {Button} from "../gui/Button";
 import AddressView from "./AddressView";
 import styled from 'styled-components/macro';
+import {Alert} from "../gui/Alert";
+import ButtonBar from "../gui/ButtonBar";
 
 const AddressWrapper = styled.div`
-  display: flex;
-  align-items: flex-end;
+    background-color: ${props => props.theme.background};
+  border-radius: ${props => props.theme.border_radius};
+  border: 1px solid ${props => props.theme.grey_4};
+  padding: ${props => props.theme.large_padding};
+ margin-bottom: ${props => props.theme.large_padding};
 `;
 
 const updateAddress = (dispatch, address) => {
@@ -45,55 +50,41 @@ const Addresses = () => {
     return (
         <Container>
             <Row>
-                <div className={"col-xs-12"}>
-                    <Button label={"Neu"} onClick={() => {
-                        setInitial({is_invoice_addr: false});
-                        setShowForm(true);
-                    }}/>
+                {invoiceAddresses.length === 0 && shippingAddresses.length === 0 &&
+                <div className={'col-xs-12'}>
+                    <Alert info>Noch keine Adressen vorhanden</Alert>
                 </div>
-            </Row>
-            <Row>
+                }
+
                 {showForm &&
                 <AddressForm modal={true} initial={initial} cancel={() => setShowForm(false)}/>
                 }
 
-                {invoiceAddresses.length > 0 &&
-                <div className={"col-sm-6 col-xs-12"}>
-
-                    <h2>Rechnungsadressen</h2>
-                    {invoiceAddresses.map(address => {
-                        return <AddressWrapper>
-                            <AddressView editable {...address}>{address.street}</AddressView>&emsp;
-                            <Button onClick={() => {
-                                setInitial(address);
-                                setShowForm(true);
-                            }} label={"Bearbeiten"}/>&emsp;
-                            <Button onClick={() => removeAddress(dispatch, address.id)} label={"Löschen"}/>
-                        </AddressWrapper>
-                    })}
-
-                </div>
-                }
-
-                <div className={"col-sm-6 col-xs-12"}>
-                    {invoiceAddresses.length > 0 &&
-                    <h2>Lieferadressen</h2>
-                    }
-
-                    <div>
-                        {shippingAddresses.map(address => {
+                <div className={"col-sm-8 col-xs-12"}>
+                        {addresses.map(address => {
                             return <AddressWrapper>
-                                <AddressView editable {...address}>{address.street}</AddressView>
-                                &emsp;
-                                <Button onClick={() => {
-                                    setInitial(address);
-                                    setShowForm(true);
-                                }} label={"Bearbeiten"}/>
-                                &emsp;
-                                <Button onClick={() => removeAddress(dispatch, address.id)} label={"Löschen"}/>
+                                <AddressView editable {...address} />
+
+                                <ButtonBar>
+                                    <Button onClick={() => {
+                                        setInitial(address);
+                                        setShowForm(true);
+                                    }} icon={'pen'} label={"Bearbeiten"}/>
+                                    <Button icon={'times'} onClick={() => removeAddress(dispatch, address.id)}
+                                            label={"Löschen"}/>
+                                </ButtonBar>
+
                             </AddressWrapper>
                         })}
-                    </div>
+                </div>
+            </Row>
+            <Row>
+                <div className={"col-sm-12"} style={{textAlign: "center"}}>
+                    <br/>
+                    <Button primary label={"Neu"} onClick={() => {
+                        setInitial({is_invoice_addr: false});
+                        setShowForm(true);
+                    }}/>
                 </div>
             </Row>
         </Container>

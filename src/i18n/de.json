@@ -29,7 +29,8 @@
     "login": "Anmelden",
     "my_account": "Persönlicher Bereich",
     "Warenkorb": "Warenkorb (<%=quantity%> Artikel)",
-    "catalogue": "Katalog"
+    "catalogue": "Katalog",
+    "required": "Erforderliche Angabe"
   },
   "account": {
     "my_lists": "Meine Listen",

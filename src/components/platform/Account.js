@@ -16,7 +16,7 @@ const Account = props => {
     let location = useLocation();
 
     if (!user.logged_in) {
-        return <Redirect push to="/login"/>;
+        // return <Redirect push to="/login"/>;
     }
     const menues = [
         // {key: "my_lists", icon: "list"},
@@ -58,8 +58,12 @@ const Account = props => {
                 :
                 <>
                     <Row>
-                        <div className={"col-md-12"}>
-                            <h1>Persönlicher Bereich</h1>
+                        <div className={"col-xs-12"}>
+                            <h1>Persönlicher Bereich<Switch>
+                                <Route path='/account/addresses'>: Adressen</Route>
+                                <Route path='/account/orders'>: Bestellungen</Route>
+                            </Switch> </h1>
+
                         </div>
                     </Row>
 

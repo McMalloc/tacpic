@@ -23,7 +23,6 @@ const Orders = () => {
 
     return (
         <section>
-            <h2>Bestellungen</h2>
             <table>
                 <thead>
                 <td>Erfolgt am</td>
