@@ -5,7 +5,7 @@ import {FILE, GRAPHIC} from "../../actions/action_constants";
 import {Link} from "react-router-dom";
 import VariantView from "./VariantView";
 import {Container, Row} from "../gui/Grid";
-import styled, {useTheme} from "styled-components";
+import styled, {useTheme} from "styled-components/macro";
 import {useDispatch, useSelector} from "react-redux";
 import {TagView} from "./Tag";
 import {Icon} from "../gui/_Icon";
@@ -82,6 +82,7 @@ const Wrapper = styled.div`
     display: flex;
     height: 100%;
     flex-direction: row;
+    max-width: 1280px;
     flex-wrap: wrap;
     flex: 1 1 auto;
     overflow: hidden;
@@ -148,7 +149,7 @@ const CatalogueItemViewModal = props => {
     }, graphicId);
 
     return (
-        <Modal noPadding={true} title={!pending ? graphic.title : 'Moment...'} dismiss={props.dismiss}>
+        <Modal noPadding={true} fitted title={!pending ? graphic.title : 'Moment...'} dismiss={props.dismiss}>
             {pending && <Placeholder><Icon icon={"spinner fa-spin"}/></Placeholder>}
             {!pending && <CatalogueItemView {...graphic}/>}
         </Modal>
@@ -168,7 +169,7 @@ const CatalogueItemView = props => {
         <Wrapper theme={theme}>
             <Route path={`${path}/variant/:variantId`}>
 
-                {props.variants.length > 1 &&
+                {/*{props.variants.length > 1 &&*/}
                 <VariantColumn className={"col-xs-12 col-md-4 col-lg-3"}>
                     <div className={'heading'}>
                         <strong>Verfügbare Varianten</strong> ({props.variants.length} gesamt)
@@ -196,8 +197,8 @@ const CatalogueItemView = props => {
                     </NewVariantButtonContainer>
 
                 </VariantColumn>
-                }
-                <DetailsColumn className={props.variants.length > 1 && "col-xs-12 col-md-8 col-lg-9"} theme={theme}>
+                {/*}*/}
+                <DetailsColumn className={"col-xs-12 col-md-8 col-lg-9"} theme={theme}>
                     <Switch>
                         <VariantView {...props}/>
                     </Switch>

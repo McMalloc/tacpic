@@ -1,6 +1,7 @@
 import {cloneDeep} from "lodash"
 import layouts from "../components/editor/widgets/layouts.js"
-import {VERSION, VARIANT} from "../actions/action_constants";
+import {VERSION, VARIANT, FILE} from "../actions/action_constants";
+import {initialEditor} from "../store";
 
 let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so
 let lastObjectsProps = [];
@@ -11,6 +12,8 @@ const roundingAccuracy = 10;
 const ui = (state = {}, action) => {
     let oldState, mouseCoords;
     switch (action.type) {
+        case FILE.OPEN.SUCCESS:
+            return {...state, currentPage: 0};
         case 'TRANSFORM_START':
             lastMode = state.mode;
             return {...state, mode: action.transform};

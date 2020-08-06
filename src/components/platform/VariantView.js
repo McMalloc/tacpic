@@ -44,6 +44,12 @@ const Details = styled.div`
   flex-direction: column;
   //justify-content: space-between;
 `;
+const Well = styled.p`
+    background-color: ${props=>props.theme.background};
+    padding: 12px;
+    border-radius: ${props=>props.theme.border_radius};
+    border: 1px solid ${props=>props.theme.grey_4};
+`;
 
 const VariantView = props => {
     // The `path` lets us build <Route> paths that are
@@ -153,29 +159,13 @@ const VariantView = props => {
                             window.location = `${API_URL}/variants/${variantId}/pdf`;
                         }}>PDF herunterladen</Button>
 
-                        {props.variants.length < 2 &&
-                        <Button className={'extra-margin'}
-                                disabled={!logged_in}
-                                fullWidth icon={'copy'}
-                                onClick={() => {
-                                    history.push(`/editor/${graphicId}`);
-                                    dispatch({
-                                        type: FILE.OPEN.REQUEST,
-                                        id: variant.id, mode: "new"
-                                    })
-                                }}>Neue Variante aus dieser</Button>
-                        }
-
-
                         <Button fullWidth icon={'download'} onClick={() => {
                             window.location = `${API_URL}/variants/${variantId}/brf`;
                         }}>Brailletext herunterladen</Button>
 
                     </Toolbar>
 
-                    <hr />
-
-                    <p>
+                    <Well>
                         <h3>Bestellen</h3>
                         <Radio onChange={setProduct} value={product} name={"graphic_only_or_both"} options={[
                             {label: template(t(`catalogue:graphics_and_braille`))({amount: variant.braille_no_of_pages + variant.graphic_no_of_pages}), value: "graphic"},
@@ -212,7 +202,7 @@ const VariantView = props => {
                                 large primary icon={"cart-plus"}/>
                         </div>
 
-                    </p>
+                    </Well>
                 </div>
             </Details>
 

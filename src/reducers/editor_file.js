@@ -163,17 +163,15 @@ const file = (state = {}, action) => {
                 draftState.pages[action.pageIndex].braille = action.braille;
                 draftState.pages[action.pageIndex].formatted = action.formatted;
             });
+        case FILE.OPEN.REQUEST:
+            return state;
         case FILE.OPEN.SUCCESS:
             let current_file = {...initialEditor.file};
             for (let [key, value] of Object.entries(action.data)) { // assign new values, keep defaults
                 current_file[key] = value;
             }
             current_file.isNew = action.mode === 'new';
-            // debugger;
             return current_file;
-        case FILE.OPEN.REQUEST:
-
-            return state;
         case 'OBJECT_REMOVED':
             oldState = cloneDeep(state);
 
