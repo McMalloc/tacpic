@@ -36,9 +36,9 @@ const ItemPanel = styled.div`
   margin-bottom: 12px;
   padding: 12px;
   border-radius: ${props=>props.theme.border_radius};
-  //border: 1px solid ${props => props.theme.grey_4};
-  background-color: white;
-  box-shadow: ${props => props.theme.middle_shadow};
+  border: 1px solid ${props => props.theme.grey_4};
+  background-color: ${props=>props.theme.background};
+  //box-shadow: ${props => props.theme.middle_shadow};
 
   .upper {
     display: flex;

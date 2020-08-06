@@ -18,6 +18,7 @@ import {OrderCompleted} from "./components/platform/OrderCompleted";
 import {useHistory} from "react-router";
 import {APP_TITLE} from "./env";
 import Stats from "./components/platform/Stats";
+import AccountVerification from "./components/platform/AccountVerification";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -105,6 +106,7 @@ const App = () => {
                                 {/*<Route path="/register" component={Register}/>*/}
                                 <Route path="/login" component={Login}/>
                                 <Route path="/account" component={Account}/>
+                                <Route path="/verify-account" component={AccountVerification}/>
                                 <Route path="/basket" component={Basket}/>
                                 <Route path="/checkout" component={Checkout}/>
                                 <Route path="/order-completed" component={OrderCompleted}/>

@@ -1,17 +1,11 @@
 import React, {useState} from "react";
-import {useHistory, useParams, useRouteMatch} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "./gui/Button";
-import {VARIANT, FILE, USER} from "../actions/action_constants";
-import {Row} from "./gui/Grid";
-import styled, {useTheme} from "styled-components";
+import {USER} from "../actions/action_constants";
 import {useTranslation} from "react-i18next";
 import {Icon} from "./gui/_Icon";
-import {TagView} from "./platform/Tag";
 import {Textinput} from "./gui/Input";
-import {NavLink, Redirect} from "react-router-dom";
 import {Alert} from "./gui/Alert";
-import {Form} from "./gui/Form";
 
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4";
@@ -58,8 +52,11 @@ const Login = props => {
                 onChange={event => setPwd(event.target.value)}
                 name={'pwd'}/>
 
-            {user.error !== null &&
+            {user.error !== null && user.error["field-error"] &&
             <><Alert warning>{t("auth:" + user.error["field-error"][1])}</Alert><br/></>
+            }
+            {user.error !== null && user.error &&
+            <><Alert warning>{t("auth:" + user.error.error)}</Alert><br/></>
             }
 
             {user.login_pending ?

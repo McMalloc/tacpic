@@ -36,8 +36,8 @@ const Footer = props => {
     const user = useSelector(
         state => state.user
     );
-    const backend = useSelector(
-        state => state.app.backend
+    const {backend, frontend} = useSelector(
+        state => state.app
     );
 
     return (
@@ -49,7 +49,8 @@ const Footer = props => {
 
             <Version>
                 <NavLink to={"/stats"} className={"no-styled-link"}>
-                    backend: {backend && backend.tag}
+                    backend: {backend && backend.tag} |
+                    frontend: {frontend && frontend.tag}
                 </NavLink>
             </Version>
 

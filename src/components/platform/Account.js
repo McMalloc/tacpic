@@ -9,6 +9,7 @@ import {Footer} from "./Footer";
 import {useLocation} from "react-router";
 import {Container, Row} from "../gui/Grid";
 import Orders from "./account/Orders";
+import AccountInfo from "./account/AccountInfo";
 
 const Account = props => {
     const user = useSelector(state => state.user);
@@ -16,7 +17,7 @@ const Account = props => {
     let location = useLocation();
 
     if (!user.logged_in) {
-        // return <Redirect push to="/login"/>;
+        return <Redirect push to="/login"/>;
     }
     const menues = [
         // {key: "my_lists", icon: "list"},
@@ -71,6 +72,7 @@ const Account = props => {
                         <Switch>
                             <Route exact path="/account" render={() => home}/>
                             <Route path="/account/orders" component={Orders}/>
+                            <Route path="/account/my_account" component={AccountInfo}/>
                             <Route path="/account/addresses" component={Addresses}/>
                         </Switch>
                     {/*</Row>*/}

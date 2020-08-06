@@ -3,12 +3,37 @@ import {ADDRESS, CLEAR_USER, ORDER, RESET_USER_ERRORS, USER} from '../actions/ac
 let initialState = {
     logged_in: false,
     login_pending: false,
+
+    // 0: waiting for the server to initialise created account
+    // 1: waiting for user to click on link and enter password
+    // 2: waiting for server to finalise account
+    // 3: verified account
+    verification_state: -1,
     addresses: [],
     error: null
 };
 
 const userApi = (state = initialState, action) => {
     switch (action.type) {
+        case USER.VERIFY.REQUEST:
+            return {
+                ...state,
+                verification_state: 2
+            };
+        case USER.VERIFY.SUCCESS:
+            return {
+                ...state,
+                verification_state: 3,
+                email: action.data.email,
+                id: action.data.id,
+                logged_in: true
+            };
+        case USER.VERIFY.FAILURE:
+            return {
+                ...state,
+                error: action.message
+            };
+
         case USER.VALIDATE.REQUEST:
             return {
                 ...state,
@@ -24,8 +49,9 @@ const userApi = (state = initialState, action) => {
         case USER.LOGIN.SUCCESS:
             return {
                 ...state,
-                login_pending: false,
+                verification_state: 3,
                 logged_in: true,
+                login_pending: false,
                 email: action.data.email,
                 id: action.data.id,
                 displayName: action.data.display_name
@@ -46,20 +72,19 @@ const userApi = (state = initialState, action) => {
         case USER.CREATE.REQUEST:
             return {
                 ...state,
-                email: action.payload.uname,
-                login_pending: true
+                verification_state: 0,
+                email: action.payload.uname
             };
         case USER.CREATE.SUCCESS:
             return {
                 ...state,
-                login_pending: false,
-                logged_in: true
+                verification_state: 1
             };
         case USER.CREATE.FAILURE:
             return {
                 ...state,
-                login_pending: false,
-                error: action.message
+                verification_state: -1,
+                error: action.message.error || action.message['field-error'] || null
             };
         case USER.LOGOUT.REQUEST: return {...state};
         case USER.LOGOUT.SUCCESS:

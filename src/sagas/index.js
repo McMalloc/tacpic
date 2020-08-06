@@ -1,4 +1,11 @@
-import {logoutWatcher, userCreateSaga, userLoginSaga, userLogoutSaga, userValidateSaga} from "./user_saga";
+import {
+    logoutWatcher,
+    userCreateSaga,
+    userLoginSaga,
+    userLogoutSaga,
+    userValidateSaga,
+    userVerifySaga
+} from "./user_saga";
 import {call, all, takeLatest, takeEvery, put, select} from "redux-saga/effects";
 import localstorageWatcher from "./localstorage_saga";
 import {
@@ -7,7 +14,18 @@ import {
     variantCreateSaga
 } from "./variant_saga";
 import {openFileWatcher} from "./file_saga";
-import {CATALOGUE, TAGS, GRAPHIC, USER, VARIANT, VERSION, ORDER, VARIANTS, ADDRESS, APP} from "../actions/action_constants";
+import {
+    CATALOGUE,
+    TAGS,
+    GRAPHIC,
+    USER,
+    VARIANT,
+    VERSION,
+    ORDER,
+    VARIANTS,
+    ADDRESS,
+    APP
+} from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {
     searchChangeWatcher,
@@ -54,7 +72,7 @@ export default function* root() {
         call(createSaga(ORDER.CREATE, 'post', 'orders', takeLatest, true, id, id, ['catalogue', 'basket'])),
         call(createSaga(ORDER.INDEX, 'get', 'orders', takeLatest, true, id, id)),
 
-        // call(createSaga(APP.FRONTEND, 'get', 'FRONTEND.json', takeLatest, false, id, id)),
+        call(createSaga(APP.FRONTEND, 'get', 'FRONTEND.json', takeLatest, false, id, id)),
         call(createSaga(APP.BACKEND, 'get', 'BACKEND.json', takeLatest, false, id, id)),
 
         call(addressRemoveSaga),
@@ -72,6 +90,7 @@ export default function* root() {
         call(userLoginSaga),
         call(userValidateSaga),
         call(userCreateSaga),
+        call(userVerifySaga),
 
         call(labelWriteWatcher),
         call(contentEditWatcher),

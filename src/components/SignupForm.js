@@ -1,21 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {Prompt, useHistory, useParams, useRouteMatch} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "./gui/Button";
-import {VARIANT, FILE, USER, RESET_USER_ERRORS} from "../actions/action_constants";
-import {Row} from "./gui/Grid";
-import styled, {useTheme} from "styled-components";
+import {USER, RESET_USER_ERRORS} from "../actions/action_constants";
 import {useTranslation} from "react-i18next";
 import {Icon} from "./gui/_Icon";
-import {TagView} from "./platform/Tag";
 import {Textinput} from "./gui/Input";
 import {NavLink, Redirect} from "react-router-dom";
 import {Alert} from "./gui/Alert";
-import {Form} from "./gui/Form";
-
-const GraphicView = styled.div`
-
-`;
+import CenterWrapper from "./gui/_CenterWrapper";
 
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 ";
@@ -27,107 +19,79 @@ const SignupForm = props => {
 
     // input states
     const [uname, setUname] = useState(user.email || null);
-    const [pwd, setPwd] = useState("");
-    const [pwdConfirm, setPwdConfirm] = useState("");
+    const [emailValid, setEmailValid] = useState(false);
 
     useEffect(() => {
         return () => dispatch({type: RESET_USER_ERRORS})
     }, []);
 
-    // input validities
-    const [emailValid, setEmailValid] = useState(false);
-    const [passwordValid, setPasswordValid] = useState(false);
-    const [passwordConfirmed, setPasswordConfirmed] = useState(false);
-
-    if (user.logged_in) {
-        return <Redirect push to="/catalogue"/>;
-    }
+    // if (user.verification_state === -5) {
+    //     return <Redirect push to="/catalogue"/>;
+    // }
 
     return (
-        // <div className={"container full-height"}>
             <div className={"row full-height extra-margin"}>
-                <div className={layout}>
-                    <h1>{t("general:signup")}</h1>
-                    <p>Taktile Medien &mdash; schnell, gut und einfach</p>
-                    <hr/>
-                    <form onSubmit={(event) => {
-                        event.preventDefault();
-                        emailValid && passwordValid && passwordConfirmed && dispatch({
-                            type: USER.CREATE.REQUEST,
-                            payload: {uname, pwd, pwdConfirm}
-                        });
-                    }}>
-                        <Textinput
-                            value={uname}
-                            label={t("general:email")}
-                            sublabel={"general:email-hint"}
-                            autocomplete={"username"}
-                            validations={[
-                                {
-                                    fn: val => emailRegex.test(val),
-                                    message: "general:email-invalid",
-                                    callback: setEmailValid
-                                }
-                            ]}
-                            onChange={event => setUname(event.target.value)}
-                            name={'uname'}/>
-                        <Textinput
-                            value={pwd}
-                            label={t("general:password")}
-                            autocomplete={"new-password"}
-                            sublabel={"general:password-hint"}
-                            validations={[
-                                {
-                                    fn: val => val.length >= 8,
-                                    message: "general:password-invalid",
-                                    callback: setPasswordValid
-                                }
-                            ]}
-                            type={"password"}
-                            onChange={event => setPwd(event.target.value)}
-                            name={'pwd'}/>
-                        <Textinput
-                            value={pwdConfirm}
-                            autocomplete={"new-password"}
-                            label={t("general:password-confirm")}
-                            type={"password"}
-                            validations={[
-                                {
-                                    fn: val => val === pwd,
-                                    message: "general:password-confirm-invalid",
-                                    callback: setPasswordConfirmed
-                                }
-                            ]}
-                            onChange={event => setPwdConfirm(event.target.value)}
-                            name={'pwdConfirm'}/>
+                {user.verification_state === 1 ?
+                    <>
+                        <div className={layout}>
+                            <h1>{t("general:signup")}</h1>
+                            <p>Wir haben Ihnen eine <strong>E-Mail zur Bestätigung</strong> geschickt, bitte überprüfen Sie Ihr Postfach.</p>
+                            <p className={"align-center"}>
+                                <Icon icon={'envelope fa-3x'} />
+                            </p>
+                        </div>
+                    </>
+                    :
+                    <div className={layout}>
+                        <h1>{t("general:signup")}</h1>
+                        <p>Taktile Medien &mdash; schnell, gut und einfach</p>
+                        <hr/>
+                        <form onSubmit={(event) => {
+                            event.preventDefault();
+                            emailValid && dispatch({
+                                type: USER.CREATE.REQUEST,
+                                payload: {uname}
+                            });
+                        }}>
+                            <Textinput
+                                value={uname}
+                                label={t("general:email")}
+                                sublabel={"general:email-hint"}
+                                autocomplete={"username"}
+                                validations={[
+                                    {
+                                        fn: val => emailRegex.test(val),
+                                        message: "general:email-invalid",
+                                        callback: setEmailValid
+                                    }
+                                ]}
+                                onChange={event => setUname(event.target.value)}
+                                name={'uname'}/>
 
-                        {user.error !== null &&
-                            <><Alert warning>{t("auth:" + user.error["field-error"][1])}</Alert><br/></>
-                        }
+                            {user.error !== null &&
+                            <><Alert warning>{t("auth:" + user.error)}</Alert><br/></>
+                            }
 
-                        {user.login_pending ?
-                            (<Icon icon={"cog fa-spin"}/>) :
-                            (<>
-                                <div style={{textAlign: "center"}}>
-                                    <Button disabled={!(emailValid && passwordValid && passwordConfirmed)} primary
-                                            type={'submit'}>{t("general:signup")}</Button>
-                                    <p>
-                                        &emsp;Haben Sie bereits ein Konto? <NavLink to={"/login"}>Hier
-                                        anmelden.</NavLink>
-                                    </p>
-                                </div>
-                            </>)
-                        }
-                    </form>
+                            <p>Für ein Passwort entscheiden Sie sich im nächsten Schritt.</p>
 
-                    {/*<div className={layout} >*/}
-                    {/*    <img src={"/images/tactile_exploration.png"}/>*/}
-                    {/*</div>*/}
+                            {user.verification_state === 0 ?
+                                (<Icon icon={"cog fa-spin"}/>) :
+                                (<>
+                                    <div style={{textAlign: "center"}}>
+                                        <Button disabled={!(emailValid)} primary
+                                                type={'submit'}>{t("general:signup")}</Button>
+                                        <p>
+                                            &emsp;Haben Sie bereits ein Konto? <NavLink to={"/login"}>Hier
+                                            anmelden.</NavLink>
+                                        </p>
+                                    </div>
+                                </>)
+                            }
+                        </form>
+                    </div>
+                }
 
-                </div>
             </div>
-        // </div>
-
     );
 };
 
