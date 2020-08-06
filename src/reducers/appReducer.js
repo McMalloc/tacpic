@@ -12,11 +12,13 @@ const appReducer = (state = initialState, action) => {
             }
         case APP.FRONTEND.SUCCESS:
             return {
-                frontend: action.data
+                ...state,
+                ...action.data
             }
         case APP.BACKEND.SUCCESS:
             return {
-                backend: action.data
+                ...state,
+                ...action.data
             }
         default:
             return state;
