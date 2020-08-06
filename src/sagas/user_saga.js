@@ -24,7 +24,7 @@ const processLoginResponse = (response, statusCode, authHeader) => {
 }
 
 export const userLoginSaga = createSaga(USER.LOGIN, 'post', 'login', takeLatest, false, request=>request, processLoginResponse);
-export const userVerifySaga = createSaga(USER.VERIFY, 'post', 'verify-account?key=:key', takeLatest, false, id, processLoginResponse);
+export const userVerifySaga = createSaga(USER.VERIFY, 'post', 'verify-account?key=:key', takeLatest, false, request=>request, processLoginResponse);
 
 // TODO doesnt work
 // export const userLogoutSaga = createSaga(USER.LOGIN, 'post', 'login', takeLatest, false, id, () => {
