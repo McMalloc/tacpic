@@ -13,6 +13,7 @@ import styled from 'styled-components/macro';
 import Tile from "../gui/_Tile";
 import CenterWrapper from "../gui/_CenterWrapper";
 import {API_URL} from "../../env.json";
+import {Alert} from "../gui/Alert";
 // import {CSSTransition} from "react-transition-group";
 
 const updateBasket = (dispatch, variantId, quantity, product, index) => {
@@ -110,7 +111,7 @@ const BasketListing = () => {
                 ids: basket.map(item => item.contentId)
             }
         })
-    }, []);
+    }, [basket]);
 
     if (quote.items.length === 0) return null;
 

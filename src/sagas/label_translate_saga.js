@@ -4,6 +4,10 @@ import {wrapAndChunk, wrapLines} from "../utility/wrapLines";
 import {chunk} from "lodash";
 import {API_URL} from "../env"
 
+const sanitise = text => {
+    return text.replace("%", "%%")
+}
+
 export function* labelWriteWatcher() {
     yield takeLatest('OBJECT_PROP_CHANGED', function* (action) {
         if (action.prop === 'text') {
@@ -14,7 +18,7 @@ export function* labelWriteWatcher() {
                         method: 'POST',
                         url: API_URL + '/braille',
                         data: {
-                            label: action.value,
+                            label: sanitise(action.value),
                             system
                         }
                     });
@@ -42,7 +46,7 @@ export function* contentEditWatcher() {
                     method: 'POST',
                     url: API_URL + '/braille',
                     data: {
-                        label: action.content,
+                        label: sanitise(action.content),
                         system
                     }
                 });
