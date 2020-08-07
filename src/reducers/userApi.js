@@ -84,7 +84,7 @@ const userApi = (state = initialState, action) => {
             return {
                 ...state,
                 verification_state: -1,
-                error: action.message.error || action.message['field-error'] || null
+                error: action.message
             };
         case USER.LOGOUT.REQUEST: return {...state};
         case USER.LOGOUT.SUCCESS:

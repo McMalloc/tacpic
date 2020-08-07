@@ -69,7 +69,10 @@ const SignupForm = props => {
                                 name={'uname'}/>
 
                             {user.error !== null &&
-                            <><Alert warning>{t("auth:" + user.error)}</Alert><br/></>
+                            <><Alert warning>
+                                {t("auth:" + user.error.error)}<br/>
+                                {user.error['field-error'] && t("auth:" + user.error['field-error'][1])}
+                            </Alert><br/></>
                             }
 
                             <p>Für ein Passwort entscheiden Sie sich im nächsten Schritt.</p>

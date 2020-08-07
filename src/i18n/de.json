@@ -13,7 +13,9 @@
   },
   "auth": {
     "invalid login, already an account with this login": "Es gibt bereits ein Konto unter dieser E-Mail-Adresse.",
-    "no matching login": "Kein Benutzerkonto mit dieser E-Mail-Adresse / Passwort bekannt."
+    "The account you tried to create is currently awaiting verification": "Das Konto mit dieser E-Mail-Adresse muss noch verifiziert werden. Bitte prüfen Sie Ihr Postfach und ggf. den Spam-Ordner.",
+    "no matching login": "Kein Benutzerkonto mit dieser E-Mail-Adresse / Passwort bekannt.",
+    "There was an error creating your account": "Fehler beim Erstellen eines neuen Kontos:"
   },
   "general": {
     "username": "Nutzername",
