@@ -73,20 +73,20 @@ const App = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     useEffect(() => {
-        if (localStorage.getItem('jwt') === null) return;
-        dispatch({
-            type: USER.VALIDATE.REQUEST
-        });
         dispatch({
             type: APP.FRONTEND.REQUEST
         })
         dispatch({
             type: APP.BACKEND.REQUEST
         })
-        document.title = APP_TITLE
 
-        // let heidelpay = new window.heidelpay('s-pub-xxxxxxxxxx', {locale: 'de-DE'});
-    }, []);
+        document.title = APP_TITLE;
+
+        if (localStorage.getItem('jwt') === null) return;
+        dispatch({
+            type: USER.VALIDATE.REQUEST
+        });
+    }, [APP_TITLE]);
 
     const navbarItems = [
         {label: t("general:catalogue"), to: '/catalogue'},

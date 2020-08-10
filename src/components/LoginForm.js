@@ -16,8 +16,8 @@ const Login = props => {
     const user = useSelector(state => state.user);
 
     // input states
-    const [uname, setUname] = useState(user.email || null);
-    const [pwd, setPwd] = useState(null);
+    const [uname, setUname] = useState('');
+    const [pwd, setPwd] = useState('');
 
     // input validities
     const [emailValid, setEmailValid] = useState(false);
@@ -52,11 +52,11 @@ const Login = props => {
                 onChange={event => setPwd(event.target.value)}
                 name={'pwd'}/>
 
-            {user.error !== null && user.error["field-error"] &&
-            <><Alert warning>{t("auth:" + user.error["field-error"][1])}</Alert><br/></>
-            }
-            {user.error !== null && user.error &&
-            <><Alert warning>{t("auth:" + user.error.error)}</Alert><br/></>
+            {user.error !== null &&
+            <><Alert warning>
+                {t("auth:" + user.error.error)}<br/>
+                {user.error['field-error'] && t("auth:" + user.error['field-error'][1])}
+            </Alert><br/></>
             }
 
             {user.login_pending ?
@@ -64,7 +64,7 @@ const Login = props => {
             :
                 <div className={'align-center'}>
                     {/*<input type={"submit"} value={"login"}/>*/}
-                    <Button primary //disabled={!(emailValid && passwordValid)}
+                    <Button primary disabled={!(emailValid && passwordValid)}
                             type={'submit'}>{t("general:login")}</Button>
                 </div>
             }

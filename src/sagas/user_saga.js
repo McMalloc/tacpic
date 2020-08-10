@@ -23,7 +23,7 @@ const processLoginResponse = (response, statusCode, authHeader) => {
     if (statusCode === 200) return JSON.parse(/^\{(.*?)\}/.exec(response)[0]); // catch rodauths weird login response
 }
 
-export const userLoginSaga = createSaga(USER.LOGIN, 'post', 'login', takeLatest, false, request=>request, processLoginResponse);
+export const userLoginSaga = createSaga(USER.LOGIN, 'post', 'login', takeLatest, false, request=>request, processLoginResponse, null, '/catalogue');
 export const userVerifySaga = createSaga(USER.VERIFY, 'post', 'verify-account?key=:key', takeLatest, false, request=>request, processLoginResponse);
 
 // TODO doesnt work
@@ -39,6 +39,5 @@ export function* logoutWatcher() {
         } catch (error) {
             yield put({type: USER.LOGOUT.FAILURE, error});
         }
-
     });
 }

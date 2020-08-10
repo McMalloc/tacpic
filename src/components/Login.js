@@ -17,6 +17,7 @@ const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-
 const Login = props => {
     const {t} = useTranslation();
     const user = useSelector(state => state.user);
+
     if (user.logged_in) {
         return <Redirect push to="/catalogue"/>;
     }

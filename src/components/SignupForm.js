@@ -18,7 +18,7 @@ const SignupForm = props => {
     const user = useSelector(state => state.user);
 
     // input states
-    const [uname, setUname] = useState(user.email || null);
+    const [uname, setUname] = useState('');
     const [emailValid, setEmailValid] = useState(false);
 
     useEffect(() => {

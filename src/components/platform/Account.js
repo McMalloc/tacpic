@@ -16,9 +16,9 @@ const Account = props => {
     const dispatch = useDispatch();
     let location = useLocation();
 
-    if (!user.logged_in) {
-        return <Redirect push to="/login"/>;
-    }
+    // if (!user.logged_in) {
+    //     return <Redirect push to="/login"/>;
+    // }
     const menues = [
         // {key: "my_lists", icon: "list"},
         // {key: "my_sub", icon: "retweet"},
