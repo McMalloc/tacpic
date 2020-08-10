@@ -28,7 +28,7 @@ const Window = styled.div`
   width: ${props=> props.fitted ? 'auto' : '100%'};
   margin: 20px;
   max-height: 90%;
-  height: 90%;
+  //height: 90%;
   // ${props=> props.fitted ? '' : 'height: 90%'};
   //min-height: 300px;
   border-radius: ${props => props.theme.border_radius};

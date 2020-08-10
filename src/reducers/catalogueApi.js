@@ -6,9 +6,8 @@ import {
     ORDER,
     VARIANTS,
     ITEM_ADDED_TO_BASKET,
-    ITEM_REMOVED_FROM_BASKET, ORDER_RESET
+    ITEM_REMOVED_FROM_BASKET, ORDER_RESET, QUOTE
 } from '../actions/action_constants';
-import {createReducer} from "./index";
 import {produce} from "immer";
 
 // let catalogueApiCallbacks = {};
@@ -19,6 +18,7 @@ import {produce} from "immer";
 // }
 
 const catalogueApi = (state = {}, action) => {
+
     switch (action.type) {
         case CATALOGUE.SEARCH.REQUEST:
             return {
@@ -36,7 +36,6 @@ const catalogueApi = (state = {}, action) => {
                 ...state,
                 searchPending: false
             };
-
         case GRAPHIC.GET.REQUEST:
             return {
                 ...state,
@@ -75,10 +74,38 @@ const catalogueApi = (state = {}, action) => {
                 ...state,
                 quotedVariants: action.data
             };
-        case ORDER.QUOTE.SUCCESS:
+        case QUOTE.GET.SUCCESS:
             return {
                 ...state,
                 quote: action.data
+            };
+        case QUOTE.REQUEST.REQUEST:
+            return {
+                ...state,
+                quote: {
+                    ...state.quote,
+                    pending: true
+                }
+            };
+        case QUOTE.REQUEST.SUCCESS:
+            return {
+                ...state,
+                quote: {
+                    ...state.quote,
+                    pending: false,
+                    successfull: true,
+                    error: null
+                }
+            };
+        case QUOTE.REQUEST.FAILURE:
+            return {
+                ...state,
+                quote: {
+                    ...state.quote,
+                    pending: false,
+                    successfull: false,
+                    error: action.message
+                }
             };
         case ORDER.CREATE.REQUEST:
             return {

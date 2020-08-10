@@ -1,5 +1,5 @@
 import {call, put, select} from "redux-saga/effects";
-import {API_URL} from '../env'
+import {API_URL} from '../env';
 
 const buildParams = (paramObj) => {
     let paramString = '';
@@ -75,8 +75,7 @@ export default function createSaga(
     appendedStatePath = []) {
     return function* () {
         yield effect(event.REQUEST, function* (action) {
-            console.log(action);
-            if (appendedStatePath.length > 0) {
+            if (appendedStatePath && appendedStatePath.length > 0) {
                 action.payload[appendedStatePath[appendedStatePath.length - 1]] =
                     yield select(state=>crawlState(state, appendedStatePath));
             }
@@ -104,7 +103,7 @@ export default function createSaga(
 
                 let parsedResponse;
                 try {
-                    parsedResponse = JSON.parse(response)
+                    parsedResponse = JSON.parse(response);
                 } catch (e) {
                     console.error(e);
                     parsedResponse = response;

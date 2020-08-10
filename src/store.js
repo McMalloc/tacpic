@@ -115,7 +115,10 @@ const initialCatalogue = {
         error: null
     },
     quote: {
-        items: []
+        items: [],
+        pending: false,
+        successfull: false,
+        error: null
     }, // quote is the basket with added prices and packaging and postage items
     basket: JSON.parse(localStorage.getItem("basket")) || []
 };

@@ -36,7 +36,7 @@ const Searchbar = () => {
 
     return (
         <div style={{textAlign: "left"}}>
-            <label for={"label-for-search-bar"} id={"label-for-search-bar"}>
+            <label htmlFor={"label-for-search-bar"} id={"label-for-search-bar"}>
                 {t("catalogue:searchterm")}
             </label>
             <Bar>

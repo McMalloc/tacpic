@@ -3,6 +3,7 @@ export const A4_MAX_CHARS_PER_ROW = 35;
 export const A4_WIDTH = 210;
 export const A4_HEIGHT = 297;
 export const PAGE_NUMBER_BOTTOM = 4;
+export const MAX_VALUE_FOR_ORDER = 2000;
 
 export const GERMAN_STATES = [
     {value: 'BW', label: 'Baden-Württemberg'},

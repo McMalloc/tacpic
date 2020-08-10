@@ -1,13 +1,14 @@
-function action_constants(domain, methods) {
+const action_constants = (domain, methods) => {
     let obj = {};
     methods.forEach((method) => {
         ['REQUEST', 'SUCCESS', 'FAILURE'].forEach((state) => {
             obj[method] = obj[method] || {};
-            obj[method][state] = `${domain}_${method}_${state}`
+            obj[method][state] = `${domain}_${method}_${state}`;
         });
     });
     return obj;
 }
+
 
 export const APP        = action_constants('APP',     ['FRONTEND', 'BACKEND', 'VERSION']);
 export const USER       = action_constants('USER',     ['LOGIN', 'LOGOUT', 'CREATE', 'SAVE_LAYOUT', 'VALIDATE', 'VERIFY']);
@@ -22,7 +23,8 @@ export const VARIANTS   = action_constants('VARIANTS',   ['GET']); // get multip
 export const CATALOGUE  = action_constants('CATALOGUE',   ['SEARCH']);
 export const TAGS       = action_constants('TAGS',     ['GET', 'SEARCH', 'CREATE']);
 export const BRAILLE    = action_constants('BRAILLE',   ['TRANSLATE']);
-export const ORDER      = action_constants('ORDER',   ['QUOTE', 'CREATE', 'GET', 'INDEX']);
+export const ORDER      = action_constants('ORDER',   ['CREATE', 'GET', 'INDEX']);
+export const QUOTE      = action_constants('QUOTE',   ['REQUEST', 'GET']);
 export const ADDRESS    = action_constants('ADDRESS',   ['GET', 'CREATE', 'UPDATE', 'REMOVE']); // TODO rename GET to ADDRESS.INDEX
 
 export const CANVAS_OBJECT_ADDED = 'CANVAS_OBJECT_ADDED';

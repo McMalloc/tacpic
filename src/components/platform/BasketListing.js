@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import PropTypes from "prop-types";
 import AddressForm from "./AddressForm";
-import {ITEM_ADDED_TO_BASKET, ITEM_REMOVED_FROM_BASKET, ORDER, VARIANTS} from "../../actions/action_constants";
+import {ITEM_ADDED_TO_BASKET, ITEM_REMOVED_FROM_BASKET, ORDER, QUOTE, VARIANTS} from "../../actions/action_constants";
 import {useDispatch, useSelector} from "react-redux";
 import {Currency} from "../gui/Currency";
 import {Numberinput} from "../gui/Input";
@@ -99,7 +99,7 @@ const BasketListing = () => {
 
     useEffect(() => {
         dispatch({
-            type: ORDER.QUOTE.REQUEST,
+            type: QUOTE.GET.REQUEST,
             payload: {items: basket}
         })
     }, [basket]);

@@ -24,7 +24,7 @@ import {
     ORDER,
     VARIANTS,
     ADDRESS,
-    APP
+    APP, QUOTE
 } from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {
@@ -62,20 +62,24 @@ export default function* root() {
                 }
             });
         })),
+        call(createSaga(QUOTE.REQUEST, 'post', 'quotes/request', takeLatest, true, id, id)),
+        call(createSaga(QUOTE.GET, 'post', 'quotes', takeLatest, false, id, id)),
+
         call(createSaga(GRAPHIC.CREATE, 'post', 'graphics', takeLatest, true, id)),
-        call(createSaga(ORDER.QUOTE, 'post', 'orders/quote', takeLatest, false, id)),
         call(createSaga(GRAPHIC.GET, 'get', 'graphics/:id', takeLatest, false, id, id)),
+
         call(createSaga(ADDRESS.GET, 'get', 'users/addresses', takeLatest, true, id, id)),
         call(createSaga(ADDRESS.CREATE, 'post', 'users/addresses', takeLatest, true, id, id)),
         call(createSaga(ADDRESS.UPDATE, 'post', 'users/addresses/:id', takeLatest, true, id, id)),
         call(createSaga(ADDRESS.REMOVE, 'post', 'users/addresses/inactivate/:id', takeLatest, true, id, id)),
+        call(addressRemoveSaga),
+
         call(createSaga(ORDER.CREATE, 'post', 'orders', takeLatest, true, id, id, ['catalogue', 'basket'])),
         call(createSaga(ORDER.INDEX, 'get', 'orders', takeLatest, true, id, id)),
 
         call(createSaga(APP.FRONTEND, 'get', 'FRONTEND.json', takeLatest, false, id, id)),
         call(createSaga(APP.BACKEND, 'get', 'BACKEND.json', takeLatest, false, id, id)),
 
-        call(addressRemoveSaga),
         call(basketChangeSaga),
 
         call(variantGetSaga),
@@ -101,7 +105,7 @@ export default function* root() {
         call(formatToggledWatcher),
         call(systemToggledWatcher),
 
-        call(renderWatcher)
+        call(renderWatcher),
     ])
 }
 
