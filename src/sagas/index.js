@@ -38,6 +38,7 @@ import {contentEditWatcher, labelWriteWatcher, layoutEditWatcher, systemChangeWa
 import {renderWatcher} from "./render_saga";
 import {addressRemoveSaga} from "./address_saga";
 import {basketChangeSaga} from "./basket_saga";
+import {orderCreateSaga, orderIndexSaga} from "./order_saga";
 
 export const id = args => args;
 
@@ -74,8 +75,8 @@ export default function* root() {
         call(createSaga(ADDRESS.REMOVE, 'post', 'users/addresses/inactivate/:id', takeLatest, true, id, id)),
         call(addressRemoveSaga),
 
-        call(createSaga(ORDER.CREATE, 'post', 'orders', takeLatest, true, id, id, ['catalogue', 'basket'])),
-        call(createSaga(ORDER.INDEX, 'get', 'orders', takeLatest, true, id, id)),
+        call(orderCreateSaga),
+        call(orderIndexSaga),
 
         call(createSaga(APP.FRONTEND, 'get', 'FRONTEND.json', takeLatest, false, id, id)),
         call(createSaga(APP.BACKEND, 'get', 'BACKEND.json', takeLatest, false, id, id)),

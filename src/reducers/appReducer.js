@@ -6,10 +6,6 @@ let initialState = {
 
 const appReducer = (state = initialState, action) => {
     switch (action.type) {
-        case APP.VERSION.SUCCESS:
-            return {
-                version: state.version + action.data
-            }
         case APP.FRONTEND.SUCCESS:
             return {
                 ...state,

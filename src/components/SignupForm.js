@@ -8,6 +8,7 @@ import {Textinput} from "./gui/Input";
 import {NavLink, Redirect} from "react-router-dom";
 import {Alert} from "./gui/Alert";
 import CenterWrapper from "./gui/_CenterWrapper";
+import { useMatomo } from '@datapunt/matomo-tracker-react'
 
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 ";
@@ -16,12 +17,14 @@ const SignupForm = props => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
+    const { trackPageView, trackEvent } = useMatomo()
 
     // input states
     const [uname, setUname] = useState('');
     const [emailValid, setEmailValid] = useState(false);
 
     useEffect(() => {
+        trackPageView()
         return () => dispatch({type: RESET_USER_ERRORS})
     }, []);
 
@@ -82,6 +85,7 @@ const SignupForm = props => {
                                 (<>
                                     <div style={{textAlign: "center"}}>
                                         <Button disabled={!(emailValid)} primary
+                                                onClick={() => trackEvent({ category: 'signup', action: 'submit' })}
                                                 type={'submit'}>{t("general:signup")}</Button>
                                         <p>
                                             &emsp;Haben Sie bereits ein Konto? <NavLink to={"/login"}>Hier

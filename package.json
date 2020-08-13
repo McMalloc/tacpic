@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:9292",
   "dependencies": {
+    "@datapunt/matomo-tracker-react": "^0.1.5",
     "axios": "^0.19.0",
     "color": "^3.1.2",
     "i18next": "^19.0.1",

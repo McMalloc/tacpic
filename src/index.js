@@ -4,10 +4,10 @@ import ReactDOM from 'react-dom';
 import {Provider} from "react-redux";
 import {ThemeProvider} from 'styled-components';
 import './i18n/i18n';
+import { MatomoProvider, createInstance } from '@datapunt/matomo-tracker-react'
 
 // DELETE
-import deepFilter from './utility/deepPull';
-import {filter} from 'lodash';
+
 
 // app imports
 import './index.scss';
@@ -17,12 +17,20 @@ import {store} from "./store";
 import {standard} from "./styles/themes"
 import {BrowserRouter} from "react-router-dom";
 
+const instance = createInstance({
+    urlBase: 'https://tacpic.de',
+    trackerUrl: 'https://analytics.tacpic.de/matomo.php', // optional, default value: `${urlBase}matomo.php`
+    srcUrl: 'https://analytics.tacpic.de/matomo.js', // optional, default value: `${urlBase}matomo.js`
+})
+
 // bootstrapping the app
 ReactDOM.render(
     <Provider store={store}>
         <ThemeProvider theme={standard}>
             <BrowserRouter>
-                <App/>
+                <MatomoProvider value={instance}>
+                    <App/>
+                </MatomoProvider>
             </BrowserRouter>
         </ThemeProvider>
     </Provider>,

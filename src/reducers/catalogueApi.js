@@ -6,7 +6,7 @@ import {
     ORDER,
     VARIANTS,
     ITEM_ADDED_TO_BASKET,
-    ITEM_REMOVED_FROM_BASKET, ORDER_RESET, QUOTE
+    ITEM_REMOVED_FROM_BASKET, ORDER_RESET, QUOTE, CLEAR_BASKET
 } from '../actions/action_constants';
 import {produce} from "immer";
 
@@ -70,10 +70,14 @@ const catalogueApi = (state = {}, action) => {
                 tags: action.data
             };
         case VARIANTS.GET.SUCCESS: // TODO action beschreibt nicht, was sich im Store ändert
-            return {
-                ...state,
-                quotedVariants: action.data
-            };
+            return produce(state, draftState => {
+                state.basket.forEach((item, index) => {
+                    if (!action.data.find(v => v.id === item.contentId)) {
+                        draftState.basket.splice(index, 1);
+                    }
+                });
+                draftState.quotedVariants = action.data;
+            });
         case QUOTE.GET.SUCCESS:
             return {
                 ...state,
@@ -139,6 +143,11 @@ const catalogueApi = (state = {}, action) => {
             return produce(state, draftState => {
                 draftState.basket.splice(action.index, 1);
             });
+        case CLEAR_BASKET:
+            return {
+                ...state,
+                basket: []
+            }
         case ITEM_ADDED_TO_BASKET:
             return produce(state, draftState => {
                 let isUpdate = false;

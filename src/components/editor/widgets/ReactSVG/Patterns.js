@@ -16,6 +16,16 @@ const patterns = {
             <line x1={"2.04mm"} y1={"-1.27mm"} x2={"-1.77mm"} y2={"2.54mm"} stroke={"black"} strokeWidth={"0.8mm"}/>
         </>
     },
+    diagonal_lines_wide: {
+        width: "10.16mm", height: "10.16mm",
+        objects: <>
+            <line x1={"5.85mm"} y1={"-1.27mm"}
+                  x2={"18.55mm"} y2={"11.43mm"} stroke={"black"}
+                  strokeWidth={"0.8mm"}/>
+            <line x1={"-1.77mm"} y1={"1.27mm"} x2={"8.39mm"}
+                  y2={"11.43mm"} stroke={"black"} strokeWidth={"0.8mm"}/>
+        </>
+    },
     full: {
         width: "2.5mm", height: "2.5mm",
         objects: <>
@@ -31,15 +41,11 @@ const patterns = {
         </>
     },
     stair: {
-        width: "15mm", height: "15mm",
-        objects: <svg xmlns={"http://www.w3.org/2000/svg"}
-                      version={"1.1"} width={"15mm"}
-                      height={"15mm"} viewBox={"0 0 15 15"}>
-            <polyline points={"-1,3.75 3.75,3.75 3.75,-1"} stroke={"black"} strokeWidth={"1.8"}
-                      fill={"none"}/>
-            <polyline points={"3.75,15.8 3.75,11.25 11.25,11.25 11.25,3.75 15.8,3.75"}
-                      stroke={"black"} strokeWidth={"1.8"}
-                      fill={"none"}/>
+        width: "12.8mm", height: "12.8mm",
+        objects: <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="12.8mm" height="12.8mm"
+                      viewBox="0 0 12.8 12.8">
+            <polyline points="-0.64,2.4 4,2.4 4,-0.64" stroke="black" strokeWidth="1" fill="none"/>
+            <polyline points="4,13.44 4,8.8 10.4,8.8 10.4,2.4 13.44,2.4" stroke="black" strokeWidth="1" fill="none"/>
         </svg>
     },
     dashed: {
@@ -47,7 +53,7 @@ const patterns = {
         objects: <>
             <line style={{stroke: 'rgb(0,0,0)', strokeWidth: 2}} x1={0} y1={0} x2={5} y2={5}/>
             <line style={{stroke: 'rgb(0,0,0)', strokeWidth: 2}} x1={10} y1={10} x2={15} y2={15}/>
-            </>
+        </>
     },
     blank: {
         width: "1", height: "1",
@@ -55,13 +61,17 @@ const patterns = {
     },
     vertical_lines: {
         width: "5mm", height: "0.5mm",
-        objects: <><line x1={"1.25mm"} y1={"-1mm"} x2={"1.25mm"}
-                         y2={"1.5mm"} stroke={"black"} strokeWidth={"1.3mm"}/></>
+        objects: <>
+            <line x1={"1.25mm"} y1={"-1mm"} x2={"1.25mm"}
+                  y2={"1.5mm"} stroke={"black"} strokeWidth={"1.3mm"}/>
+        </>
     },
     horizontal_lines: {
         width: "0.5mm", height: "5mm",
-        objects: <><line y1={"1.25mm"} x1={"-1mm"} y2={"1.25mm"}
-                         x2={"1.5mm"} stroke={"black"} strokeWidth={"1.3mm"}/></>
+        objects: <>
+            <line y1={"1.25mm"} x1={"-1mm"} y2={"1.25mm"}
+                  x2={"1.5mm"} stroke={"black"} strokeWidth={"1.3mm"}/>
+        </>
     },
     dashed_lines: {
         width: "7.62mm", height: "7.62mm",

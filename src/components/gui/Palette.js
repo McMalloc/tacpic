@@ -21,16 +21,21 @@ class Palette extends Component {
                 {this.props.colours.map((code, index) => {
                     return <Swatch active={this.props.selected === code} onClick={this.props.onChange} code={code} key={index}/>
                 })}
-                {!this.state.showExtended &&
-                    <Button onClick={() => this.setState({showExtended: true})}>mehr</Button>
-                    // <Swatch onClick={() => this.setState({showExtended: true})}><Icon icon={"plus-square"} /></Swatch>
+                {this.props.extendedColours.length && (this.props.extendedColours.length > 0) &&
+                    <>
+                        {!this.state.showExtended &&
+                        <Button onClick={() => this.setState({showExtended: true})}>mehr</Button>
+                            // <Swatch onClick={() => this.setState({showExtended: true})}><Icon icon={"plus-square"} /></Swatch>
+                        }
+                        {this.state.showExtended && this.props.extendedColours.map((code, index) => {
+                            return <Swatch active={this.props.selected === code} onClick={this.props.onChange} code={code} key={index}/>
+                        })}
+                        {this.state.showExtended &&
+                        <Button onClick={() => this.setState({showExtended: false})}>weniger</Button>
+                        }
+                    </>
                 }
-                {this.state.showExtended && this.props.extendedColours.map((code, index) => {
-                    return <Swatch active={this.props.selected === code} onClick={this.props.onChange} code={code} key={index}/>
-                })}
-                {this.state.showExtended &&
-                    <Button onClick={() => this.setState({showExtended: false})}>weniger</Button>
-                }
+
             </Wrapper>
         )
     }

@@ -68,7 +68,7 @@ const ShapeContext = props => {
 
                     <TexturePalette
                         disabled={nothingSelected}
-                        textures={[null, "diagonal_lines", "full", "vertical_lines", "horizontal_lines", "dashed_lines", "grid", "stair", "dotted"]}
+                        textures={[null, "diagonal_lines", "diagonal_lines_wide", "full", "vertical_lines", "horizontal_lines", "dashed_lines", "grid", "stair", "dotted"]}
                         selected={selectedObject.pattern.template}
                         onChange={pattern => changePattern(dispatch, selectedObject.uuid, pattern, selectedObject.pattern.offset)}/>
 
@@ -95,10 +95,8 @@ const ShapeContext = props => {
                     <Palette selected={selectedObject.fill}
                              onChange={fill => changeProp(dispatch, selectedObject.uuid, 'fill', fill)}
                              colours={
-                                 [null, '#000000', '#1f78b4', '#b2df8a', '#e31a1c', '#ff7f00', '#cab2d6', '#b15928']
-                             } extendedColours={
-                        ['#a6cee3', '#33a02c', '#fb9a99', '#fdbf6f', '#6a3d9a', '#ffff99']
-                    }/>
+                                 [null, '#000000', '#412B82', '#E4120D', '#C2368C', '#018ECC', '#F08000', '#79BA4A', '#FFEC01', '#FFFFFF']
+                             } extendedColours={[]}/>
                 </fieldset>
                 <fieldset>
                     <legend>Kontur</legend>
