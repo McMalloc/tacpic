@@ -3,8 +3,8 @@ import {CLEAR_BASKET, ORDER} from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {id} from "./index";
 
-export const orderCreateSaga = createSaga(ORDER.CREATE, 'post', 'orders', takeLatest, true, id, id, ['catalogue', 'basket']);
-export const orderIndexSaga = createSaga(ORDER.INDEX, 'get', 'orders', takeLatest, true, id, id);
+export const orderCreateSaga = createSaga(ORDER.CREATE, 'post', 'orders', takeLatest, true, request=>request, response=>response, ['catalogue', 'basket']);
+export const orderIndexSaga = createSaga(ORDER.INDEX, 'get', 'orders', takeLatest, true, request=>request, response=>response);
 
 export function* orderCompleteWatcher() {
     yield takeLatest(ORDER.CREATE.SUCCESS, function* (action) {
