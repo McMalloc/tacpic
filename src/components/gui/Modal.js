@@ -52,12 +52,6 @@ const ModalTitle = styled.h3`
   flex: 1 1 auto;
 `;
 
-const ModalClose = styled.div`
-  font-size: 1.2em;
-  flex: 0 0 0;
-  cursor: pointer;
-`;
-
 const ModalContent = styled.div`
   padding: ${props => props.noPadding ? 0 : props.theme.large_padding};
   flex: 1 1 auto;
@@ -101,7 +95,7 @@ class Modal extends Component {
                 <Window fitted={this.props.fitted} onClick={event=>event.stopPropagation()}>
                     <ModalHeader>
                         <ModalTitle>{this.props.title}</ModalTitle>
-                        {typeof this.props.dismiss === "function" && <ModalClose onClick={this.props.dismiss}><Icon icon={"times"} /></ModalClose>}
+                        {typeof this.props.dismiss === "function" && <Button onClick={this.props.dismiss} id={"close-modal-button"} icon={"times"}></Button>}
                         {/*<ModalClose>{typeof this.props.dismiss === "function" && <Icon onClick={this.props.dismiss} icon={"times"} />}</ModalClose>*/}
                     </ModalHeader>
                     <ModalContent noPadding={this.props.noPadding}>{this.props.children}</ModalContent>

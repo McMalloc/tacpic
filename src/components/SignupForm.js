@@ -5,7 +5,7 @@ import {USER, RESET_USER_ERRORS} from "../actions/action_constants";
 import {useTranslation} from "react-i18next";
 import {Icon} from "./gui/_Icon";
 import {Textinput} from "./gui/Input";
-import {NavLink, Redirect} from "react-router-dom";
+import {NavLink, Navigate} from "react-router-dom";
 import {Alert} from "./gui/Alert";
 import CenterWrapper from "./gui/_CenterWrapper";
 import { useMatomo } from '@datapunt/matomo-tracker-react'
@@ -29,7 +29,7 @@ const SignupForm = props => {
     }, []);
 
     // if (user.verification_state === -5) {
-    //     return <Redirect push to="/catalogue"/>;
+    //     return <Navigate push to="/catalogue"/>;
     // }
 
     return (

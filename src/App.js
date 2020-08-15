@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import Editor from './components/editor/Editor';
-import {Route, Switch} from 'react-router-dom'
+import {BrowserRouter, Route, Routes, useNavigate} from 'react-router-dom'
 import Login from "./components/Login";
 import {useTranslation} from 'react-i18next';
 import {Navbar} from "./components/platform/Navbar";
@@ -15,10 +15,12 @@ import Account from "./components/platform/Account";
 import Basket from "./components/platform/Basket";
 import Checkout from "./components/platform/Checkout";
 import {OrderCompleted} from "./components/platform/OrderCompleted";
-import {useHistory} from "react-router";
 import {APP_TITLE} from "./env";
 import Stats from "./components/platform/Stats";
 import AccountVerification from "./components/platform/AccountVerification";
+import {CatalogueItemView} from "./components/platform/CatalogueItemView";
+import {Modal} from "./components/gui/Modal";
+import {useLocation, useMatch, useParams} from "react-router";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -30,7 +32,7 @@ const ScrollContent = styled.div`
 const Wrapper = styled.div`
   display: flex;
   height: 100%;
-  background-color: ${props=>props.theme.grey_6};
+  background-color: ${props => props.theme.grey_6};
   flex-direction: column;
 `;
 
@@ -57,7 +59,7 @@ class ErrorBoundary extends React.Component {
             }}>
                 Herrjemine!
                 <br/>
-                <span className={"fas fa-skull fa-xs fa-pulse"}></span>
+                <span className={"fas fa-skull fa-xs fa-pulse"} />
             </h1></div>;
         }
         return this.props.children;
@@ -71,7 +73,9 @@ const Blank = () => {
 const App = () => {
     const t = useTranslation().t;
     const dispatch = useDispatch();
-    const history = useHistory();
+
+    const location = useLocation();
+
     useEffect(() => {
         dispatch({
             type: APP.FRONTEND.REQUEST
@@ -94,42 +98,37 @@ const App = () => {
         // {label: 'Wissen', to: '/knowledge'},
         // {label: 'Häufige Fragen', to: '/faq'}
     ];
-
     return (
-            <Wrapper>
-                <Navbar items={navbarItems}/>
-                <ScrollContent>
-                    <div className={"App" + (!/editor/.test(history.location.pathname) ? " padded-top container container-fluid" : "")}>
-                        <ErrorBoundary>
-                            <Switch>
-                                {/*Renders exclusivly*/}
-                                {/*<Route path="/register" component={Register}/>*/}
-                                <Route path="/login" component={Login}/>
-                                <Route path="/account" component={Account}/>
-                                <Route path="/verify-account" component={AccountVerification}/>
-                                <Route path="/basket" component={Basket}/>
-                                <Route path="/checkout" component={Checkout}/>
-                                <Route path="/order-completed" component={OrderCompleted}/>
-                                <Route path="/catalogue" component={Catalogue}/>
-                                <Route path="/signup" component={SignupForm}/>
-                                {/*<Route path="/catalogue" render={() => <Catalogue private={true}/>}/>*/}
-
-                                <Route path="/editor/:graphic_id?/variants/:variant_id?" component={Editor}/>
-                                <Route path="/editor/:graphic_id?" component={Editor}/>
-                                <Route path="/editor/new" component={Editor}/>
-
-                                <Route path="/stats" component={Stats}/>
-
-                                <Route path="/" component={Landing}/>
-                                <Route component={Blank}/>
-                            </Switch>
-                        </ErrorBoundary>
-                    </div>
-                </ScrollContent>
-                <Footer />
-
-                <div id="modal-portal-target"></div>
-            </Wrapper>
+        <Wrapper>
+            <Navbar items={navbarItems}/>
+            <ScrollContent>
+                {/*<div className={"App"}>*/}
+                <div className={"App" + (!/editor/.test(location.pathname) ? " padded-top container container-fluid" : "")}>
+                    <ErrorBoundary>
+                        <Routes>
+                            <Route path="/login"            element={<Login/>}/>
+                            <Route path="/account/*"        element={<Account/>}/>
+                            <Route path="/verify-account"   element={<AccountVerification/>}/>
+                            <Route path="/basket"           element={<Basket/>}/>
+                            <Route path="/checkout"         element={<Checkout/>}/>
+                            <Route path="/order-completed"  element={<OrderCompleted/>}/>
+                            <Route path="/catalogue"        element={<Catalogue/>} />
+                            <Route path="/catalogue/:graphicId/variant/:variantId"      element={<Catalogue/>} />
+                            <Route path="/signup"           element={<SignupForm/>}/>
+                            {/*<Route path="/editor/:graphic_id?/variants/:variant_id?" element={<Editor/>}/>*/}
+                            {/*<Route path="/editor/:graphic_id?" element={<Editor/>}/>*/}
+                            <Route path="/editor/*"       element={<Editor/>}/>
+                            {/*<Route path="/editor/new"       element={<Editor/>}/>*/}
+                            <Route path="/stats"            element={<Stats/>}/>
+                            <Route path="/"                 element={<Landing/>}/>
+                            <Route element={<Blank/>}/>
+                        </Routes>
+                    </ErrorBoundary>
+                </div>
+            </ScrollContent>
+            <Footer/>
+            <div id={"modal-portal-target"} />
+        </Wrapper>
     );
 };
 

@@ -5,7 +5,7 @@ import '../../styles/Editor.css';
 import styled, {useTheme} from 'styled-components/macro';
 import {useTranslation} from "react-i18next";
 import {FILE} from "../../actions/action_constants";
-import {useParams} from "react-router";
+import {useParams} from "react-router-dom";
 import Canvas from "./widgets/Canvas";
 import Toggle from "../gui/Toggle";
 import {Button} from "../gui/Button";
@@ -123,7 +123,7 @@ const Editor = props => {
                         <Toggle toggled={showObjects} onClick={() => toggleObjects(!showObjects)} label={"Objekte"}/>
                     </RadiobarSegment>
                     {/*<ToolbarSegment>*/}
-                    <Toggle primary onClick={() => alert('hi')} label={"Neu"}/>
+                    <Toggle primary onClick={() => {}} label={"Neu"}/>
                     {/*</ToolbarSegment>*/}
                     <RadiobarSegment>
                         <Toggle primary toggled={openedModalSidebar === 0} onClick={() => handleModalSidebar(0)}

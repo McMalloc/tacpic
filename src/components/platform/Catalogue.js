@@ -1,13 +1,15 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {CATALOGUE, TAGS} from "../../actions/action_constants";
+import {CATALOGUE, GRAPHIC, TAGS} from "../../actions/action_constants";
 import CatalogueItemList from "./CatalogueItemList";
-import {Textinput} from "../gui/Input";
 import TagList from "./TagList";
 import {Row} from "../gui/Grid";
-import Tag from "./Tag";
 import {Checkbox} from "../gui/Checkbox";
 import Searchbar from "./Searchbar";
+import {Modal} from "../gui/Modal";
+import {CatalogueItemView} from "./CatalogueItemView";
+import {Route, useNavigate} from "react-router-dom";
+import {Routes, useParams} from "react-router";
 
 const queryGraphics = (dispatch, tags = [], terms = [], format = [], system = [], limit = 50, offset = 0) => {
     dispatch({
@@ -43,6 +45,11 @@ const Catalogue = props => {
         state => state.catalogue
     );
     const dispatch = useDispatch();
+
+    const navigate = useNavigate();
+    const {graphicId} = useParams();
+
+    const graphicOverview = catalogue.graphics.find(graphic => graphic.id == graphicId);
 
     useEffect(() => {
         // TODO default to saved state
@@ -100,6 +107,17 @@ const Catalogue = props => {
                 </div>
                 <div className={"col-xs-10 col-lg-10"}>
                     <CatalogueItemList graphics={catalogue.graphics}/>
+                    {/*<Routes>*/}
+                    {/*    <Route path=":graphicId/variant/:variantId"*/}
+                    {/*           element={*/}
+                    {!!graphicOverview &&<Modal title={graphicOverview && graphicOverview.title} noPadding={true} fitted dismiss={() => navigate("/catalogue")}>
+
+                                            <CatalogueItemView variantsOverview={graphicOverview.variants}/>
+
+                                   </Modal>}
+                    {/*           }/>*/}
+                    {/*</Routes>*/}
+
                 </div>
             </Row>
 

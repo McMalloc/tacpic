@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {useHistory, useParams, useRouteMatch} from "react-router";
+import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "./gui/Button";
 import {VARIANT, FILE, USER} from "../actions/action_constants";
@@ -9,7 +9,7 @@ import {useTranslation} from "react-i18next";
 import {Icon} from "./gui/_Icon";
 import {TagView} from "./platform/Tag";
 import {Textinput} from "./gui/Input";
-import {NavLink, Redirect} from "react-router-dom";
+import {NavLink, Navigate} from "react-router-dom";
 import LoginForm from "./LoginForm";
 
 const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4";
@@ -19,7 +19,7 @@ const Login = props => {
     const user = useSelector(state => state.user);
 
     if (user.logged_in) {
-        return <Redirect push to="/catalogue"/>;
+        return <Navigate push to="/catalogue"/>;
     }
 
     return (

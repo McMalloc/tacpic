@@ -9,7 +9,7 @@ import {GRAPHIC, VERSION, VARIANT} from "../../../actions/action_constants";
 import {Modal} from "../../gui/Modal";
 import {Alert} from "../../gui/Alert";
 import {useTranslation} from "react-i18next";
-import {useHistory} from "react-router";
+import {useNavigate} from "react-router-dom";
 import {NavLink} from "react-router-dom";
 import {renderSVG} from "./ReactSVG";
 
@@ -74,7 +74,7 @@ const Metadata = props => {
     );
     const {t} = useTranslation();
     const variantTags = useSelector(state => state.editor.file.tags);
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [input, setInput] = useState({});
     const [showFileModal, toggleFileModal] = useState(false);
@@ -201,7 +201,7 @@ const Metadata = props => {
                            align: "left",
                            disabled: file.state === 'updating',
                            action: () => {
-                               history.push(`/editor/${file.graphic_id}/variants/${file.variant_id}`)
+                               navigate(`/editor/${file.graphic_id}/variants/${file.variant_id}`)
                                toggleFileModal(false);
                            }
                        },
@@ -210,7 +210,7 @@ const Metadata = props => {
                            align: "right",
                            template: 'primary',
                            disabled: file.state === 'updating',
-                           action: () => history.push(`/catalogue/${file.graphic_id}/variant/${file.variant_id}`)
+                           action: () => navigate(`/catalogue/${file.graphic_id}/variant/${file.variant_id}`)
                        }
                    ]}
             >

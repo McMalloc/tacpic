@@ -3,7 +3,7 @@ import React, {Component, Fragment} from "react";
 import {useTranslation} from "react-i18next";
 import AccountWidget from "./AccountWidget";
 import {NavLink} from "react-router-dom";
-import {useLocation} from "react-router";
+import {useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Icon} from "../gui/_Icon";
 import {Button} from "../gui/Button";

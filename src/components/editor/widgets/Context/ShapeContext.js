@@ -96,7 +96,7 @@ const ShapeContext = props => {
                              onChange={fill => changeProp(dispatch, selectedObject.uuid, 'fill', fill)}
                              colours={
                                  [null, '#000000', '#412B82', '#E4120D', '#C2368C', '#018ECC', '#F08000', '#79BA4A', '#FFEC01', '#FFFFFF']
-                             } extendedColours={[]}/>
+                             } extendedColours={null}/>
                 </fieldset>
                 <fieldset>
                     <legend>Kontur</legend>

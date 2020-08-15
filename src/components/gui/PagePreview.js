@@ -97,7 +97,7 @@ export const BraillePagePreview = props => {
         <Wrapper onClick={props.onClick}>
 
             {props.formatted && props.formatted.length > 0 && props.formatted.map((page, index) => {
-                return <a href={`#braillepage_preview_${props.index}_${index}`}>
+                return <a key={index} href={`#braillepage_preview_${props.index}_${index}`}>
                     <Placeholder current={props.current}
                                  first={index===0}
                                  style={{

@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import {Provider} from "react-redux";
 import {ThemeProvider} from 'styled-components';
 import './i18n/i18n';
-import { MatomoProvider, createInstance } from '@datapunt/matomo-tracker-react'
+import {MatomoProvider, createInstance} from '@datapunt/matomo-tracker-react'
 
 // DELETE
 
@@ -27,11 +27,11 @@ const instance = createInstance({
 ReactDOM.render(
     <Provider store={store}>
         <ThemeProvider theme={standard}>
-            <BrowserRouter>
-                <MatomoProvider value={instance}>
+            <MatomoProvider value={instance}>
+                <BrowserRouter>
                     <App/>
-                </MatomoProvider>
-            </BrowserRouter>
+                </BrowserRouter>
+            </MatomoProvider>
         </ThemeProvider>
     </Provider>,
     document.getElementById('root'));

@@ -32,7 +32,7 @@ const Card = props => {
     const t = useTranslation().t;
     const theme = useTheme();
     return (
-        <NavLink className={'no-styled-link'} theme={theme} to={"/account/" + props.link}>
+        <NavLink className={'no-styled-link'} theme={theme} to={props.link}>
             <Tile>
                 <Title>
                     <span className={"hover-sensitive"}>{t(props.title)}</span>

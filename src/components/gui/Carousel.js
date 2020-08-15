@@ -91,6 +91,7 @@ const Carousel = props => {
                 <Radiobar>
                     <RadiobarSegment>
                         {props.children.map((Elem, index) => {
+                            if (Elem === null) return null;
                             return (
                                 <Toggle toggled={index === position} onClick={() => setPosition(index)}
                                         label={index + 1}/>

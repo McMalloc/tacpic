@@ -1,14 +1,27 @@
 import {transformCoords} from "./transform";
 import {cosOfDegs, getMirrorPoint, sinOfDegs} from "../../../../utility/geometry";
 import uuidv4 from "../../../../utility/uuid";
+import {COLOURS} from "../../../../config/constants";
 
 const defaultStrokeWidth = 1.5;
 const defaultStrokeStyle = "solid";
 
+const textureColourMapping = {
+    "diagonal_lines": COLOURS.blue,
+    "diagonal_lines_wide": COLOURS.cyan,
+    "full": COLOURS.red,
+    "vertical_lines": COLOURS.magenta,
+    "horizontal_lines": COLOURS.orange,
+    "dashed_lines": COLOURS.white,
+    "grid": COLOURS.yellow,
+    "stair": COLOURS.green,
+    "dotted": COLOURS.red
+}
+
 const createRect = (x = 0, y = 0, width = 100, height = 100, template = 'diagonal_lines', fill = 'white') => {
     return {
         uuid: uuidv4(),
-        x, y, width, height, fill,
+        x, y, width, height, fill: textureColourMapping[template],
         pattern: {
             template,
             offset: true

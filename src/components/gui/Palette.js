@@ -21,7 +21,7 @@ class Palette extends Component {
                 {this.props.colours.map((code, index) => {
                     return <Swatch active={this.props.selected === code} onClick={this.props.onChange} code={code} key={index}/>
                 })}
-                {this.props.extendedColours.length && (this.props.extendedColours.length > 0) &&
+                {this.props.extendedColours &&
                     <>
                         {!this.state.showExtended &&
                         <Button onClick={() => this.setState({showExtended: true})}>mehr</Button>

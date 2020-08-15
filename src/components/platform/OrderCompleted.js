@@ -2,7 +2,7 @@ import styled, {useTheme} from 'styled-components/macro';
 import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {useHistory} from "react-router";
+import {useNavigate} from "react-router-dom";
 import CenterWrapper from "../gui/_CenterWrapper";
 import Tile from "../gui/_Tile";
 import {Icon} from "../gui/_Icon";
@@ -16,12 +16,12 @@ const OrderCompleted = props => {
     const order = useSelector(
         state => state.catalogue.order
     );
-    const history = useHistory();
+    const navigate = useNavigate();
 
     useEffect(() => {
         return () => dispatch({type: ORDER_RESET})
     }, [])
-    if (order.key === null) history.push('/account/orders');
+    if (order.key === null) navigate('/account/orders');
 
     return (
         <CenterWrapper>

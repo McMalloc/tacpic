@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from "react-redux";
 import {Textinput} from "../gui/Input";
 import {Button} from "../gui/Button";
-import {useHistory, useLocation} from "react-router";
+import {useNavigate, useLocation} from "react-router-dom";
 import styled from 'styled-components/macro';
 
 const Bar = styled.form`
@@ -29,7 +29,7 @@ const Searchbar = () => {
     );
     const dispatch = useDispatch();
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
 
     const [searchTerm, setSearchTerm] = useState(catalogue.filterTerms);
@@ -53,10 +53,11 @@ const Searchbar = () => {
                         event.preventDefault();
                         searchChanged(dispatch, searchTerm);
                         if (location.pathname !== "/catalogue") {
-                            history.push("catalogue");
+                            navigate("catalogue");
                         }
                     }}
                     icon={"search"}
+                    id={"catalogue-search-btn"}
                     // disabled={catalogue.filterTerms === searchTerm}
                     type={"submit"} primary>
                     {t("catalogue:search")}

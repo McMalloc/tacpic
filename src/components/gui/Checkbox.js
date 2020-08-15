@@ -83,7 +83,7 @@ const Wrapper = styled.div`
 const Checkbox = props => {
     const { t } = useTranslation();
         return (
-            <Wrapper>
+            <Wrapper id={props.name + "-cb-wrapper"}>
                  <Input
                      onChange={props.onChange}
                      name={props.name}

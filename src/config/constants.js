@@ -5,6 +5,18 @@ export const A4_HEIGHT = 297;
 export const PAGE_NUMBER_BOTTOM = 4;
 export const MAX_VALUE_FOR_ORDER = 2000;
 
+export const COLOURS = {
+    black:	'#000000',
+    blue: '#412B82',
+    red: '#E4120D',
+    magenta: '#C2368C',
+    cyan: '#018ECC',
+    orange:	'#F08000',
+    green: '#79BA4A',
+    yellow:	'#FFEC01',
+    white: '#FFFFFF'
+}
+
 export const GERMAN_STATES = [
     {value: 'BW', label: 'Baden-Württemberg'},
     {value: 'BY', label: 'Bayern'},

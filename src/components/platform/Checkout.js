@@ -16,7 +16,7 @@ import {Checkbox} from "../gui/Checkbox";
 import LoginForm from "../LoginForm";
 import StepIndicator from "../gui/StepIndicator";
 import uuidv4 from "../../utility/uuid";
-import {useHistory} from "react-router";
+import {useNavigate} from "react-router-dom";
 
 // TODO Kommentar anfügen
 
@@ -29,14 +29,14 @@ const placeOrder = (dispatch, shippingAddress, invoiceAddress, paymentMethod, id
 
 const Checkout = props => {
     const user = useSelector(state => state.user);
-    const history = useHistory();
+    const navigate = useNavigate();
     // const invoiceAddresses = user.addresses.filter(address => address.is_invoice_addr);
     // const shippingAddresses = user.addresses.filter(address => !address.is_invoice_addr);
     const addresses = user.addresses;
     const idempotencyKey = uuidv4();
     const orderState = useSelector(state => state.catalogue.order);
 
-    if (!orderState.pending && orderState.successful) history.push('/order-completed');
+    if (!orderState.pending && orderState.successful) navigate('/order-completed');
 
     const {t} = useTranslation();
     const dispatch = useDispatch();

@@ -114,8 +114,8 @@ class InteractiveSVG extends Component {
                 );
                 this.props.changeViewport(
                     this.props.ui.scalingFactor + 0.1,
-                    this.props.ui.viewPortX,// + this.state.mouseOffsetX * this.props.ui.scalingFactor,
-                    this.props.ui.viewPortY);// + this.state.mouseOffsetY * this.props.ui.scalingFactor);
+                    this.props.ui.viewPortX + this.state.mouseOffsetX * this.props.ui.scalingFactor,
+                    this.props.ui.viewPortY + this.state.mouseOffsetY * this.props.ui.scalingFactor);
                 break;
             case 189: // -
                 this.props.changeViewport(
@@ -163,6 +163,7 @@ class InteractiveSVG extends Component {
         //  src/components/editor/widgets/ReactSVG/InteractiveSVG.js:105
         // https://stackoverflow.com/questions/39245488/event-path-undefined-with-firefox-and-vue-js
         let target = event.nativeEvent.path[0];
+        debugger;
 
         // check if a group was the actual target since the event first fires
         // on visible elements, and later bubbles up to the group
@@ -456,7 +457,7 @@ class InteractiveSVG extends Component {
                     {this.props.file.pages.map((page, index) => {
                         if (index === this.props.ui.currentPage) return null;
                         return (
-                                <SVGPage page={index} excludes={[]}/>
+                                <SVGPage page={index} key={index} excludes={[]}/>
                         )
                     })}
 

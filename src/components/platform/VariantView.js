@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {useHistory, useParams, useRouteMatch} from "react-router";
+import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "../gui/Button";
 import {VARIANT, FILE, GRAPHIC, ITEM_ADDED_TO_BASKET} from "../../actions/action_constants";
@@ -44,97 +44,94 @@ const Details = styled.div`
   flex-direction: column;
   //justify-content: space-between;
 `;
-const Well = styled.p`
-    background-color: ${props=>props.theme.background};
+const Well = styled.div`
+    background-color: ${props => props.theme.background};
     padding: 12px;
-    border-radius: ${props=>props.theme.border_radius};
-    border: 1px solid ${props=>props.theme.grey_4};
+    border-radius: ${props => props.theme.border_radius};
+    border: 1px solid ${props => props.theme.grey_4};
 `;
 
 const VariantView = props => {
     // The `path` lets us build <Route> paths that are
     // relative to the parent route, while the `url` lets
     // us build relative links.
-    const history = useHistory();
+    const navigate = useNavigate();
     const {t} = useTranslation();
     const theme = useTheme();
     let {graphicId, variantId} = useParams();
-    let variant = props.variants.find(variant => variant.id == variantId);
     const dispatch = useDispatch();
     const tags = useSelector(state => state.catalogue.tags);
     const logged_in = useSelector(state => state.user.logged_in);
     const [product, setProduct] = useState('graphic');
     const [quantity, setQuantity] = useState(1);
-
-    if (!variant) return null;
-
     // TODO Suchbegriff aus Store holen und in Variantenbeschreibung hervorheben
 
+    if (!props.id) return null;
     return (
         <Row style={{height: '100%'}}>
             <div className={"col-md-6 col-xl-4"}>
                 <Carousel>
-                    {variant.document.pages.map((page, index) => {
+                    {props.document.pages.map((page, index) => {
                         if (page.text) {
                             // TODO ordentliche Komponente; wie kann die Größe garantiert werden?
+                            if (page.content.length === 0) return null;
                             return <div style={{backgroundColor: 'white', padding: 6}}>{page.content}</div>
                         } else {
                             return <img
-                                src={`${API_URL}/thumbnails/${variant.file_name}-THUMBNAIL-xl-p${index}.png`}/>
+                                src={`${API_URL}/thumbnails/${props.file_name}-THUMBNAIL-xl-p${index}.png`}/>
                         }
                     })}
                 </Carousel>
             </div>
             <Details className={"col-md-6 col-xl-8 xs-first"}>
                 <div>
-                    <h2>{variant.title}</h2>
-                    <p>{variant.description}</p>
-                    <p><small>Erstellt am {moment(variant.created_at).format("DD.MM.YYYY, HH:mm")} Uhr</small></p>
+                    <h2>{props.title}</h2>
+                    <p>{props.description}</p>
+                    <p><small>Erstellt am {moment(props.created_at).format("DD.MM.YYYY, HH:mm")} Uhr</small></p>
                 </div>
                 <div>
-                    <p>
-                        <table>
-                            <tr>
-                                <td className={"icon-cell"}><Icon title={"Format der Grafikseiten"}
-                                                                  icon={"file-image"}/></td>
-                                <td>Grafikseiten</td>
-                                <td className={"important"}>
-                                    {variant.graphic_no_of_pages} {variant.graphic_no_of_pages === 1 ? 'Seite' : 'Seiten'} {t(`catalogue:${variant.graphic_format}-${variant.graphic_landscape ? 'landscape' : 'portrait'}`)}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className={"icon-cell"}><Icon title={"Format der Brailleseiten"}
-                                                                  icon={"braille"}/></td>
-                                <td>Brailleseiten</td>
-                                <td className={"important"}>
-                                    {variant.braille_no_of_pages} {variant.braille_no_of_pages === 1 ? 'Seite' : 'Seiten'} {t(`catalogue:${variant.braille_format}-portrait`)}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className={"icon-cell"}>&ensp;</td>
-                                <td>Braillesystem:</td>
-                                <td className={"important"}>{t('catalogue:' + variant.system)}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                {variant.tags.length && variant.tags.length > 0 ?
-                                    <>
-                                        <td>Schlagworte:</td>
-                                        <td>{tags.map((tag) => {
-                                            if (variant.tags.includes(tag.tag_id)) {
-                                                return <TagView style={{fontSize: '100%'}} theme={theme}
-                                                                key={tag.tag_id}>{tag.name}</TagView>
-                                            } else return null;
-                                        })}
-                                        </td>
-                                    </>
-                                    :
-                                    <td className={"disabled"} colSpan={2}>Keine Schlagworte für diese Variante.</td>
-                                }
-                            </tr>
-                        </table>
-                    </p>
+                    <br />
+                    <table>
+                        <tr>
+                            <td className={"icon-cell"}><Icon title={"Format der Grafikseiten"}
+                                                              icon={"file-image"}/></td>
+                            <td>Grafikseiten</td>
+                            <td className={"important"}>
+                                {props.graphic_no_of_pages} {props.graphic_no_of_pages === 1 ? 'Seite' : 'Seiten'} {t(`catalogue:${props.graphic_format}-${props.graphic_landscape ? 'landscape' : 'portrait'}`)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className={"icon-cell"}><Icon title={"Format der Brailleseiten"}
+                                                              icon={"braille"}/></td>
+                            <td>Brailleseiten</td>
+                            <td className={"important"}>
+                                {props.braille_no_of_pages} {props.braille_no_of_pages === 1 ? 'Seite' : 'Seiten'} {t(`catalogue:${props.braille_format}-portrait`)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className={"icon-cell"}>&ensp;</td>
+                            <td>Braillesystem:</td>
+                            <td className={"important"}>{t('catalogue:' + props.system)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            {props.tags.length && props.tags.length > 0 ?
+                                <>
+                                    <td>Schlagworte:</td>
+                                    <td>{tags.map((tag) => {
+                                        if (props.tags.includes(tag.tag_id)) {
+                                            return <TagView style={{fontSize: '100%'}} theme={theme}
+                                                            key={tag.tag_id}>{tag.name}</TagView>
+                                        } else return null;
+                                    })}
+                                    </td>
+                                </>
+                                :
+                                <td className={"disabled"} colSpan={2}>Keine Schlagworte für diese Variante.</td>
+                            }
+                        </tr>
+                    </table>
 
                     {!logged_in &&
                     <Alert info>
@@ -148,10 +145,10 @@ const VariantView = props => {
                                 disabled={!logged_in}
                                 fullWidth
                                 icon={'pen'} onClick={() => {
-                            history.push(`/editor/${graphicId}/variants/${variantId}`);
+                            navigate(`/editor/${graphicId}/variants/${variantId}`);
                             dispatch({
                                 type: FILE.OPEN.REQUEST,
-                                id: variant.id, mode: "edit"
+                                id: props.id, mode: "edit"
                             })
                         }}>Bearbeiten</Button>
 
@@ -162,20 +159,25 @@ const VariantView = props => {
                         <Button fullWidth icon={'download'} onClick={() => {
                             window.location = `${API_URL}/variants/${variantId}/brf`;
                         }}>Brailletext herunterladen</Button>
-
                     </Toolbar>
-
+                    <br />
                     <Well>
                         <h3>Bestellen</h3>
                         <Radio onChange={setProduct} value={product} name={"graphic_only_or_both"} options={[
-                            {label: template(t(`catalogue:graphics_and_braille`))({amount: variant.braille_no_of_pages + variant.graphic_no_of_pages}), value: "graphic"},
-                            {label: template(t(`catalogue:graphics_only`))({amount: variant.graphic_no_of_pages}) + ` - ${((variant.quote - variant.quote_graphics_only) / 100).toFixed(2).replace('.', ',')} €)`, value: "graphic_nobraille"}]}>
+                            {
+                                label: template(t(`catalogue:graphics_and_braille`))({amount: props.braille_no_of_pages + props.graphic_no_of_pages}),
+                                value: "graphic"
+                            },
+                            {
+                                label: template(t(`catalogue:graphics_only`))({amount: props.graphic_no_of_pages}) + ` - ${((props.quote - props.quote_graphics_only) / 100).toFixed(2).replace('.', ',')} €)`,
+                                value: "graphic_nobraille"
+                            }]}>
                         </Radio>
 
-                        <br />
+                        <br/>
 
                         <div style={{display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between'}}>
-                        {/*<div style={{display: 'flex'}}>*/}
+                            {/*<div style={{display: 'flex'}}>*/}
                             <Numberinput
                                 // disabled={}
                                 inline noMargin
@@ -185,16 +187,17 @@ const VariantView = props => {
                                 value={quantity}
                                 label={t(`catalogue:Stück`)}/>
 
-                                <div>
-                                    <Currency amount={(product === 'graphic' ? variant.quote : variant.quote_graphics_only) * quantity} />
+                            <div>
+                                <Currency
+                                    amount={(product === 'graphic' ? props.quote : props.quote_graphics_only) * quantity}/>
 
-                                    {quantity !== 1 &&
-                                    <small><br />Einzelpreis: <Currency amount={(product === 'graphic' ? variant.quote : variant.quote_graphics_only)} />
-                                    </small>
-                                    }
-                                    <small><br/>{t("zzgl. Versand")}</small>
-                                </div>
-
+                                {quantity !== 1 &&
+                                <small><br/>Einzelpreis: <Currency
+                                    amount={(product === 'graphic' ? props.quote : props.quote_graphics_only)}/>
+                                </small>
+                                }
+                                <small><br/>{t("zzgl. Versand")}</small>
+                            </div>
 
                             <Button
                                 onClick={() => addToBasket(dispatch, variantId, quantity, product)}

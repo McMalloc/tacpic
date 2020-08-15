@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Route, Switch, useHistory, useParams, useRouteMatch} from "react-router";
+import {Route, Routes, useNavigate, useParams} from "react-router-dom";
 import {Modal} from "../gui/Modal";
 import {FILE, GRAPHIC} from "../../actions/action_constants";
 import {Link} from "react-router-dom";
@@ -80,7 +80,6 @@ const DetailsColumn = styled.div`
 const Wrapper = styled.div`
     background-color: ${props => props.theme.grey_6};
     display: flex;
-    height: 100%;
     flex-direction: row;
     max-width: 1280px;
     flex-wrap: wrap;
@@ -95,10 +94,9 @@ const VariantPreview = ({title, id, description, tags, document, file_name}) => 
     const allTags = useSelector(
         state => state.catalogue.tags
     );
-    const thumbnailCandidate = document.pages.findIndex(page => !page.text)
     return (
         <VariantPreviewStyled {...theme} active={id === parseInt(selectedVariantId)}>
-            <img src={`${API_URL}/thumbnails/${file_name}-THUMBNAIL-xl-p${thumbnailCandidate}.png`}/>
+            <img src={`${API_URL}/thumbnails/${file_name}-THUMBNAIL-xl-p0.png`}/>
             {/*<VariantListingPreview bgUrl={`http://localhost:9292/static/thumbnails/thumbnail-${id}-sm.png`} />*/}
             <div className={'variant-info'}>
                 <strong>{title}</strong><br/>
@@ -125,59 +123,36 @@ const Placeholder = styled.div`
   font-size: 200%;
 `;
 
-const getGraphic = (dispatch, id) => {
-    dispatch({
-        type: GRAPHIC.GET.REQUEST,
-        payload: {id}
-    })
-};
-
-const CatalogueItemViewModal = props => {
-    const {graphicId} = useParams();
-    const dispatch = useDispatch();
-
-    const pending = useSelector(
-        state => state.catalogue.graphicGetPending
-    );
-
-    const graphic = useSelector(
-        state => state.catalogue.viewedGraphic
-    );
-
-    useEffect(() => {
-        getGraphic(dispatch, graphicId);
-    }, graphicId);
-
-    return (
-        <Modal noPadding={true} fitted title={!pending ? graphic.title : 'Moment...'} dismiss={props.dismiss}>
-            {pending && <Placeholder><Icon icon={"spinner fa-spin"}/></Placeholder>}
-            {!pending && <CatalogueItemView {...graphic}/>}
-        </Modal>
-    )
-};
-
-
-const CatalogueItemView = props => {
-    let {path, url} = useRouteMatch();
+const CatalogueItemView = ({variantsOverview}) => {
     const theme = useTheme();
     let {graphicId, variantId} = useParams();
     const logged_in = useSelector(state => state.user.logged_in);
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
+    const pending = useSelector(state => state.catalogue.graphicGetPending);
+
+    const viewedGraphic = useSelector(state => state.catalogue.viewedGraphic);
+    const viewedVariant = viewedGraphic.variants && viewedGraphic.variants.find(variant => variant.id == variantId);
+
+    useEffect(() => {
+        dispatch({
+            type: GRAPHIC.GET.REQUEST,
+            payload: {id: graphicId}
+        });
+    }, [graphicId]);
 
     return (
         <Wrapper theme={theme}>
-            <Route path={`${path}/variant/:variantId`}>
-
+        {/*<Wrapper theme={theme}>*/}
                 {/*{props.variants.length > 1 &&*/}
                 <VariantColumn className={"col-xs-12 col-md-4 col-lg-3"}>
-                    <div className={'heading'}>
-                        <strong>Verfügbare Varianten</strong> ({props.variants.length} gesamt)
+                    <div className={'heading'}>}
+                        <strong>Verfügbare Varianten</strong> ({variantsOverview.length} gesamt)
                     </div>
                     <div>
-                        {props.variants.map((variant, index) => {
+                        {variantsOverview.map((variant, index) => {
                             return (
-                                <Link className={'no-styled-link'} key={index} to={`${url}/variant/${variant.id}`}>
+                                <Link className={'no-styled-link'} key={index} to={`/catalogue/${graphicId}/variant/${variant.id}`}>
                                     <VariantPreview {...variant} />
                                 </Link>
                             )
@@ -188,7 +163,7 @@ const CatalogueItemView = props => {
                                 disabled={!logged_in}
                                 fullWidth icon={'copy'}
                                 onClick={() => {
-                                    history.push(`/editor/${graphicId}`);
+                                    navigate(`/editor/${graphicId}`);
                                     dispatch({
                                         type: FILE.OPEN.REQUEST,
                                         id: variantId, mode: "new"
@@ -199,13 +174,11 @@ const CatalogueItemView = props => {
                 </VariantColumn>
                 {/*}*/}
                 <DetailsColumn className={"col-xs-12 col-md-8 col-lg-9"} theme={theme}>
-                    <Switch>
-                        <VariantView {...props}/>
-                    </Switch>
+                    {pending && <Placeholder><Icon icon={"spinner fa-spin"}/></Placeholder>}
+                    {!pending && <VariantView {...viewedVariant} />}
                 </DetailsColumn>
-            </Route>
         </Wrapper>
     );
 };
 
-export {CatalogueItemView, CatalogueItemViewModal};
+export {CatalogueItemView};

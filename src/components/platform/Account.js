@@ -1,15 +1,16 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Redirect, Route, Switch} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import {USER} from "../../actions/action_constants";
 import Card from "../gui/Card";
 import {Button} from "../gui/Button";
 import Addresses from "./Addresses";
 import {Footer} from "./Footer";
-import {useLocation} from "react-router";
+import {useLocation} from "react-router-dom";
 import {Container, Row} from "../gui/Grid";
 import Orders from "./account/Orders";
 import AccountInfo from "./account/AccountInfo";
+import {Outlet} from "react-router";
 
 const Account = props => {
     const user = useSelector(state => state.user);
@@ -17,7 +18,7 @@ const Account = props => {
     let location = useLocation();
 
     // if (!user.logged_in) {
-    //     return <Redirect push to="/login"/>;
+    //     return <Navigate push to="/login"/>;
     // }
     const menues = [
         // {key: "my_lists", icon: "list"},
@@ -42,6 +43,7 @@ const Account = props => {
                 )
             })}
         </Row>
+        <Outlet/>
         <Row>
             <div className={"col-sm-12"} style={{textAlign: "center"}}>
                 <Button onClick={event => dispatch({type: USER.LOGOUT.REQUEST})}>
@@ -60,21 +62,24 @@ const Account = props => {
                 <>
                     <Row>
                         <div className={"col-xs-12"}>
-                            <h1>Persönlicher Bereich<Switch>
-                                <Route path='/account/addresses'>: Adressen</Route>
-                                <Route path='/account/orders'>: Bestellungen</Route>
-                            </Switch> </h1>
+                            <h1>Persönlicher Bereich
+                                    <Routes>
+                                    <Route path='/account/addresses'>: Adressen</Route>
+                                    <Route path='/account/orders'>: Bestellungen</Route>
+                                </Routes>
+                            </h1>
+
 
                         </div>
                     </Row>
 
                     {/*<Row>*/}
-                        <Switch>
-                            <Route exact path="/account" render={() => home}/>
-                            <Route path="/account/orders" component={Orders}/>
-                            <Route path="/account/my_account" component={AccountInfo}/>
-                            <Route path="/account/addresses" component={Addresses}/>
-                        </Switch>
+                    <Routes>
+                        <Route path="" element={home}/>
+                        <Route path="orders" element={<Orders/>}/>
+                        <Route path="my_account" element={<AccountInfo/>}/>
+                        <Route path="addresses" element={<Addresses/>}/>
+                    </Routes>
                     {/*</Row>*/}
                 </>
             }

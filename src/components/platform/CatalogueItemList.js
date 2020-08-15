@@ -1,11 +1,10 @@
 import React, {useState} from "react";
-import {Route, Switch, useHistory, useParams, useRouteMatch} from "react-router";
+import {Route, Routes, useNavigate, useParams} from "react-router-dom";
 import CatalogueItem, {Wrapper as CatalogueItemWrapper} from "./CatalogueItem";
-import {CatalogueItemViewModal} from "./CatalogueItemView";
 import styled from "styled-components";
 import {Button} from "../gui/Button";
 import {useDispatch, useSelector} from "react-redux";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {Icon} from "../gui/_Icon";
 import {Alert} from "../gui/Alert";
 
@@ -46,8 +45,7 @@ const handleNewGraphic = (dispatch, doRedirect) => {
 };
 
 const CatalogueItemList = props => {
-    let {path, url} = useRouteMatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [redirect, doRedirect] = useState(false);
     const filtered = !useSelector(
@@ -57,17 +55,8 @@ const CatalogueItemList = props => {
             state.catalogue.filterSystem.length === 0
     );
 
-    function handleClick() {
-        history.push(url);
-    }
 
-    if (redirect) {
-        return <Redirect push to="/editor/new"/>;
-    }
-
-    // TODO hier in der Componente Viewportbreite abfragen und davon abhängig,
-    //  auf wieviele Spalten die Grafiken verteilt werden
-
+    if (redirect) return <Navigate push to="/editor/new"/>
     if (!(props.graphics && props.graphics.length > 0)) return <Alert info>Keine Grafiken gefunden.</Alert>;
 
     return (
@@ -75,25 +64,17 @@ const CatalogueItemList = props => {
             <FlexRow>
                 {props.graphics && props.graphics.length > 0 && props.graphics.map((graphic, index) => {
                         return (
-                            <CatalogueItem key={index} {...graphic} filtered={filtered}
-                                           url={`${url}/${graphic.id}/variant/${graphic.variants[0].id}`}/>
+                            <CatalogueItem key={index} {...graphic} filtered={filtered}/>
                         )
                     })
                 }
-
                 <CatalogueItemWrapper>
-                    <AddButton onClick={() => handleNewGraphic(dispatch, doRedirect)}>
+                    <AddButton id={'btn-new-graphic'} onClick={() => handleNewGraphic(dispatch, doRedirect)}>
                         <span><Icon icon={'plus'}/></span>
                         <span>Neue Grafik</span>
                     </AddButton>
                 </CatalogueItemWrapper>
-
             </FlexRow>
-            <Switch>
-                <Route path={`${path}/:graphicId`}>
-                    <CatalogueItemViewModal dismiss={handleClick} graphics={props.graphics}/>
-                </Route>
-            </Switch>
         </>
 
     );

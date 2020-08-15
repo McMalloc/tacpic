@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useLocation} from "react-router";
+import {useLocation} from "react-router-dom";
 import {USER} from "../../actions/action_constants";
 import {Textinput} from "../gui/Input";
 import {useTranslation} from "react-i18next";
 import {Icon} from "../gui/_Icon";
 import {Button} from "../gui/Button";
-import {NavLink, Redirect} from "react-router-dom";
+import {NavLink, Navigate} from "react-router-dom";
 import {Row} from "../gui/Grid";
 
 const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 ";
@@ -31,7 +31,7 @@ const AccountVerification = props => {
     const [pwdConfirmValid, setPwdConfirmValid] = useState(false);
 
     if (user.verification_state === 3) {
-        return <Redirect push to="/catalogue"/>;
+        return <Navigate push to="/catalogue"/>;
     }
 
     return (

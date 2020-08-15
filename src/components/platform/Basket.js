@@ -4,7 +4,7 @@ import {Button} from "../gui/Button";
 import {useTranslation} from "react-i18next";
 import {QUOTE} from "../../actions/action_constants";
 import BasketListing from "./BasketListing";
-import {Link, NavLink, Redirect} from "react-router-dom";
+import {Link, NavLink, Navigate} from "react-router-dom";
 import CenterWrapper from "../gui/_CenterWrapper";
 import {Icon} from "../gui/_Icon";
 import {MAX_VALUE_FOR_ORDER} from "../../config/constants";

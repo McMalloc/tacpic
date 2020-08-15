@@ -102,6 +102,7 @@ const Textinput = props => {
     const {t} = useTranslation();
     const messages = getMessages(validities, t, validations);
 
+    // const Wrapping = Label;
     const Wrapping = props.label ? Label : React.Fragment;
 
     return (

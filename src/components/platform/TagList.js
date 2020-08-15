@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {groupBy, difference, flatten} from 'lodash';
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {Checkbox} from "../gui/Checkbox";
 import Tag from "./Tag";

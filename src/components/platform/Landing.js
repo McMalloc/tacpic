@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 import styled from "styled-components/macro";
 import Searchbar from "./Searchbar";
 import {Button} from "../gui/Button";
-import {useHistory} from "react-router";
+import {useNavigate} from "react-router-dom";
 import CenterWrapper from "../gui/_CenterWrapper";
 
 const Form = styled.div`
@@ -24,7 +24,7 @@ const Landing = () => {
     const t = useTranslation().t;
 
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     return (
         <div className={layout}>
@@ -37,11 +37,11 @@ const Landing = () => {
 <br /><br /><br />
                 <div style={{marginBottom: "50%"}}>
                     <Button onClick={event => {
-                        history.push("/catalogue");
+                        navigate("/catalogue");
                     }}>{t("catalogue:grub")}</Button>&ensp;
                     <Button onClick={event => {
                         event.preventDefault();
-                        history.push("/editor/new");
+                        navigate("/editor/new");
                     }}>{t("catalogue:create")}</Button>
                 </div>
             </Form>

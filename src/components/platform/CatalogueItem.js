@@ -1,5 +1,5 @@
 import React from "react";
-import styled, {useTheme} from "styled-components";
+import styled, {useTheme} from "styled-components/macro";
 import {Link} from "react-router-dom";
 import Tile from "../gui/_Tile";
 import {API_URL} from "../../env.json"
@@ -48,11 +48,11 @@ export default props => {
     const thumbnailURL =
         `${API_URL}/thumbnails/${props.variants[0].file_name}-THUMBNAIL-sm-p0.png`
     return (
-        <Wrapper theme={theme}>
-            <Link className={'no-styled-link'} to={props.url}>
+        <Wrapper id={"catalogue-item-" + props.id} theme={theme}>
+            <Link className={'no-styled-link'} to={props.id + "/variant/" + props.variants[0].id}>
                 <Tile>
                     <Preview
-                        thumbnailURL={thumbnailURL} />
+                        id={"catalogue-item-" + props.id + "-thumbnail"} thumbnailURL={thumbnailURL} />
                     <Info>
                         <strong>{props.title}</strong> <br/>
                         <small>
