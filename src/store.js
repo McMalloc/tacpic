@@ -107,6 +107,7 @@ const initialCatalogue = {
     viewedGraphic: {},
     graphicGetPending: true,
     searchPending: false,
+    loadMorePending: false,
     quotedVariants: [],
     order: {
         pending: false,

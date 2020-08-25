@@ -117,6 +117,7 @@ const App = () => {
                             <Route path="/signup"           element={<SignupForm/>}/>
                             {/*<Route path="/editor/:graphic_id?/variants/:variant_id?" element={<Editor/>}/>*/}
                             {/*<Route path="/editor/:graphic_id?" element={<Editor/>}/>*/}
+                            <Route path="/editor/:graphicId/variants/:variantId"       element={<Editor/>}/>
                             <Route path="/editor/*"       element={<Editor/>}/>
                             {/*<Route path="/editor/new"       element={<Editor/>}/>*/}
                             <Route path="/stats"            element={<Stats/>}/>

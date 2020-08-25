@@ -9,6 +9,7 @@ import AddressView from "./AddressView";
 import styled from 'styled-components/macro';
 import {Alert} from "../gui/Alert";
 import ButtonBar from "../gui/ButtonBar";
+import {Modal} from "../gui/Modal";
 
 const AddressWrapper = styled.div`
     background-color: ${props => props.theme.background};
@@ -32,6 +33,7 @@ const removeAddress = (dispatch, addressID) => {
     })
 }
 
+// TODO Bestätigungsdialog könnte refaktorisiert werden
 const Addresses = () => {
     const dispatch = useDispatch();
     const addresses = useSelector(state => state.user.addresses);
@@ -39,6 +41,8 @@ const Addresses = () => {
     const shippingAddresses = addresses.filter(address => !address.is_invoice_addr);
 
     const [showForm, setShowForm] = useState(false);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [addressToBeRemoved, setAddressToBeRemoved] = useState({});
     const [initial, setInitial] = useState({is_invoice_addr: false});
 
     useEffect(() => {
@@ -48,7 +52,7 @@ const Addresses = () => {
     }, [showForm]);
 
     return (
-        <Container>
+        <>
             <Row>
                 {invoiceAddresses.length === 0 && shippingAddresses.length === 0 &&
                 <div className={'col-xs-12'}>
@@ -60,34 +64,50 @@ const Addresses = () => {
                 <AddressForm modal={true} initial={initial} cancel={() => setShowForm(false)}/>
                 }
 
+                {showConfirmModal &&
+                <Modal fitted title={"Entfernen bestätigen"} dismiss={() => setShowConfirmModal(false)} actions={[
+                    {label: "Ja, entfernen", template: "primary", align: "right", action: () => {
+                            removeAddress(dispatch, addressToBeRemoved.id);
+                            setShowConfirmModal(false);
+                        }},
+                    {label: "Nein, behalten", action: () => setShowConfirmModal(false)}
+                ]}>
+                    <p>Soll die Addresse wirklich entfernt werden?</p>
+                    <AddressView {...addressToBeRemoved} />
+                </Modal>
+                }
+
                 <div className={"col-sm-8 col-xs-12"}>
-                        {addresses.map(address => {
-                            return <AddressWrapper>
-                                <AddressView editable {...address} />
+                    {addresses.map(address => {
+                        return <AddressWrapper key={address.id}>
+                            <AddressView editable {...address} />
 
-                                <ButtonBar>
-                                    <Button onClick={() => {
-                                        setInitial(address);
-                                        setShowForm(true);
-                                    }} icon={'pen'} label={"Bearbeiten"}/>
-                                    <Button icon={'times'} onClick={() => removeAddress(dispatch, address.id)}
-                                            label={"Löschen"}/>
-                                </ButtonBar>
+                            <ButtonBar>
+                                <Button onClick={() => {
+                                    setInitial(address);
+                                    setShowForm(true);
+                                }} icon={'pen'} label={"Bearbeiten"}/>
+                                <Button icon={'times'} onClick={() => {
+                                    setAddressToBeRemoved(address);
+                                    setShowConfirmModal(true);
+                                }}
+                                        label={"Entfernen"}/>
+                            </ButtonBar>
 
-                            </AddressWrapper>
-                        })}
+                        </AddressWrapper>
+                    })}
                 </div>
             </Row>
             <Row>
                 <div className={"col-sm-12"} style={{textAlign: "center"}}>
                     <br/>
-                    <Button primary label={"Neu"} onClick={() => {
+                    <Button primary label={"account:add_address"} onClick={() => {
                         setInitial({is_invoice_addr: false});
                         setShowForm(true);
                     }}/>
                 </div>
             </Row>
-        </Container>
+        </>
     );
 };
 

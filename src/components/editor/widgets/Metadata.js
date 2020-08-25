@@ -12,6 +12,7 @@ import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {NavLink} from "react-router-dom";
 import {renderSVG} from "./ReactSVG";
+import uuidv4 from "../../../utility/uuid";
 
 const Status = styled.div`
   display: flex;
@@ -140,7 +141,7 @@ const Metadata = props => {
                     }}
                     onCreateOption={(option) => {
                         let taglist = [...variantTags];
-                        taglist.push({tag_id: null, name: option});
+                        taglist.push({tag_id: uuidv4(), name: option});
                         dispatch({
                             type: "CHANGE_FILE_PROPERTY",
                             key: 'tags',

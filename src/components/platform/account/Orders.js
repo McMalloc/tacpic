@@ -6,6 +6,7 @@ import * as moment from "moment";
 import {Currency} from "../../gui/Currency";
 import {Button} from "../../gui/Button";
 import {useTranslation} from "react-i18next";
+import {Alert} from "../../gui/Alert";
 
 
 const Orders = () => {
@@ -19,7 +20,7 @@ const Orders = () => {
         })
     }, []);
 
-    if (orders.length === 0) return null;
+    if (orders.length === 0) return <Alert info>Es sind bisher keine Bestellungen erfasst worden.</Alert>;
 
     return (
         <section>

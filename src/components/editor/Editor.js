@@ -95,13 +95,13 @@ const Editor = props => {
     const dispatch = useDispatch();
     const t = useTranslation().t;
     const theme = useTheme();
-    let {variant_id} = useParams();
+    let {variantId} = useParams();
 
     useEffect(() => {
-        if (!!variant_id) {
+        if (!!variantId) {
             dispatch({
                 type: FILE.OPEN.REQUEST,
-                id: variant_id, mode: "edit"
+                id: variantId, mode: "edit"
             })
         }
     }, []);

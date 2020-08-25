@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {CATALOGUE, GRAPHIC, TAGS} from "../../actions/action_constants";
+import {CATALOGUE, GRAPHIC, LOAD_MORE, TAGS} from "../../actions/action_constants";
 import CatalogueItemList from "./CatalogueItemList";
 import TagList from "./TagList";
 import {Row} from "../gui/Grid";
@@ -10,6 +10,8 @@ import {Modal} from "../gui/Modal";
 import {CatalogueItemView} from "./CatalogueItemView";
 import {Route, useNavigate} from "react-router-dom";
 import {Routes, useParams} from "react-router";
+import {Button} from "../gui/Button";
+import {Icon} from "../gui/_Icon";
 
 const queryGraphics = (dispatch, tags = [], terms = [], format = [], system = [], limit = 50, offset = 0) => {
     dispatch({
@@ -24,6 +26,12 @@ const queryGraphics = (dispatch, tags = [], terms = [], format = [], system = []
             order_by: "date",
             order_desc: false
         }
+    })
+};
+
+const loadMore = (dispatch, catalogue) => {
+    dispatch({
+        type: LOAD_MORE
     })
 };
 
@@ -117,9 +125,19 @@ const Catalogue = props => {
                                    </Modal>}
                     {/*           }/>*/}
                     {/*</Routes>*/}
+                    <div className={"align-center padded-top"}>
+                        {catalogue.loadMorePending ?
+                            <Icon icon={"cog fa-spin fa-2x"} />
+                            :
+                            <Button primary label={"Mehr laden"} large icon={"ellipsis-h"} onClick={() => {
+                                loadMore(dispatch, catalogue);
+                            }}/>
+                        }
+                    </div>
 
                 </div>
             </Row>
+            <br />
 
         </>
     )

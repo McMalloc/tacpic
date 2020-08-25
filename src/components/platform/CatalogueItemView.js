@@ -58,7 +58,7 @@ const VariantColumn = styled.div`
     padding: 0;
     flex-direction: column;
     display: flex;
-    border-right: 1px solid ${props => props.theme.brand_secondary_light};
+    //border-right: 1px solid ${props => props.theme.brand_secondary_light};
     position: relative;
     
     .heading {
@@ -146,7 +146,7 @@ const CatalogueItemView = ({variantsOverview}) => {
         {/*<Wrapper theme={theme}>*/}
                 {/*{props.variants.length > 1 &&*/}
                 <VariantColumn className={"col-xs-12 col-md-4 col-lg-3"}>
-                    <div className={'heading'}>}
+                    <div className={'heading'}>
                         <strong>Verfügbare Varianten</strong> ({variantsOverview.length} gesamt)
                     </div>
                     <div>

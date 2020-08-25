@@ -11,6 +11,7 @@ import {Container, Row} from "../gui/Grid";
 import Orders from "./account/Orders";
 import AccountInfo from "./account/AccountInfo";
 import {Outlet} from "react-router";
+import {Alert} from "../gui/Alert";
 
 const Account = props => {
     const user = useSelector(state => state.user);
@@ -33,7 +34,7 @@ const Account = props => {
         <Row>
             {menues.map(menu => {
                 return (
-                    <div className={"col-md-4 col-lg-3 col-sm-6 col-xs-12 extra-margin double"}>
+                    <div key={menu.key} className={"col-md-4 col-lg-3 col-sm-6 col-xs-12 extra-margin double"}>
                         <Card
                             description={"account:" + menu.key + "-description"}
                             title={"account:" + menu.key} link={menu.key} icon={menu.icon}>
@@ -56,16 +57,16 @@ const Account = props => {
     return (
         <>
             {!user.logged_in ?
-                // <Alert info>Nicht eingeloggt.</Alert>
-                null
+                <Alert info>Nicht eingeloggt.</Alert>
+                // null
                 :
                 <>
                     <Row>
                         <div className={"col-xs-12"}>
                             <h1>Persönlicher Bereich
-                                    <Routes>
-                                    <Route path='/account/addresses'>: Adressen</Route>
-                                    <Route path='/account/orders'>: Bestellungen</Route>
+                                <Routes>
+                                    <Route path='addresses' element={<span>: Adressen</span>} />
+                                    <Route path='orders' element={<span>: Bestellungen</span>} />
                                 </Routes>
                             </h1>
 

@@ -6,22 +6,17 @@ import {
     userValidateSaga,
     userVerifySaga
 } from "./user_saga";
-import {call, all, takeLatest, takeEvery, put, select} from "redux-saga/effects";
+import {call, all, takeLatest} from "redux-saga/effects";
 import localstorageWatcher from "./localstorage_saga";
 import {
     variantUpdateSaga,
     variantGetSaga,
-    variantCreateSaga
+    variantCreateSaga, graphicCreateSaga
 } from "./variant_saga";
 import {openFileWatcher} from "./file_saga";
 import {
-    CATALOGUE,
     TAGS,
     GRAPHIC,
-    USER,
-    VARIANT,
-    VERSION,
-    ORDER,
     VARIANTS,
     ADDRESS,
     APP, QUOTE
@@ -29,10 +24,7 @@ import {
 import createSaga from "./saga_utilities";
 import {
     searchChangeWatcher,
-    catalogueSearchSaga,
-    tagToggledWatcher,
-    formatToggledWatcher,
-    systemToggledWatcher
+    catalogueSearchSaga, catalogueLoadMoreSaga
 } from "./catalogue_saga";
 import {contentEditWatcher, labelWriteWatcher, layoutEditWatcher, systemChangeWatcher} from "./label_translate_saga";
 import {renderWatcher} from "./render_saga";
@@ -66,7 +58,6 @@ export default function* root() {
         call(createSaga(QUOTE.REQUEST, 'post', 'quotes/request', takeLatest, true, id, id)),
         call(createSaga(QUOTE.GET, 'post', 'quotes', takeLatest, false, id, id)),
 
-        call(createSaga(GRAPHIC.CREATE, 'post', 'graphics', takeLatest, true, id)),
         call(createSaga(GRAPHIC.GET, 'get', 'graphics/:id', takeLatest, false, id, id)),
 
         call(createSaga(ADDRESS.GET, 'get', 'users/addresses', takeLatest, true, id, id)),
@@ -83,13 +74,16 @@ export default function* root() {
 
         call(basketChangeSaga),
 
+        call(catalogueSearchSaga),
+        call(catalogueLoadMoreSaga),
+        call(searchChangeWatcher),
+
         call(variantGetSaga),
         call(openFileWatcher),
-        call(catalogueSearchSaga),
         call(variantUpdateSaga),
         call(variantCreateSaga),
+        call(graphicCreateSaga),
         call(localstorageWatcher),
-        call(searchChangeWatcher),
 
         call(logoutWatcher),
         call(userLoginSaga),
@@ -102,9 +96,9 @@ export default function* root() {
         call(systemChangeWatcher),
         call(layoutEditWatcher),
 
-        call(tagToggledWatcher),
-        call(formatToggledWatcher),
-        call(systemToggledWatcher),
+        // call(tagToggledWatcher),
+        // call(formatToggledWatcher),
+        // call(systemToggledWatcher),
 
         call(renderWatcher),
     ])

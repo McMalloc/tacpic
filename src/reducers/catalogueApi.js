@@ -6,7 +6,7 @@ import {
     ORDER,
     VARIANTS,
     ITEM_ADDED_TO_BASKET,
-    ITEM_REMOVED_FROM_BASKET, ORDER_RESET, QUOTE, CLEAR_BASKET
+    ITEM_REMOVED_FROM_BASKET, ORDER_RESET, QUOTE, CLEAR_BASKET, LOAD_MORE
 } from '../actions/action_constants';
 import {produce} from "immer";
 
@@ -18,8 +18,22 @@ import {produce} from "immer";
 // }
 
 const catalogueApi = (state = {}, action) => {
-
     switch (action.type) {
+        case LOAD_MORE:
+            return {
+                ...state,
+                offset: state.offset + state.limit
+            };
+        case CATALOGUE.MORE.REQUEST:
+            return {
+                ...state,
+                loadMorePending: true
+            };
+        case CATALOGUE.MORE.SUCCESS:
+            return {
+                ...state, graphics: state.graphics.concat(action.data), loadMorePending: false
+            };
+
         case CATALOGUE.SEARCH.REQUEST:
             return {
                 ...state,
@@ -36,6 +50,7 @@ const catalogueApi = (state = {}, action) => {
                 ...state,
                 searchPending: false
             };
+
         case GRAPHIC.GET.REQUEST:
             return {
                 ...state,

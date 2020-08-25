@@ -1,5 +1,5 @@
 import createSaga from "./saga_utilities";
-import {VARIANT} from "../actions/action_constants";
+import {GRAPHIC, VARIANT} from "../actions/action_constants";
 import {takeLatest} from "redux-saga/effects";
 import {extractSVG} from "../components/editor/widgets/ReactSVG";
 
@@ -26,15 +26,33 @@ export const variantGetSaga = createSaga(
     }
 );
 
+const isUuid = string => /[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/.test(string)
+
+const replaceTagUuids = tags => tags.map(tag =>
+    ({
+        name: tag.name,
+        tag_id: isUuid(tag.tag_id) ? null : tag.tag_id
+    })
+)
+
 export const variantUpdateSaga = createSaga(
-    VARIANT.UPDATE, 'post', 'variants/:variant_id', takeLatest, true, file => {
-        return {
+    VARIANT.UPDATE, 'post', 'variants/:variant_id', takeLatest, true, file =>
+        ({
             ...file,
-            pages: file.pages.map((page, index)=>(page.text ? {...page} : {...page, rendering: extractSVG(index)}))};
-    });
+            tags: replaceTagUuids(file.tags),
+            pages: file.pages.map((page, index) => (page.text ? {...page} : {...page, rendering: extractSVG(index)}))
+        })
+    );
 
 export const variantCreateSaga = createSaga(
-    VARIANT.CREATE, 'post', 'variants', takeLatest, true, file => {
-        // file.renderedPreview = extractSVG();
-        return file;
-    });
+    VARIANT.CREATE, 'post', 'variants', takeLatest, true, file =>
+        ({
+            ...file,
+            tags: replaceTagUuids(file.tags)
+        }));
+
+export const graphicCreateSaga = createSaga(GRAPHIC.CREATE, 'post', 'graphics', takeLatest, true, file =>
+    ({
+        ...file,
+        tags: replaceTagUuids(file.tags)
+    }));
