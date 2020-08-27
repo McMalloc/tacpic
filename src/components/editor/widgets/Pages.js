@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {connect, useDispatch, useSelector} from "react-redux";
 import {Button} from "../../gui/Button";
-import {BraillePagePreview, GraphicPagePreview} from "../../gui/PagePreview";
+import {GraphicPagePreview} from "../../gui/PagePreview";
 import styled from 'styled-components/macro';
-import {Lower, Upper} from "../../gui/WidgetContainer";
+import {Icon} from "../../gui/_Icon";
+import {AccordeonMenuEntry, AccordeonPanelFlyoutButton} from "../../gui/Accordeon";
+import Context from "./Context/Context";
 
 const changePage = (dispatch, nr) => {
     dispatch({
@@ -28,48 +30,38 @@ const removePage = (dispatch, index) => {
     })
 }
 
-const Wrapper = styled.div`
+const ButtonBar = styled.div`
   display: flex;
-  flex-wrap: wrap;
-`
+  justify-content: space-between;
+  padding: ${props => props.theme.base_padding};
+  border-top: 1px solid ${props => props.theme.grey_4};
+`;
+
+const PageTitle = styled.div`
+  padding: ${props => props.theme.large_padding};
+`;
 
 const Pages = props => {
-    const {width, height, pages} = useSelector(state=>state.editor.file);
-    const currentPage = useSelector(state=>state.editor.ui.currentPage);
+    const {width, height, pages} = useSelector(state => state.editor.file);
+    const currentPage = useSelector(state => state.editor.ui.currentPage);
     const dispatch = useDispatch();
     return (
         <>
-            <Upper>
-                <Wrapper>
-                {pages.map((page, i) => {
-                        return (
-                            page.text ?
-                                <BraillePagePreview
-                                    width={width}
-                                    height={height}
-                                    current={i === currentPage}
-                                    key={i} index={i}
-                                    onClick={() => changePage(dispatch, i)}
-                                    {...page}/>
-                                :
-                                <GraphicPagePreview
-                                    width={width}
-                                    height={height}
-                                    current={i === currentPage}
-                                    key={i} index={i}
-                                    onClick={() => changePage(dispatch, i)}
-                                    title={page.name}/>
-                        )
-                    }
-                )}
-                </Wrapper>
-            </Upper>
+            <>
+                {pages.filter(page => !page.text).map((page, index) => {
+                    const active = index === currentPage;
+                    return <AccordeonMenuEntry
+                        active={active} onClick={() => changePage(dispatch, index)} key={index}>
+                        <GraphicPagePreview base={50} index={index} width={width} height={height}/>
+                        <PageTitle>{page.name}</PageTitle>
+                    </AccordeonMenuEntry>
+                })}
+            </>
 
-            <Lower style={{flexDirection: "column"}}>
+            <ButtonBar>
                 <Button icon={"trash-alt"} onClick={() => removePage(dispatch, currentPage)}>Entfernen</Button>
                 <Button primary icon={"image"} onClick={() => addPage(dispatch, false)}>Neue Grafik-Seite</Button>
-                {/*<Button primary icon={"braille"} onClick={() => addPage(dispatch, true)}>Neue Braille-Seite</Button>*/}
-            </Lower>
+            </ButtonBar>
         </>
     );
 }

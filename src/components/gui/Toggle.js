@@ -15,14 +15,9 @@ const ToggleButton = styled(Button)`
 
 const Toggle = props => {
     const { t } = useTranslation();
-
     return (
         <ToggleButton aria-pressed={props.toggled}
-                      onClick={props.onClick}
-                      primary={props.primary}
-                      icon={props.icon}
-                      disabled={props.disabled}
-                      fullWidth={props.fullWidth}
+                      {...props}
                       aria-label={t(props.label)}>
             {t(props.label)}
         </ToggleButton>

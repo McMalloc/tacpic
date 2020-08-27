@@ -18,6 +18,10 @@
   padding-top: 1em;
 }
 
+.padded {
+  padding: 3px;
+}
+
 .extra-margin {
   &:not(:last-child) {
     margin-bottom: 12px;

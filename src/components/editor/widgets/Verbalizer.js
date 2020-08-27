@@ -22,15 +22,11 @@ class Verbalizer extends Component {
     render() {
         return (
             <>
-                <Upper>
-                    <Qid
-                        title={this.props.uititle}
-                        onChange={event => this.props.changeTitle(event.currentTarget.value)}
-                    />
-                </Upper>
-                <Lower>
-                    <Button primary>Einfügen</Button>
-                </Lower>
+                <Qid
+                    title={this.props.uititle}
+                    onChange={event => this.props.changeTitle(event.currentTarget.value)}
+                />
+                <Button primary>Einfügen</Button>
             </>
         );
     }

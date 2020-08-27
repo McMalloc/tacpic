@@ -9,7 +9,6 @@ import {useParams} from "react-router-dom";
 import Canvas from "./widgets/Canvas";
 import Toggle from "../gui/Toggle";
 import {Button} from "../gui/Button";
-import Document from "./widgets/Document";
 import Importer from "./widgets/Importer";
 import Key from "./widgets/Keyedit";
 import Verbalizer from "./widgets/Verbalizer";
@@ -23,6 +22,10 @@ import BraillePage from "./widgets/BraillePage";
 import {Radiobar, RadiobarSegment} from "../gui/Radiobar";
 import Intro from "./widgets/Intro";
 import Category from "./widgets/Category";
+import {Accordeon, AccordeonPanel, AccordeonPanelFlyoutButton} from "../gui/Accordeon";
+import GraphicPageSettings from "./widgets/GraphicPageSettings";
+import BraillePageSettings from "./widgets/BraillePageSettings";
+import Document from "./widgets/Document";
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,7 +59,7 @@ const Sidebar = styled.div`
   flex-direction: column;
   border-top: 2px solid ${props => props.theme.brand_secondary_light};
   border-right: 2px solid ${props => props.theme.brand_secondary_light};
-  background-color: ${props => props.theme.grey_6};
+  //background-color: ${props => props.theme.grey_6};
 `;
 
 const ModalSidebar = styled(Sidebar)`
@@ -106,73 +109,101 @@ const Editor = props => {
         }
     }, []);
 
-    const [openedModalSidebar, toggleModalSidebar] = useState(null);
-    const handleModalSidebar = index => {
-        index === openedModalSidebar ? toggleModalSidebar(null) : toggleModalSidebar(index);
-    };
-
-    const [showPages, togglePages] = useState(true);
-    const [showObjects, toggleObjects] = useState(false);
+    const [openedPanel, setOpenedPanel] = useState(null);
 
     if (uiSettings.initialized) {
         return (
             <Wrapper>
                 <Radiobar>
                     <RadiobarSegment>
-                        <Toggle toggled={showPages} onClick={() => togglePages(!showPages)} label={"Seiten"}/>
-                        <Toggle toggled={showObjects} onClick={() => toggleObjects(!showObjects)} label={"Objekte"}/>
+                        {/*<Toggle toggled={showPages} onClick={() => togglePages(!showPages)} label={"Seiten"}/>*/}
+                        {/*<Toggle toggled={showObjects} onClick={() => toggleObjects(!showObjects)} label={"Objekte"}/>*/}
                     </RadiobarSegment>
                     {/*<ToolbarSegment>*/}
-                    <Toggle primary onClick={() => {}} label={"Neu"}/>
+                    <Toggle primary onClick={() => {
+                    }} label={"Neu"}/>
                     {/*</ToolbarSegment>*/}
                     <RadiobarSegment>
-                        <Toggle primary toggled={openedModalSidebar === 0} onClick={() => handleModalSidebar(0)}
-                                label={"Einrichten"}/>
-                        <Toggle primary toggled={openedModalSidebar === 1} onClick={() => handleModalSidebar(1)}
-                                label={"Importieren"}/>
-                        {/*<Toggle primary toggled={openedModalSidebar === 2} onClick={() => handleModalSidebar(2)}*/}
-                        {/*        label={"Legende"}/>*/}
-                        <Toggle primary toggled={openedModalSidebar === 3} onClick={() => handleModalSidebar(3)}
-                                label={"Bildbeschreibung"}/>
-                        <Toggle primary toggled={openedModalSidebar === 4} onClick={() => handleModalSidebar(4)}
-                                label={"Veröffentlichen"}/>
+                        {/*<Toggle primary toggled={openedModalSidebar === 0} onClick={() => handleModalSidebar(0)}*/}
+                        {/*        label={"Einrichten"}/>*/}
+                        {/*<Toggle primary toggled={openedModalSidebar === 1} onClick={() => handleModalSidebar(1)}*/}
+                        {/*        label={"Importieren"}/>*/}
+                        {/*/!*<Toggle primary toggled={openedModalSidebar === 2} onClick={() => handleModalSidebar(2)}*!/*/}
+                        {/*/!*        label={"Legende"}/>*!/*/}
+                        {/*<Toggle primary toggled={openedModalSidebar === 3} onClick={() => handleModalSidebar(3)}*/}
+                        {/*        label={"Bildbeschreibung"}/>*/}
+                        {/*<Toggle primary toggled={openedModalSidebar === 4} onClick={() => handleModalSidebar(4)}*/}
+                        {/*        label={"Veröffentlichen"}/>*/}
                     </RadiobarSegment>
                 </Radiobar>
+
                 <PanelWrapper>
-                    {/*<div style={{*/}
-                    {/*    backgroundColor: "lightgreen",*/}
-                    {/*    width: "100%",*/}
-                    {/*    margin: 10,*/}
-                    {/*    boxSizing: "border-box",*/}
-                    {/*    height: "10000px"*/}
-                    {/*}}>...*/}
-                    {/*</div>*/}
-
-
-                    {(showPages || showObjects) &&
+                    {/*    {(showPages || showObjects) &&*/}
                     <Sidebar>
-                        {showPages && <SidebarPanel flexGrow={'1'}><Pages/></SidebarPanel>}
-                        {showObjects && <SidebarPanel flexGrow={'4'}><Objects/></SidebarPanel>}
+                        <Accordeon>
+                            <AccordeonPanel title={"Entwurf"}>
+                                <AccordeonPanelFlyoutButton flownOut={openedPanel === 'document'}
+                                                            className={"padded"}
+                                                            onClick={() => setOpenedPanel(openedPanel === 'document' ? null : 'document')}
+                                                            label={"Einrichten"} icon={"cog"}>
+                                    <Document />
+                                </AccordeonPanelFlyoutButton>
+                                <AccordeonPanelFlyoutButton flownOut={openedPanel === 'publish'}
+                                                            className={"padded"}
+                                                            onClick={() => setOpenedPanel(openedPanel === 'publish' ? null : 'publish')}
+                                                            label={"Veröffentlichen"} icon={"upload"}>
+                                    <Metadata/>
+                                </AccordeonPanelFlyoutButton>
+                            </AccordeonPanel>
+                            <AccordeonPanel title={"Grafikseiten"}>
+                                <AccordeonPanelFlyoutButton flownOut={openedPanel === 'graphicSettings'}
+                                                            className={"padded"}
+                                                            onClick={() => setOpenedPanel(openedPanel === 'graphicSettings' ? null : 'graphicSettings')}
+                                                            label={"Einrichten"} icon={"cog"}>
+                                    <GraphicPageSettings />
+                                </AccordeonPanelFlyoutButton>
+                                <Pages/>
+                            </AccordeonPanel>
+                            <AccordeonPanel title={"Brailleseiten"}>
+                                <AccordeonPanelFlyoutButton flownOut={openedPanel === 'brailleSettings'}
+                                                            className={"padded"}
+                                                            onClick={() => setOpenedPanel(openedPanel === 'brailleSettings' ? null : 'brailleSettings')}
+                                                            label={"Einrichten"} icon={"braille"}>
+                                    <BraillePageSettings/>
+                                </AccordeonPanelFlyoutButton>
+                                <AccordeonPanelFlyoutButton flownOut={openedPanel === 'imagedescription'}
+                                                            className={"padded"}
+                                                            onClick={() => setOpenedPanel(openedPanel === 'imagedescription' ? null : 'imagedescription')}
+                                                            label={"Bildbeschreibung"} icon={"image"}>
+                                    <Verbalizer/>
+                                </AccordeonPanelFlyoutButton>
+                            </AccordeonPanel>
+                            <AccordeonPanel title={"Objekte"}>
+                                <Objects/>
+                            </AccordeonPanel>
+                        </Accordeon>
+                        {/*{showPages && <SidebarPanel flexGrow={'1'}><Pages/></SidebarPanel>}*/}
+                        {/*{showObjects && <SidebarPanel flexGrow={'4'}><Objects/></SidebarPanel>}*/}
                     </Sidebar>
                     }
 
-                    {page.text ?
-                        <>
-                            <FixedSidebar>
-                                <SidebarPanel flexGrow={'1'}>
-                                    <Writer/>
-                                </SidebarPanel>
-                            </FixedSidebar>
-                        </>
-                        :
-                        <>
-                            <FixedSidebar>
-                                <SidebarPanel flexGrow={'0'}><Toolbox/></SidebarPanel>
-                                <SidebarPanel flexGrow={'1'}><Context/></SidebarPanel>
-                            </FixedSidebar>
+                    {/*    {page.text ?*/}
+                    {/*        <>*/}
+                    {/*            <FixedSidebar>*/}
+                    {/*                <SidebarPanel flexGrow={'1'}>*/}
+                    {/*                    <Writer/>*/}
+                    {/*                </SidebarPanel>*/}
+                    {/*            </FixedSidebar>*/}
+                    {/*        </>*/}
+                    {/*        :*/}
+                    {/*        <>*/}
+                    {/*            <FixedSidebar>*/}
+                    {/*                <SidebarPanel flexGrow={'0'}><Toolbox/></SidebarPanel>*/}
+                    {/*                <SidebarPanel flexGrow={'1'}><Context/></SidebarPanel>*/}
+                    {/*            </FixedSidebar>*/}
 
-                        </>
-                    }
+                    {/*        </>*/}
+                    {/*    }*/}
 
                     <CanvasWrapper>
                         <Canvas hide={page.text}/>
@@ -181,16 +212,15 @@ const Editor = props => {
                         }
                     </CanvasWrapper>
 
-                    <ModalSidebar style={{right: openedModalSidebar === null ? '-500px' : 0}} theme={theme}>
-                        {openedModalSidebar === 0 && <Document/>}
-                        {openedModalSidebar === 1 && <Importer/>}
-                        {openedModalSidebar === 2 && <Key/>}
-                        {openedModalSidebar === 3 && <Verbalizer/>}
-                        {openedModalSidebar === 4 && <Metadata/>}
-                    </ModalSidebar>
+                    {/*    <ModalSidebar style={{right: openedModalSidebar === null ? '-500px' : 0}} theme={theme}>*/}
+                    {/*        {openedModalSidebar === 0 && <Document/>}*/}
+                    {/*        {openedModalSidebar === 1 && <Importer/>}*/}
+                    {/*        {openedModalSidebar === 2 && <Key/>}*/}
+                    {/*        {openedModalSidebar === 3 && <Verbalizer/>}*/}
+                    {/*        {openedModalSidebar === 4 && <Metadata/>}*/}
+                    {/*    </ModalSidebar>*/}
 
                 </PanelWrapper>
-
 
 
             </Wrapper>

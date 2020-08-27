@@ -9,7 +9,6 @@ import Proofing from "./Proofing";
 import Key from "./Keyedit";
 import Category from "./Category";
 import Importer from "./Importer";
-import Document from "./Document";
 import Verbalizer from "./Verbalizer";
 import Simulator from "./Simulator";
 import Comments from "./Comments";
@@ -24,7 +23,6 @@ const index = {
     // Navigator,
     Context,
     Objects,
-    Document,
     // History,
     Proofing,
     Pages,
