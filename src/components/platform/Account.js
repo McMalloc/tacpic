@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Link, Navigate, Route, Routes} from "react-router-dom";
 import {USER} from "../../actions/action_constants";
 import Card from "../gui/Card";
 import {Button} from "../gui/Button";
@@ -12,6 +12,7 @@ import Orders from "./account/Orders";
 import AccountInfo from "./account/AccountInfo";
 import {Outlet} from "react-router";
 import {Alert} from "../gui/Alert";
+import {Icon} from "../gui/_Icon";
 
 const Account = props => {
     const user = useSelector(state => state.user);
@@ -53,7 +54,7 @@ const Account = props => {
             </div>
         </Row>
     </>;
-
+    console.log(location);
     return (
         <>
             {!user.logged_in ?
@@ -62,14 +63,19 @@ const Account = props => {
                 :
                 <>
                     <Row>
-                        <div className={"col-xs-12"}>
-                            <h1>Persönlicher Bereich
+                        <div className={"col-xs-12 extra-margin"}>
+                            <h4>
+                                {location.pathname === '/account' ?
+                                    <span>Persönlicher Bereich</span>
+                                    :
+                                    <Link to={"/account"}>Persönlicher Bereich</Link>
+                                }
                                 <Routes>
-                                    <Route path='addresses' element={<span>: Adressen</span>} />
-                                    <Route path='orders' element={<span>: Bestellungen</span>} />
+                                    <Route path='addresses' element={<span> <Icon icon={"angle-right"} /> Adressen</span>} />
+                                    <Route path='my_account' element={<span> <Icon icon={"angle-right"} /> Mein Konto</span>} />
+                                    <Route path='orders' element={<span> <Icon icon={"angle-right"} /> Bestellungen</span>} />
                                 </Routes>
-                            </h1>
-
+                            </h4>
 
                         </div>
                     </Row>

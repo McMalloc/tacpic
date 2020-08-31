@@ -13,15 +13,16 @@ const ToggleButton = styled(Button)`
   }
 `;
 
-const Toggle = props => {
+const Toggle = React.forwardRef((props, ref) => {
     const { t } = useTranslation();
     return (
         <ToggleButton aria-pressed={props.toggled}
                       {...props}
+                        ref={ref}
                       aria-label={t(props.label)}>
             {t(props.label)}
         </ToggleButton>
     )
-};
+});
 
 export default Toggle;

@@ -6,6 +6,7 @@ import {find} from 'lodash';
 import {Upper} from "../../../gui/WidgetContainer";
 import Keyedit from "../Keyedit";
 
+// to refactor to function component
 class Context extends Component {
     render() {
         switch (this.props.selectedObject.type) {
@@ -24,15 +25,7 @@ class Context extends Component {
                     <Upper><Keyedit /></Upper>
                 );
             default:
-                return (
-                    <Upper>
-                        <p className={"disabled"}>
-                            Kein Objekt gewählt.
-
-                            Wählen Sie ein Objekt auf der Leinwand aus, um hier seine Eigeschaften zu ändern.
-                        </p>
-                    </Upper>
-                );
+                return null;
         }
     }
 }

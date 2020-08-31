@@ -1,5 +1,4 @@
 import Canvas from "./Canvas";
-import Toolbox from "./Toolbox";
 // import Navigator from "./Navigator"
 import Context from "./Context/Context";
 import Objects from "./Objects";
@@ -19,7 +18,6 @@ import Intro from "./Intro";
 
 const index = {
     Canvas,
-    Toolbox,
     // Navigator,
     Context,
     Objects,

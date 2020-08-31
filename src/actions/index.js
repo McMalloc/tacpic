@@ -1,8 +1,3 @@
-export const switchCursorMode = mode => ({
-    type: 'SWITCH_CURSOR_MODE',
-    mode
-});
-
 export const createTextureModeAction = mode => ({
     type: 'SWITCH_TEXTURE_MODE',
     mode

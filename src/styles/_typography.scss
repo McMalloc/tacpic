@@ -4,30 +4,30 @@ body {
   color: #231F20;
 }
 
-@font-face {
-  font-family: "Braille29 DE";
-  src: url("/webfonts/BrailleDEComputer.woff2") format("woff2"),
-  url("/webfonts/BrailleDEComputer.woff") format("woff");
-}
-
-@font-face {
-  font-family: "HBS6";
-  src: url("/webfonts/hbs6brlt-webfont.woff") format("woff");
-}
-
-@font-face {
-  font-family: "HBS6Visual";
-  src: url("/webfonts/hbs6brlvs-webfont.woff") format("woff");
-}
-
-@font-face {
-  font-family: "HBS8";
-  src: url("/webfonts/hbs8brlt-webfont.woff") format("woff");
-}
+//@font-face {
+//  font-family: "Braille29 DE";
+//  src: url("/webfonts/BrailleDEComputer.woff2") format("woff2"),
+//  url("/webfonts/BrailleDEComputer.woff") format("woff");
+//}
+//
+//@font-face {
+//  font-family: "HBS6";
+//  src: url("/webfonts/hbs6brlt-webfont.woff") format("woff");
+//}
+//
+//@font-face {
+//  font-family: "HBS6Visual";
+//  src: url("/webfonts/hbs6brlvs-webfont.woff") format("woff");
+//}
+//
+//@font-face {
+//  font-family: "HBS8";
+//  src: url("/webfonts/hbs8brlt-webfont.woff") format("woff");
+//}
 
 @font-face {
   font-family: "tacpic swell braille";
-  //src: url("/webfonts/tacpic_swellbraille_euro6.woff") format("woff");
+  src: url("/webfonts/tacpic_swellbraille.woff") format("woff");
 }
 
 button, input, textarea, select {

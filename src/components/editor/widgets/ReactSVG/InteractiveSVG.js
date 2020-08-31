@@ -16,6 +16,7 @@ import {findObject} from "../../../../utility/findObject";
 import {rotatePoint} from "../../../../utility/geometry";
 import Key from "./Key";
 import {SVGPage} from "./SVGPage";
+import {SWITCH_CURSOR_MODE} from "../../../../actions/action_constants";
 
 class InteractiveSVG extends Component {
     svgElement = React.createRef();
@@ -189,6 +190,13 @@ class InteractiveSVG extends Component {
         // TODO: transparenten Manipulator abfangen
         //  transform sollte auch bei einem klick auf den manipulator funktionieren, für gruppen
 
+        if (event.ctrlKey) {
+            this.setState({
+                panning: true
+            });
+            return;
+        }
+
         let unselected = false;
         if (target.dataset.role === 'CANVAS') {
             unselected = true;
@@ -285,6 +293,7 @@ class InteractiveSVG extends Component {
         this.setState({
             mouseIsDown: false,
             dragging: false,
+            panning: false,
             transform: null,
             lastMouseUpX: this.state.mouseOffsetX,
             lastMouseUpY: this.state.mouseOffsetY,
@@ -361,12 +370,19 @@ class InteractiveSVG extends Component {
             });
         }
 
+        if (this.state.panning) {
+            this.props.changeViewport(
+                this.props.ui.scalingFactor,
+                this.props.ui.viewPortX - (this.state.t_mouseOffsetX - this.currentX(event.clientX)),
+                this.props.ui.viewPortY - (this.state.t_mouseOffsetY - this.currentY(event.clientY))
+            )
+        }
+
         let preview = this.state.preview;
         // set preview
         if (this.state.dragging &&
             this.state.transform !== null &&
             preview === null) {
-            console.log("copy from state to preview");
             this.setState({
                 preview: {
                     ...findObject(
@@ -441,12 +457,12 @@ class InteractiveSVG extends Component {
                 onKeyUp={this.keyUpHandler}
                 onMouseUp={this.mouseUpHandler}
                 onMouseMove={this.mouseMoveHandler}
-                // onMouseLeave={this.mouseUpHandler}
+                onMouseLeave={this.mouseUpHandler}
                 // onWheel={this.wheelHandler}
                 onInput={this.keyDownHandler}
                 ref={this.svgElement}
                 tabIndex={0}
-                style={{touchAction: 'none'}}>
+                style={{touchAction: 'none', outline: 'none'}}>
 
                 <g id={"VIEWBOX"} transform={`
                        translate(${this.props.ui.viewPortX} ${this.props.ui.viewPortY}) 
@@ -567,7 +583,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         switchCursorMode: mode => {
-            dispatch(switchCursorMode(mode));
+            dispatch({
+                type: SWITCH_CURSOR_MODE, mode
+            });
         },
         changeViewport: (scalingFactor, viewPortX, viewPortY) => {
             dispatch({

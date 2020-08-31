@@ -103,10 +103,10 @@ const Textinput = props => {
     const messages = getMessages(validities, t, validations);
 
     // const Wrapping = Label;
-    const Wrapping = props.label ? Label : React.Fragment;
+    // const Wrapping = props.label ? Label : <span></span>;
 
     return (
-        <Wrapping
+        <Label
             tip={props.tip}
             sublabel={props.sublabel}
             required={props.required}
@@ -138,7 +138,7 @@ const Textinput = props => {
                 onChange={props.onChange}
             />
             {!pristine && messages.map(message => <Alert style={{borderRadius: '0 0 3px 3px', marginTop: 0}} warning>{message}</Alert>)}
-        </Wrapping>
+        </Label>
     )
 };
 

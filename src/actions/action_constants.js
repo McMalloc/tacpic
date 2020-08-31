@@ -36,3 +36,4 @@ export const CLEAR_BASKET = 'CLEAR_BASKET';
 export const ORDER_RESET = 'ORDER_RESET';
 export const RESET_USER_ERRORS = 'RESET_USER_ERRORS';
 export const LOAD_MORE = 'LOAD_MORE';
+export const SWITCH_CURSOR_MODE = 'SWITCH_CURSOR_MODE';

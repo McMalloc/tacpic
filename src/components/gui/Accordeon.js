@@ -1,19 +1,30 @@
-import styled, {ThemeContext} from 'styled-components';
-import React, {useContext, useState} from "react";
+import styled from 'styled-components/macro';
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {Icon} from "./_Icon";
 import Toggle from "./Toggle";
 import {CSSTransition} from 'react-transition-group';
+import {getViewport} from "../../utility/viewport";
+import {createPortal} from "react-dom";
 
 const Wrapper = styled.div`
-
+  display: flex;
+  flex-direction: column;
 `;
 
 const AccordeonPanelWrapper = styled.div`
-  border-bottom: 2px solid ${props => props.theme.brand_secondary_light};
+  //border-bottom: 2px solid ${props => props.theme.brand_secondary_light};
+  //height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const AccordeonPanelContent = styled.div`
-  background-color: ${props => props.theme.grey_6};
+   background-color: ${props => props.theme.grey_6};
+  // color: ${props => props.theme.background};
+  flex: 1; 
+  overflow: auto; 
+  height: 100%;
+  padding: 3px;
 `;
 
 const AccordeonPanelTitle = styled.div`
@@ -44,15 +55,8 @@ const AccordeonPanelTitle = styled.div`
   }
 `;
 
-const Message = styled.div`
-
-`;
-
 const AccordeonPanelButtonWrapper = styled.div`
   position: relative;
-`;
-
-const AccordeonPanelButton = styled.button`
 `;
 
 const AccordeonMenuEntry = styled.div`
@@ -72,16 +76,18 @@ const AccordeonMenuEntry = styled.div`
 `;
 
 const AccordeonPanelFlyout = styled.div`
-  position: absolute;
-  left: 100%;
+  position: fixed;
+  left: 0;
   top: 0;
   z-index: 1;
-  min-width: 300px;
+  min-width: 150px;
+  max-width: 300px;
   background-color: ${props => props.theme.grey_6};
   padding: ${props => props.theme.large_padding};
   border: 2px solid ${props => props.theme.brand_secondary_light};
   border-radius: ${props => props.theme.border_radius};
   box-shadow: ${props => props.theme.distant_shadow};
+  transition: top 100ms, height 100ms;
   
   &.slidein-enter, &.slidein-appear {
     transform: translateX(-50px);
@@ -107,17 +113,39 @@ const AccordeonPanelFlyout = styled.div`
 `;
 
 const AccordeonPanelFlyoutButton = props => {
+    // todo put in external component, border-avoiding container
+    const panelRef = useRef(null);
+    const buttonRef = useRef(null);
+    useEffect(() => {
+        if (!props.flownOut) return;
+        if (panelRef.current === null) return;
+        if (buttonRef.current === null) return;
+        const {vw, vh} = getViewport();
+        const buttonBBox = buttonRef.current.getBoundingClientRect();
+        panelRef.current.style.left = (buttonBBox.left + buttonBBox.width) + "px";
+        panelRef.current.style.top = buttonBBox.top + "px";
+        const panelBBox = panelRef.current.getBoundingClientRect();
+        console.log(buttonBBox.top);
+        console.log(panelBBox.height);
+        console.log(vh);
+        if (vh < buttonBBox.top + panelBBox.height) {
+            panelRef.current.style.top = `${vh - (panelBBox.top + panelBBox.height) - 36}px`;
+        }
+    }, [props.flownOut]);
     return (
         <AccordeonPanelButtonWrapper className={props.className}>
             {props.genericButton ?
-                <>{props.genericButton}</>
+                <div ref={buttonRef}>{props.genericButton}</div>
                 :
-                <Toggle leftAlign toggled={props.flownOut} onClick={props.onClick} fullWidth label={props.label}
+                <Toggle ref={buttonRef} leftAlign toggled={props.flownOut} onClick={props.onClick} fullWidth
+                        label={props.label}
                         icon={props.icon}/>
             }
-            <CSSTransition classNames={"slidein"} in={props.flownOut} timeout={100} appear unmountOnExit>
-                <AccordeonPanelFlyout>{props.children}</AccordeonPanelFlyout>
-            </CSSTransition>
+            {createPortal(<CSSTransition classNames={"slidein"} in={props.flownOut} timeout={100} appear unmountOnExit>
+                <AccordeonPanelFlyout ref={panelRef}>
+                    {props.children}
+                </AccordeonPanelFlyout>
+            </CSSTransition>, document.getElementById("flyout"))}
         </AccordeonPanelButtonWrapper>
     )
 };
@@ -130,9 +158,11 @@ const AccordeonPanel = props => {
                 <Icon icon={"caret-right"}/>
                 <span>{props.title}</span>
             </AccordeonPanelTitle>
-            <AccordeonPanelContent>
-                {!collapsed && props.children}
-            </AccordeonPanelContent>
+            {!collapsed &&
+                <AccordeonPanelContent>
+                    {props.children}
+                </AccordeonPanelContent>
+            }
         </AccordeonPanelWrapper>
     )
 };
@@ -146,7 +176,3 @@ const Accordeon = props => {
 };
 
 export {Accordeon, AccordeonPanel, AccordeonPanelFlyoutButton, AccordeonMenuEntry}
-// const Flyout = props => {
-//       return <div></div>
-// };
-

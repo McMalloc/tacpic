@@ -44,6 +44,11 @@ const remove = (dispatch, uuid) => {
     });
 };
 
+const ObjectPreview = styled.svg`
+  height: 35px;
+  max-width: 35px;
+`;
+
 const Objects = props => {
     const objects = useSelector(
         state => state.editor.file.pages[state.editor.ui.currentPage].objects
@@ -55,12 +60,14 @@ const Objects = props => {
     if (!objects || objects.length === 0) return <p className={"disabled"}>Keine Objekte auf Seite.</p>;
     return (
         <>
+            <div>Vordergrund</div>
             {objects.map((object, index) => {
                 const active = selectedUUID === object.uuid;
                 const button = <AccordeonMenuEntry active={active}
                                                    onClick={() => select(dispatch, active ? null : object.uuid)}
                                                    key={object.uuid}>
                     <Icon icon={"vector-square"}/>
+                    <ObjectPreview><use href={"#"+object.uuid}/></ObjectPreview>
                     {object.type === "label" ? `Beschriftung: "${object.text}"` : object.moniker}
                 </AccordeonMenuEntry>
                 return <AccordeonPanelFlyoutButton

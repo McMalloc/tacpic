@@ -78,8 +78,7 @@ const Keyedit = props => {
     const keyedTextures = useSelector(state => state.editor.file.keyedTextures);
 
     return (
-        <>
-            {/*<Upper>*/}
+        <div className={props.className}>
                 {labelKeys.length === 0 && patternsInUse.length === 0 ?
                     <p className={"disabled"}>Keine Einträge vorhanden. Erzeugen Sie eine abgekürzte Beschriftung oder
                         ein texturisiertes Objekt, um hier ihre Bedeutungen zu vermerken.</p>
@@ -132,15 +131,7 @@ const Keyedit = props => {
                         </tbody>
                     </Table>
                 }
-            {/*</Upper>*/}
-
-            {/*<Lower>*/}
-            {/*    <Button icon={"redo-alt"}>Aktualisieren</Button> &ensp;*/}
-            {/*    <Button onClick={() => addKey(dispatch)} icon={"arrow-alt-circle-right"} primary>Erstellen</Button>*/}
-
-            {/*</Lower>*/}
-
-        </>
+        </div>
     );
 };
 

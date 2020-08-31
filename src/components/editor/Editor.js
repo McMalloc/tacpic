@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import '../../styles/Editor.css';
 import styled, {useTheme} from 'styled-components/macro';
 import {useTranslation} from "react-i18next";
-import {FILE} from "../../actions/action_constants";
+import {FILE, SWITCH_CURSOR_MODE} from "../../actions/action_constants";
 import {useParams} from "react-router-dom";
 import Canvas from "./widgets/Canvas";
 import Toggle from "../gui/Toggle";
@@ -15,7 +15,6 @@ import Verbalizer from "./widgets/Verbalizer";
 import Metadata from "./widgets/Metadata";
 import Pages from "./widgets/Pages";
 import Objects from "./widgets/Objects";
-import Toolbox from "./widgets/Toolbox";
 import Context from "./widgets/Context/Context";
 import Writer from "./widgets/Writer";
 import BraillePage from "./widgets/BraillePage";
@@ -53,13 +52,14 @@ const CanvasWrapper = styled.div`
 `;
 
 const Sidebar = styled.div`
-  display: flex;
   flex: 0 1 25%;
+  //height: 100%;
+  overflow: auto;
   min-width: 200px;
+  max-width: 300px;
+  display: flex;
   flex-direction: column;
-  border-top: 2px solid ${props => props.theme.brand_secondary_light};
-  border-right: 2px solid ${props => props.theme.brand_secondary_light};
-  //background-color: ${props => props.theme.grey_6};
+  justify-content: flex-start;
 `;
 
 const ModalSidebar = styled(Sidebar)`
@@ -87,6 +87,21 @@ const SidebarPanel = styled.div`
   border-bottom: 2px solid ${props => props.theme.brand_secondary_light};
 `;
 
+const iconMap = {
+    SELECT: 'hand-pointer',
+    RECT: 'vector-square',
+    ELLIPSE: 'circle',
+    PATH: 'bezier-curve',
+    KEY: 'key',
+    QUADRATIC: 'bezier-curve',
+    LABEL: 'font'
+};
+
+const switchCursorMode = (dispatch, mode) => {
+    dispatch({
+        type: SWITCH_CURSOR_MODE, mode
+    })
+}
 
 const Editor = props => {
     const uiSettings = useSelector(
@@ -116,31 +131,29 @@ const Editor = props => {
             <Wrapper>
                 <Radiobar>
                     <RadiobarSegment>
-                        {/*<Toggle toggled={showPages} onClick={() => togglePages(!showPages)} label={"Seiten"}/>*/}
-                        {/*<Toggle toggled={showObjects} onClick={() => toggleObjects(!showObjects)} label={"Objekte"}/>*/}
+                        {["SELECT", "KEY", "RECT", "ELLIPSE", /*"CUBIC", "QUADRATIC",*/ "LABEL", "PATH", /*"LINE"*/].map((tool, index) => {
+                            return (
+                                    <Toggle
+                                        label={"editor:toggle_tools-" + tool}
+                                        primary
+                                        key={index}
+                                        icon={iconMap[tool]}
+                                        toggled={uiSettings.tool === tool}
+                                        onClick={() => {
+                                            switchCursorMode(dispatch, tool);
+                                        }}
+                                    />
+                            )
+                        })}
                     </RadiobarSegment>
-                    {/*<ToolbarSegment>*/}
                     <Toggle primary onClick={() => {
                     }} label={"Neu"}/>
-                    {/*</ToolbarSegment>*/}
-                    <RadiobarSegment>
-                        {/*<Toggle primary toggled={openedModalSidebar === 0} onClick={() => handleModalSidebar(0)}*/}
-                        {/*        label={"Einrichten"}/>*/}
-                        {/*<Toggle primary toggled={openedModalSidebar === 1} onClick={() => handleModalSidebar(1)}*/}
-                        {/*        label={"Importieren"}/>*/}
-                        {/*/!*<Toggle primary toggled={openedModalSidebar === 2} onClick={() => handleModalSidebar(2)}*!/*/}
-                        {/*/!*        label={"Legende"}/>*!/*/}
-                        {/*<Toggle primary toggled={openedModalSidebar === 3} onClick={() => handleModalSidebar(3)}*/}
-                        {/*        label={"Bildbeschreibung"}/>*/}
-                        {/*<Toggle primary toggled={openedModalSidebar === 4} onClick={() => handleModalSidebar(4)}*/}
-                        {/*        label={"Veröffentlichen"}/>*/}
-                    </RadiobarSegment>
                 </Radiobar>
 
                 <PanelWrapper>
                     {/*    {(showPages || showObjects) &&*/}
                     <Sidebar>
-                        <Accordeon>
+                        {/*<Accordeon>*/}
                             <AccordeonPanel title={"Entwurf"}>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'document'}
                                                             className={"padded"}
@@ -164,6 +177,15 @@ const Editor = props => {
                                 </AccordeonPanelFlyoutButton>
                                 <Pages/>
                             </AccordeonPanel>
+                            <AccordeonPanel title={"Legende"}>
+                                <AccordeonPanelFlyoutButton flownOut={openedPanel === 'key'}
+                                                            className={"padded"}
+                                                            onClick={() => setOpenedPanel(openedPanel === 'key' ? null : 'key')}
+                                                            label={"Einfügen"} icon={"key"}>
+
+                                </AccordeonPanelFlyoutButton>
+                                <Key className={"padded"} />
+                            </AccordeonPanel>
                             <AccordeonPanel title={"Brailleseiten"}>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'brailleSettings'}
                                                             className={"padded"}
@@ -181,29 +203,9 @@ const Editor = props => {
                             <AccordeonPanel title={"Objekte"}>
                                 <Objects/>
                             </AccordeonPanel>
-                        </Accordeon>
-                        {/*{showPages && <SidebarPanel flexGrow={'1'}><Pages/></SidebarPanel>}*/}
-                        {/*{showObjects && <SidebarPanel flexGrow={'4'}><Objects/></SidebarPanel>}*/}
+                        {/*</Accordeon>*/}
                     </Sidebar>
                     }
-
-                    {/*    {page.text ?*/}
-                    {/*        <>*/}
-                    {/*            <FixedSidebar>*/}
-                    {/*                <SidebarPanel flexGrow={'1'}>*/}
-                    {/*                    <Writer/>*/}
-                    {/*                </SidebarPanel>*/}
-                    {/*            </FixedSidebar>*/}
-                    {/*        </>*/}
-                    {/*        :*/}
-                    {/*        <>*/}
-                    {/*            <FixedSidebar>*/}
-                    {/*                <SidebarPanel flexGrow={'0'}><Toolbox/></SidebarPanel>*/}
-                    {/*                <SidebarPanel flexGrow={'1'}><Context/></SidebarPanel>*/}
-                    {/*            </FixedSidebar>*/}
-
-                    {/*        </>*/}
-                    {/*    }*/}
 
                     <CanvasWrapper>
                         <Canvas hide={page.text}/>
@@ -211,18 +213,7 @@ const Editor = props => {
                         <BraillePage/>
                         }
                     </CanvasWrapper>
-
-                    {/*    <ModalSidebar style={{right: openedModalSidebar === null ? '-500px' : 0}} theme={theme}>*/}
-                    {/*        {openedModalSidebar === 0 && <Document/>}*/}
-                    {/*        {openedModalSidebar === 1 && <Importer/>}*/}
-                    {/*        {openedModalSidebar === 2 && <Key/>}*/}
-                    {/*        {openedModalSidebar === 3 && <Verbalizer/>}*/}
-                    {/*        {openedModalSidebar === 4 && <Metadata/>}*/}
-                    {/*    </ModalSidebar>*/}
-
                 </PanelWrapper>
-
-
             </Wrapper>
         );
     } else {
