@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, useState} from 'react'
 import connect from "react-redux/es/connect/connect";
 import Manipulator from "./Manipulator";
 
@@ -51,20 +51,11 @@ class InteractiveSVG extends Component {
     currentY = y => y - this.svgElement.current.getBoundingClientRect().top;
 
     wheelHandler = event => {
-        // event.preventDefault();
-        // event.stopPropagation();
-
-        // let offset = event.nativeEvent.deltaY <= 0 ? -0.1 : 0.1;
-
-        let offsetX = this.state.t_mouseOffsetX <= this.svgElement.current.scrollWidth / 2 ?
-            100 : -100;
-        let offsetY = this.state.t_mouseOffsetY <= this.svgElement.current.scrollHeight / 2 ?
-            100 : -100;
-
+        let factor = event.nativeEvent.deltaY <= 0 ? 0.95 : 1.05;
         this.props.changeViewport(
             this.props.ui.scalingFactor + (event.nativeEvent.deltaY > 0 ? -0.1 : 0.1),
-            this.props.ui.viewPortX + (this.state.t_mouseOffsetX - this.svgElement.current.scrollWidth / 2) * (1 / this.props.ui.scalingFactor),
-            this.props.ui.viewPortY + (this.state.t_mouseOffsetY - this.svgElement.current.scrollHeight / 2) * (1 / this.props.ui.scalingFactor));
+            this.props.ui.viewPortX * factor,
+            this.props.ui.viewPortY * factor);
     };
 
     keyDownHandler = event => {
@@ -300,6 +291,7 @@ class InteractiveSVG extends Component {
             t_lastMouseUpX: this.currentX(this.state.mouseOffsetX),
             t_lastMouseUpY: this.currentY(this.state.mouseOffsetY)
         });
+        this.props.isDragging(false); // give info to editor component
 
         const actuallyMoved = Math.abs(this.state.mouseDownX - this.state.mouseOffsetX) > 3 ||
             Math.abs(this.state.mouseDownY - this.state.mouseOffsetY) > 3;
@@ -368,6 +360,7 @@ class InteractiveSVG extends Component {
             this.setState({
                 dragging: true
             });
+            this.props.isDragging(true); // give info to editor component
         }
 
         if (this.state.panning) {
@@ -458,7 +451,7 @@ class InteractiveSVG extends Component {
                 onMouseUp={this.mouseUpHandler}
                 onMouseMove={this.mouseMoveHandler}
                 onMouseLeave={this.mouseUpHandler}
-                // onWheel={this.wheelHandler}
+                onWheel={this.wheelHandler}
                 onInput={this.keyDownHandler}
                 ref={this.svgElement}
                 tabIndex={0}

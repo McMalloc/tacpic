@@ -63,7 +63,7 @@ const Pagenumber = styled.div`
 const BraillePage = props => {
     const currentPageIndex = useSelector(state => state.editor.ui.currentPage);
     const system = useSelector(state => state.editor.file.system);
-    const page = useSelector(state => state.editor.file.pages[currentPageIndex]);
+    const page = useSelector(state => state.editor.file.pages.find(page=>page.text));
     const layout = useSelector(state => state.editor.file.braillePages);
     // TODO in props stecken, der Editor weiß ohnehin Bescheid
 

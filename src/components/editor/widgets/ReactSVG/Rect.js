@@ -39,7 +39,7 @@ export default function SVGRect(props) {
                 style={{fill: "none"}}
                 x={xVectorUnits ? null : props.x}
                 y={yVectorUnits ? null : props.y}
-                strokeWidth={props.borderWidth}
+                strokeWidth={props.borderWidth + 'mm'}
                 strokeDasharray={props.borderStyle}
                 data-transformable={!props.inactive}
                 data-selectable={true}

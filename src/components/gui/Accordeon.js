@@ -61,12 +61,16 @@ const AccordeonPanelButtonWrapper = styled.div`
 
 const AccordeonMenuEntry = styled.div`
   cursor: pointer;
+  min-height:12px;
   border: 2px solid ${props => props.active ? props.theme.brand_primary : 'transparent'};
   background-color: ${props => props.active ? props.theme.background : 'inherit'}!important;
   text-decoration: ${props => props.active ? 'underline' : 'inherit'};
-  padding: 4px;
+  padding: 2px 4px;
+  border-top: 2px solid ${props => props.hovered ? 'red' : 'inherit'};
   align-items: center;
   display: flex;
+  user-select: none;
+  opacity: ${props => props.isDragging ? 0.5 : 1};
   transition: background-color 0.1s, border-color 0.1s;
   
   &:hover {
@@ -79,10 +83,11 @@ const AccordeonPanelFlyout = styled.div`
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 1;
+  //z-index: 1;
   min-width: 150px;
   max-width: 300px;
   background-color: ${props => props.theme.grey_6};
+  display: ${props => props.hideFlyout ? "none" : "block"};
   padding: ${props => props.theme.large_padding};
   border: 2px solid ${props => props.theme.brand_secondary_light};
   border-radius: ${props => props.theme.border_radius};
@@ -141,8 +146,8 @@ const AccordeonPanelFlyoutButton = props => {
                         label={props.label}
                         icon={props.icon}/>
             }
-            {createPortal(<CSSTransition classNames={"slidein"} in={props.flownOut} timeout={100} appear unmountOnExit>
-                <AccordeonPanelFlyout ref={panelRef}>
+            {props.children && createPortal(<CSSTransition classNames={"slidein"} in={props.flownOut} timeout={100} appear unmountOnExit>
+                <AccordeonPanelFlyout hideFlyout={props.hideFlyout} ref={panelRef}>
                     {props.children}
                 </AccordeonPanelFlyout>
             </CSSTransition>, document.getElementById("flyout"))}
@@ -151,10 +156,13 @@ const AccordeonPanelFlyoutButton = props => {
 };
 
 const AccordeonPanel = props => {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(localStorage.getItem(props.title + "_collapsed") === "false");
     return (
         <AccordeonPanelWrapper>
-            <AccordeonPanelTitle collapsed={collapsed} onClick={() => setCollapsed(!collapsed)}>
+            <AccordeonPanelTitle collapsed={collapsed} onClick={() => {
+                localStorage.setItem(props.title + "_collapsed", collapsed + "");
+                setCollapsed(!collapsed)
+            }}>
                 <Icon icon={"caret-right"}/>
                 <span>{props.title}</span>
             </AccordeonPanelTitle>

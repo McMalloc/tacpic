@@ -31,7 +31,7 @@ export default function SVGEllipse(props) {
                 id={"stroke-" + props.uuid}
                 transform={transformProperty}
                 style={{fill: "none"}}
-                strokeWidth={props.borderWidth}
+                strokeWidth={props.borderWidth + 'mm'}
                 strokeDasharray={props.borderStyle}
                 data-transformable={!props.inactive}
                 data-selectable={true}

@@ -15,7 +15,7 @@ const Ruler = styled.div``;
 const Canvas = props => {
         return (
             <Wrapper {...props}>
-                <InteractiveSVG/>
+                <InteractiveSVG isDragging={props.isDragging}/>
             </Wrapper>
         )
 

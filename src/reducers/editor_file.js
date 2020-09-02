@@ -1,5 +1,5 @@
 import {cloneDeep, filter, includes, find, compact} from "lodash"
-import {VARIANT, FILE, GRAPHIC} from "../actions/action_constants";
+import {VARIANT, FILE, GRAPHIC, OBJECTS_SWAPPED} from "../actions/action_constants";
 import methods from "../components/editor/widgets/ReactSVG/methods";
 import uuidv4 from "../utility/uuid";
 import deepPull from "../utility/deepPull";
@@ -8,6 +8,7 @@ import {findObject} from "../utility/findObject";
 import {produce} from "immer";
 import {A4_HEIGHT, A4_MAX_CHARS_PER_ROW, A4_MAX_ROWS_PER_PAGE, A4_WIDTH, PAGE_NUMBER_BOTTOM} from "../config/constants";
 import {wrapAndChunk} from "../utility/wrapLines";
+import move from "../utility/move";
 
 // let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so || rausnehmen, da jetzt vom internen State des Editors verwaltet, ODER?
 const getSelectedObjects = (objects, selected) => {
@@ -41,6 +42,11 @@ const file = (state = {}, action) => {
         case GRAPHIC.CREATE.FAILURE:
         case VARIANT.CREATE.FAILURE:
             return {...state, state: 'failure'};
+        case OBJECTS_SWAPPED:
+            return produce(state, draftState => {
+                draftState.pages[action.shared_currentPage].objects =
+                    move(draftState.pages[action.shared_currentPage].objects, action.from, action.to);
+            });
         case 'OBJECT_ROTATED':
             oldState = {...state};
             objects = getSelectedObjects(oldState.pages[action.shared_currentPage].objects, action.uuids);

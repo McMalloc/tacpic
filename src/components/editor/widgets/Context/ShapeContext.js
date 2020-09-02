@@ -56,7 +56,7 @@ const ShapeContext = props => {
                 <div className={"col-md-12"}>
                     <Textinput value={selectedObject.moniker}
                                disabled={nothingSelected}
-                               onChange={moniker => changeProp(dispatch, selectedObject.uuid, 'moniker', moniker)} label={"Bezeichner"}/>
+                               onChange={event => changeProp(dispatch, selectedObject.uuid, 'moniker', event.currentTarget.value)} label={"Bezeichner"}/>
                 </div>
             </Row>
 

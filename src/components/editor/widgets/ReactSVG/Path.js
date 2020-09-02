@@ -36,7 +36,7 @@ export default function SVGPath(props) {
                 style={{
                     fill: "none",
                     strokeDasharray: props.borderStyle,
-                    strokeWidth: props.borderWidth / 5 + "mm",
+                    strokeWidth: props.borderWidth + "mm",
                     strokeLinecap: "butt",
                     stroke: "black"
                 }}

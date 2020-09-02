@@ -5,17 +5,15 @@ import {Provider} from "react-redux";
 import {ThemeProvider} from 'styled-components';
 import './i18n/i18n';
 import {MatomoProvider, createInstance} from '@datapunt/matomo-tracker-react'
+import {BrowserRouter} from "react-router-dom";
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 
-// DELETE
-
-
-// app imports
 import './index.scss';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import {store} from "./store";
 import {standard} from "./styles/themes"
-import {BrowserRouter} from "react-router-dom";
 
 const instance = createInstance({
     urlBase: 'https://tacpic.de',
@@ -29,7 +27,9 @@ ReactDOM.render(
         <ThemeProvider theme={standard}>
             <MatomoProvider value={instance}>
                 <BrowserRouter>
-                    <App/>
+                    <DndProvider backend={HTML5Backend}>
+                        <App/>
+                    </DndProvider>
                 </BrowserRouter>
             </MatomoProvider>
         </ThemeProvider>

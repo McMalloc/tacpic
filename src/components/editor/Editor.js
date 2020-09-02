@@ -125,6 +125,9 @@ const Editor = props => {
     }, []);
 
     const [openedPanel, setOpenedPanel] = useState(null);
+    // todo zu Hook umwandeln, wenn InteractiveSVG eine function component ist
+    const [dragging, setDragging] = useState(false);
+    const [showBraillePanel, setShowBraillePanel] = useState(false);
 
     if (uiSettings.initialized) {
         return (
@@ -151,11 +154,10 @@ const Editor = props => {
                 </Radiobar>
 
                 <PanelWrapper>
-                    {/*    {(showPages || showObjects) &&*/}
                     <Sidebar>
-                        {/*<Accordeon>*/}
                             <AccordeonPanel title={"Entwurf"}>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'document'}
+                                                            hideFlyout={dragging}
                                                             className={"padded"}
                                                             onClick={() => setOpenedPanel(openedPanel === 'document' ? null : 'document')}
                                                             label={"Einrichten"} icon={"cog"}>
@@ -163,6 +165,7 @@ const Editor = props => {
                                 </AccordeonPanelFlyoutButton>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'publish'}
                                                             className={"padded"}
+                                                            hideFlyout={dragging}
                                                             onClick={() => setOpenedPanel(openedPanel === 'publish' ? null : 'publish')}
                                                             label={"Veröffentlichen"} icon={"upload"}>
                                     <Metadata/>
@@ -171,6 +174,7 @@ const Editor = props => {
                             <AccordeonPanel title={"Grafikseiten"}>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'graphicSettings'}
                                                             className={"padded"}
+                                                            hideFlyout={dragging}
                                                             onClick={() => setOpenedPanel(openedPanel === 'graphicSettings' ? null : 'graphicSettings')}
                                                             label={"Einrichten"} icon={"cog"}>
                                     <GraphicPageSettings />
@@ -180,6 +184,7 @@ const Editor = props => {
                             <AccordeonPanel title={"Legende"}>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'key'}
                                                             className={"padded"}
+                                                            hideFlyout={dragging}
                                                             onClick={() => setOpenedPanel(openedPanel === 'key' ? null : 'key')}
                                                             label={"Einfügen"} icon={"key"}>
 
@@ -187,30 +192,35 @@ const Editor = props => {
                                 <Key className={"padded"} />
                             </AccordeonPanel>
                             <AccordeonPanel title={"Brailleseiten"}>
+                                <AccordeonPanelFlyoutButton flownOut={showBraillePanel}
+                                                            className={"padded"}
+                                                            onClick={() => setShowBraillePanel(!showBraillePanel)}
+                                                            label={"Einblenden"} icon={"mag"} />
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'brailleSettings'}
                                                             className={"padded"}
+                                                            hideFlyout={dragging}
                                                             onClick={() => setOpenedPanel(openedPanel === 'brailleSettings' ? null : 'brailleSettings')}
                                                             label={"Einrichten"} icon={"braille"}>
                                     <BraillePageSettings/>
                                 </AccordeonPanelFlyoutButton>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'imagedescription'}
                                                             className={"padded"}
+                                                            hideFlyout={dragging}
                                                             onClick={() => setOpenedPanel(openedPanel === 'imagedescription' ? null : 'imagedescription')}
                                                             label={"Bildbeschreibung"} icon={"image"}>
                                     <Verbalizer/>
                                 </AccordeonPanelFlyoutButton>
                             </AccordeonPanel>
                             <AccordeonPanel title={"Objekte"}>
-                                <Objects/>
+                                <Objects hideFlyout={dragging}/>
                             </AccordeonPanel>
-                        {/*</Accordeon>*/}
                     </Sidebar>
                     }
 
                     <CanvasWrapper>
-                        <Canvas hide={page.text}/>
-                        {page.text &&
-                        <BraillePage/>
+                        <Canvas isDragging={dragging => setDragging(dragging)} hide={page.text}/>
+                        {showBraillePanel &&
+                            <BraillePage/>
                         }
                     </CanvasWrapper>
                 </PanelWrapper>

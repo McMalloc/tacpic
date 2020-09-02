@@ -1,11 +1,9 @@
-import React, {Component} from 'react';
-import {connect, useDispatch, useSelector} from "react-redux";
+import React from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import {Button} from "../../gui/Button";
 import {GraphicPagePreview} from "../../gui/PagePreview";
 import styled from 'styled-components/macro';
-import {Icon} from "../../gui/_Icon";
 import {AccordeonMenuEntry, AccordeonPanelFlyoutButton} from "../../gui/Accordeon";
-import Context from "./Context/Context";
 
 const changePage = (dispatch, nr) => {
     dispatch({
@@ -13,11 +11,15 @@ const changePage = (dispatch, nr) => {
         number: nr
     })
 };
-const addPage = (dispatch, isTextPage) => {
+const addPage = (dispatch, isTextPage, pageLength) => {
     dispatch({
         type: "PAGE_ADD",
         isTextPage
-    })
+    });
+    dispatch({
+        type: "PAGE_CHANGE",
+        number: pageLength - 1
+    });
 };
 const removePage = (dispatch, index) => {
     dispatch({
@@ -60,7 +62,7 @@ const Pages = props => {
 
             <ButtonBar>
                 <Button icon={"trash-alt"} onClick={() => removePage(dispatch, currentPage)}>Entfernen</Button>
-                <Button primary icon={"image"} onClick={() => addPage(dispatch, false)}>Neue Grafik-Seite</Button>
+                <Button primary icon={"image"} onClick={() => addPage(dispatch, false, pages.length)}>Neue Grafik-Seite</Button>
             </ButtonBar>
         </>
     );
