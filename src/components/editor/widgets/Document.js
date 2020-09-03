@@ -15,7 +15,7 @@ const Document = props => {
     const {
         title,
         system
-    } = useSelector(state => state.editor.file);
+    } = useSelector(state => state.editor.file.present);
 
     return (
         <>

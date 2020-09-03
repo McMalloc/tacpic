@@ -1,16 +1,35 @@
-const undoable = function (reducer) {
-    // Call the reducer with empty action to populate the initial state
+import {
+    BRAILLE_BULK_TRANSLATED,
+    GRAPHIC,
+    NEW_GRAPHIC_STARTED,
+    SET_PAGE_RENDERINGS, UPDATE_BRAILLE_CONTENT,
+    VARIANT, FILE, CHANGE_FILE_PROPERTY
+} from "../actions/action_constants";
+
+const actionsToIgnore = [
+    ...Object.values({...VARIANT.GET}),
+    ...Object.values({...VARIANT.UPDATE}),
+    ...Object.values({...GRAPHIC.CREATE}),
+    ...Object.values({...VARIANT.GET}),
+    ...Object.values({...FILE.OPEN}),
+    SET_PAGE_RENDERINGS, NEW_GRAPHIC_STARTED, BRAILLE_BULK_TRANSLATED, UPDATE_BRAILLE_CONTENT, CHANGE_FILE_PROPERTY
+];
+
+const undoable = reducer => {
     const initialState = {
         past: [],
         present: reducer(undefined, {}),
         future: []
-    };
-
-    // Return a reducer that handles undo and redo
-    return function (state = initialState, action) {
-        const {past, present, future} = state;
-
+    }
+    return (state = initialState, action) => {
+        const { past, present, future } = state;
         switch (action.type) {
+            case 'CLEAR':
+                return {
+                    past: [],
+                    present,
+                    future: []
+                }
             case 'UNDO':
                 const previous = past[past.length - 1];
                 const newPast = past.slice(0, past.length - 1);
@@ -18,7 +37,7 @@ const undoable = function (reducer) {
                     past: newPast,
                     present: previous,
                     future: [present, ...future]
-                };
+                }
             case 'REDO':
                 const next = future[0];
                 const newFuture = future.slice(1);
@@ -26,12 +45,17 @@ const undoable = function (reducer) {
                     past: [...past, present],
                     present: next,
                     future: newFuture
-                };
+                }
             default:
-                // Delegate handling the action to the passed reducer
                 const newPresent = reducer(present, action);
                 if (present === newPresent) {
                     return state
+                }
+                if (actionsToIgnore.includes(action.type)) { // diese Aktionen nicht der history hinzufügen, aber ausführen
+                    return {
+                        ...state,
+                        present: reducer(present, action)
+                    }
                 }
                 return {
                     past: [...past, present],

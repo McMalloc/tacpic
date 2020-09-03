@@ -7,7 +7,7 @@ export default function SVGGrid(props) {
     const {
         showVerticalGrid,
         showHorizontalGrid
-    } = useSelector(state => state.editor.file);
+    } = useSelector(state => state.editor.file.present);
 
     let nVerticals = parseInt(props.canvasWidth / props.verticalGridSpacing) + 1;
     let verticals = new Array(nVerticals).fill(null).map((n, i) => {

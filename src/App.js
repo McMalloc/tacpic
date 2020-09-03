@@ -36,36 +36,6 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-class ErrorBoundary extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {hasError: false};
-    }
-
-    componentDidCatch(error, info) {
-        // Display fallback UI
-        this.setState({hasError: true});
-    }
-
-    render() {
-        if (this.state.hasError) {
-            // You can render any custom fallback UI
-            return <div><h1 style={{
-                textAlign: 'center',
-                fontSize: '72px',
-                backgroundColor: "#f06595",
-                color: "white",
-                padding: "12px"
-            }}>
-                Herrjemine!
-                <br/>
-                <span className={"fas fa-skull fa-xs fa-pulse"} />
-            </h1></div>;
-        }
-        return this.props.children;
-    }
-}
-
 const Blank = () => {
     return null;
 };
@@ -104,7 +74,6 @@ const App = () => {
             <ScrollContent>
                 {/*<div className={"App"}>*/}
                 <div className={"App" + (!/editor/.test(location.pathname) ? " padded-top container container-fluid" : "")}>
-                    <ErrorBoundary>
                         <Routes>
                             <Route path="/login"            element={<Login/>}/>
                             <Route path="/account/*"        element={<Account/>}/>
@@ -124,7 +93,6 @@ const App = () => {
                             <Route path="/"                 element={<Landing/>}/>
                             <Route element={<Blank/>}/>
                         </Routes>
-                    </ErrorBoundary>
                 </div>
             </ScrollContent>
             <Footer/>

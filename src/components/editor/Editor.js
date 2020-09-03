@@ -104,12 +104,16 @@ const switchCursorMode = (dispatch, mode) => {
 }
 
 const Editor = props => {
+    localStorage.setItem("HAS_EDITOR_CRASHED", "false");
     const uiSettings = useSelector(
         state => state.editor.ui
     );
     const page = useSelector(
-        state => state.editor.file.pages[uiSettings.currentPage]
+        state => state.editor.file.present.pages[uiSettings.currentPage]
     );
+
+    const undoLength = useSelector(state => state.editor.file.past.length);
+    const redoLength = useSelector(state => state.editor.file.future.length);
     const dispatch = useDispatch();
     const t = useTranslation().t;
     const theme = useTheme();
@@ -129,13 +133,14 @@ const Editor = props => {
     const [dragging, setDragging] = useState(false);
     const [showBraillePanel, setShowBraillePanel] = useState(false);
 
-    if (uiSettings.initialized) {
-        return (
-            <Wrapper>
-                <Radiobar>
-                    <RadiobarSegment>
-                        {["SELECT", "KEY", "RECT", "ELLIPSE", /*"CUBIC", "QUADRATIC",*/ "LABEL", "PATH", /*"LINE"*/].map((tool, index) => {
-                            return (
+    try {
+        if (uiSettings.initialized) {
+            return (
+                <Wrapper>
+                    <Radiobar>
+                        <RadiobarSegment>
+                            {["SELECT", "KEY", "RECT", "ELLIPSE", /*"CUBIC", "QUADRATIC",*/ "LABEL", "PATH", /*"LINE"*/].map((tool, index) => {
+                                return (
                                     <Toggle
                                         label={"editor:toggle_tools-" + tool}
                                         primary
@@ -146,22 +151,41 @@ const Editor = props => {
                                             switchCursorMode(dispatch, tool);
                                         }}
                                     />
-                            )
-                        })}
-                    </RadiobarSegment>
-                    <Toggle primary onClick={() => {
-                    }} label={"Neu"}/>
-                </Radiobar>
+                                )
+                            })}
+                        </RadiobarSegment>
+                        <RadiobarSegment>
+                            <Button
+                                label={"editor:undo"}
+                                primary
+                                disabled={undoLength === 0}
+                                icon={'undo'}
+                                onClick={() => {
+                                    dispatch({type: 'UNDO'});
+                                }}/>
+                            <Button
+                                label={"editor:redo"}
+                                primary
+                                disabled={redoLength === 0}
+                                icon={'redo'}
+                                onClick={() => {
+                                    dispatch({type: 'REDO'});
+                                }}/>
 
-                <PanelWrapper>
-                    <Sidebar>
+                        </RadiobarSegment>
+                        {/*<Toggle primary onClick={() => {*/}
+                        {/*}} label={"Neu"}/>*/}
+                    </Radiobar>
+
+                    <PanelWrapper>
+                        <Sidebar>
                             <AccordeonPanel title={"Entwurf"}>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'document'}
                                                             hideFlyout={dragging}
                                                             className={"padded"}
                                                             onClick={() => setOpenedPanel(openedPanel === 'document' ? null : 'document')}
                                                             label={"Einrichten"} icon={"cog"}>
-                                    <Document />
+                                    <Document/>
                                 </AccordeonPanelFlyoutButton>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'publish'}
                                                             className={"padded"}
@@ -177,7 +201,7 @@ const Editor = props => {
                                                             hideFlyout={dragging}
                                                             onClick={() => setOpenedPanel(openedPanel === 'graphicSettings' ? null : 'graphicSettings')}
                                                             label={"Einrichten"} icon={"cog"}>
-                                    <GraphicPageSettings />
+                                    <GraphicPageSettings/>
                                 </AccordeonPanelFlyoutButton>
                                 <Pages/>
                             </AccordeonPanel>
@@ -189,13 +213,13 @@ const Editor = props => {
                                                             label={"Einfügen"} icon={"key"}>
 
                                 </AccordeonPanelFlyoutButton>
-                                <Key className={"padded"} />
+                                <Key className={"padded"}/>
                             </AccordeonPanel>
                             <AccordeonPanel title={"Brailleseiten"}>
                                 <AccordeonPanelFlyoutButton flownOut={showBraillePanel}
                                                             className={"padded"}
                                                             onClick={() => setShowBraillePanel(!showBraillePanel)}
-                                                            label={"Einblenden"} icon={"mag"} />
+                                                            label={"Einblenden"} icon={"mag"}/>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'brailleSettings'}
                                                             className={"padded"}
                                                             hideFlyout={dragging}
@@ -214,21 +238,41 @@ const Editor = props => {
                             <AccordeonPanel title={"Objekte"}>
                                 <Objects hideFlyout={dragging}/>
                             </AccordeonPanel>
-                    </Sidebar>
-                    }
+                        </Sidebar>
 
-                    <CanvasWrapper>
-                        <Canvas isDragging={dragging => setDragging(dragging)} hide={page.text}/>
-                        {showBraillePanel &&
+                        <CanvasWrapper>
+                            <Canvas isDragging={dragging => setDragging(dragging)} hide={page.text}/>
+                            {showBraillePanel &&
                             <BraillePage/>
-                        }
-                    </CanvasWrapper>
-                </PanelWrapper>
-            </Wrapper>
-        );
-    } else {
-        return (<div>Bitte warten.</div>)
+                            }
+                        </CanvasWrapper>
+                    </PanelWrapper>
+                </Wrapper>
+            );
+        } else {
+            return (<div>Bitte warten.</div>)
+        }
+    } catch (error) {
+        localStorage.setItem("HAS_EDITOR_CRASHED", "true");
+        return <div style={{
+            backgroundColor: "#f06595",
+            color: "white",
+            height: '100%',
+            padding: "12px"
+        }}><h1 style={{
+            textAlign: 'center',
+            fontSize: '72px',
+            padding: "12px"
+        }}>
+            {["Herrjemine", "Hoppla", "Hossa", "Ach du grüne Neune"][Math.floor(Math.random() * 4)]}
+            <br/>
+            <span className={"fas fa-skull fa-xs fa-pulse"} />
+        </h1>
+        <p style={{maxWidth: 600, margin: 'auto'}}>Tut uns Leid, es ist ein Fehler aufgetreten. Ihre bisherigen Arbeitsschritte wurden gespeichert. Ein Fehlerbericht wurde anonym an uns gesendet.</p><br />
+        <pre style={{maxWidth: 600, margin: 'auto', borderRadius: 5, backgroundColor: "#e4276f", padding: 5}}>{error}</pre>
+        </div>
     }
+
 };
 
 export default Editor;

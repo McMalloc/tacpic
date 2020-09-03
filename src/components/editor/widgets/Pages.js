@@ -44,7 +44,7 @@ const PageTitle = styled.div`
 `;
 
 const Pages = props => {
-    const {width, height, pages} = useSelector(state => state.editor.file);
+    const {width, height, pages} = useSelector(state => state.editor.file.present);
     const currentPage = useSelector(state => state.editor.ui.currentPage);
     const dispatch = useDispatch();
     return (

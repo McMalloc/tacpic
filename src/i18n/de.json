@@ -127,6 +127,8 @@
     "toggle_tools-KEY": "Legende",
     "button_tools-diagram": "Diagramm",
     "toggle_tools-SELECT": "Auswählen",
+    "redo": "Wiederherstellen",
+    "undo": "Rückgängig",
 
     "tablist_shape-fill": "Füllung",
     "tablist_shape-contour": "Kontur",

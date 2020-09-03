@@ -33,7 +33,8 @@ const ButtonBase = styled.button`
   
   &:disabled {
     color: ${props => props.theme.grey_1};
-    background-color: ${props => props.theme.grey_6};
+    background-color: ${props => props.theme.grey_4};
+    opacity: 0.7;
     border-color: ${props => props.theme.grey_3};
     cursor: not-allowed;
     

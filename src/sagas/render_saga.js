@@ -7,10 +7,10 @@ export function* renderWatcher() {
     yield debounce(1000, ['OBJECT_PROP_CHANGED', 'OBJECT_UPDATED', FILE.OPEN.SUCCESS], function* (action) {
         try {
             let file = yield select(state => state.editor.file);
-            localStorage.setItem("EDITOR_BACKUP", JSON.stringify(file));
+            localStorage.setItem("EDITOR_BACKUP", JSON.stringify(file.present));
             yield put({
                 type: 'SET_PAGE_RENDERINGS',
-                renderings: file.pages.map((page, index) => page.text ? null : extractSVG(index))
+                renderings: file.present.pages.map((page, index) => page.text ? null : extractSVG(index))
             });
         } catch (error) {
             console.log(error);

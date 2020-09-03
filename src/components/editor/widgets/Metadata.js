@@ -11,7 +11,6 @@ import {Alert} from "../../gui/Alert";
 import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {NavLink} from "react-router-dom";
-import {renderSVG} from "./ReactSVG";
 import uuidv4 from "../../../utility/uuid";
 
 const Status = styled.div`
@@ -63,7 +62,7 @@ const uploadVersion = (dispatch, file) => {
 };
 
 const Metadata = props => {
-    const file = useSelector(state => state.editor.file);
+    const file = useSelector(state => state.editor.file.present);
     const logged_in = useSelector(state => state.user.logged_in);
     const tags = useSelector(
         state => state.catalogue.tags.map(tag => {
@@ -74,7 +73,7 @@ const Metadata = props => {
         })
     );
     const {t} = useTranslation();
-    const variantTags = useSelector(state => state.editor.file.tags);
+    const variantTags = useSelector(state => state.editor.file.present.tags);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [input, setInput] = useState({});

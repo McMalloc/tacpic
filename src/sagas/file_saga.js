@@ -4,7 +4,7 @@ import {FILE, VARIANT} from "../actions/action_constants";
 export function* openFileWatcher() {
     yield takeLatest(FILE.OPEN.REQUEST, function* (action) {
         let mode = action.mode;
-        // console.log(mode);
+
         yield put({
             type: VARIANT.GET.REQUEST,
             payload: {id: action.id}
@@ -20,6 +20,7 @@ export function* openFileWatcher() {
                 type: FILE.OPEN.SUCCESS,
                 data: success.data, mode
             });
+            yield put({type: 'CLEAR'})
         } else {
             yield put({
                 type: FILE.OPEN.FAILURE

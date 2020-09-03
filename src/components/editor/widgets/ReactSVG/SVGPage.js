@@ -3,7 +3,7 @@ import mapObject from "./index";
 import React from "react";
 
 export const SVGPage = ({page, excludes = []}) => {
-    const { width, height, pages } = useSelector(state => state.editor.file);
+    const { width, height, pages } = useSelector(state => state.editor.file.present);
     if (pages[page].text) return null;
     return (
         <g id={"page-" + page}>

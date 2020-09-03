@@ -27,7 +27,7 @@ const Black = styled.text`
 
 export default props => {
     const patternsInUse = useSelector(patternsInUseSelector);
-    const keyedTextures = useSelector(state => state.editor.file.keyedTextures);
+    const keyedTextures = useSelector(state => state.editor.file.present.keyedTextures);
     const keyedLabels = useSelector(state => {
         const allObjects = flatten(state.editor.file.pages.map(page => page.objects));
         return allObjects.filter(object => object && object.isKey).map(({braille, keyVal, text}) => ({keyVal, braille, text}));

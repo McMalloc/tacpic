@@ -3,20 +3,9 @@ import createSagaMiddleware from "redux-saga";
 import {applyMiddleware, compose, createStore} from "redux";
 import rootReducer from "./reducers";
 import rootSaga from "./sagas";
-import layouts from "./components/editor/widgets/layouts.js";
 
 const sagaMiddleware = createSagaMiddleware();
 
-// const undoMiddleware = store => next => action => {
-//     if (action.type === 'UNDO') {
-//         debugger;
-//         Canvas.redrawCanvas();
-//     }
-//     return next(action);
-// };
-
-const initialLayout = 4;
-const fromLS = JSON.parse(localStorage.getItem("custom_layout_" + initialLayout));
 export const initialEditor = {
     ui: {
         tool: 'RECT',
@@ -37,93 +26,66 @@ export const initialEditor = {
         defaultTitle: true,
         initialized: true,
 
-        fileState: null,
-
-        currentLayout: initialLayout,
-        widgetConfig: fromLS !== null ? fromLS : layouts[initialLayout]
+        fileState: null
     },
     file: {
-        title: "",
-        graphicTitle: "",
-        graphicDescription: "",
-        variantTitle: "",
-        variantDescription: "",
-        transcribersNotes: "",
-        tags: [],
-        category: null,
-        variant_id: null,
-        graphic_id: null,
-        version_id: null,
-        lastVersionHash: null,
+        past: [],
+        present: {
+            title: "",
+            graphicTitle: "",
+            graphicDescription: "",
+            variantTitle: "",
+            variantDescription: "",
+            transcribersNotes: "",
+            tags: [],
+            category: null,
+            variant_id: null,
+            graphic_id: null,
+            version_id: null,
+            lastVersionHash: null,
 
-        backgroundURL: "",
-        keyedStrokes: [],
-        keyedTextures: [],
-        medium: 'swell',
-        system: 'de-de-g2.ctb', // name of the liblouis translation table
-        width: 210,
-        height: 297,
-        verticalGridSpacing: 10, // TODO: Dateieigenschaften sollten in 'openedFile'
-        horizontalGridSpacing: 10,
-        showVerticalGrid: false,
-        showHorizontalGrid: false,
-
-        braillePages: {
+            backgroundURL: "",
+            keyedStrokes: [],
+            keyedTextures: [],
+            medium: 'swell',
+            system: 'de-de-g2.ctb', // name of the liblouis translation table
             width: 210,
             height: 297,
-            marginLeft: 1,
-            marginTop: 1,
-            cellsPerRow: 33,
-            rowsPerPage: 27,
-            pageNumbers: 0
-        },
-        pages: [
-            {
-                name: "Seite 1",
-                text: false,
-                rendering: '',
-                objects: []
+            verticalGridSpacing: 10, // TODO: Dateieigenschaften sollten in 'openedFile'
+            horizontalGridSpacing: 10,
+            showVerticalGrid: false,
+            showHorizontalGrid: false,
+
+            braillePages: {
+                width: 210,
+                height: 297,
+                marginLeft: 1,
+                marginTop: 1,
+                cellsPerRow: 33,
+                rowsPerPage: 27,
+                pageNumbers: 0
             },
-            {
-                name: "Seite 2",
-                text: true, // TODO Textseiten werden anders behandelt, starres Braille-Layout
-                content: '',
-                braille: '',
-                formatted: [[]]
-            }
-        ]
+            pages: [
+                {
+                    name: "Seite 1",
+                    text: false,
+                    rendering: '',
+                    objects: []
+                },
+                {
+                    name: "Seite 2",
+                    text: true, // TODO Textseiten werden anders behandelt, starres Braille-Layout
+                    content: '',
+                    braille: '',
+                    formatted: [[]]
+                }
+            ]
+        },
+        future: []
     },
 };
 
-const initialCatalogue = {
-    filterTags: [],
-    filterTerms: [],
-    filterFormat: [],
-    filterSystem: [],
-    tags: [],
-    limit: 50,
-    offset: 0,
-    graphics: [],
-    viewedGraphic: {},
-    graphicGetPending: true,
-    searchPending: false,
-    loadMorePending: false,
-    quotedVariants: [],
-    order: {
-        pending: false,
-        key: null,
-        successful: false,
-        error: null
-    },
-    quote: {
-        items: [],
-        pending: false,
-        successfull: false,
-        error: null
-    }, // quote is the basket with added prices and packaging and postage items
-    basket: JSON.parse(localStorage.getItem("basket")) || []
-};
-
+// Devtools
 const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({trace: true, traceLimit: 5})
@@ -143,8 +105,7 @@ const shareCurrentPage = store => next => action => {
 export const store = createStore(
     rootReducer,
     {
-        editor: initialEditor,
-        catalogue: initialCatalogue
+        editor: initialEditor
     },
     composeEnhancers(
         applyMiddleware(sagaMiddleware, shareCurrentPage)

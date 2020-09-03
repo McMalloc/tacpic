@@ -112,7 +112,7 @@ const ObjectEntry = props => {
 
 const Objects = props => {
     const objects = useSelector(
-        state => state.editor.file.pages[state.editor.ui.currentPage].objects
+        state => state.editor.file.present.pages[state.editor.ui.currentPage].objects
     )
     const dispatch = useDispatch();
     const selectedUUID = useSelector(

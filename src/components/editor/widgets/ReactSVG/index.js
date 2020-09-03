@@ -6,18 +6,6 @@ import React from "react";
 import Ellipse from "./Ellipse";
 import SVGLine from "./Line";
 import Key from "./Key";
-import { renderToStaticMarkup } from 'react-dom/server'
-import {SVGPage} from "./SVGPage";
-import {store} from "../../../../store";
-import {Provider} from "react-redux";
-
-export function renderSVG(page) {
-    return renderToStaticMarkup(
-        <Provider store={store}>
-            <svg xmlns="http://www.w3.org/2000/svg" width={100} height={100}><SVGPage page={page} /></svg>
-        </Provider>
-    )
-}
 
 export const extractSVG = index => document.getElementById("page-" + index).outerHTML;
 

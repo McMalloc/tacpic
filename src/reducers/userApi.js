@@ -1,9 +1,8 @@
-import {ADDRESS, CLEAR_USER, ORDER, RESET_USER_ERRORS, USER} from '../actions/action_constants';
+import {ADDRESS, ORDER, RESET_USER_ERRORS, USER} from '../actions/action_constants';
 
 let initialState = {
     logged_in: false,
     login_pending: false,
-
     // 0: waiting for the server to initialise created account
     // 1: waiting for user to click on link and enter password
     // 2: waiting for server to finalise account

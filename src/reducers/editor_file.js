@@ -1,10 +1,16 @@
 import {cloneDeep, filter, includes, find, compact} from "lodash"
-import {VARIANT, FILE, GRAPHIC, OBJECTS_SWAPPED} from "../actions/action_constants";
+import {
+    VARIANT,
+    FILE,
+    GRAPHIC,
+    OBJECTS_SWAPPED,
+    SET_PAGE_RENDERINGS,
+    NEW_GRAPHIC_STARTED, BRAILLE_BULK_TRANSLATED, UPDATE_BRAILLE_CONTENT, CHANGE_FILE_PROPERTY
+} from "../actions/action_constants";
 import methods from "../components/editor/widgets/ReactSVG/methods";
 import uuidv4 from "../utility/uuid";
 import deepPull from "../utility/deepPull";
 import {initialEditor} from "../store";
-import {findObject} from "../utility/findObject";
 import {produce} from "immer";
 import {A4_HEIGHT, A4_MAX_CHARS_PER_ROW, A4_MAX_ROWS_PER_PAGE, A4_WIDTH, PAGE_NUMBER_BOTTOM} from "../config/constants";
 import {wrapAndChunk} from "../utility/wrapLines";
@@ -42,6 +48,7 @@ const file = (state = {}, action) => {
         case GRAPHIC.CREATE.FAILURE:
         case VARIANT.CREATE.FAILURE:
             return {...state, state: 'failure'};
+
         case OBJECTS_SWAPPED:
             return produce(state, draftState => {
                 draftState.pages[action.shared_currentPage].objects =
@@ -106,7 +113,7 @@ const file = (state = {}, action) => {
                     }
                 });
             });
-        case 'BRAILLE_BULK_TRANSLATED':
+        case BRAILLE_BULK_TRANSLATED:
             return produce(state, draftState => {
                 draftState.pages.forEach((page, index) => {
                     if (page.text) {
@@ -121,10 +128,9 @@ const file = (state = {}, action) => {
                             }
                         })
                     }
-
                 });
             });
-        case 'CHANGE_FILE_PROPERTY':
+        case CHANGE_FILE_PROPERTY:
             return {
                 ...state,
                 [action.key]: action.value
@@ -163,7 +169,7 @@ const file = (state = {}, action) => {
             return produce(state, draftState => {
                 draftState.pages[action.pageIndex].content = action.content;
             });
-        case 'UPDATE_BRAILLE_CONTENT':
+        case UPDATE_BRAILLE_CONTENT:
             // called when the saga has finished processing the remote braille translation
             return produce(state, draftState => {
                 draftState.pages[action.pageIndex].braille = action.braille;
@@ -172,7 +178,7 @@ const file = (state = {}, action) => {
         case FILE.OPEN.REQUEST:
             return state;
         case FILE.OPEN.SUCCESS:
-            let current_file = {...initialEditor.file};
+            let current_file = {...initialEditor.file.present};
             for (let [key, value] of Object.entries(action.data)) { // assign new values, keep defaults
                 current_file[key] = value;
             }
@@ -255,9 +261,9 @@ const file = (state = {}, action) => {
             });
             objects.splice(groupIndex, 1);
             return oldState;
-        case 'NEW_GRAPHIC_STARTED':
-            return {...initialEditor.file};
-        case 'SET_PAGE_RENDERINGS':
+        case NEW_GRAPHIC_STARTED:
+            return {...initialEditor.present.file};
+        case SET_PAGE_RENDERINGS:
             return produce(state, draftState => {
                 draftState.pages.map((page, index) => {
                     if (page.text) return page;

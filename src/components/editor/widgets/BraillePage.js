@@ -62,9 +62,9 @@ const Pagenumber = styled.div`
 
 const BraillePage = props => {
     const currentPageIndex = useSelector(state => state.editor.ui.currentPage);
-    const system = useSelector(state => state.editor.file.system);
-    const page = useSelector(state => state.editor.file.pages.find(page=>page.text));
-    const layout = useSelector(state => state.editor.file.braillePages);
+    const system = useSelector(state => state.editor.file.present.system);
+    const page = useSelector(state => state.editor.file.present.pages.find(page=>page.text));
+    const layout = useSelector(state => state.editor.file.present.braillePages);
     // TODO in props stecken, der Editor weiß ohnehin Bescheid
 
     return (
@@ -72,7 +72,7 @@ const BraillePage = props => {
             {/*<h1>&emsp;Vorschau</h1>*/}
             <div>
                 {page.formatted && page.formatted.map((pageChunk, index) => {
-                    return (<a>
+                    return (<a key={index}>
                             <PageTitle id={`braillepage_preview_${currentPageIndex}_${index}`}>Seite #{index + 1}</PageTitle>
                             <Page {...layout} system={system}>
 

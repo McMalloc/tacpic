@@ -102,14 +102,12 @@ const Textinput = props => {
     const {t} = useTranslation();
     const messages = getMessages(validities, t, validations);
 
-    // const Wrapping = Label;
-    const Wrapping = Label;//props.label ? Label : React.Fragment;
-
     return (
-        <Wrapping
+        <Label
             tip={props.tip}
             sublabel={props.sublabel}
             required={props.required}
+            style={props.style}
             label={props.label}
             noMargin={props.noMargin}
             disabled={props.disabled}
@@ -138,7 +136,7 @@ const Textinput = props => {
                 onChange={props.onChange}
             />
             {!pristine && messages.map(message => <Alert style={{borderRadius: '0 0 3px 3px', marginTop: 0}} warning>{message}</Alert>)}
-        </Wrapping>
+        </Label>
     )
 };
 

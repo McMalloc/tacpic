@@ -75,7 +75,7 @@ const Keyedit = props => {
         return filter(allObjects, "isKey");
     });
     const patternsInUse = useSelector(patternsInUseSelector);
-    const keyedTextures = useSelector(state => state.editor.file.keyedTextures);
+    const keyedTextures = useSelector(state => state.editor.file.present.keyedTextures);
 
     return (
         <div className={props.className}>

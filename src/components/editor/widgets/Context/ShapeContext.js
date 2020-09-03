@@ -43,7 +43,7 @@ const changeFill = fill => {
 
 const ShapeContext = props => {
     const selectedObject = useSelector(state => findObject(
-        state.editor.file.pages[state.editor.ui.currentPage].objects,
+        state.editor.file.present.pages[state.editor.ui.currentPage].objects,
         state.editor.ui.selectedObjects[0])
     );
     const t = useTranslation().t;

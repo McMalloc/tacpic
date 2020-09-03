@@ -94,7 +94,7 @@ const Carousel = props => {
                             if (Elem === null) return null;
                             return (
                                 <Toggle toggled={index === position} onClick={() => setPosition(index)}
-                                        label={index + 1}/>
+                                        key={index} label={index + 1}/>
                             )
                         })
                         }

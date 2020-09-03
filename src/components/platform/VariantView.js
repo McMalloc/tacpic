@@ -77,7 +77,7 @@ const VariantView = props => {
                             if (page.content.length === 0) return null;
                             return <div style={{backgroundColor: 'white', padding: 6}}>{page.content}</div>
                         } else {
-                            return <img
+                            return <img key={index}
                                 src={`${API_URL}/thumbnails/${props.file_name}-THUMBNAIL-xl-p${index}.png`}/>
                         }
                     })}
@@ -90,8 +90,9 @@ const VariantView = props => {
                     <p><small>Erstellt am {moment(props.created_at).format("DD.MM.YYYY, HH:mm")} Uhr</small></p>
                 </div>
                 <div>
-                    <br />
+                    <br/>
                     <table>
+                        <tbody>
                         <tr>
                             <td className={"icon-cell"}><Icon title={"Format der Grafikseiten"}
                                                               icon={"file-image"}/></td>
@@ -131,6 +132,7 @@ const VariantView = props => {
                                 <td className={"disabled"} colSpan={2}>Keine Schlagworte für diese Variante.</td>
                             }
                         </tr>
+                        </tbody>
                     </table>
 
                     {!logged_in &&
@@ -160,7 +162,7 @@ const VariantView = props => {
                             window.location = `${API_URL}/variants/${variantId}/brf`;
                         }}>Brailletext herunterladen</Button>
                     </Toolbar>
-                    <br />
+                    <br/>
                     <Well>
                         <h3>Bestellen</h3>
                         <Radio onChange={setProduct} value={product} name={"graphic_only_or_both"} options={[

@@ -202,7 +202,7 @@ class InteractiveSVG extends Component {
             edit: target.dataset.associatedPath,
             preview: {
                 ...findObject(
-                    this.props.file.pages[this.props.ui.currentPage].objects,
+                    this.props.file.present.pages[this.props.ui.currentPage].objects,
                     target.dataset.associatedPath)
             },
             editIndex: parseInt(target.dataset.index)
@@ -379,7 +379,7 @@ class InteractiveSVG extends Component {
             this.setState({
                 preview: {
                     ...findObject(
-                        this.props.file.pages[this.props.ui.currentPage].objects,
+                        this.props.file.present.pages[this.props.ui.currentPage].objects,
                         this.props.ui.selectedObjects[0])
                 }
             });
@@ -434,7 +434,7 @@ class InteractiveSVG extends Component {
     };
 
     render() {
-        const visibleObjects = this.props.file.pages[this.props.ui.currentPage].objects;
+        const visibleObjects = this.props.file.present.pages[this.props.ui.currentPage].objects;
         let selectedObject = !!visibleObjects ? findObject(
             visibleObjects,
             this.props.ui.selectedObjects[0]) : undefined;
@@ -462,7 +462,7 @@ class InteractiveSVG extends Component {
                        scale(${this.props.ui.scalingFactor})`}>
 
 
-                    {this.props.file.pages.map((page, index) => {
+                    {this.props.file.present.pages.map((page, index) => {
                         if (index === this.props.ui.currentPage) return null;
                         return (
                                 <SVGPage page={index} key={index} excludes={[]}/>
@@ -520,10 +520,10 @@ class InteractiveSVG extends Component {
                 {this.svgElement.current !== null &&
                 <SVGGrid canvasWidth={this.svgElement.current.scrollWidth}
                          canvasHeight={this.svgElement.current.scrollHeight}
-                         offsetX={this.props.ui.viewPortX % (this.props.file.verticalGridSpacing * this.props.ui.scalingFactor)}
-                         offsetY={this.props.ui.viewPortY % (this.props.file.horizontalGridSpacing * this.props.ui.scalingFactor)}
-                         verticalGridSpacing={this.props.file.verticalGridSpacing * this.props.ui.scalingFactor}
-                         horizontalGridSpacing={this.props.file.horizontalGridSpacing * this.props.ui.scalingFactor}/>
+                         offsetX={this.props.ui.viewPortX % (this.props.file.present.verticalGridSpacing * this.props.ui.scalingFactor)}
+                         offsetY={this.props.ui.viewPortY % (this.props.file.present.horizontalGridSpacing * this.props.ui.scalingFactor)}
+                         verticalGridSpacing={this.props.file.present.verticalGridSpacing * this.props.ui.scalingFactor}
+                         horizontalGridSpacing={this.props.file.present.horizontalGridSpacing * this.props.ui.scalingFactor}/>
                 }
 
                 {/*<g id={"mouse-indicators"}>*/}

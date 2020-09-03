@@ -59,7 +59,7 @@ const GraphicPageSettings = props => {
         defaultTitle,
         height,
         system
-    } = useSelector(state => state.editor.file);
+    } = useSelector(state => state.editor.file.present);
 
     return <>
         <fieldset>

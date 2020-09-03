@@ -17,7 +17,36 @@ import {produce} from "immer";
 //     !!catalogueApiCallbacks[action.type] && catalogueApiCallbacks[action.type]()
 // }
 
-const catalogueApi = (state = {}, action) => {
+const initialState = {
+    filterTags: [],
+    filterTerms: [],
+    filterFormat: [],
+    filterSystem: [],
+    tags: [],
+    limit: 50,
+    offset: 0,
+    graphics: [],
+    viewedGraphic: {},
+    graphicGetPending: true,
+    searchPending: false,
+    loadMorePending: false,
+    quotedVariants: [],
+    order: {
+        pending: false,
+        key: null,
+        successful: false,
+        error: null
+    },
+    quote: {
+        items: [],
+        pending: false,
+        successfull: false,
+        error: null
+    }, // quote is the basket with added prices and packaging and postage items
+    basket: JSON.parse(localStorage.getItem("basket")) || []
+};
+
+const catalogueApi = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_MORE:
             return {

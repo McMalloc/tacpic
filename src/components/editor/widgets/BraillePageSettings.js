@@ -52,7 +52,7 @@ const BraillePageSettings = props => {
         braillePages,
         width,
         height
-    } = useSelector(state => state.editor.file);
+    } = useSelector(state => state.editor.file.present);
 
     return (
         <>

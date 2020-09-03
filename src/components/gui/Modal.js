@@ -6,7 +6,7 @@ import {Icon} from "./_Icon";
 import {Button} from "./Button";
 
 const Backdrop = styled.div`
-  background-color: rgba(3,113,113,0.3);
+  background-color: rgba(3,113,113,0.5);
   position: fixed;
   height: 100%;
   width: 100%;

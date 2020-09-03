@@ -9,6 +9,9 @@ import styled from 'styled-components/macro';
 const Bar = styled.form`
   display: flex;
   width: 100%;
+  align-items: flex-end;
+  text-align: left;
+  justify-content: center;
 `;
 
 const Label = styled.label`
@@ -35,14 +38,11 @@ const Searchbar = () => {
     const [searchTerm, setSearchTerm] = useState(catalogue.filterTerms);
 
     return (
-        <div style={{textAlign: "left"}}>
-            <label htmlFor={"label-for-search-bar"} id={"label-for-search-bar"}>
-                {t("catalogue:searchterm")}
-            </label>
             <Bar>
                 <Textinput value={searchTerm}
                            name={"search-bar"}
-                           noMargin
+                           style={{margin: 0}}
+                           label={t("catalogue:searchterm")}
                            onChange={event => setSearchTerm(event.target.value)}
                            externalLabel={"search-bar-label"}
                            placeholder={t("catalogue:search-placeholder")}
@@ -63,7 +63,6 @@ const Searchbar = () => {
                     {t("catalogue:search")}
                 </Button>
             </Bar>
-        </div>
     );
 };
 
