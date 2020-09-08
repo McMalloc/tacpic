@@ -11,6 +11,7 @@ import {TagView} from "./platform/Tag";
 import {Textinput} from "./gui/Input";
 import {NavLink, Navigate} from "react-router-dom";
 import LoginForm from "./LoginForm";
+import {Alert} from "./gui/Alert";
 
 const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4";
 
@@ -25,7 +26,12 @@ const Login = props => {
     return (
         <>
             <div className={"row extra-margin"}>
-                <h1 className={layout}>{t("general:login")}</h1>
+                <div className={layout}>
+                    <h1>{t("general:login")}</h1>
+                    {user.reset_state === 3 &&
+                        <Alert info>Ihr Passwort wurde zurückgesetzt. Bitte melden Sie sich mit Ihrem neuen Passwort an.</Alert>
+                    }
+                </div>
             </div>
 
             <div className={"row"}>

@@ -1,35 +1,50 @@
 import {ADDRESS, ORDER, RESET_USER_ERRORS, USER} from '../actions/action_constants';
 
-let initialState = {
-    logged_in: false,
-    login_pending: false,
-    // 0: waiting for the server to initialise created account
-    // 1: waiting for user to click on link and enter password
-    // 2: waiting for server to finalise account
-    // 3: verified account
-    verification_state: -1,
-    addresses: [],
-    error: null
-};
-
-const userApi = (state = initialState, action) => {
+const userApi = (state = {}, action) => {
     switch (action.type) {
         case USER.VERIFY.REQUEST:
-            return {
-                ...state,
+            return {...state,
                 verification_state: 2
             };
         case USER.VERIFY.SUCCESS:
-            return {
-                ...state,
+            return {...state,
                 verification_state: 3,
                 email: action.data.email,
                 id: action.data.id,
                 logged_in: true
             };
         case USER.VERIFY.FAILURE:
-            return {
-                ...state,
+            return {...state,
+                error: action.message
+            };
+
+        case USER.RESET_REQUEST.REQUEST:
+            return {...state,
+                reset_state: 0,
+                email: action.payload.email
+            };
+        case USER.RESET_REQUEST.SUCCESS:
+            return {...state,
+                reset_state: 1
+            };
+        case USER.RESET_REQUEST.FAILURE:
+            return {...state,
+                reset_state: -1,
+                error: action.message
+            };
+
+        case USER.RESET.REQUEST:
+            return {...state,
+                reset_state: 2,
+                email: action.payload.email
+            };
+        case USER.RESET.SUCCESS:
+            return {...state,
+                reset_state: 3
+            };
+        case USER.RESET.FAILURE:
+            return {...state,
+                reset_state: -1,
                 error: action.message
             };
 

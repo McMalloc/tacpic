@@ -4,16 +4,17 @@ import ReactDOM from 'react-dom';
 import {Provider} from "react-redux";
 import {ThemeProvider} from 'styled-components';
 import './i18n/i18n';
-import {MatomoProvider, createInstance} from '@datapunt/matomo-tracker-react'
-import {BrowserRouter} from "react-router-dom";
+import {MatomoProvider, createInstance} from '@datapunt/matomo-tracker-react';
+import { ConnectedRouter } from 'connected-react-router';
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 
 import './index.scss';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import {store} from "./store";
+import store, {history} from "./store/configureStore";
 import {standard} from "./styles/themes"
+import {BrowserRouter} from "react-router-dom";
 
 const instance = createInstance({
     urlBase: 'https://tacpic.de',
@@ -22,22 +23,21 @@ const instance = createInstance({
 })
 
 // bootstrapping the app
-ReactDOM.render(
-    <Provider store={store}>
-        <ThemeProvider theme={standard}>
-            <MatomoProvider value={instance}>
-                <BrowserRouter>
-                    <DndProvider backend={HTML5Backend}>
-                        <App/>
-                    </DndProvider>
-                </BrowserRouter>
-            </MatomoProvider>
-        </ThemeProvider>
-    </Provider>,
-    document.getElementById('root'));
+    ReactDOM.render(
+        <Provider store={store}>
+            <ThemeProvider theme={standard}>
+                <MatomoProvider value={instance}>
+                    <BrowserRouter history={history}>
+                        {/*<ConnectedRouter history={history}>*/}
+                        <DndProvider backend={HTML5Backend}>
+                            <App/>
+                        </DndProvider>
+                        {/*</ConnectedRouter>*/}
+                    </BrowserRouter>
+                </MatomoProvider>
+            </ThemeProvider>
+        </Provider>,
+        document.getElementById('root'));
 
 // for debugging purposes
 registerServiceWorker();
-
-// TODO Note:
-// Using an arrow function in render creates a new function each time the component renders, which may break optimizations based on strict identity comparison.

@@ -6,6 +6,7 @@ import {useTranslation} from "react-i18next";
 import {Icon} from "./gui/_Icon";
 import {Textinput} from "./gui/Input";
 import {Alert} from "./gui/Alert";
+import {Link} from "react-router-dom";
 
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4";
@@ -58,18 +59,16 @@ const Login = props => {
                 {user.error['field-error'] && t("auth:" + user.error['field-error'][1])}
             </Alert><br/></>
             }
+            <p className={"align-right"}>
+                <Link to={"/reset-password-request"}>Passwort vergessen?</Link>
+            </p>
 
-            {user.login_pending ?
-                <Icon icon={"cog fa-spin"}/>
-            :
-                <div className={'align-center'}>
-                    {/*<input type={"submit"} value={"login"}/>*/}
-                    <Button primary disabled={!(emailValid && passwordValid)}
-                            type={'submit'}>{t("general:login")}</Button>
-                </div>
-            }
+            <div className={'align-center'}>
+                <Button icon={user.login_pending ? "cog fa-spin" : "sign-in-alt"} primary
+                        disabled={!(emailValid && passwordValid) || user.login_pending}
+                        type={'submit'}>{t("general:login")}</Button>
+            </div>
         </form>
-
     );
 };
 

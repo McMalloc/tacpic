@@ -1,18 +1,18 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Link, Navigate, Route, Routes} from "react-router-dom";
-import {USER} from "../../actions/action_constants";
-import Card from "../gui/Card";
-import {Button} from "../gui/Button";
-import Addresses from "./Addresses";
-import {Footer} from "./Footer";
+import {USER} from "../../../actions/action_constants";
+import Card from "../../gui/Card";
+import {Button} from "../../gui/Button";
+import Addresses from "../Addresses";
+import {Footer} from "../Footer";
 import {useLocation} from "react-router-dom";
-import {Container, Row} from "../gui/Grid";
-import Orders from "./account/Orders";
-import AccountInfo from "./account/AccountInfo";
+import {Container, Row} from "../../gui/Grid";
+import Orders from "./Orders";
+import AccountInfo from "./AccountInfo";
 import {Outlet} from "react-router";
-import {Alert} from "../gui/Alert";
-import {Icon} from "../gui/_Icon";
+import {Alert} from "../../gui/Alert";
+import {Icon} from "../../gui/_Icon";
 
 const Account = props => {
     const user = useSelector(state => state.user);
@@ -48,13 +48,12 @@ const Account = props => {
         <Outlet/>
         <Row>
             <div className={"col-sm-12"} style={{textAlign: "center"}}>
-                <Button onClick={event => dispatch({type: USER.LOGOUT.REQUEST})}>
+                <Button icon={"sign-out-alt"} onClick={event => dispatch({type: USER.LOGOUT.REQUEST})}>
                     Ausloggen
                 </Button>
             </div>
         </Row>
     </>;
-    console.log(location);
     return (
         <>
             {!user.logged_in ?

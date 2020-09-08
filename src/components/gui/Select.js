@@ -65,7 +65,7 @@ const Select = props => {
                         onCreateOption={props.onCreateOption}
                         onChange={props.onChange}
                         // menuIsOpen={true}
-                        menuPortalTarget={document.getElementById("modal-portal-target")}
+                        menuPortalTarget={document.getElementById("select-portal-target")}
                         options={props.options}/>
                 </Label>
             </div>

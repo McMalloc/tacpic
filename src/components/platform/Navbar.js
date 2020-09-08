@@ -42,8 +42,6 @@ const NavbarItem = styled(NavLink)`
       border-color: ${props => props.theme.brand_secondary_verylight};
     }
    
-   
-    
     &.active {
     font-weight: bold;
       border-color: ${props => props.theme.brand_secondary_lighter};

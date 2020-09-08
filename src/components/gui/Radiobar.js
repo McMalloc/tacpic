@@ -5,7 +5,7 @@ export const Radiobar = styled.div`
   align-items: center;
   justify-content: space-between;
   //z-index: 20;
-  padding: ${props => props.theme.base_padding} ${props => props.theme.large_padding};
+  padding: 6px ${props => props.theme.large_padding};
 `;
 
 export const RadiobarSegment = styled.div`

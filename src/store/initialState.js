@@ -1,12 +1,4 @@
-// setting up redux and saga
-import createSagaMiddleware from "redux-saga";
-import {applyMiddleware, compose, createStore} from "redux";
-import rootReducer from "./reducers";
-import rootSaga from "./sagas";
-
-const sagaMiddleware = createSagaMiddleware();
-
-export const initialEditor = {
+export const editor = {
     ui: {
         tool: 'RECT',
         texture: 'diagonal_lines',
@@ -83,33 +75,56 @@ export const initialEditor = {
         },
         future: []
     },
+}
+
+export const app = {
+    version: '',
+    error: null
 };
 
-// Devtools
-const composeEnhancers =
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({trace: true, traceLimit: 5})
-    || compose;
-
-// performance hack: the current editor page is shared with all file reducers
-// to easily filter all objects in a document without structuring reducers
-// unintuitively, e.g. the currently visible page, a detail of ui state, is
-// of no concern for the objects of a document
-const shareCurrentPage = store => next => action => {
-    if (action.type.includes('OBJECT')) {
-        action.shared_currentPage = store.getState().editor.ui.currentPage;
-    }
-    return next(action);
-};
-
-export const store = createStore(
-    rootReducer,
-    {
-        editor: initialEditor
+export const catalogue = {
+    filterTags: [],
+    filterTerms: [],
+    filterFormat: [],
+    filterSystem: [],
+    tags: [],
+    limit: 50,
+    offset: 0,
+    graphics: [],
+    viewedGraphic: {},
+    graphicGetPending: true,
+    searchPending: false,
+    loadMorePending: false,
+    quotedVariants: [],
+    order: {
+        pending: false,
+        key: null,
+        successful: false,
+        error: null
     },
-    composeEnhancers(
-        applyMiddleware(sagaMiddleware, shareCurrentPage)
-    )
-);
+    quote: {
+        items: [],
+        pending: false,
+        successfull: false,
+        error: null
+    }, // quote is the basket with added prices and packaging and postage items
+    basket: JSON.parse(localStorage.getItem("basket")) || []
+};
 
-sagaMiddleware.run(rootSaga);
+export const user = {
+    logged_in: false,
+    email: '',
+    login_pending: false,
+    // 0: waiting for the server to initialise created account
+    // 1: waiting for user to click on link and enter password
+    // 2: waiting for server to finalise account
+    // 3: verified account
+    verification_state: -1,
+    // 0: requested password reset
+    // 1: email sent, waiting for user to click on link and enter new password
+    // 2: waiting for server to reset password
+    // 3: password reset
+    reset_state: -1,
+    addresses: [],
+    error: null
+};

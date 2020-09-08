@@ -11,7 +11,7 @@ const action_constants = (domain, methods) => {
 
 
 export const APP        = action_constants('APP',     ['FRONTEND', 'BACKEND', 'VERSION']);
-export const USER       = action_constants('USER',     ['LOGIN', 'LOGOUT', 'CREATE', 'SAVE_LAYOUT', 'VALIDATE', 'VERIFY']);
+export const USER       = action_constants('USER',     ['LOGIN', 'LOGOUT', 'CREATE', 'SAVE_LAYOUT', 'VALIDATE', 'VERIFY', 'RESET_REQUEST','RESET']);
 export const SEARCH     = action_constants('SEARCH',   ['QUERY']);
 export const PRODUCT    = action_constants('PRODUCT',  ['FETCH', 'GET']);
 export const FILE       = action_constants('FILE',     ['OPEN']);
@@ -44,3 +44,4 @@ export const NEW_GRAPHIC_STARTED = 'NEW_GRAPHIC_STARTED';
 export const BRAILLE_BULK_TRANSLATED = 'BRAILLE_BULK_TRANSLATED';
 export const UPDATE_BRAILLE_CONTENT = 'UPDATE_BRAILLE_CONTENT';
 export const CHANGE_FILE_PROPERTY = 'CHANGE_FILE_PROPERTY';
+export const ERROR_THROWN = 'ERROR_THROWN';

@@ -109,6 +109,7 @@ class Modal extends Component {
                             return (
                                 <span key={index} style={{float: action.align}}>
                                     <Button disabled={action.disabled} {...buttonProps}
+                                            name={action.name}
                                             form={action.submitFor || false}
                                             onClick={action.action}>
                                         {action.label}

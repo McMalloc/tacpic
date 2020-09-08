@@ -14,6 +14,7 @@ import Tile from "../gui/_Tile";
 import CenterWrapper from "../gui/_CenterWrapper";
 import {API_URL} from "../../env.json";
 import {Alert} from "../gui/Alert";
+import Well from "../gui/Well";
 // import {CSSTransition} from "react-transition-group";
 
 const updateBasket = (dispatch, variantId, quantity, product, index) => {
@@ -33,13 +34,8 @@ const removeItem = (dispatch, index) => {
     })
 }
 
-const ItemPanel = styled.div`
+const ItemPanel = styled(Well)`
   margin-bottom: 12px;
-  padding: 12px;
-  border-radius: ${props=>props.theme.border_radius};
-  border: 1px solid ${props => props.theme.grey_4};
-  background-color: ${props=>props.theme.background};
-  //box-shadow: ${props => props.theme.middle_shadow};
 
   .upper {
     display: flex;

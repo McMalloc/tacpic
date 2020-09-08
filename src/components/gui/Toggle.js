@@ -10,6 +10,7 @@ const ToggleButton = styled(Button)`
     text-decoration: underline;
     text-shadow: 0 0 1px ${props => props.theme.background};
     color: ${props => props.theme.foreground};
+    border-color: ${props => props.primary ? "white" : "inherit"};
   }
 `;
 

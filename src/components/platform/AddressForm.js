@@ -136,11 +136,13 @@ const AddressForm = props => {
             <Modal fitted actions={[
                 {
                     label: "Verwerfen",
+                    name: "cancel-address-form",
                     align: "left",
                     action: props.cancel
                 },
                 {
                     label: "Adresse anlegen",
+                    name: "confirm-address-form",
                     align: "right",
                     template: 'primary',
                     submitFor: "address-edit-form",

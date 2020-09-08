@@ -10,7 +10,7 @@ import {
 import methods from "../components/editor/widgets/ReactSVG/methods";
 import uuidv4 from "../utility/uuid";
 import deepPull from "../utility/deepPull";
-import {initialEditor} from "../store";
+import {editor as initialEditor} from "../store/initialState";
 import {produce} from "immer";
 import {A4_HEIGHT, A4_MAX_CHARS_PER_ROW, A4_MAX_ROWS_PER_PAGE, A4_WIDTH, PAGE_NUMBER_BOTTOM} from "../config/constants";
 import {wrapAndChunk} from "../utility/wrapLines";
@@ -261,8 +261,6 @@ const file = (state = {}, action) => {
             });
             objects.splice(groupIndex, 1);
             return oldState;
-        case NEW_GRAPHIC_STARTED:
-            return {...initialEditor.present.file};
         case SET_PAGE_RENDERINGS:
             return produce(state, draftState => {
                 draftState.pages.map((page, index) => {

@@ -87,20 +87,25 @@ const Carousel = props => {
                 {/*<Next>rechts</Next>*/}
             </View>
             <Navigation>
-                Seite&#32;
-                <Radiobar>
-                    <RadiobarSegment>
-                        {props.children.map((Elem, index) => {
-                            if (Elem === null) return null;
-                            return (
-                                <Toggle toggled={index === position} onClick={() => setPosition(index)}
-                                        key={index} label={index + 1}/>
-                            )
-                        })
-                        }
-                    </RadiobarSegment>
-                </Radiobar>
-
+                {props.children.length === 1 ?
+                    <>{props.single || null}</>
+                    :
+                    <>
+                        Seite&#32;
+                        <Radiobar>
+                            <RadiobarSegment>
+                                {props.children.map((Elem, index) => {
+                                    if (Elem === null) return null;
+                                    return (
+                                        <Toggle toggled={index === position} onClick={() => setPosition(index)}
+                                                key={index} label={index + 1}/>
+                                    )
+                                })
+                                }
+                            </RadiobarSegment>
+                        </Radiobar>
+                    </>
+                }
             </Navigation>
 
         </Wrapper>

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "../gui/Button";
-import {VARIANT, FILE, GRAPHIC, ITEM_ADDED_TO_BASKET} from "../../actions/action_constants";
+import {FILE, ITEM_ADDED_TO_BASKET} from "../../actions/action_constants";
 import {Row} from "../gui/Grid";
 import styled, {useTheme} from "styled-components";
 import {useTranslation} from "react-i18next";
@@ -13,12 +13,12 @@ import {NavLink} from "react-router-dom";
 import Carousel from "../gui/Carousel";
 import Toolbar from "../gui/Toolbar";
 import {Radio} from "../gui/Radio";
-import Select from "../gui/Select";
 import {Numberinput} from "../gui/Input";
 import {Currency} from "../gui/Currency";
 import {template} from "lodash";
 import * as moment from 'moment'
 import {API_URL} from "../../env.json";
+import Well from "../gui/Well";
 
 const mapFormat = (width, height) => {
     width = parseInt(width);
@@ -44,12 +44,6 @@ const Details = styled.div`
   flex-direction: column;
   //justify-content: space-between;
 `;
-const Well = styled.div`
-    background-color: ${props => props.theme.background};
-    padding: 12px;
-    border-radius: ${props => props.theme.border_radius};
-    border: 1px solid ${props => props.theme.grey_4};
-`;
 
 const VariantView = props => {
     // The `path` lets us build <Route> paths that are
@@ -70,7 +64,7 @@ const VariantView = props => {
     return (
         <Row style={{height: '100%'}}>
             <div className={"col-md-6 col-xl-4"}>
-                <Carousel>
+                <Carousel single={<span className={'disabled'}>Insgesamt eine Grafikseite.</span>}>
                     {props.document.pages.map((page, index) => {
                         if (page.text) {
                             // TODO ordentliche Komponente; wie kann die Größe garantiert werden?
@@ -80,7 +74,7 @@ const VariantView = props => {
                             return <img key={index}
                                 src={`${API_URL}/thumbnails/${props.file_name}-THUMBNAIL-xl-p${index}.png`}/>
                         }
-                    })}
+                    }).filter(item => item !== null)}
                 </Carousel>
             </div>
             <Details className={"col-md-6 col-xl-8 xs-first"}>
@@ -147,12 +141,12 @@ const VariantView = props => {
                                 disabled={!logged_in}
                                 fullWidth
                                 icon={'pen'} onClick={() => {
-                            navigate(`/editor/${graphicId}/variants/${variantId}`);
                             dispatch({
                                 type: FILE.OPEN.REQUEST,
                                 id: props.id, mode: "edit"
                             })
-                        }}>Bearbeiten</Button>
+                            navigate(`/editor/${graphicId}/variants/${variantId}`);
+                        }}>Verbessern</Button>
 
                         <Button fullWidth icon={'download'} onClick={() => {
                             window.location = `${API_URL}/variants/${variantId}/pdf`;

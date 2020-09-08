@@ -49,10 +49,12 @@ const TagList = props => {
                 )
             })}
             <strong>Schlagworte</strong>
-            {misc.map(tag => {
-                    return <Tag key={tag.tag_id} {...tag}/>
-                }
-            )}
+            <div className={'tag-list'}>
+                {misc.map(tag => {
+                        return <Tag key={tag.tag_id} {...tag}/>
+                    }
+                )}
+            </div>
         </>
     )
 };

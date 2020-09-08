@@ -25,6 +25,8 @@ const processLoginResponse = (response, statusCode, authHeader) => {
 
 export const userLoginSaga = createSaga(USER.LOGIN, 'post', 'login', takeLatest, false, request=>request, processLoginResponse, null, '/catalogue');
 export const userVerifySaga = createSaga(USER.VERIFY, 'post', 'verify-account?key=:key', takeLatest, false, request=>request, processLoginResponse);
+export const userResetRequestSaga = createSaga(USER.RESET_REQUEST, 'post', 'reset-password-request', takeLatest, false, request=>request, response=>response);
+export const userResetSaga = createSaga(USER.RESET, 'post', 'reset-password', takeLatest, false, request=>request, response=>response);
 
 // TODO doesnt work
 // export const userLogoutSaga = createSaga(USER.LOGIN, 'post', 'login', takeLatest, false, id, () => {

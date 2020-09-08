@@ -12,3 +12,9 @@
   opacity: 0;
   transition: opacity 500ms ease-in;
 }
+
+@keyframes pulsating{
+  0%{	color: rgba(255, 255, 255, 1);    box-shadow: 0 0 12px white;	}
+  50%{	color: rgba(255, 255, 255, 0.8);  box-shadow: 0 0 0  white; 	}
+  100%{	color: rgba(255, 255, 255, 1);    box-shadow: 0 0 12px white;	}
+}

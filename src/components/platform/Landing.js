@@ -6,12 +6,14 @@ import Searchbar from "./Searchbar";
 import {Button} from "../gui/Button";
 import {useNavigate} from "react-router-dom";
 import CenterWrapper from "../gui/_CenterWrapper";
+import {FILE} from "../../actions/action_constants";
+import {Row} from "../gui/Grid";
 
 const Form = styled.div`
   //width: 500px;
   box-sizing: border-box;
   //max-width: 100%;
-  padding: ${props=>props.theme.large_padding};
+  padding: ${props => props.theme.large_padding};
 `;
 
 const BigLogo = styled.img`
@@ -22,32 +24,43 @@ const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 vert
 
 const Landing = () => {
     const t = useTranslation().t;
-
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     return (
-        <div className={layout}>
-            <Form>
-                <div>
-                    <BigLogo src={"/images/logo.svg"} alt={"tapic Logo"} />
+        <>
+            <Row>
+                <div className={layout}>
+                    <Form>
+                        <div>
+                            <BigLogo src={"/images/logo.svg"} alt={"tapic Logo"}/>
+                        </div>
+
+                        <Searchbar/>
+                        <br/><br/><br/>
+                        <div style={{marginBottom: "50%"}}>
+                            <Button onClick={() => {
+                                navigate("/catalogue");
+                            }}>{t("catalogue:grub")}</Button>&ensp;
+                            <Button onClick={() => {
+                                navigate("/editor/new");
+                            }}>{t("catalogue:create")}</Button>
+                        </div>
+                    </Form>
                 </div>
+            </Row>
+            {/*<Row>*/}
+            {/*    <div className={"col-md-4"}>*/}
+            {/*        <img src={"/images/200902_Konzept-02.svg"}/>*/}
+            {/*    </div>*/}
+            {/*    <div className={"col-md-4"}>*/}
+            {/*        <img src={"/images/200902_Konzept-03.svg"}/>*/}
+            {/*    </div>*/}
+            {/*    <div className={"col-md-4"}>*/}
+            {/*        <img src={"/images/200902_Konzept-04.svg"}/>*/}
+            {/*    </div>*/}
+            {/*</Row>*/}
+        </>
 
-                <Searchbar/>
-<br /><br /><br />
-                <div style={{marginBottom: "50%"}}>
-                    <Button onClick={event => {
-                        navigate("/catalogue");
-                    }}>{t("catalogue:grub")}</Button>&ensp;
-                    <Button onClick={event => {
-                        event.preventDefault();
-                        navigate("/editor/new");
-                    }}>{t("catalogue:create")}</Button>
-                </div>
-            </Form>
-
-
-        </div>
     );
 };
 

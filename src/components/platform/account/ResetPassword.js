@@ -1,28 +1,31 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useLocation} from "react-router-dom";
-import {USER} from "../../actions/action_constants";
-import {Textinput} from "../gui/Input";
+import {useLocation, useNavigate} from "react-router-dom";
+import {USER} from "../../../actions/action_constants";
+import {Textinput} from "../../gui/Input";
 import {useTranslation} from "react-i18next";
-import {Icon} from "../gui/_Icon";
-import {Button} from "../gui/Button";
+import {Icon} from "../../gui/_Icon";
+import {Button} from "../../gui/Button";
 import {NavLink, Navigate} from "react-router-dom";
-import {Row} from "../gui/Grid";
+import {Row} from "../../gui/Grid";
+import {Alert} from "../../gui/Alert";
+import AccountError from "./AccountError";
 
 const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 ";
 
-const requestVerification = (dispatch, password, passwordConfirm, key) => {
+const requestReset = (dispatch, password, passwordConfirm, key) => {
     dispatch({
-        type: USER.VERIFY.REQUEST,
+        type: USER.RESET.REQUEST,
         payload: {key, password, "password-confirm": passwordConfirm}
     })
 }
 
-const AccountVerification = props => {
+const ResetPassword = props => {
     const {t} = useTranslation();
     const user = useSelector(state => state.user);
     const dispatch = useDispatch();
     const key = new URLSearchParams(useLocation().search).get('key');
+    const navigate = useNavigate();
 
     const [pwd, setPwd] = useState("");
     const [pwdConfirm, setPwdConfirm] = useState("");
@@ -30,18 +33,22 @@ const AccountVerification = props => {
     const [pwdValid, setPwdValid] = useState(false);
     const [pwdConfirmValid, setPwdConfirmValid] = useState(false);
 
-    if (user.verification_state === 3) {
-        return <Navigate push to="/catalogue"/>;
+    if (user.reset_state === 3) {
+        navigate("/login");
+    }
+
+    if (key === null || key.length === 0) {
+        return <Alert warning>Ungültiger Link, um das Passwort zurückzusetzen. Bitte kontaktieren Sie uns.</Alert>
     }
 
     return (
         <Row>
             <form className={layout} onSubmit={event => {
                 event.preventDefault();
-                pwdValid && pwdConfirmValid && requestVerification(dispatch, pwd, pwdConfirm, key)
+                pwdValid && pwdConfirmValid && requestReset(dispatch, pwd, pwdConfirm, key)
             }}>
-                <h1>Noch ein Schritt</h1>
-                <p>Nachdem Sie Ihre E-Mail-Adresse bestätigt haben, müssen SIe sich nur noch ein Passwort ausdenken.</p>
+                <h1>Passwort zurücksetzen</h1>
+                <p>Geben Sie Ihr neues zweimal Passwort ein.</p>
                 <Textinput
                     value={pwd}
                     label={t("general:password")}
@@ -72,19 +79,18 @@ const AccountVerification = props => {
                     onChange={event => setPwdConfirm(event.target.value)}
                     name={'pwdConfirm'}/>
 
-                {user.verification_state === 2 ?
-                    (<Icon icon={"cog fa-spin"}/>) :
-                    (<>
-                        <div style={{textAlign: "center"}}>
-                            <Button disabled={!(pwdConfirmValid && pwdValid)} primary
-                                    type={'submit'}>{t("general:Passwort setzen")}</Button>
-                        </div>
-                    </>)
-                }
+                <AccountError error={user.error}/>
+
+
+                <div style={{textAlign: "center"}}>
+                    <Button disabled={!(pwdConfirmValid && pwdValid) || user.reset_state === 2} primary
+                            icon={user.reset_state === 2 ? "cog fa-spin" : "key"}
+                            type={'submit'}>{t("general:Neues Passwort setzen")}</Button>
+                </div>
             </form>
 
         </Row>
     );
 };
 
-export default AccountVerification;
+export default ResetPassword;

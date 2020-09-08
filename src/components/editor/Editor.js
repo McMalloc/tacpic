@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
+import md5 from 'blueimp-md5';
 
 import '../../styles/Editor.css';
 import styled, {useTheme} from 'styled-components/macro';
@@ -25,6 +26,11 @@ import {Accordeon, AccordeonPanel, AccordeonPanelFlyoutButton} from "../gui/Acco
 import GraphicPageSettings from "./widgets/GraphicPageSettings";
 import BraillePageSettings from "./widgets/BraillePageSettings";
 import Document from "./widgets/Document";
+import Error from "../Error";
+import {Modal} from "../gui/Modal";
+import {Alert} from "../gui/Alert";
+import {Icon} from "../gui/_Icon";
+import {useNavigate} from "react-router";
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,6 +39,15 @@ const Wrapper = styled.div`
   flex: 1 1 auto;
   height: 100%;
   background-color: ${props => props.theme.brand_secondary};
+`;
+
+const LoadingScreen = styled(Wrapper)`
+  color: white;
+  text-align: center;
+  animation: pulsating 0.8s infinite;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 120%;
 `;
 
 const PanelWrapper = styled.div`
@@ -48,7 +63,9 @@ const CanvasWrapper = styled.div`
   display: flex;
   flex: 1 0 auto;
   position: relative;
+  background-color: rgba(0,0,0,0.1);
   overflow: hidden;
+  box-shadow: 5px 5px 10px rgba(0,0,0,0.3) inset;
 `;
 
 const Sidebar = styled.div`
@@ -87,6 +104,8 @@ const SidebarPanel = styled.div`
   border-bottom: 2px solid ${props => props.theme.brand_secondary_light};
 `;
 
+// const Loading
+
 const iconMap = {
     SELECT: 'hand-pointer',
     RECT: 'vector-square',
@@ -104,26 +123,40 @@ const switchCursorMode = (dispatch, mode) => {
 }
 
 const Editor = props => {
-    localStorage.setItem("HAS_EDITOR_CRASHED", "false");
     const uiSettings = useSelector(
         state => state.editor.ui
     );
     const page = useSelector(
         state => state.editor.file.present.pages[uiSettings.currentPage]
     );
+    const fileHash = useSelector(
+        state => state.editor.file.present.lastVersionHash
+    );
+    const error = useSelector(
+        state => state.app.error
+    );
 
     const undoLength = useSelector(state => state.editor.file.past.length);
     const redoLength = useSelector(state => state.editor.file.future.length);
+    const user = useSelector(state => state.user);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const t = useTranslation().t;
     const theme = useTheme();
-    let {variantId} = useParams();
+    let {variantId, graphicId} = useParams();
 
     useEffect(() => {
+        console.log("Variant ID: " + variantId);
+        console.log("Graphic ID: " + graphicId);
         if (!!variantId) {
             dispatch({
                 type: FILE.OPEN.REQUEST,
                 id: variantId, mode: "edit"
+            })
+        } else {
+            dispatch({
+                type: FILE.OPEN.SUCCESS,
+                data: {}, mode: "new"
             })
         }
     }, []);
@@ -132,9 +165,54 @@ const Editor = props => {
     // todo zu Hook umwandeln, wenn InteractiveSVG eine function component ist
     const [dragging, setDragging] = useState(false);
     const [showBraillePanel, setShowBraillePanel] = useState(false);
+    const [handleError, setHandleError] = useState(false);
+
+    if (!user.logged_in) navigate("/login")
+
+    if (localStorage.getItem("HAS_EDITOR_CRASHED") === 'true') {
+        console.log("crashed");
+        if (uiSettings.fileOpenSuccess) {
+            const backup = localStorage.getItem("EDITOR_BACKUP");
+            const backupHash = md5(backup);
+            const parsed = JSON.parse(backup);
+            if (fileHash !== backupHash && parsed.variant_id === parseInt(variantId)) {
+                setHandleError(true)
+                localStorage.setItem("HAS_EDITOR_CRASHED", "false");
+            }
+        }
+    }
+
+    if (handleError) {
+        return <Modal fitted title={'Sitzung wiederherstellen'} dismiss={() => setHandleError(false)}
+                      actions={[
+                          {
+                              label: "Nein",
+                              align: "left",
+                              action: () => setHandleError(false)
+                          },
+                          {
+                              label: "Ja",
+                              align: "right",
+                              template: 'primary',
+                              action: () => {
+                                  dispatch({
+                                      type: FILE.OPEN.SUCCESS,
+                                      data: JSON.parse(localStorage.getItem("EDITOR_BACKUP")),
+                                      mode: "edit"
+                                  })
+                                  setHandleError(false);
+                              }
+                          }
+                      ]}
+        >
+            Der Editor scheint beim letzten Mal abgestürzt zu sein. <br />
+            <strong>Möchten Sie das Backup laden?</strong>
+        </Modal>
+    }
 
     try {
-        if (uiSettings.initialized) {
+        if (uiSettings.fileOpenSuccess) {
+            // throw("boom")
             return (
                 <Wrapper>
                     <Radiobar>
@@ -250,27 +328,11 @@ const Editor = props => {
                 </Wrapper>
             );
         } else {
-            return (<div>Bitte warten.</div>)
+            return (<LoadingScreen><Icon icon={"cog fa-spin fa-3x"} /><br />Bitte warten, <br />wir bereiten alles vor.</LoadingScreen>)
         }
     } catch (error) {
         localStorage.setItem("HAS_EDITOR_CRASHED", "true");
-        return <div style={{
-            backgroundColor: "#f06595",
-            color: "white",
-            height: '100%',
-            padding: "12px"
-        }}><h1 style={{
-            textAlign: 'center',
-            fontSize: '72px',
-            padding: "12px"
-        }}>
-            {["Herrjemine", "Hoppla", "Hossa", "Ach du grüne Neune"][Math.floor(Math.random() * 4)]}
-            <br/>
-            <span className={"fas fa-skull fa-xs fa-pulse"} />
-        </h1>
-        <p style={{maxWidth: 600, margin: 'auto'}}>Tut uns Leid, es ist ein Fehler aufgetreten. Ihre bisherigen Arbeitsschritte wurden gespeichert. Ein Fehlerbericht wurde anonym an uns gesendet.</p><br />
-        <pre style={{maxWidth: 600, margin: 'auto', borderRadius: 5, backgroundColor: "#e4276f", padding: 5}}>{error}</pre>
-        </div>
+        return <Error {...error} />
     }
 
 };

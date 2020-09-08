@@ -1,10 +1,6 @@
-import {APP} from '../actions/action_constants';
+import {APP, ERROR_THROWN} from '../actions/action_constants';
 
-let initialState = {
-    version: ''
-};
-
-const appReducer = (state = initialState, action) => {
+const appReducer = (state = {}, action) => {
     switch (action.type) {
         case APP.FRONTEND.SUCCESS:
             return {
@@ -15,6 +11,11 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...action.data
+            }
+        case ERROR_THROWN:
+            return {
+                ...state,
+                error: action.error
             }
         default:
             return state;

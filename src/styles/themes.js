@@ -11,6 +11,7 @@ export const standard = {
     background: "#fff",
     foreground: "#231F20",
 
+    grey_0: "#3a3a3a",
     grey_1: "#4B4B4A",
     grey_2: "#646463",
     grey_3: "#808181",

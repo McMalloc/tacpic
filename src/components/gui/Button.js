@@ -32,8 +32,12 @@ const ButtonBase = styled.button`
   justify-content: ${props => props.leftAlign ? 'left' : "center"};
   
   &:disabled {
-    color: ${props => props.theme.grey_1};
-    background-color: ${props => props.theme.grey_4};
+    color: ${props => props.theme.grey_0};
+    text-shadow: 1px 1px 0 white;
+    box-shadow: 1px 1px 0 white inset;
+    background:url(
+        data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAANElEQVQYV2M8derUf21tbQYYuHr1KgPj169f/yMLgNhwQZAKEADpAgsiC4BVgsyEqYAZAwAYXB5aB8AaFAAAAABJRU5ErkJggg==
+        ) repeat;
     opacity: 0.7;
     border-color: ${props => props.theme.grey_3};
     cursor: not-allowed;

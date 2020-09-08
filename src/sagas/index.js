@@ -1,8 +1,7 @@
 import {
     logoutWatcher,
     userCreateSaga,
-    userLoginSaga,
-    userLogoutSaga,
+    userLoginSaga, userResetRequestSaga, userResetSaga,
     userValidateSaga,
     userVerifySaga
 } from "./user_saga";
@@ -90,6 +89,8 @@ export default function* root() {
         call(userValidateSaga),
         call(userCreateSaga),
         call(userVerifySaga),
+        call(userResetSaga),
+        call(userResetRequestSaga),
 
         call(labelWriteWatcher),
         call(contentEditWatcher),

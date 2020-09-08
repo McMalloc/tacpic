@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {CATALOGUE, GRAPHIC, LOAD_MORE, TAGS} from "../../actions/action_constants";
 import CatalogueItemList from "./CatalogueItemList";
 import TagList from "./TagList";
+import styled from "styled-components";
 import {Row} from "../gui/Grid";
 import {Checkbox} from "../gui/Checkbox";
 import Searchbar from "./Searchbar";
@@ -12,6 +13,16 @@ import {Route, useNavigate} from "react-router-dom";
 import {Routes, useParams} from "react-router";
 import {Button} from "../gui/Button";
 import {Icon} from "../gui/_Icon";
+
+const TagSidebar = styled.aside`
+  position: sticky;
+  top: ${props=>props.theme.large_padding};
+
+  .tag-list {
+    height: 50vh;
+    overflow-y: scroll;
+  }
+`;
 
 const queryGraphics = (dispatch, tags = [], terms = [], format = [], system = [], limit = 50, offset = 0) => {
     dispatch({
@@ -77,67 +88,63 @@ const Catalogue = props => {
             </Row>
             <Row style={{marginBottom: 24}}>
                 <div className={"col-xs-10 col-xs-offset-2"}>
-                    <Searchbar />
+                    <Searchbar/>
                 </div>
             </Row>
             <Row>
                 <div className={"col-xs-2 col-lg-2"}>
-                    <div>
-                        <strong>Format</strong>
-                                <Checkbox onChange={event => toggleFormat(dispatch, 'a4')}
-                                          name={'format-toggle-a4'}
-                                          checked={catalogue.filterFormat.includes('a4')}
-                                          label={'DIN A4'}/>
-                                <Checkbox onChange={event => toggleFormat(dispatch, 'a3')}
-                                          name={'format-toggle-a3'}
-                                          checked={catalogue.filterFormat.includes('a3')}
-                                          label={'DIN A3'}/>
-                    </div>
-                    <br />
-                    <div>
-                        <strong>Schriftsystem</strong>
-                                <Checkbox onChange={() => toggleSystem(dispatch, 'de-de-g0.utb')}
-                                          name={'system-toggle-de-de-g0.utb'}
-                                          checked={catalogue.filterSystem.includes('de-de-g0.utb')}
-                                          label={'Vollschrift'}/>
-                                <Checkbox onChange={() => toggleSystem(dispatch, 'de-de-g1.ctb')}
-                                          name={'system-toggle-de-de-g1.ctb'}
-                                          checked={catalogue.filterSystem.includes('de-de-g1.ctb')}
-                                          label={'Langschrift'}/>
-                                <Checkbox onChange={() => toggleSystem(dispatch, 'de-de-g2.ctb')}
-                                          name={'system-toggle-de-de-g2.ctb'}
-                                          checked={catalogue.filterSystem.includes('de-de-g2.ctb')}
-                                          label={'Kurzschrift'}/>
-                    </div>
-                    <br />
+                    <TagSidebar>
+                        <div>
+                            <strong>Format</strong>
+                            <Checkbox onChange={event => toggleFormat(dispatch, 'a4')}
+                                      name={'format-toggle-a4'}
+                                      checked={catalogue.filterFormat.includes('a4')}
+                                      label={'DIN A4'}/>
+                            <Checkbox onChange={event => toggleFormat(dispatch, 'a3')}
+                                      name={'format-toggle-a3'}
+                                      checked={catalogue.filterFormat.includes('a3')}
+                                      label={'DIN A3'}/>
+                        </div>
+                        <br/>
+                        <div>
+                            <strong>Schriftsystem</strong>
+                            <Checkbox onChange={() => toggleSystem(dispatch, 'de-de-g0.utb')}
+                                      name={'system-toggle-de-de-g0.utb'}
+                                      checked={catalogue.filterSystem.includes('de-de-g0.utb')}
+                                      label={'Vollschrift'}/>
+                            <Checkbox onChange={() => toggleSystem(dispatch, 'de-de-g1.ctb')}
+                                      name={'system-toggle-de-de-g1.ctb'}
+                                      checked={catalogue.filterSystem.includes('de-de-g1.ctb')}
+                                      label={'Langschrift'}/>
+                            <Checkbox onChange={() => toggleSystem(dispatch, 'de-de-g2.ctb')}
+                                      name={'system-toggle-de-de-g2.ctb'}
+                                      checked={catalogue.filterSystem.includes('de-de-g2.ctb')}
+                                      label={'Kurzschrift'}/>
+                        </div>
+                        <br/>
 
-                    <TagList/>
+                        <TagList/>
+                    </TagSidebar>
                 </div>
                 <div className={"col-xs-10 col-lg-10"}>
                     <CatalogueItemList graphics={catalogue.graphics}/>
-                    {/*<Routes>*/}
-                    {/*    <Route path=":graphicId/variant/:variantId"*/}
-                    {/*           element={*/}
-                    {!!graphicOverview &&<Modal title={graphicOverview && graphicOverview.title} noPadding={true} fitted dismiss={() => navigate("/catalogue")}>
+                    {!!graphicOverview &&
+                    <Modal title={graphicOverview && graphicOverview.title} noPadding={true} fitted
+                           dismiss={() => navigate("/catalogue")}>
 
-                                            <CatalogueItemView variantsOverview={graphicOverview.variants}/>
+                        <CatalogueItemView variantsOverview={graphicOverview.variants}/>
 
-                                   </Modal>}
-                    {/*           }/>*/}
-                    {/*</Routes>*/}
+                    </Modal>}
                     <div className={"align-center padded-top"}>
-                        {catalogue.loadMorePending ?
-                            <Icon icon={"cog fa-spin fa-2x"} />
-                            :
-                            <Button primary label={"Mehr laden"} large icon={"ellipsis-h"} onClick={() => {
-                                loadMore(dispatch, catalogue);
-                            }}/>
-                        }
+                        <Button primary label={"Mehr laden"} large disabled={catalogue.loadMorePending}
+                                icon={catalogue.loadMorePending ? "cog fa-spin" : "ellipsis-h"} onClick={() => {
+                            loadMore(dispatch, catalogue);
+                        }}/>
                     </div>
 
                 </div>
             </Row>
-            <br />
+            <br/>
 
         </>
     )
