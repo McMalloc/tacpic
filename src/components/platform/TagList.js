@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {groupBy, difference, flatten} from 'lodash';
 import {Navigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
@@ -12,7 +12,6 @@ const TagList = props => {
         state => state.catalogue.tags
     );
     const {t} = useTranslation();
-    const dispatch = useDispatch();
     const [redirect, doRedirect] = useState(false);
     const [input, setInput] = useState({});
 
@@ -37,7 +36,7 @@ const TagList = props => {
     misc = flatten(misc);
 
     return (
-        <>
+        <div>
             {named_taxonomies.map(taxonomy_id => {
                 return (
                     <div key={taxonomy_id}>
@@ -49,13 +48,13 @@ const TagList = props => {
                 )
             })}
             <strong>Schlagworte</strong>
-            <div className={'tag-list'}>
+            <div className={'tag-wrapper custom-tag-list'}>
                 {misc.map(tag => {
                         return <Tag key={tag.tag_id} {...tag}/>
                     }
                 )}
             </div>
-        </>
+        </div>
     )
 };
 

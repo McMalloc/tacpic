@@ -161,7 +161,7 @@ const Numberinput = props => {
 
 const Multiline = props => {
     return (
-        <Label tip={props.tip} sublabel={props.sublabel} required={props.required} disabled={props.disabled} label={props.label}>
+        <Label style={props.style} tip={props.tip} sublabel={props.sublabel} required={props.required} disabled={props.disabled} label={props.label}>
             <Textarea
                 rows={props.rows || 3}
                 disabled={props.disabled}

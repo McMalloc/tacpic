@@ -167,7 +167,7 @@ const Editor = props => {
     const [showBraillePanel, setShowBraillePanel] = useState(false);
     const [handleError, setHandleError] = useState(false);
 
-    if (!user.logged_in) navigate("/login")
+    // if (!user.logged_in) navigate("/login")
 
     if (localStorage.getItem("HAS_EDITOR_CRASHED") === 'true') {
         console.log("crashed");

@@ -30,7 +30,7 @@ const Label = props => {
     const { t } = useTranslation();
     return (
         <Main theme={theme} data-tip={t(props.tip)} required={props.required} {...props}>
-            {t(props.label)}&nbsp;{props.required && <span aria-hidden={true}>*</span>}
+            {t(props.label)}{props.required && <span aria-hidden={true}>&nbsp;*</span>}
             {props.sublabel &&
             <><br/><Sub>{t(props.sublabel)}</Sub></>
             }

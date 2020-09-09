@@ -17,8 +17,15 @@ import {Icon} from "../gui/_Icon";
 const TagSidebar = styled.aside`
   position: sticky;
   top: ${props=>props.theme.large_padding};
-
-  .tag-list {
+  
+  .tag-wrapper {
+    padding: 2px 0 2px 4px;
+    margin-top: 2px;
+    border-radius: ${props => props.theme.border_radius};
+    border: 1px solid ${props => props.theme.grey_4};
+  }
+  
+  .custom-tag-list {
     height: 50vh;
     overflow-y: scroll;
   }
@@ -94,8 +101,9 @@ const Catalogue = props => {
             <Row>
                 <div className={"col-xs-2 col-lg-2"}>
                     <TagSidebar>
-                        <div>
-                            <strong>Format</strong>
+                        <strong>Format</strong>
+                        <div className={"tag-wrapper"}>
+
                             <Checkbox onChange={event => toggleFormat(dispatch, 'a4')}
                                       name={'format-toggle-a4'}
                                       checked={catalogue.filterFormat.includes('a4')}
@@ -106,8 +114,8 @@ const Catalogue = props => {
                                       label={'DIN A3'}/>
                         </div>
                         <br/>
-                        <div>
-                            <strong>Schriftsystem</strong>
+                        <strong>Schriftsystem</strong>
+                        <div className={"tag-wrapper"}>
                             <Checkbox onChange={() => toggleSystem(dispatch, 'de-de-g0.utb')}
                                       name={'system-toggle-de-de-g0.utb'}
                                       checked={catalogue.filterSystem.includes('de-de-g0.utb')}
@@ -123,7 +131,7 @@ const Catalogue = props => {
                         </div>
                         <br/>
 
-                        <TagList/>
+                        <TagList />
                     </TagSidebar>
                 </div>
                 <div className={"col-xs-10 col-lg-10"}>

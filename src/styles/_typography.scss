@@ -34,11 +34,22 @@ button, input, textarea, select {
   font-family: "Roboto", sans-serif;
 }
 
+fieldset {
+  border: none;
+  padding: 0 0 0 0.7em;
+  margin: 0;
+
+  &:not(.no-margin) {
+    margin-top: 0.5em;
+  }
+}
+
 legend {
   font-size: 0.9em;
   padding: 0;
   font-weight: 700;
   width: 100%;
+  margin-left: -0.7em;
   //letter-spacing: 0.5px;
 
   display: flex;

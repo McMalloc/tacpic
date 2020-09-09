@@ -5,12 +5,12 @@ const appReducer = (state = {}, action) => {
         case APP.FRONTEND.SUCCESS:
             return {
                 ...state,
-                ...action.data
+                frontend: action.data
             }
         case APP.BACKEND.SUCCESS:
             return {
                 ...state,
-                ...action.data
+                backend: action.data
             }
         case ERROR_THROWN:
             return {
@@ -22,4 +22,4 @@ const appReducer = (state = {}, action) => {
     }
 };
 
-export default appReducer
+export default appReducer;

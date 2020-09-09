@@ -9,10 +9,10 @@ const sanitise = text => {
 }
 
 export function* labelWriteWatcher() {
-    yield takeLatest('OBJECT_PROP_CHANGED', function* (action) {
+    yield debounce(500, 'OBJECT_PROP_CHANGED', function* (action) {
         if (action.prop === 'text') {
             try {
-                let system = yield select(state => state.editor.file.system);
+                let system = yield select(state => state.editor.file.present.system);
                 const response = yield call(() => {
                     return axios({
                         method: 'POST',
@@ -39,8 +39,8 @@ export function* labelWriteWatcher() {
 export function* contentEditWatcher() {
     yield debounce(1000, 'CHANGE_PAGE_CONTENT', function* (action) {
         try {
-            let system = yield select(state => state.editor.file.system);
-            let layout = yield select(state => state.editor.file.braillePages);
+            let system = yield select(state => state.editor.file.present.system);
+            let layout = yield select(state => state.editor.file.present.braillePages);
             const response = yield call(() => {
                 return axios({
                     method: 'POST',

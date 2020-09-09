@@ -13,6 +13,18 @@ export default function SVGRect(props) {
         props.angle, props.width, props.height);
     return (
         <g>
+            <rect data-uuid={props.uuid}
+                  x={xVectorUnits ? null : props.x}
+                  y={yVectorUnits ? null : props.y}
+                  transform={transformProperty}
+                  style={
+                      {
+                          stroke: "white",
+                          fill: "transparent",
+                          strokeWidth: 20
+                      }}
+                  width={props.width}
+                  height={props.height}/>
             <rect id={props.uuid}
                   data-uuid={props.uuid}
                   x={xVectorUnits ? null : props.x}

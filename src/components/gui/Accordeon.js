@@ -91,7 +91,7 @@ const AccordeonPanelFlyout = styled.div`
   padding: ${props => props.theme.large_padding};
   border: 2px solid ${props => props.theme.brand_secondary_light};
   border-radius: ${props => props.theme.border_radius};
-  box-shadow: ${props => props.theme.distant_shadow};
+  box-shadow: ${props => props.theme.very_distant_shadow};
   transition: top 100ms, height 100ms;
   
   &.slidein-enter, &.slidein-appear {

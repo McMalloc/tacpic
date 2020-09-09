@@ -18,7 +18,7 @@ const Label = styled.label`
   }
   
   &:before {
-      left: 0.1em;
+      left: 0em;
       top: 0.1em;
       width: 1em;
       height: 1em;
@@ -40,7 +40,7 @@ const Label = styled.label`
     color: white;
     height: 0;
     font-size: 16px;
-    left: 0.3em;
+    left: 0.2em;
     top: 0;
   }
   

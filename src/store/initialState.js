@@ -79,7 +79,9 @@ export const editor = {
 
 export const app = {
     version: '',
-    error: null
+    error: null,
+    backend: {},
+    frontend: {}
 };
 
 export const catalogue = {

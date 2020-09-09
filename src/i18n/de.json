@@ -117,6 +117,8 @@
     "input_catalogue-save": "Änderungen speichern",
     "catalogue-state-0": "Entwurf",
 
+    "cb_braille-key-explanation": "(Erklärung, warum Schlüssel ne super Sache sind)",
+
     "toggle_tools-RECT": "Rechteck",
     "toggle_tools-ELLIPSE": "Ellipse",
     "toggle_tools-LINE": "Linie",

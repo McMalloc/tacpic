@@ -19,6 +19,7 @@ const Braille = styled.div`
   font-size: 10mm;
   box-sizing: border-box;
   overflow: visible;
+  user-select: none;
 `;
 
 const Black = styled.textarea`
@@ -59,11 +60,21 @@ const changeText = (dispatch, text, uuid) => {
         uuid
     });
 };
+
 const exitEditMode = (dispatch, uuid) => {
     dispatch({
         type: 'OBJECT_PROP_CHANGED',
         prop: 'editMode',
         value: false,
+        uuid
+    });
+};
+
+const enterEditMode = (dispatch, uuid) => {
+    dispatch({
+        type: 'OBJECT_PROP_CHANGED',
+        prop: 'editMode',
+        value: true,
         uuid
     });
 };
@@ -85,6 +96,7 @@ const Label = props => {
            data-in_edit_mode={props.editMode}
            transform={transform(props.x, props.y, props.angle)}>
             <foreignObject style={{overflow: "visible"}}
+                           onDoubleClick={() => enterEditMode(dispatch, props.uuid)}
                            width={props.width}
                            height={props.height}>
                 {/*Bug in WebKit macht die relative Positionierung nötig*/}
@@ -117,8 +129,7 @@ const Label = props => {
                            tabIndex={1}
                            id={'editable_' + props.uuid}
                            value={props.isKey ? props.keyVal : props.text}
-                    >{""+props.displayDots}
-                    </Black>
+                    />
                     }
                 </Container>
             </foreignObject>

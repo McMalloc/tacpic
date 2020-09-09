@@ -63,6 +63,26 @@ const iconMap = {
     path: 'bezier-curve'
 }
 
+const keyDownHandler = (event, selectedUUID, dispatch) => {
+    switch (event.which) {// TODO use constants instead of magic numbers
+        case 46: // DEL
+            debugger;
+            if (!!selectedUUID) return;
+            dispatch({
+                type: 'OBJECT_SELECTED',
+                uuids: [null]
+            });
+            dispatch({
+                type: 'OBJECT_REMOVED',
+                selectedUUID
+            });
+            break;
+        default:
+            break;
+    }
+    return false;
+};
+
 const ObjectEntry = props => {
     const ref = useRef(null);
     const dispatch = useDispatch();
@@ -124,7 +144,7 @@ const Objects = props => {
     return (
         <>
             {/*<div>Vordergrund</div>*/}
-            <Wrapper>
+            <Wrapper onKeyDown={event => keyDownHandler(event, selectedUUID, dispatch)}>
                 {objects.map((object, index) => {
                     const active = selectedUUID === object.uuid;
                     return <AccordeonPanelFlyoutButton

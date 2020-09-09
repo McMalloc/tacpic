@@ -70,7 +70,7 @@ const createEllipse = (x = 0, y = 0, width = 100, height = 100, template = 'diag
     }
 };
 
-const createLabel = (x = 0, y = 0, width = 100, height = 100, text = 'Neue Beschriftung', braille = '') => {
+const createLabel = (x = 0, y = 0, width = 100, height = 100, text = '', braille = '') => {
     return {
         uuid: uuidv4(),
         x, y, width, height, text, braille,

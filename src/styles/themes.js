@@ -21,6 +21,7 @@ export const standard = {
 
     middle_shadow: "1px 1px 2px rgba(0,0,0,0.4)",
     distant_shadow: "1px 2px 5px rgba(0,0,0,0.3)",
+    very_distant_shadow: "3px 1px 8px rgba(0,0,0,0.5);",
     divider_line: "1px solid #e9f5f7", // accent_1
     // middle_shadow: "0 3px 8px rgba(0,0,0,0.2)",
 
