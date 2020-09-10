@@ -3,6 +3,7 @@ import axios from "axios";
 import {wrapAndChunk, wrapLines} from "../utility/wrapLines";
 import {chunk} from "lodash";
 import {API_URL} from "../env"
+import {CHANGE_PAGE_CONTENT} from "../actions/action_constants";
 
 const sanitise = text => {
     return text.replace("%", "%%")
@@ -37,7 +38,7 @@ export function* labelWriteWatcher() {
 }
 
 export function* contentEditWatcher() {
-    yield debounce(1000, 'CHANGE_PAGE_CONTENT', function* (action) {
+    yield debounce(1000, CHANGE_PAGE_CONTENT, function* (action) {
         try {
             let system = yield select(state => state.editor.file.present.system);
             let layout = yield select(state => state.editor.file.present.braillePages);
@@ -53,7 +54,6 @@ export function* contentEditWatcher() {
             });
             yield put({
                 type: 'UPDATE_BRAILLE_CONTENT',
-                pageIndex: action.pageIndex,
                 braille: response.data,
                 formatted: wrapAndChunk(response.data, layout.cellsPerRow, layout.rowsPerPage)
             });
@@ -67,20 +67,12 @@ export function* contentEditWatcher() {
 export function* layoutEditWatcher() {
     yield takeLatest('CHANGE_BRAILLE_PAGE_PROPERTY', function* (action) {
         try {
-            let layout = yield select(state => state.editor.file.braillePages);
-            let pages = yield select(state => state.editor.file.pages);
-            let action = {};
-            pages.forEach((page, index) => {
-                if (page.text) {
-                    action = {
-                        type: 'UPDATE_BRAILLE_CONTENT',
-                        pageIndex: index,
-                        braille: page.braille,
-                        formatted: wrapAndChunk(page.braille, layout.cellsPerRow, layout.rowsPerPage)
-                    };
-                }
-            })
-            yield put(action);
+            let braillePages = yield select(state => state.editor.file.present.braillePages);
+            yield put({
+                type: 'UPDATE_BRAILLE_CONTENT',
+                braille: braillePages.braille,
+                formatted: wrapAndChunk(braillePages.braille, braillePages.cellsPerRow, braillePages.rowsPerPage)
+            });
         } catch (error) {
             console.log(error);
         }
@@ -96,7 +88,7 @@ export function* systemChangeWatcher() {
                 let system = action.value;
                 let labels = yield select(state => {
                     let labels = [];
-                    state.editor.file.pages.forEach((page, index) => {
+                    state.editor.file.present.pages.forEach((page, index) => {
                         if (page.text) {
                             labels.push({
                                 text: page.content,

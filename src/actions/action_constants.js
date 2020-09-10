@@ -26,10 +26,12 @@ export const BRAILLE    = action_constants('BRAILLE',   ['TRANSLATE']);
 export const ORDER      = action_constants('ORDER',   ['CREATE', 'GET', 'INDEX']);
 export const QUOTE      = action_constants('QUOTE',   ['REQUEST', 'GET']);
 export const ADDRESS    = action_constants('ADDRESS',   ['GET', 'CREATE', 'UPDATE', 'REMOVE']); // TODO rename GET to ADDRESS.INDEX
+export const IMPORT    = action_constants('IMPORT',   ['TRACE']);
 
 export const CANVAS_OBJECT_ADDED = 'CANVAS_OBJECT_ADDED';
 export const CANVAS_OBJECT_REMOVED = 'CANVAS_OBJECT_REMOVED';
 export const CANVAS_OBJECT_MODIFIED = 'CANVAS_OBJECT_REMOVED';
+export const CHANGE_PAGE_CONTENT = 'CHANGE_PAGE_CONTENT';
 export const ITEM_ADDED_TO_BASKET = 'ITEM_ADDED_TO_BASKET';
 export const ITEM_REMOVED_FROM_BASKET = 'ITEM_REMOVED_FROM_BASKET';
 export const CLEAR_BASKET = 'CLEAR_BASKET';

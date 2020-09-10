@@ -63,22 +63,21 @@ const Pagenumber = styled.div`
 const BraillePage = props => {
     const currentPageIndex = useSelector(state => state.editor.ui.currentPage);
     const system = useSelector(state => state.editor.file.present.system);
-    const page = useSelector(state => state.editor.file.present.pages.find(page=>page.text));
-    const layout = useSelector(state => state.editor.file.present.braillePages);
+    const braillePages = useSelector(state => state.editor.file.present.braillePages);
     // TODO in props stecken, der Editor weiß ohnehin Bescheid
 
     return (
         <Wrapper>
             {/*<h1>&emsp;Vorschau</h1>*/}
             <div>
-                {page.formatted && page.formatted.map((pageChunk, index) => {
+                {braillePages.formatted && braillePages.formatted.map((pageChunk, index) => {
                     return (<a key={index}>
                             <PageTitle id={`braillepage_preview_${currentPageIndex}_${index}`}>Seite #{index + 1}</PageTitle>
-                            <Page {...layout} system={system}>
+                            <Page {...braillePages} system={system}>
 
                                     {pageChunk.map((line) => <><span>{line}</span><br/></>)}
 
-                                {layout.pageNumbers > 0 &&
+                                {braillePages.pageNumbers > 0 &&
                                 <Pagenumber>{toBrailleNumbers(index + 1)}</Pagenumber>
                                 }
                             </Page></a>

@@ -1,5 +1,6 @@
 import {call, put, select} from "redux-saga/effects";
 import {API_URL} from '../env';
+import {SVG_MIME} from "../config/constants";
 
 const buildParams = (paramObj) => {
     let paramString = '';
@@ -82,28 +83,38 @@ export default function createSaga(
             try {
                 let statusCode = 1000;
                 let authHeader = "";
+                let contentType = "";
                 const response = yield call(action => {
-
-                    let headers = { 'Content-Type': 'application/json' };
+                    const filePayload = action.payload && action.payload.toString() === '[object FormData]';
+                    if (filePayload) headers = {}
+                    let headers = {'Accept': action.accept ? 'multipart/form-data;' : 'application/json'};
                     if (auth) {
                         const jwt = localStorage.getItem('jwt');
                         if (jwt!== null) headers.Authorization = 'Bearer ' + jwt;
                     }
 
                     return fetch(API_URL + '/' + replaceParam(endpoint, action.payload), {
-                        method: method,
+                        method,
                         headers,
-                        body: method === 'post' ? JSON.stringify(transformRequest(action.payload)) : null // body data type must match "Content-Type" header
+                        body: method === 'post' ?
+                            filePayload ? action.payload : JSON.stringify(transformRequest(action.payload)) : null // body data type must match "Content-Type" header
                     }).then(response => {
                         statusCode = response.status;
                         authHeader = response.headers.get("authorization");
+                        contentType = response.headers.get("Content-Type");
                         return response.text();
                     });
                 }, action);
 
                 let parsedResponse;
                 try {
-                    parsedResponse = JSON.parse(response);
+                    switch (contentType) {
+                        case SVG_MIME:
+                            parsedResponse = response;
+                            break;
+                        default:
+                            parsedResponse = JSON.parse(response);
+                    }
                 } catch (e) {
                     console.error(e);
                     parsedResponse = response;

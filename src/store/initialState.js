@@ -17,7 +17,9 @@ export const editor = {
         selectedObjects: [],
         defaultTitle: true,
         initialized: true,
-
+        importPending: false,
+        importPreview: null,
+        importError: null,
         fileState: null
     },
     file: {
@@ -55,7 +57,10 @@ export const editor = {
                 marginTop: 1,
                 cellsPerRow: 33,
                 rowsPerPage: 27,
-                pageNumbers: 0
+                pageNumbers: 0,
+                content: '',
+                braille: '',
+                formatted: [[]]
             },
             pages: [
                 {
@@ -63,13 +68,6 @@ export const editor = {
                     text: false,
                     rendering: '',
                     objects: []
-                },
-                {
-                    name: "Seite 2",
-                    text: true, // TODO Textseiten werden anders behandelt, starres Braille-Layout
-                    content: '',
-                    braille: '',
-                    formatted: [[]]
                 }
             ]
         },

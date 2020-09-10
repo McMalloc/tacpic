@@ -4,6 +4,7 @@ export const A4_WIDTH = 210;
 export const A4_HEIGHT = 297;
 export const PAGE_NUMBER_BOTTOM = 4;
 export const MAX_VALUE_FOR_ORDER = 20000;
+export const SVG_MIME = 'image/svg+xml';
 
 export const COLOURS = {
     black:	'#000000',

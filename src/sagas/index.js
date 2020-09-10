@@ -18,7 +18,7 @@ import {
     GRAPHIC,
     VARIANTS,
     ADDRESS,
-    APP, QUOTE
+    APP, QUOTE, IMPORT
 } from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {
@@ -64,6 +64,8 @@ export default function* root() {
         call(createSaga(ADDRESS.UPDATE, 'post', 'users/addresses/:id', takeLatest, true, id, id)),
         call(createSaga(ADDRESS.REMOVE, 'post', 'users/addresses/inactivate/:id', takeLatest, true, id, id)),
         call(addressRemoveSaga),
+
+        call(createSaga(IMPORT.TRACE, 'post', 'trace', takeLatest, false, id, id)),
 
         call(orderCreateSaga),
         call(orderIndexSaga),

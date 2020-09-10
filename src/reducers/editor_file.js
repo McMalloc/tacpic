@@ -5,7 +5,7 @@ import {
     GRAPHIC,
     OBJECTS_SWAPPED,
     SET_PAGE_RENDERINGS,
-    NEW_GRAPHIC_STARTED, BRAILLE_BULK_TRANSLATED, UPDATE_BRAILLE_CONTENT, CHANGE_FILE_PROPERTY
+    NEW_GRAPHIC_STARTED, BRAILLE_BULK_TRANSLATED, UPDATE_BRAILLE_CONTENT, CHANGE_FILE_PROPERTY, CHANGE_PAGE_CONTENT
 } from "../actions/action_constants";
 import methods from "../components/editor/widgets/ReactSVG/methods";
 import uuidv4 from "../utility/uuid";
@@ -165,15 +165,15 @@ const file = (state = {}, action) => {
                 }
             });
 
-        case 'CHANGE_PAGE_CONTENT':
+        case CHANGE_PAGE_CONTENT:
             return produce(state, draftState => {
-                draftState.pages[action.pageIndex].content = action.content;
+                draftState.braillePages.content = action.content;
             });
         case UPDATE_BRAILLE_CONTENT:
             // called when the saga has finished processing the remote braille translation
             return produce(state, draftState => {
-                draftState.pages[action.pageIndex].braille = action.braille;
-                draftState.pages[action.pageIndex].formatted = action.formatted;
+                draftState.braillePages.braille = action.braille;
+                draftState.braillePages.formatted = action.formatted;
             });
         case FILE.OPEN.REQUEST:
             return state;
@@ -198,19 +198,11 @@ const file = (state = {}, action) => {
             return oldState;
         case 'PAGE_ADD':
             return produce(state, draftState => {
-                let newPage = {
+                draftState.pages.push({
                     name: 'Seite ' + (state.pages.length + 1),
-                    text: action.isTextPage
-                };
-                if (action.isTextPage) {
-                    newPage.content = '';
-                    newPage.formatted = '';
-                    newPage.braille = '';
-                } else {
-                    newPage.objects = [];
-                    newPage.render = '';
-                }
-                draftState.pages.splice(draftState.pages.length - 1, 0, newPage);
+                    objects: [],
+                    render: '',
+                });
             });
         case 'PAGE_REMOVE':
             return produce(state, draftState => {

@@ -50,7 +50,7 @@ const Pages = props => {
     return (
         <>
             <>
-                {pages.filter(page => !page.text).map((page, index) => {
+                {pages.map((page, index) => {
                     const active = index === currentPage;
                     return <AccordeonMenuEntry
                         active={active} onClick={() => changePage(dispatch, index)} key={index}>

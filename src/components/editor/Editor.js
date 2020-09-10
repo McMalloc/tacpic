@@ -31,6 +31,7 @@ import {Modal} from "../gui/Modal";
 import {Alert} from "../gui/Alert";
 import {Icon} from "../gui/_Icon";
 import {useNavigate} from "react-router";
+import {CatalogueItemView} from "../platform/CatalogueItemView";
 
 const Wrapper = styled.div`
   display: flex;
@@ -64,6 +65,7 @@ const CanvasWrapper = styled.div`
   flex: 1 0 auto;
   position: relative;
   background-color: rgba(0,0,0,0.1);
+  border-radius: ${props => props.theme.border_radius} 0 0 ${props => props.theme.border_radius};
   overflow: hidden;
   box-shadow: 5px 5px 10px rgba(0,0,0,0.3) inset;
 `;
@@ -166,6 +168,8 @@ const Editor = props => {
     const [dragging, setDragging] = useState(false);
     const [showBraillePanel, setShowBraillePanel] = useState(false);
     const [handleError, setHandleError] = useState(false);
+    const [showImportModal, setShowImportModal] = useState(true);
+    // const [showImportModal, setShowImportModal] = useState(false);
 
     // if (!user.logged_in) navigate("/login")
 
@@ -203,8 +207,7 @@ const Editor = props => {
                                   setHandleError(false);
                               }
                           }
-                      ]}
-        >
+                      ]}>
             Der Editor scheint beim letzten Mal abgestürzt zu sein. <br />
             <strong>Möchten Sie das Backup laden?</strong>
         </Modal>
@@ -214,7 +217,7 @@ const Editor = props => {
         if (uiSettings.fileOpenSuccess) {
             // throw("boom")
             return (
-                <Wrapper>
+                <><Wrapper>
                     <Radiobar>
                         <RadiobarSegment>
                             {["SELECT", "KEY", "RECT", "ELLIPSE", /*"CUBIC", "QUADRATIC",*/ "LABEL", "PATH", /*"LINE"*/].map((tool, index) => {
@@ -231,6 +234,15 @@ const Editor = props => {
                                     />
                                 )
                             })}
+                            <Toggle
+                                label={"editor:toggle_tools-IMPORT"}
+                                primary
+                                icon={"file-import"}
+                                toggled={showImportModal}
+                                onClick={() => {
+                                    setShowImportModal(true);
+                                }}
+                            />
                         </RadiobarSegment>
                         <RadiobarSegment>
                             <Button
@@ -310,7 +322,8 @@ const Editor = props => {
                                                             hideFlyout={dragging}
                                                             onClick={() => setOpenedPanel(openedPanel === 'imagedescription' ? null : 'imagedescription')}
                                                             label={"Bildbeschreibung"} icon={"image"}>
-                                    <Verbalizer/>
+                                    <Writer/>
+                                    {/*<Verbalizer/>*/}
                                 </AccordeonPanelFlyoutButton>
                             </AccordeonPanel>
                             <AccordeonPanel title={"Objekte"}>
@@ -326,6 +339,15 @@ const Editor = props => {
                         </CanvasWrapper>
                     </PanelWrapper>
                 </Wrapper>
+                    {showImportModal &&
+                    <Modal title={"Grafik importieren"} fitted
+                           dismiss={() => setShowImportModal(false)}>
+
+                        <Importer />
+
+                    </Modal>
+                    }
+                </>
             );
         } else {
             return (<LoadingScreen><Icon icon={"cog fa-spin fa-3x"} /><br />Bitte warten, <br />wir bereiten alles vor.</LoadingScreen>)

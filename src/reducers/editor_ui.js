@@ -1,5 +1,5 @@
 import layouts from "../components/editor/widgets/layouts.js"
-import {FILE} from "../actions/action_constants";
+import {FILE, IMPORT} from "../actions/action_constants";
 
 let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so
 let lastObjectsProps = [];
@@ -16,6 +16,14 @@ const ui = (state = {}, action) => {
             return {...state, currentPage: 0, fileOpenPending: false, fileOpenSuccess: true};
         case FILE.OPEN.FAILURE:
             return {...state, fileOpenPending: false, fileOpenSuccess: false};
+
+        case IMPORT.TRACE.REQUEST:
+            return {...state, importPending: true, importPreview: null, importError: null};
+        case IMPORT.TRACE.SUCCESS:
+            return {...state, importPending: false, importPreview: action.data};
+        case IMPORT.TRACE.FAILURE:
+            return {...state, importPending: false, importPreview: null, importError: action.message};
+
         case 'TRANSFORM_START':
             lastMode = state.mode;
             return {...state, mode: action.transform};

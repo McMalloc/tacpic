@@ -1,16 +1,18 @@
-import React, {Component, Fragment} from 'react';
-import {connect} from "react-redux";
+import React, {Component, Fragment, useRef, useState} from 'react';
+import {connect, useDispatch, useSelector} from "react-redux";
 import styled from 'styled-components/macro';
 import Divider from "../../gui/Divider";
 import {Button} from "../../gui/Button";
-import {Padding} from "styled-components-spacing";
 import {Icon} from "../../gui/_Icon";
 import ReactTooltip from 'react-tooltip'
+import {IMPORT} from "../../../actions/action_constants";
+import {Row} from "../../gui/Grid";
+import {SVG_MIME} from "../../../config/constants";
 
 const Dropzone = styled.div`
   width: 100%;
   height: 100%;
-  border: 5px dashed ${props => props.theme.background};
+  border: 5px dashed ${props => props.theme.brand_secondary_light};
   border-radius: 5px;
   box-sizing: border-box;
   padding: ${props => props.theme.spacing[3]};
@@ -45,6 +47,12 @@ const Fileinput = styled.input`
   left: -9999px;
 `;
 
+const ImageContainer = styled.img`
+  border-radius: ${props => props.theme.border_radius};
+  max-height: 50vh;
+  border: 1px solid ${props => props.theme.grey_4};
+`
+
 const Preview = styled.img`
   width: 300px;
   height: auto;
@@ -60,118 +68,123 @@ const Wrapper = styled.div`
 * Leinwand erst zeigen, wenn etwas importiert worden ist
 * */
 
-class Importer extends Component {
+const Importer = props => {
+    const fileRef = useRef();
+    const dispatch = useDispatch();
+    const [preview, setPreview] = useState(null);
+    const [hoverWithFile, setHoverWithFile] = useState(false);
+    const tracedPreview = useSelector(state => state.editor.ui.importPreview);
+    const importPending = useSelector(state => state.editor.ui.importPending);
 
-    fileRef = React.createRef();
-    state = {
-        preview: null,
-        hoverWithFile: false
-    };
-
-    previewFile = file => {
+    const previewFile = file => {
         let reader = new FileReader();
         reader.readAsDataURL(file);
-        let _this = this;
         reader.onloadend = event => {
-            _this.setState({
-                preview: reader.result
-            });
-            this.props.addOriginal(file.name); // TODO send to server, do not save in memory
-
-            _this.props.toggleCanvas(true);
+            setPreview(reader)
         }
     };
 
-    onDropHandler = event => {
+    let imageSrc = null;
+    if (!!tracedPreview) {
+        let blob = new Blob([tracedPreview], {type: SVG_MIME});
+        imageSrc = URL.createObjectURL(blob);
+    }
+
+    const onDropHandler = event => {
         event.preventDefault();
         let dt = event.dataTransfer;
         let files = dt.files;
-        this.previewFile(files[0], this.state);
-        this.setState({
-            hoverWithFile: false
-        })
+        setPreview(files[0]);
+        setHoverWithFile(false);
     };
-
-    openDialog = () => {
-        console.log(this.fileRef);
-        this.fileRef.current.click();
-    };
-
-    onDragoverHandler = event => {
+    const openDialog = () => fileRef.current.click();
+    const onDragoverHandler = event => {
         event.preventDefault();
-        this.setState({
-            hoverWithFile: true
-        })
+        setHoverWithFile(true);
     };
-
-    onDragLeave = event => {
+    const onDragLeave = event => {
         event.preventDefault();
-        this.setState({
-            hoverWithFile: false
-        })
+        setHoverWithFile(false);
+    };
+    const reset = event => {
+        setHoverWithFile(null);
     };
 
-    reset = event => {
-        this.setState({
-            preview: null
-        })
-    };
-
-    render() {
-        return (
-            <Fragment>
-                <Wrapper>
-                    <Dropzone
-                        onDragOver={this.onDragoverHandler}
-                        onDragLeave={this.onDragLeave}
-                        hovering={this.state.hoverWithFile}
-                        onDrop={this.onDropHandler}>
-                        <Fileinput onChange={event => this.previewFile(event.currentTarget.files[0])} ref={this.fileRef} type={"file"}/>
-
-                        <Padding top={4}>
-                            <Icon icon={"arrow-down"}/> Vorlage hierher ziehen
-                        </Padding>
-
-                        <Padding vertical={3}>
-                            <Divider label={"gui:or"}/>
-                        </Padding>
-
-                        {this.state.preview === null ?
-                            <Button primary icon={"upload"} onClick={this.openDialog}>Datei wählen</Button>
-                            :
-                            <Button primary icon={"upload"} onClick={this.openDialog}>Neu wählen</Button>
+    return (
+        <>
+            <Wrapper>
+                <Dropzone
+                    onDragOver={onDragoverHandler}
+                    onDragLeave={onDragLeave}
+                    hovering={hoverWithFile}
+                    onDrop={onDropHandler}>
+                    <Fileinput onChange={event => {
+                        let reader = new FileReader();
+                        reader.readAsDataURL(event.currentTarget.files[0]);
+                        reader.onloadend = event => {
+                            setPreview(reader.result);
+                            let formData = new FormData();
+                            formData.append("image", fileRef.current.files[0]);
+                            dispatch({
+                                type: IMPORT.TRACE.REQUEST,
+                                // payload: fileRef.current.files[0]
+                                payload: formData
+                            })
                         }
-                    </Dropzone>
+                    }} ref={fileRef}
+                               type={"file"}/>
+                    <Icon icon={"arrow-down"}/> Vorlage hierher ziehen
 
-                </Wrapper>
-            </Fragment>
+                    <Divider label={"gui:or"}/>
+                    {preview === null ?
+                        <Button primary icon={"upload"} onClick={openDialog}>Datei wählen</Button>
+                        :
+                        <Button primary icon={"upload"} onClick={openDialog}>Neu wählen</Button>
+                    }
+                </Dropzone>
+            </Wrapper>
+            <Row>
+                <div className={"col-md-6"}>
+                    {preview &&
+                        <ImageContainer src={preview}/>
+                    }
+                </div>
+                <div className={"col-md-6"}>
+                    {imageSrc &&
+                        <ImageContainer src={imageSrc} />
+                    }
+                    {importPending &&
+                        <Icon icon={"cog fa-spin"} />
+                    }
+                </div>
+            </Row>
+        </>
 
-        );
-    }
+    );
 }
 
-const mapStateToProps = state => {
-    return {
-        file: state.editor.file.backgroundURL
-    }
-};
+// const mapStateToProps = state => {
+//     return {
+//         file: state.editor.file.backgroundURL
+//     }
+// };
+//
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         toggleCanvas: state => {
+//             dispatch({
+//                 type: "WIDGET_VISIBILITY_TOGGLED",
+//                 state,
+//                 id: "Canvas"
+//             })
+//         },
+//         addOriginal: filename => {
+//             dispatch({
+//                 type: "ADD_BACKGROUND",
+//                 filename
+//             })
+//         }
+//     }
+// };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        toggleCanvas: state => {
-            dispatch({
-                type: "WIDGET_VISIBILITY_TOGGLED",
-                state,
-                id: "Canvas"
-            })
-        },
-        addOriginal: filename => {
-            dispatch({
-                type: "ADD_BACKGROUND",
-                filename
-            })
-        }
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Importer);
+export default Importer;
