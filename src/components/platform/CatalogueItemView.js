@@ -11,6 +11,7 @@ import {Icon} from "../gui/_Icon";
 import {Button} from "../gui/Button";
 import Toolbar from "../gui/Toolbar";
 import {API_URL} from "../../env.json";
+import Loader from "../gui/Loader";
 
 const VariantPreviewStyled = styled.div`
   display: flex;
@@ -111,17 +112,6 @@ const VariantPreview = ({title, id, description, tags, document, file_name}) => 
     )
 };
 
-const Placeholder = styled.div`
-  height: 30%;
-  min-height: 200px;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  display: flex;
-  text-align: center;
-  font-size: 200%;
-`;
-
 const CatalogueItemView = ({variantsOverview}) => {
     const theme = useTheme();
     let {graphicId, variantId} = useParams();
@@ -173,8 +163,11 @@ const CatalogueItemView = ({variantsOverview}) => {
                 </VariantColumn>
                 {/*}*/}
                 <DetailsColumn className={"col-xs-12 col-md-8 col-lg-9"} theme={theme}>
-                    {pending && <Placeholder><Icon icon={"spinner fa-spin"}/></Placeholder>}
-                    {!pending && <VariantView {...viewedVariant} />}
+                    {pending ?
+                        <Loader timeout={1000} message={"Variante wird geladen, einen Moment noch."}/>
+                        :
+                        <VariantView {...viewedVariant} />
+                    }
                 </DetailsColumn>
         </Wrapper>
     );

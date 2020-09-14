@@ -5,9 +5,14 @@ import {
     GRAPHIC,
     OBJECTS_SWAPPED,
     SET_PAGE_RENDERINGS,
-    NEW_GRAPHIC_STARTED, BRAILLE_BULK_TRANSLATED, UPDATE_BRAILLE_CONTENT, CHANGE_FILE_PROPERTY, CHANGE_PAGE_CONTENT
+    NEW_GRAPHIC_STARTED,
+    BRAILLE_BULK_TRANSLATED,
+    UPDATE_BRAILLE_CONTENT,
+    CHANGE_FILE_PROPERTY,
+    CHANGE_PAGE_CONTENT,
+    OBJECT_UPDATED
 } from "../actions/action_constants";
-import methods from "../components/editor/widgets/ReactSVG/methods";
+import methods from "../components/editor/ReactSVG/methods";
 import uuidv4 from "../utility/uuid";
 import deepPull from "../utility/deepPull";
 import {editor as initialEditor} from "../store/initialState";
@@ -69,7 +74,7 @@ const file = (state = {}, action) => {
             }
 
             return oldState;
-        case 'OBJECT_UPDATED':
+        case OBJECT_UPDATED:
             return produce(state, draftState => {
                 index = draftState
                     .pages[action.shared_currentPage]

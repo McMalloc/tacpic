@@ -5,33 +5,28 @@ import md5 from 'blueimp-md5';
 import '../../styles/Editor.css';
 import styled, {useTheme} from 'styled-components/macro';
 import {useTranslation} from "react-i18next";
-import {FILE, SWITCH_CURSOR_MODE} from "../../actions/action_constants";
+import {FILE, IMPORT, OBJECT_UPDATED, SWITCH_CURSOR_MODE} from "../../actions/action_constants";
 import {useParams} from "react-router-dom";
 import Canvas from "./widgets/Canvas";
 import Toggle from "../gui/Toggle";
 import {Button} from "../gui/Button";
 import Importer from "./widgets/Importer";
 import Key from "./widgets/Keyedit";
-import Verbalizer from "./widgets/Verbalizer";
 import Metadata from "./widgets/Metadata";
 import Pages from "./widgets/Pages";
 import Objects from "./widgets/Objects";
-import Context from "./widgets/Context/Context";
 import Writer from "./widgets/Writer";
 import BraillePage from "./widgets/BraillePage";
 import {Radiobar, RadiobarSegment} from "../gui/Radiobar";
-import Intro from "./widgets/Intro";
-import Category from "./widgets/Category";
-import {Accordeon, AccordeonPanel, AccordeonPanelFlyoutButton} from "../gui/Accordeon";
+import {AccordeonPanel, AccordeonPanelFlyoutButton} from "../gui/Accordeon";
 import GraphicPageSettings from "./widgets/GraphicPageSettings";
 import BraillePageSettings from "./widgets/BraillePageSettings";
 import Document from "./widgets/Document";
 import Error from "../Error";
 import {Modal} from "../gui/Modal";
-import {Alert} from "../gui/Alert";
-import {Icon} from "../gui/_Icon";
 import {useNavigate} from "react-router";
-import {CatalogueItemView} from "../platform/CatalogueItemView";
+import methods from "./ReactSVG/methods";
+import Loader from "../gui/Loader";
 
 const Wrapper = styled.div`
   display: flex;
@@ -40,15 +35,10 @@ const Wrapper = styled.div`
   flex: 1 1 auto;
   height: 100%;
   background-color: ${props => props.theme.brand_secondary};
-`;
-
-const LoadingScreen = styled(Wrapper)`
-  color: white;
-  text-align: center;
-  animation: pulsating 0.8s infinite;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 120%;
+  
+  .loader {
+    color: white;
+  }
 `;
 
 const PanelWrapper = styled.div`
@@ -125,22 +115,16 @@ const switchCursorMode = (dispatch, mode) => {
 }
 
 const Editor = props => {
-    const uiSettings = useSelector(
-        state => state.editor.ui
-    );
-    const page = useSelector(
-        state => state.editor.file.present.pages[uiSettings.currentPage]
-    );
-    const fileHash = useSelector(
-        state => state.editor.file.present.lastVersionHash
-    );
-    const error = useSelector(
-        state => state.app.error
-    );
-
+    const uiSettings = useSelector(state => state.editor.ui);
+    const page = useSelector(state => state.editor.file.present.pages[uiSettings.currentPage]);
+    const fileHash = useSelector(state => state.editor.file.present.lastVersionHash);
+    const error = useSelector(state => state.app.error);
     const undoLength = useSelector(state => state.editor.file.past.length);
     const redoLength = useSelector(state => state.editor.file.future.length);
     const user = useSelector(state => state.user);
+    const traceImport = useSelector(state => state.editor.ui.import);
+
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const t = useTranslation().t;
@@ -168,7 +152,7 @@ const Editor = props => {
     const [dragging, setDragging] = useState(false);
     const [showBraillePanel, setShowBraillePanel] = useState(false);
     const [handleError, setHandleError] = useState(false);
-    const [showImportModal, setShowImportModal] = useState(true);
+    const [showImportModal, setShowImportModal] = useState(false);
     // const [showImportModal, setShowImportModal] = useState(false);
 
     // if (!user.logged_in) navigate("/login")
@@ -211,6 +195,11 @@ const Editor = props => {
             Der Editor scheint beim letzten Mal abgestürzt zu sein. <br />
             <strong>Möchten Sie das Backup laden?</strong>
         </Modal>
+    }
+
+    const resetImportModal = () => {
+        dispatch({type: IMPORT.TRACE.FAILURE, message: null});
+        setShowImportModal(false);
     }
 
     try {
@@ -339,18 +328,24 @@ const Editor = props => {
                         </CanvasWrapper>
                     </PanelWrapper>
                 </Wrapper>
+
                     {showImportModal &&
-                    <Modal title={"Grafik importieren"} fitted
-                           dismiss={() => setShowImportModal(false)}>
-
+                    <Modal title={"Grafik importieren"} fitted actions={[
+                        {label: t("editor:Platzieren"), disabled: traceImport.error || !traceImport.preview, template: "primary", align: "right", action: () => {
+                            // TODO nach Mausklick platzieren, also an InteractiveSCG weitergeben
+                                dispatch({type: OBJECT_UPDATED, preview: methods.embedded.create(0, 0, traceImport.preview)});
+                                resetImportModal();
+                            }},
+                        {label: "Abbrechen", action: resetImportModal}
+                    ]}
+                           dismiss={resetImportModal}>
                         <Importer />
-
                     </Modal>
                     }
                 </>
             );
         } else {
-            return (<LoadingScreen><Icon icon={"cog fa-spin fa-3x"} /><br />Bitte warten, <br />wir bereiten alles vor.</LoadingScreen>)
+            return (<Wrapper><Loader large message={<>Bitte warten, <br />wir bereiten alles vor.</>} /></Wrapper>)
         }
     } catch (error) {
         localStorage.setItem("HAS_EDITOR_CRASHED", "true");

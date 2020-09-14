@@ -1,6 +1,6 @@
 import {put, select, debounce, call} from "redux-saga/effects";
 import {FILE} from "../actions/action_constants";
-import {extractSVG} from "../components/editor/widgets/ReactSVG";
+import {extractSVG} from "../components/editor/ReactSVG";
 
 // TODO pauschal auch Durchführen vor dem Speichern
 export function* renderWatcher() {

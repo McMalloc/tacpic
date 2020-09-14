@@ -18,11 +18,11 @@ const ui = (state = {}, action) => {
             return {...state, fileOpenPending: false, fileOpenSuccess: false};
 
         case IMPORT.TRACE.REQUEST:
-            return {...state, importPending: true, importPreview: null, importError: null};
+            return {...state, import: {pending: true, preview: null, error: null}};
         case IMPORT.TRACE.SUCCESS:
-            return {...state, importPending: false, importPreview: action.data};
+            return {...state, import: {pending: false, preview: action.data, error: null}};
         case IMPORT.TRACE.FAILURE:
-            return {...state, importPending: false, importPreview: null, importError: action.message};
+            return {...state, import: {pending: false, preview: null, error: action.message}};
 
         case 'TRANSFORM_START':
             lastMode = state.mode;

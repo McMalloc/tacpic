@@ -1,7 +1,7 @@
 import createSaga from "./saga_utilities";
 import {GRAPHIC, VARIANT} from "../actions/action_constants";
 import {takeLatest} from "redux-saga/effects";
-import {extractSVG} from "../components/editor/widgets/ReactSVG";
+import {extractSVG} from "../components/editor/ReactSVG";
 
 export const variantGetSaga = createSaga(
     VARIANT.GET, 'get', 'variants/:id', takeLatest, true, undefined,

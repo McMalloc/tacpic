@@ -1,5 +1,5 @@
 // https://medium.com/@francoisromain/smooth-a-svg-path-with-cubic-bezier-curves-e37b49d46c74
-import {getMidpoint, getMirrorPoint} from "../../../../utility/geometry";
+import {getMidpoint, getMirrorPoint} from "../../../utility/geometry";
 
 export const buildPath = (points, command = lineCommand, closed) => {
     // build the d attributes by looping over the points

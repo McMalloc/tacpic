@@ -2,7 +2,7 @@ import React from 'react'
 import transform from "./transform";
 import './Path.css';
 import patternTemplates, {createPattern} from "./Patterns";
-import {getRotation} from "../../../../utility/geometry";
+import {getRotation} from "../../../utility/geometry";
 import methods from "./methods";
 import {buildPath, cubicCommand} from "./PathGeneration";
 

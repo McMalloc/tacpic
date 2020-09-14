@@ -17,9 +17,11 @@ export const editor = {
         selectedObjects: [],
         defaultTitle: true,
         initialized: true,
-        importPending: false,
-        importPreview: null,
-        importError: null,
+        import: {
+            preview: null,
+            pending: false,
+            error: null
+        },
         fileState: null
     },
     file: {

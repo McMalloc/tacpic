@@ -86,8 +86,8 @@ export default function createSaga(
                 let contentType = "";
                 const response = yield call(action => {
                     const filePayload = action.payload && action.payload.toString() === '[object FormData]';
-                    if (filePayload) headers = {}
-                    let headers = {'Accept': action.accept ? 'multipart/form-data;' : 'application/json'};
+                    let headers = {'Accept': 'application/json'};
+                    if (!filePayload) headers['Content-Type'] = 'application/json';
                     if (auth) {
                         const jwt = localStorage.getItem('jwt');
                         if (jwt!== null) headers.Authorization = 'Bearer ' + jwt;

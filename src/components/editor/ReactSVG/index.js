@@ -6,6 +6,7 @@ import React from "react";
 import Ellipse from "./Ellipse";
 import SVGLine from "./Line";
 import Key from "./Key";
+import Embedded from "./Embedded";
 
 export const extractSVG = index => document.getElementById("page-" + index).outerHTML;
 
@@ -15,6 +16,8 @@ export default function mapObject(props, index) {
     switch (props.type) {
         case "rect":
             return <SVGRect key={index} {...props} />;
+        case "embedded":
+            return <Embedded key={index} {...props} />;
         case "key":
             return <Key key={index} {...props} />;
         case "group":

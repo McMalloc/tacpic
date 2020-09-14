@@ -1,7 +1,7 @@
-import {transformCoords} from "./transform";
-import {cosOfDegs, getMirrorPoint, sinOfDegs} from "../../../../utility/geometry";
-import uuidv4 from "../../../../utility/uuid";
-import {COLOURS} from "../../../../config/constants";
+import {cosOfDegs, getMirrorPoint, sinOfDegs} from "../../../utility/geometry";
+import uuidv4 from "../../../utility/uuid";
+import {COLOURS, SVG_A4_PX_WIDTH} from "../../../config/constants";
+import {getTransforms} from "./transform";
 
 const defaultStrokeWidth = 1.5;
 const defaultStrokeStyle = "solid";
@@ -17,6 +17,41 @@ const textureColourMapping = {
     "stair": COLOURS.green,
     "dotted": COLOURS.red
 }
+
+const createEmbedded = (offsetX = 0, offsetY = 0, markup = '<svg/>', filename = 'Importierte Grafik') => {
+    // convert markup to dom by appending it to a dummy element
+    let dummy = document.createElement( 'html' )
+    dummy.innerHTML = markup;
+    let originalSVG = dummy.getElementsByTagName('svg')[0];
+    let group = originalSVG.children[1];
+
+    // get initial dimensions by appending it to the main canvas
+    const {x, y, width, height} = document.getElementById("MAIN-CANVAS").appendChild(originalSVG).getBBox();
+    let aspectRatio = parseInt(height) / parseInt(width);
+    document.getElementById("MAIN-CANVAS").removeChild(originalSVG);
+
+    // reset weird (x-)translations made by potrace, but keep the scaling as it also contains mirroring
+    const transforms = getTransforms(group.getAttribute('transform'));
+    group.removeAttribute('transform');
+    const [initialScaleX, initialScaleY] = transforms.scales[0] // TODO robuster nötig oder erzeugt potrace immer nur eine Translation?
+    group.setAttribute('transform', `translate(0,${height}) scale(${initialScaleX}, ${initialScaleY})`);
+
+    return {
+        uuid: uuidv4(),
+        x, y,
+        scaleX: 1,
+        scaleY: 1,
+        originalWidth: width,
+        originalHeight: height,
+        width: Math.min(width, SVG_A4_PX_WIDTH),
+        height: Math.min(height, SVG_A4_PX_WIDTH*aspectRatio),
+        aspectRatio,
+        moniker: filename,
+        markup: originalSVG.innerHTML,
+        angle: 0,
+        type: 'embedded'
+    }
+};
 
 const createRect = (x = 0, y = 0, width = 100, height = 100, template = 'diagonal_lines', fill = 'white') => {
     return {
@@ -143,6 +178,12 @@ const defaultScale = (object, offsetX, offsetY) => {
     return object;
 };
 
+const embeddedScale = (object, offsetX, offsetY, downX, downY, fullOffsetX, fullOffsetY) => {
+    object.scaleX = (object.originalWidth - (downX - fullOffsetX)) / object.originalWidth;
+    object.scaleY = (object.originalHeight - (downY - fullOffsetY)) / object.originalHeight;
+    return object;
+};
+
 const defaultGetClientBox = object => {
     // getBoundingClientRect() is needed since we need the bounding box
     // after the geometry has been transformed
@@ -164,7 +205,13 @@ const getBBox = object => {
     //TODO konsistent machen, nur das data-attribut benutzen
     if (elem === null) elem = document.querySelector(`[data-uuid='${object.uuid}']`);
     if (!!elem) {
-        return elem.getBBox();
+        const bbox = elem.getBBox();
+        return {
+            x: bbox.x + object.x,
+            y: bbox.y + object.y,
+            width: object.width,//bbox.width * (object.width / bbox.width),
+            height: object.height//bbox.height * (object.height / bbox.height)
+        };
     } else {
         return {x: 0, y: 0, width: 0, height: 0}
     }
@@ -288,6 +335,14 @@ const methods = {
         scale: defaultScale,
         create: createRect,
         getBBox: rectGetBBox,
+        getClientBox: defaultGetClientBox,
+    },
+    embedded: {
+        translate: defaultTranslate,
+        rotate: defaultRotate,
+        scale: defaultScale,//embeddedScale,
+        create: createEmbedded,
+        getBBox: getBBox,//getBBox,
         getClientBox: defaultGetClientBox,
     },
     path: {

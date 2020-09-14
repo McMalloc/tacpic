@@ -14,7 +14,7 @@ import Tooltip from "../../../gui/Tooltip";
 import {findObject} from "../../../../utility/findObject";
 import {useTranslation} from "react-i18next";
 import {Alert} from "../../../gui/Alert";
-import {borderStyles} from "../ReactSVG/constants";
+import {borderStyles} from "../../ReactSVG/constants";
 
 const changePattern = (dispatch, uuid, pattern, offset) => {
     dispatch({

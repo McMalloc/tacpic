@@ -5,16 +5,16 @@ import Manipulator from "./Manipulator";
 import {cloneDeep} from "lodash";
 import mapObject from "./index";
 import ContextOptions from "./ContextOptions";
-import {switchCursorMode} from "../../../../actions";
+import {switchCursorMode} from "../../../actions";
 import PathIndicator from "./PathManipulator";
 
 import styled from 'styled-components/macro';
 import methods, {combineBBoxes} from "./methods";
 import {init, transformCoords} from "./transform";
 import SVGGrid from "./Grid";
-import {findObject} from "../../../../utility/findObject";
+import {findObject} from "../../../utility/findObject";
 import {SVGPage} from "./SVGPage";
-import {ERROR_THROWN, SWITCH_CURSOR_MODE} from "../../../../actions/action_constants";
+import {ERROR_THROWN, SWITCH_CURSOR_MODE} from "../../../actions/action_constants";
 
 class InteractiveSVG extends Component {
     svgElement = React.createRef();

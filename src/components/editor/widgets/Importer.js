@@ -8,6 +8,10 @@ import ReactTooltip from 'react-tooltip'
 import {IMPORT} from "../../../actions/action_constants";
 import {Row} from "../../gui/Grid";
 import {SVG_MIME} from "../../../config/constants";
+import SVGImage from "../../gui/SVGImage";
+import {useTranslation} from "react-i18next";
+import {Alert} from "../../gui/Alert";
+import Loader from "../../gui/Loader";
 
 const Dropzone = styled.div`
   width: 100%;
@@ -37,7 +41,6 @@ const Dropzone = styled.div`
     content: "\\f063";
     color: ${props => props.hovering ? props.theme.accent_1 : "transparent"};
     font-size: 6em;
-    
     transition: bottom 2s;
   }
 `;
@@ -48,6 +51,11 @@ const Fileinput = styled.input`
 `;
 
 const ImageContainer = styled.img`
+  border-radius: ${props => props.theme.border_radius};
+  max-height: 50vh;
+  border: 1px solid ${props => props.theme.grey_4};
+`
+const SVGImageContainer = styled(SVGImage)`
   border-radius: ${props => props.theme.border_radius};
   max-height: 50vh;
   border: 1px solid ${props => props.theme.grey_4};
@@ -71,30 +79,26 @@ const Wrapper = styled.div`
 const Importer = props => {
     const fileRef = useRef();
     const dispatch = useDispatch();
-    const [preview, setPreview] = useState(null);
+    const [upload, setUpload] = useState(null);
     const [hoverWithFile, setHoverWithFile] = useState(false);
-    const tracedPreview = useSelector(state => state.editor.ui.importPreview);
+    const {preview, pending, error} = useSelector(state => state.editor.ui.import);
     const importPending = useSelector(state => state.editor.ui.importPending);
+    const importError = useSelector(state => state.editor.ui.importError);
+    const t = useTranslation().t;
 
     const previewFile = file => {
         let reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = event => {
-            setPreview(reader)
+            setUpload(reader)
         }
     };
-
-    let imageSrc = null;
-    if (!!tracedPreview) {
-        let blob = new Blob([tracedPreview], {type: SVG_MIME});
-        imageSrc = URL.createObjectURL(blob);
-    }
 
     const onDropHandler = event => {
         event.preventDefault();
         let dt = event.dataTransfer;
         let files = dt.files;
-        setPreview(files[0]);
+        setUpload(files[0]);
         setHoverWithFile(false);
     };
     const openDialog = () => fileRef.current.click();
@@ -122,7 +126,7 @@ const Importer = props => {
                         let reader = new FileReader();
                         reader.readAsDataURL(event.currentTarget.files[0]);
                         reader.onloadend = event => {
-                            setPreview(reader.result);
+                            setUpload(reader.result);
                             let formData = new FormData();
                             formData.append("image", fileRef.current.files[0]);
                             dispatch({
@@ -134,7 +138,6 @@ const Importer = props => {
                     }} ref={fileRef}
                                type={"file"}/>
                     <Icon icon={"arrow-down"}/> Vorlage hierher ziehen
-
                     <Divider label={"gui:or"}/>
                     {preview === null ?
                         <Button primary icon={"upload"} onClick={openDialog}>Datei wählen</Button>
@@ -142,19 +145,19 @@ const Importer = props => {
                         <Button primary icon={"upload"} onClick={openDialog}>Neu wählen</Button>
                     }
                 </Dropzone>
+                <small>Mögliche Dateiformate: JPEG und PNG</small>
             </Wrapper>
             <Row>
                 <div className={"col-md-6"}>
-                    {preview &&
-                        <ImageContainer src={preview}/>
+                    {upload &&
+                        <ImageContainer alt={t("editor:Hochgeladene Bilddatei")} src={upload}/>
                     }
                 </div>
                 <div className={"col-md-6"}>
-                    {imageSrc &&
-                        <ImageContainer src={imageSrc} />
-                    }
-                    {importPending &&
-                        <Icon icon={"cog fa-spin"} />
+                    {error && <Alert danger>Es ist ein Fehler aufgetreten: <br />{error.message}</Alert>}
+                    <SVGImageContainer alt={t("editor:Nachgezeichnete Vorschau")} src={preview} />
+                    {pending &&
+                        <Loader message={"Bild wird nachgezeichnet..."} />
                     }
                 </div>
             </Row>
@@ -162,29 +165,5 @@ const Importer = props => {
 
     );
 }
-
-// const mapStateToProps = state => {
-//     return {
-//         file: state.editor.file.backgroundURL
-//     }
-// };
-//
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         toggleCanvas: state => {
-//             dispatch({
-//                 type: "WIDGET_VISIBILITY_TOGGLED",
-//                 state,
-//                 id: "Canvas"
-//             })
-//         },
-//         addOriginal: filename => {
-//             dispatch({
-//                 type: "ADD_BACKGROUND",
-//                 filename
-//             })
-//         }
-//     }
-// };
 
 export default Importer;

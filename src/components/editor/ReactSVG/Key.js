@@ -5,7 +5,7 @@ import {useSelector} from "react-redux";
 import {filter, flatten, map, uniq} from "lodash";
 import Rect from "./Rect";
 import styled from "styled-components";
-import {patternsInUseSelector} from "../../../../reducers/selectors";
+import {patternsInUseSelector} from "../../../reducers/selectors";
 
 const Braille = styled.text`
   line-height: 12mm;

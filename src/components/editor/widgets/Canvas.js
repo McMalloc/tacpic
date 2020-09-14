@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import InteractiveSVG from "./ReactSVG/InteractiveSVG";
+import InteractiveSVG from "../ReactSVG/InteractiveSVG";
 
 const Wrapper = styled.div`
   flex: 1 1 auto;
