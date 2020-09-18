@@ -99,6 +99,10 @@ p {
     font-style: italic;
     font-size: 0.9em;
   }
+
+  &.copy {
+    max-width: 600px;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {

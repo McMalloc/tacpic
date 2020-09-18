@@ -3,7 +3,7 @@ import React, {Component} from "react";
 import {Numberinput, Textinput, Multiline} from "./Input";
 import {Checkbox} from "./Checkbox";
 import {Button} from "./Button";
-import {Lower, Upper} from "./WidgetContainer";
+import {Lower, WidgetWrapper} from "./WidgetContainer";
 
 const Wrapper = styled.div`
   // color: ${props => props.theme.accent_1_light};

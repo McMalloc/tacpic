@@ -26,7 +26,7 @@ export const BRAILLE    = action_constants('BRAILLE',   ['TRANSLATE']);
 export const ORDER      = action_constants('ORDER',   ['CREATE', 'GET', 'INDEX']);
 export const QUOTE      = action_constants('QUOTE',   ['REQUEST', 'GET']);
 export const ADDRESS    = action_constants('ADDRESS',   ['GET', 'CREATE', 'UPDATE', 'REMOVE']); // TODO rename GET to ADDRESS.INDEX
-export const IMPORT    = action_constants('IMPORT',   ['TRACE']);
+export const IMPORT    = action_constants('IMPORT',   ['TRACE', 'OCR']);
 
 export const CANVAS_OBJECT_ADDED = 'CANVAS_OBJECT_ADDED';
 export const CANVAS_OBJECT_REMOVED = 'CANVAS_OBJECT_REMOVED';
@@ -47,4 +47,5 @@ export const BRAILLE_BULK_TRANSLATED = 'BRAILLE_BULK_TRANSLATED';
 export const UPDATE_BRAILLE_CONTENT = 'UPDATE_BRAILLE_CONTENT';
 export const CHANGE_FILE_PROPERTY = 'CHANGE_FILE_PROPERTY';
 export const OBJECT_UPDATED = 'OBJECT_UPDATED';
+export const OBJECT_BULK_ADD = 'OBJECT_BULK_ADD';
 export const ERROR_THROWN = 'ERROR_THROWN';

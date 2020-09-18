@@ -43,8 +43,7 @@ const Input = styled.input`
   }
   
   &:focus, &:active {
-    box-shadow: 0 0 0 1px 3px ${props => props.theme.primary};
-    border-color: #2684FF;
+     outline: 4px solid rgba(38, 132, 255, 0.7);
   }
   
   &:after {

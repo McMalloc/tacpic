@@ -20,7 +20,7 @@ const AccordeonPanelWrapper = styled.div`
 
 const AccordeonPanelContent = styled.div`
    background-color: ${props => props.theme.grey_6};
-  // color: ${props => props.theme.background};
+  box-shadow: ${props => props.theme.middle_shadow} inset;
   flex: 1; 
   overflow: auto; 
   height: 100%;
@@ -84,8 +84,8 @@ const AccordeonPanelFlyout = styled.div`
   left: 0;
   top: 0;
   //z-index: 1;
-  min-width: 150px;
-  max-width: 300px;
+  min-width: 200px;
+  max-width: 400px;
   background-color: ${props => props.theme.grey_6};
   display: ${props => props.hideFlyout ? "none" : "block"};
   padding: ${props => props.theme.large_padding};

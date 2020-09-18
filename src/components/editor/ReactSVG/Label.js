@@ -11,11 +11,11 @@ const Braille = styled.div`
   font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
   //font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
   position: absolute;
-  z-index: -1;
+  //z-index: -1;
   width: 100%;
   top: ${props => props.offset ? '5mm' : 0}; /*half font size*/
   white-space: pre-wrap;
-  color: ${props => props.preview ? 'black' : 'lightgrey'};
+  color: black;
   font-size: 10mm;
   box-sizing: border-box;
   overflow: visible;
@@ -29,7 +29,7 @@ const Black = styled.textarea`
   font-family: Arial, Helvetica, sans-serif;
   width: 100%;
   border: none;
-  overflow: visible;
+  overflow: hidden;
   padding: 0;
   resize: none;
   box-sizing: border-box;
@@ -49,7 +49,7 @@ const Container = styled.div`
   //overflow: visible;
   border: ${props => props.border ? '1mm black solid' : '1mm transparent solid'};
   //border-color: ${props => props.preview ? 'black' : 'transparent'};
-  background-color: ${props => props.preview ? 'transparent' : 'rgba(0,0,0,.03)'} ;
+  background-color: white;//${props => props.preview ? 'transparent' : 'rgba(0,0,0,.03)'} ;
 `;
 
 const changeText = (dispatch, text, uuid) => {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {Treeview} from "../../gui/Treeview";
-import {Upper} from "../../gui/WidgetContainer";
+import {WidgetWrapper} from "../../gui/WidgetContainer";
 import {Alert} from "../../gui/Alert";
 import {Checkbox} from "../../gui/Checkbox";
 
@@ -9,7 +9,7 @@ class Navigator extends Component {
 
     render() {
         return (
-            <Upper>
+            <WidgetWrapper>
                 {this.props.titleValid ?
                     <p className={"disabled"}>
                         Keine Fehler im Dokument gefunden.
@@ -22,7 +22,7 @@ class Navigator extends Component {
                     {/*<Checkbox label={"nur Relief"} />*/}
                     {/*<Checkbox label={"nur Druck"} />*/}
                     {/*<Checkbox label={"beides"} />*/}
-            </Upper>
+            </WidgetWrapper>
         );
     }
 }

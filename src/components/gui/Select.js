@@ -12,6 +12,14 @@ const customStyles = {
         ...provided,
         borderColor: standard.midlight,
         fontWeight: 'bold',
+        ":active": {
+            outline: '4px solid rgba(38, 132, 255, 0.7)'
+        }
+    }),
+    container: (provided, state) => ({
+        ":focus": {
+            outline: '4px solid rgba(38, 132, 255, 0.7)'
+        }
     }),
     option: (provided, state) => ({
         ...provided,
@@ -31,7 +39,7 @@ const customStyles = {
 };
 
 const Select = props => {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const Component = props.creatable ? AtlCrSelect : AtlSelect;
     // TODO: funktioniert noch nicht für gruppierte options-Arrays
     let value = props.value;
@@ -40,37 +48,37 @@ const Select = props => {
     }
 
     return (
-            <div>
-                <Label data-tip={t(props.tip)} label={props.label} sublabel={props.sublabel}>
-                    {/*TODO: hack beseitigen*/}
-                    {props.label &&
-                        <div style={{height: 2}} />
-                    }
-                    <Component
-                        styles={customStyles}
-                        theme={(theme) => ({
-                                ...theme,
-                                borderRadius: 3,
-                                spacing: {
-                                    baseUnit: 2,
-                                    controlHeight: 29,
-                                    menuGutter: 2
-                                }
-                        })}
-                        // components={{ Input: CustomInput }}
-                        isMulti={props.isMulti}
-                        placeholder={t(props.placeholder)}
-                        value={value}
-                        isDisabled={props.disabled}
-                        onCreateOption={props.onCreateOption}
-                        onChange={props.onChange}
-                        // menuIsOpen={true}
-                        menuPortalTarget={document.getElementById("select-portal-target")}
-                        options={props.options}/>
-                </Label>
-            </div>
+        <div>
+            <Label data-tip={t(props.tip)} label={props.label} sublabel={props.sublabel}>
+                {/*TODO: hack beseitigen*/}
+                {props.label &&
+                <div style={{height: 2}}/>
+                }
+                <Component
+                    styles={customStyles}
+                    theme={(theme) => ({
+                        ...theme,
+                        borderRadius: 3,
+                        spacing: {
+                            baseUnit: 2,
+                            controlHeight: 29,
+                            menuGutter: 2
+                        }
+                    })}
+                    // components={{ Input: CustomInput }}
+                    isMulti={props.isMulti}
+                    placeholder={t(props.placeholder)}
+                    value={value}
+                    isDisabled={props.disabled}
+                    onCreateOption={props.onCreateOption}
+                    onChange={props.onChange}
+                    // menuIsOpen={true}
+                    menuPortalTarget={document.getElementById("select-portal-target")}
+                    options={props.options}/>
+            </Label>
+        </div>
     )
-    
+
 };
 
 export default Select

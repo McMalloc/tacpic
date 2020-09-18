@@ -6,7 +6,7 @@ import {Row} from "../../gui/Grid";
 import {Numberinput} from "../../gui/Input";
 import Label from "../../gui/_Label";
 import {Button} from "../../gui/Button";
-import {Lower, Upper} from "../../gui/WidgetContainer";
+import {Lower, WidgetWrapper} from "../../gui/WidgetContainer";
 
 class Order extends Component {
     constructor(props) {
@@ -16,7 +16,7 @@ class Order extends Component {
     render() {
         return (
             <>
-                <Upper>
+                <WidgetWrapper>
                     <Row padded>
                         <div className={"col-md-6"}>
                             <Numberinput label={"Anzahl"} unit={"Stck."}/>
@@ -31,7 +31,7 @@ class Order extends Component {
                             ≙ - Bögen
                         </div>
                     </Row>
-                </Upper>
+                </WidgetWrapper>
                 <Lower>
                     <Button>In den Warenkorb</Button>&ensp;
                     <Button primary>Bestellen</Button>

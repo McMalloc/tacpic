@@ -18,11 +18,30 @@ const ui = (state = {}, action) => {
             return {...state, fileOpenPending: false, fileOpenSuccess: false};
 
         case IMPORT.TRACE.REQUEST:
-            return {...state, import: {pending: true, preview: null, error: null}};
+            return {
+                ...state, import: {
+                    ocrSelection: [],
+                    pending: true, preview: null, ocr: '',
+                    previewName: action.payload.get('image').name.replace(/(.*)\.[^.]+$/, '$1'),
+                    error: null
+                }
+            };
         case IMPORT.TRACE.SUCCESS:
-            return {...state, import: {pending: false, preview: action.data, error: null}};
+            return {...state,
+                import: {
+                    ...state.import,
+                    pending: false,
+                    preview: action.data.graphic,
+                    ocr: action.data.ocr.split('\n').filter(label => label.trim().length !== 0),
+                    error: null
+                }
+            };
         case IMPORT.TRACE.FAILURE:
-            return {...state, import: {pending: false, preview: null, error: action.message}};
+            return {...state, import: {pending: false, preview: null, ocr: '', error: action.message, previewName: ''}};
+
+        case 'OCR_SELECT':
+            return {...state,
+                import: {...state.import, ocrSelection: action.selection}};
 
         case 'TRANSFORM_START':
             lastMode = state.mode;
@@ -31,7 +50,9 @@ const ui = (state = {}, action) => {
             let uuids;
             if (!(action.uuids instanceof Array)) { // selected single object
                 uuids = [action.uuids]
-            } else {uuids = action.uuids}
+            } else {
+                uuids = action.uuids
+            }
             let selectedObjects = uuids[0] === null ? [] : uuids;
             return {...state, selectedObjects};
         case 'TRANSFORM_END':
@@ -39,7 +60,8 @@ const ui = (state = {}, action) => {
         case 'CHANGE_VIEWPORT':
             let scalingFactor = action.scalingFactor < 0.05 ? 0.1 :
                 Math.round(action.scalingFactor * roundingAccuracy) / roundingAccuracy; // regain accuracy from wonky javascript rounding
-            return {...state,
+            return {
+                ...state,
                 scalingFactor,
                 viewPortX: action.viewPortX,
                 viewPortY: action.viewPortY
@@ -55,10 +77,12 @@ const ui = (state = {}, action) => {
         case 'DEFAULT_TITLE_TOGGLE':
             return {...state, defaultTitle: action.state};
         case 'ADD_BACKGROUND':
-            return {...state, openedFile: {
+            return {
+                ...state, openedFile: {
                     ...state.openedFile,
                     backgroundURL: action.filename
-                }};
+                }
+            };
         case 'SWITCH_CURSOR_MODE':
             return {...state, tool: action.mode.toUpperCase()};
         case 'SWITCH_TEXTURE_MODE':

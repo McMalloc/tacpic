@@ -4,7 +4,7 @@ import styled from 'styled-components/macro';
 import {Multiline, Textinput} from "../../gui/Input";
 import Select from "../../gui/Select";
 import {Button} from "../../gui/Button";
-import {Upper} from "../../gui/WidgetContainer";
+import {WidgetWrapper} from "../../gui/WidgetContainer";
 import {GRAPHIC, VERSION, VARIANT} from "../../../actions/action_constants";
 import {Modal} from "../../gui/Modal";
 import {Alert} from "../../gui/Alert";
@@ -12,6 +12,8 @@ import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {NavLink} from "react-router-dom";
 import uuidv4 from "../../../utility/uuid";
+import {useParams} from "react-router";
+import {Checkbox} from "../../gui/Checkbox";
 
 const Status = styled.div`
   display: flex;
@@ -42,13 +44,19 @@ const Indicator = styled.span`
 }};
 `;
 
-const uploadVersion = (dispatch, file) => {
+const Hint = styled.div`
+  text-align: right;
+  font-size: 90%;
+  font-style: italic;
+`;
+
+const uploadVersion = (dispatch, file, mode) => {
     if (file.graphic_id === null) {
         dispatch({
             type: GRAPHIC.CREATE.REQUEST,
             payload: file
         })
-    } else if (file.isNew) {
+    } else if (file.variant_id === null || mode === 'new') {
         dispatch({
             type: VARIANT.CREATE.REQUEST,
             payload: file
@@ -72,12 +80,16 @@ const Metadata = props => {
             }
         })
     );
-    const {t} = useTranslation();
     const variantTags = useSelector(state => state.editor.file.present.tags);
+
+    const {t} = useTranslation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const {mode} = useParams();
     const [input, setInput] = useState({});
     const [showFileModal, toggleFileModal] = useState(false);
+    const [showHintModal, toggleHintModal] = useState(false);
+    const [licenseAgreed, setLicenseAgreed] = useState(false);
 
     const handleInputChange = (e) => setInput({
         ...input,
@@ -85,113 +97,130 @@ const Metadata = props => {
     });
 
     if (!logged_in) return (
-        <Upper>
+        <WidgetWrapper>
             <Alert info>
                 Bitte <NavLink to={'/login'}>logge dich ein</NavLink> oder <NavLink to={'/signup'}>erstelle ein
                 Konto</NavLink>, um Grafiken zu erstellen.
             </Alert>
-        </Upper>
+        </WidgetWrapper>
     );
 
     return (
-        <Upper>
-            <div>
-                <Textinput
-                    value={file.graphicTitle}
-                    onChange={event => {
-                        dispatch({
-                            type: "CHANGE_FILE_PROPERTY",
-                            key: 'graphicTitle',
-                            value: event.currentTarget.value
-                        });
-                    }}
-                    tip={"help:input_graphic-title"}
-                    disabled={file.graphic_id !== null}
-                    label={"editor:input_graphic-title"}
-                    sublabel={"editor:input_graphic-title-sub"}/>
-                <Textinput
-                    value={file.variantTitle}
-                    onChange={event => {
-                        dispatch({
-                            type: "CHANGE_FILE_PROPERTY",
-                            key: 'variantTitle',
-                            value: event.currentTarget.value
-                        });
-                    }}
-                    tip={"help:input_variant-title"}
-                    disabled={file.graphic_id === null}
-                    label={"editor:input_variant-title"}
-                    sublabel={"editor:input_variant-title-sub"}/>
-
-                <Select
-                    label={"editor:input_catalogue-tags"}
-                    tip={"help:input_catalogue-tags"}
-                    isMulti
-                    creatable
-                    onChange={selection => {
-                        if (selection === null) selection = [];
-                        dispatch({
-                            type: "CHANGE_FILE_PROPERTY",
-                            key: 'tags',
-                            value: selection.map(tag => {
-                                return {tag_id: tag.value, name: tag.label}
-                            })
-                        })
-                    }}
-                    onCreateOption={(option) => {
-                        let taglist = [...variantTags];
-                        taglist.push({tag_id: uuidv4(), name: option});
-                        dispatch({
-                            type: "CHANGE_FILE_PROPERTY",
-                            key: 'tags',
-                            value: taglist
-                        })
-                    }}
-                    options={tags}
-                    value={variantTags.map(tag => {
-                        return {value: tag.tag_id, label: tag.name}
-                    })}
-                    sublabel={"editor:input_catalogue-tags-sub"}/>
-
-                <Multiline
-                    value={file.variantDescription}
-                    onChange={event => {
-                        dispatch({
-                            type: "CHANGE_FILE_PROPERTY",
-                            key: 'variantDescription',
-                            value: event.currentTarget.value
-                        });
-                    }}
-                    disabled={file.graphic_id === null}
-                    label={t("editor:input_variant-desc")}
-                    sublabel={t("editor:input_variant-desc-sub")}/>
-
-            </div>
-
-            <div>
-                <hr/>
-                <Status>
-                    <span>Status:</span>
-                    <Indicator state={file.documentState}>
-                        {/*editor:catalogue-state-{this.props.documentState}*/}
-                        Entwurf
-                    </Indicator>
-                </Status>
-                TODO: CC-lizensiertes Material unterbindet technische Schutzmaßnahmen.
-                <p>Ich stimme der Veröffentlichung unter der liberalen <a target={"blank"}
-                                                                          href={"https://creativecommons.org/licenses/by/4.0/deed.de"}>CC-BY-SA
-                    3.0 Lizenz</a> zu.</p>
-                <Button onClick={() => {
-                    toggleFileModal(true);
-                    uploadVersion(dispatch, file)
+        <WidgetWrapper>
+            <Textinput
+                value={file.graphicTitle}
+                onChange={event => {
+                    dispatch({
+                        type: "CHANGE_FILE_PROPERTY",
+                        key: 'graphicTitle',
+                        value: event.currentTarget.value
+                    });
                 }}
-                        primary fullWidth
-                        label={file.graphic_id === null ?
-                            t("editor:input_catalogue-publish") :
-                            (file.isNew ? t("editor:input_catalogue-create") : t("editor:input_catalogue-update"))
-                        }>
-                </Button>
-            </div>
+                tip={"help:input_graphic-title"}
+                name={"graphic-title"}
+                disabled={file.derivedFrom !== null}
+                label={"editor:input_catalogue-title"}
+                sublabel={"editor:input_catalogue-title-sub"}/>
+            {file.derivedFrom !== null &&
+            <Hint>
+                <a onClick={() => toggleHintModal(!showHintModal)} href={'#'}>Wieso kann ich den Titel nicht
+                    ändern?</a>
+                <br/><br/>
+            </Hint>
+            }
+
+
+            <Textinput
+                value={file.variantTitle}
+                onChange={event => {
+                    dispatch({
+                        type: "CHANGE_FILE_PROPERTY",
+                        key: 'variantTitle',
+                        value: event.currentTarget.value
+                    });
+                }}
+                name={"variant-title"}
+                tip={"help:input_variant-title"}
+                disabled={file.graphic_id === null || file.derivedFrom === null}
+                label={"editor:input_catalogue-variant-title"}/>
+
+            <Alert info>{file.graphic_id === null || file.derivedFrom === null ?
+                t("editor:input_catalogue-variant-title-hint-alt")
+                :
+                t("editor:input_catalogue-variant-title-hint")}
+            </Alert>
+
+            <Select
+                label={"editor:input_catalogue-tags"}
+                tip={"help:input_catalogue-tags"}
+                isMulti
+                creatable
+                onChange={selection => {
+                    if (selection === null) selection = [];
+                    dispatch({
+                        type: "CHANGE_FILE_PROPERTY",
+                        key: 'tags',
+                        value: selection.map(tag => {
+                            return {tag_id: tag.value, name: tag.label}
+                        })
+                    })
+                }}
+                onCreateOption={(option) => {
+                    let taglist = [...variantTags];
+                    taglist.push({tag_id: uuidv4(), name: option});
+                    dispatch({
+                        type: "CHANGE_FILE_PROPERTY",
+                        key: 'tags',
+                        value: taglist
+                    })
+                }}
+                options={tags}
+                value={variantTags.map(tag => {
+                    return {value: tag.tag_id, label: tag.name}
+                })}
+                sublabel={"editor:input_catalogue-tags-sub"}/>
+
+            {/*<Multiline*/}
+            {/*    value={file.variantDescription}*/}
+            {/*    onChange={event => {*/}
+            {/*        dispatch({*/}
+            {/*            type: "CHANGE_FILE_PROPERTY",*/}
+            {/*            key: 'variantDescription',*/}
+            {/*            value: event.currentTarget.value*/}
+            {/*        });*/}
+            {/*    }}*/}
+            {/*    disabled={file.graphic_id === null}*/}
+            {/*    label={t("editor:input_variant-desc")}*/}
+            {/*    sublabel={t("editor:input_variant-desc-sub")}/>*/}
+
+
+            <hr/>
+            <Status>
+                <span>Status:</span>
+                <Indicator state={file.graphic_id === null ? 0 : 1}>
+                    {/*editor:catalogue-state-{this.props.documentState}*/}
+                    Entwurf
+                </Indicator>
+            </Status>
+            <p>
+                <Checkbox onChange={event => setLicenseAgreed(!licenseAgreed)}
+                          name={'cb-license-agreed'}
+                          checked={licenseAgreed}
+                          label={"Ich stimme der Veröffentlichung unter der liberalen CC-BY-SA 3.0 Lizenz zu."} />
+                <a className={"checkbox-additional"} target={"blank"}
+                   href={"https://creativecommons.org/licenses/by/4.0/deed.de"}>Lizenz einsehen.</a>
+            </p>
+            <Button onClick={() => {
+                toggleFileModal(true);
+                uploadVersion(dispatch, file, mode)
+            }}
+                    primary fullWidth
+                    disabled={!licenseAgreed}
+                    label={file.graphic_id === null ?
+                        t("editor:input_catalogue-publish") :
+                        (file.isNew ? t("editor:input_catalogue-create") : t("editor:input_catalogue-update"))
+                    }>
+            </Button>
 
             {showFileModal &&
             <Modal fitted title={'editor:modal_filestate_title'} dismiss={() => toggleFileModal(false)}
@@ -201,7 +230,7 @@ const Metadata = props => {
                            align: "left",
                            disabled: file.state === 'updating',
                            action: () => {
-                               navigate(`/editor/${file.graphic_id}/variants/${file.variant_id}`)
+                               navigate(`/editor/${file.graphic_id}/variant/${file.variant_id}/edit`)
                                toggleFileModal(false);
                            }
                        },
@@ -229,7 +258,59 @@ const Metadata = props => {
 
             </Modal>
             }
-        </Upper>
+
+            {showHintModal &&
+            <Modal fitted title={'editor:Titel ändern'} dismiss={() => toggleHintModal(false)}
+                   actions={[
+                       {
+                           label: "Abbrechen",
+                           align: "left",
+                           action: () => {
+                               toggleFileModal(false);
+                               setTimeout(() => {
+                                   document.getElementById("label-for-graphic-title").focus();
+                               }, 100);
+                           }
+                       },
+                       {
+                           label: "Variantentitel bearbeiten",
+                           align: "right",
+                           template: 'primary',
+                           disabled: file.state === 'updating',
+                           action: () => {
+                               toggleHintModal(false);
+                               setTimeout(() => {
+                                   document.getElementById("label-for-variant-title").focus();
+                               }, 100);
+                           }
+                       },
+                       {
+                           label: "In Entwurf umwandeln",
+                           align: "right",
+                           template: 'primary',
+                           disabled: file.state === 'updating',
+                           action: () => {
+                               toggleHintModal(false);
+                               navigate('/editor/copy');
+                               setTimeout(() => {
+                                   document.getElementById("label-for-graphic-title").focus();
+                               }, 100);
+                           }
+                       }
+                   ]}>
+
+                <p className={'copy'}>
+                    <Alert info>Diese Variante basiert auf einer Variante des Entwurfs "{file.graphicTitle}", daher
+                        können Sie den Titel
+                        des Entwurfs nicht verändern.</Alert> Finden Sie stattdessen einen passenden Namen für Ihre
+                    Variante.
+                    Entspricht der Inhalt Ihrer Variante nicht mehr dem Titel des Entwurfs, können Sie ihre Variante
+                    auch
+                    in einen eigenständigen Entwurf umwandeln.</p>
+
+            </Modal>
+            }
+        </WidgetWrapper>
     );
 };
 

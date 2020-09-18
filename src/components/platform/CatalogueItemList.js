@@ -24,15 +24,29 @@ const AddButton = styled.div`
   cursor: pointer;
   font-weight: bold;
   text-shadow: 0 0 3px white;
-  box-shadow: 1px 1px 2px rgba(0,0,0,0.35);
-  background:url(
-data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAK0lEQVQYV2P8////f0ZGRkYGKADzYRwQDRIA0SgqwAIwbXAVUGMY0QVAqgGzDxf+fIja2gAAAABJRU5ErkJggg==
-   ) repeat;
-  border-radius: ${props => props.theme.border_radius};
-  border: 3px solid ${props => props.theme.grey_5};
+  //box-shadow: 1px 1px 2px rgba(0,0,0,0.35);
+  transition: font-size 0.2s;
+  transition-timing-function: ease-in;
+  //border: 3px solid ${props => props.theme.grey_5};
+  position: relative;
+  
+  &:before {
+    position: absolute;
+    content: " ";
+    top: 2px; left: 2px; right: 2px; bottom: 2px;
+    border: 3px solid ${props => props.theme.grey_4};
+    transition: left 0.2s, top 0.2s, right 0.2s, bottom 0.2s, background-color 0.2s, border-color 0.2s;
+    transition-timing-function: ease-in;
+    border-radius: ${props => props.theme.border_radius};
+  }
   
   &:hover {
-    background-color: ${props => props.theme.background};
+  text-decoration: underline;
+  font-size: 110%;
+    &:before {
+      left: 5%; top: 5%; right: 5%; bottom: 5%; 
+      border-color: ${props => props.theme.brand_secondary_light};
+    }
   }
 `
 

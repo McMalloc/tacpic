@@ -141,11 +141,11 @@ const VariantView = props => {
                                 disabled={!logged_in}
                                 fullWidth
                                 icon={'pen'} onClick={() => {
-                            dispatch({
-                                type: FILE.OPEN.REQUEST,
-                                id: props.id, mode: "edit"
-                            })
-                            navigate(`/editor/${graphicId}/variants/${variantId}`);
+                            // dispatch({
+                            //     type: FILE.OPEN.REQUEST,
+                            //     id: props.id, mode: "edit"
+                            // })
+                            navigate(`/editor/${graphicId}/variant/${variantId}/edit`);
                         }}>Verbessern</Button>
 
                         <Button fullWidth icon={'download'} onClick={() => {

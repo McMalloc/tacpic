@@ -86,9 +86,9 @@ const App = () => {
                                    element={<Catalogue/>} />
                             <Route path="/signup"
                                    element={<SignupForm/>}/>
-                            <Route path="/editor/:graphicId/variants/:variantId"
+                            <Route path="/editor/:graphicId/variant/:variantId/:mode"
                                    element={<Editor/>}/>
-                            <Route path="/editor/*"
+                            <Route path="/editor/:mode"
                                    element={<Editor/>}/>
                             <Route path="/stats"
                                    element={<Stats/>}/>

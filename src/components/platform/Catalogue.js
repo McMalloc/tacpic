@@ -75,7 +75,8 @@ const Catalogue = props => {
     const navigate = useNavigate();
     const {graphicId} = useParams();
 
-    const graphicOverview = catalogue.graphics.find(graphic => graphic.id == graphicId);
+    // const graphicOverview = catalogue.graphics.find(graphic => graphic.id == graphicId);
+    const graphicOverview = catalogue.viewedGraphic;
 
     useEffect(() => {
         // TODO default to saved state
@@ -136,11 +137,11 @@ const Catalogue = props => {
                 </div>
                 <div className={"col-xs-10 col-lg-10"}>
                     <CatalogueItemList graphics={catalogue.graphics}/>
-                    {!!graphicOverview &&
+                    {!!graphicId &&
                     <Modal title={graphicOverview && graphicOverview.title} noPadding={true} fitted
                            dismiss={() => navigate("/catalogue")}>
 
-                        <CatalogueItemView variantsOverview={graphicOverview.variants}/>
+                        <CatalogueItemView variantsOverview={graphicOverview.variants || []}/>
 
                     </Modal>}
                     <div className={"align-center padded-top"}>

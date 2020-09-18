@@ -25,7 +25,8 @@ const Loader = props => {
     const [showMessage, setShowMessage] = useState(false);
 
     useEffect(() => {
-        setTimeout(() => setShowMessage(true), props.timeout || 1000)
+        const timer = setTimeout(() => setShowMessage(true), props.timeout || 1000);
+        return () => clearTimeout(timer);
     }, []);
 
     return (

@@ -4,10 +4,29 @@ import {createPattern} from "./Patterns";
 
 export default function SVGEllipse(props) {
     const template = props.pattern.template;
-    const transformProperty = transform(props.x, props.y, props.angle, 0, 0);
+    const xVectorUnits = Number.isInteger(props.x);
+    const yVectorUnits = Number.isInteger(props.y);
+
+    const transformProperty = transform(
+        xVectorUnits ? props.x : 0,
+        yVectorUnits ? props.y : 0,
+        props.angle, props.width, props.height);
 
     return (
         <g>
+            <ellipse data-uuid={props.uuid}
+                     className={"neutral-border"}
+                  x={xVectorUnits ? null : props.x}
+                  y={yVectorUnits ? null : props.y}
+                  transform={transformProperty}
+                  style={
+                      {
+                          stroke: "white",
+                          fill: "transparent",
+                          strokeWidth: 20
+                      }}
+                  rx={props.width}
+                  ry={props.height}/>
             <ellipse
                 id={props.uuid}
                 data-uuid={props.uuid}

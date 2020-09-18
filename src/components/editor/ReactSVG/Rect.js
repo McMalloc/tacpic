@@ -1,6 +1,6 @@
 import React from 'react'
 import transform from "./transform";
-import patternTemplates, {createPattern} from "./Patterns";
+import {createPattern} from "./Patterns";
 
 export default function SVGRect(props) {
     const template = props.pattern.template;
@@ -14,6 +14,7 @@ export default function SVGRect(props) {
     return (
         <g>
             <rect data-uuid={props.uuid}
+                  className={"neutral-border"}
                   x={xVectorUnits ? null : props.x}
                   y={yVectorUnits ? null : props.y}
                   transform={transformProperty}

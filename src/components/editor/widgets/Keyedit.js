@@ -10,7 +10,7 @@ import {Row} from "../../gui/Grid";
 import {filter, map, flatten, isUndefined, uniq} from "lodash";
 import TexturePalette from "../../gui/TexturePalette";
 import Label from "../../gui/_Label";
-import {Lower, Upper} from "../../gui/WidgetContainer";
+import {Lower, WidgetWrapper} from "../../gui/WidgetContainer";
 import methods from "../ReactSVG/methods";
 import {patternsInUse, patternsInUseSelector} from "../../../reducers/selectors";
 

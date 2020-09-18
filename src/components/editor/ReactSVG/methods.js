@@ -105,9 +105,8 @@ const createEllipse = (x = 0, y = 0, width = 100, height = 100, template = 'diag
     }
 };
 
-const createLabel = (x = 0, y = 0, width = 100, height = 100, text = '', braille = '') => {
-    return {
-        uuid: uuidv4(),
+const createLabel = (x = 0, y = 0, width = 100, height = 100, text = '', braille = '', overrides = {}) => {
+    const defaults = {
         x, y, width, height, text, braille,
         moniker: "Beschriftung",
         displayDots: true,
@@ -119,6 +118,11 @@ const createLabel = (x = 0, y = 0, width = 100, height = 100, text = '', braille
         fullCharPrefix: false,
         border: false,
         type: 'label'
+    }
+    return {
+        uuid: uuidv4(),
+        ...defaults,
+        ...overrides
     }
 };
 

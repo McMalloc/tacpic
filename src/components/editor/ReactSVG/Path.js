@@ -16,6 +16,16 @@ export default function SVGPath(props) {
     return (
         <g data-selectable={1} id={props.uuid} transform={transformProperty}>
             <path
+                className={"neutral-border"}
+                style={
+                    {
+                        stroke: "white",
+                        fill: "transparent",
+                        strokeWidth: 20
+                    }}
+                d={smoothPathC}
+            />
+            <path
                 style={{
                     fill: props.pattern.template !== null ? 'url(#pattern-' + props.pattern.template + '-' + props.uuid + '' : props.fill || "none ",
                     cursor: 'pointer',

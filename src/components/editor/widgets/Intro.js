@@ -1,5 +1,5 @@
 import React from 'react';
-import {Upper} from "../../gui/WidgetContainer";
+import {WidgetWrapper} from "../../gui/WidgetContainer";
 import {Button} from "../../gui/Button";
 import {Icon} from "../../gui/_Icon";
 import {layoutSet} from "../../../actions";
@@ -22,7 +22,7 @@ class Intro extends React.Component {
             <Button onClick={() => this.props.layoutSet(3)}>Jetzt einrichten</Button>
         </>)};
         return (
-            <Upper>
+            <WidgetWrapper>
 
                 <p>Auf der linken Seite können Sie die Arbeitsbereiche umschalten, die den üblichen Arbeitsschritten bei
                     der Erstellung taktiler Grafiken entsprechen. Jeder Bereich stellt nützliche Funktionen für die
@@ -82,7 +82,7 @@ class Intro extends React.Component {
                 {/*<Button primary>Vorliegende Grafik einordnen</Button>*/}
                 {/*<h2>Hilfestellungen</h2>*/}
                 {/*<p>Nutzen Sie die Hilfe, wenn eine Funktion unklar ist.</p>*/}
-            </Upper>
+            </WidgetWrapper>
         );
     }
 }

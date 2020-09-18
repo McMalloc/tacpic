@@ -3,7 +3,7 @@ import axios from "axios";
 import {wrapAndChunk, wrapLines} from "../utility/wrapLines";
 import {chunk} from "lodash";
 import {API_URL} from "../env"
-import {CHANGE_PAGE_CONTENT} from "../actions/action_constants";
+import {CHANGE_PAGE_CONTENT, OBJECT_BULK_ADD} from "../actions/action_constants";
 
 const sanitise = text => {
     return text.replace("%", "%%")
@@ -113,6 +113,33 @@ export function* systemChangeWatcher() {
                         url: API_URL + '/braille?bulk=true',
                         data: {
                             labels: labels,
+                            system
+                        }
+                    });
+                });
+                yield put({
+                    type: 'BRAILLE_BULK_TRANSLATED',
+                    labels: response.data.labels
+                })
+            } catch (error) {
+                console.log(error);
+                // yield put({type: event.FAILURE, error});
+            }
+        }
+    })
+}
+
+export function* ocrImportWatcher() {
+    yield takeLatest(OBJECT_BULK_ADD, function* (action) {
+        if (action.objects.length === action.objects.filter(object=>object.type === 'label').length) { // all objects are labels
+            try {
+                let system = yield select(state => state.editor.file.present.system);
+                const response = yield call(() => {
+                    return axios({
+                        method: 'POST',
+                        url: API_URL + '/braille?bulk=true',
+                        data: {
+                            labels: action.objects,
                             system
                         }
                     });

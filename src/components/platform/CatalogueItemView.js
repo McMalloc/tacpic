@@ -19,11 +19,15 @@ const VariantPreviewStyled = styled.div`
   position: relative;
   color: ${props => props.foreground};
   opacity: ${props => props.active ? 1 : 0.7};
+  text-decoration: ${props => props.active ? 'underline' : 'none'};
   border: 4px solid ${props => props.active ? props.brand_secondary_light : 'transparent'};
   background-color: ${props => props.active ? props.grey_6 : 'transparent'};
   
   &:hover {
     opacity: 1;
+    strong {
+      text-decoration: underline;
+    }
   }
   
   &:focus {
@@ -82,12 +86,13 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
     max-width: 1280px;
+    min-width: 400px;
     flex-wrap: wrap;
     flex: 1 1 auto;
     overflow: hidden;
 `;
 
-const VariantPreview = ({title, id, description, tags, document, file_name}) => {
+const VariantPreview = ({title, id, description, tags, document, file_name, derived_from}) => {
     let selectedVariantId = useParams().variantId;
     let graphicId = useParams().graphicId;
     const theme = useTheme();
@@ -100,7 +105,7 @@ const VariantPreview = ({title, id, description, tags, document, file_name}) => 
             {/*<VariantListingPreview bgUrl={`http://localhost:9292/static/thumbnails/thumbnail-${id}-sm.png`} />*/}
             <div className={'variant-info'}>
                 <strong>{title}</strong><br/>
-                <small>{!!description && description.slice(0, 80)}{!!description && description.length > 80 && ' …'}</small>
+                <small>abgeleitet aus {derived_from + ""}</small>
                 <div>
                     {tags.length !== 0 && tags.map(t => {
                         let completeTag = allTags.find(_t => _t.tag_id === t);
@@ -131,44 +136,40 @@ const CatalogueItemView = ({variantsOverview}) => {
     }, [graphicId]);
 
     return (
-        <Wrapper theme={theme}>
-        {/*<Wrapper theme={theme}>*/}
-                {/*{props.variants.length > 1 &&*/}
-                <VariantColumn className={"col-xs-12 col-md-4 col-lg-3"}>
-                    <div className={'heading'}>
-                        <strong>Verfügbare Varianten</strong> ({variantsOverview.length} gesamt)
-                    </div>
-                    <div>
-                        {variantsOverview.map((variant, index) => {
-                            return (
-                                <Link className={'no-styled-link'} key={index} to={`/catalogue/${graphicId}/variant/${variant.id}`}>
-                                    <VariantPreview {...variant} />
-                                </Link>
-                            )
-                        })}
-                    </div>
-                    <NewVariantButtonContainer>
-                        <Button className={'extra-margin'}
-                                disabled={!logged_in}
-                                fullWidth icon={'copy'}
-                                onClick={() => {
-                                    navigate(`/editor/${graphicId}`);
-                                    dispatch({
-                                        type: FILE.OPEN.REQUEST,
-                                        id: variantId, mode: "new"
-                                    })
-                                }}>Neue Variante aus Auswahl</Button>
-                    </NewVariantButtonContainer>
+        <Wrapper>
+            {pending ?
+                <Loader timeout={1000} message={"Variante wird geladen, einen Moment noch."}/>
+                :
+                <>
+                    <VariantColumn className={"col-xs-12 col-md-4 col-lg-3"}>
+                        <div className={'heading'}>
+                            <strong>Verfügbare Varianten</strong> ({variantsOverview.length} gesamt)
+                        </div>
+                        <div>
+                            {variantsOverview.map((variant, index) => {
+                                console.log(variant)
+                                return (
+                                    <Link className={'no-styled-link'} key={index} to={`/catalogue/${graphicId}/variant/${variant.id}`}>
+                                        <VariantPreview {...variant} />
+                                    </Link>
+                                )
+                            })}
+                        </div>
+                        <NewVariantButtonContainer>
+                            <Button className={'extra-margin'}
+                                    disabled={!logged_in}
+                                    fullWidth icon={'copy'}
+                                    onClick={() => navigate(`/editor/${graphicId}/variant/${viewedVariant.id}/new`)}>
+                                Neue Variante aus Auswahl</Button>
+                        </NewVariantButtonContainer>
 
-                </VariantColumn>
-                {/*}*/}
-                <DetailsColumn className={"col-xs-12 col-md-8 col-lg-9"} theme={theme}>
-                    {pending ?
-                        <Loader timeout={1000} message={"Variante wird geladen, einen Moment noch."}/>
-                        :
+                    </VariantColumn>
+                    {/*}*/}
+                    <DetailsColumn className={"col-xs-12 col-md-8 col-lg-9"}>
                         <VariantView {...viewedVariant} />
-                    }
-                </DetailsColumn>
+                    </DetailsColumn>
+                </>
+            }
         </Wrapper>
     );
 };

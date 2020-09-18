@@ -2,7 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {connect} from "react-redux";
 import styled from 'styled-components/macro';
 import {Qid} from "../../gui/Qid";
-import {Lower, Upper} from "../../gui/WidgetContainer";
+import {Lower, WidgetWrapper} from "../../gui/WidgetContainer";
 import {Button} from "../../gui/Button";
 
 const Wrapper = styled.div`
@@ -21,11 +21,11 @@ class Comments extends Component {
     render() {
         return (
             <>
-                <Upper>
+                <WidgetWrapper>
                     <p className={"disabled"}>
                         Noch keine Kommentare.
                     </p>
-                </Upper>
+                </WidgetWrapper>
                 <Lower>
                     <Button disabled icon={"trash-alt"} onClick={() => {}}>Entfernen</Button> &ensp;
                     <Button primary icon={"plus"} onClick={() => {}}>Kommentar verfassen</Button>

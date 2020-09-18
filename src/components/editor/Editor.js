@@ -3,9 +3,9 @@ import {useDispatch, useSelector} from "react-redux";
 import md5 from 'blueimp-md5';
 
 import '../../styles/Editor.css';
-import styled, {useTheme} from 'styled-components/macro';
+import styled from 'styled-components/macro';
 import {useTranslation} from "react-i18next";
-import {FILE, IMPORT, OBJECT_UPDATED, SWITCH_CURSOR_MODE} from "../../actions/action_constants";
+import {FILE, IMPORT, OBJECT_BULK_ADD, OBJECT_UPDATED, SWITCH_CURSOR_MODE} from "../../actions/action_constants";
 import {useParams} from "react-router-dom";
 import Canvas from "./widgets/Canvas";
 import Toggle from "../gui/Toggle";
@@ -27,6 +27,8 @@ import {Modal} from "../gui/Modal";
 import {useNavigate} from "react-router";
 import methods from "./ReactSVG/methods";
 import Loader from "../gui/Loader";
+import {SVG_A4_PX_WIDTH} from "../../config/constants";
+import {editor} from "../../store/initialState";
 
 const Wrapper = styled.div`
   display: flex;
@@ -96,6 +98,12 @@ const SidebarPanel = styled.div`
   border-bottom: 2px solid ${props => props.theme.brand_secondary_light};
 `;
 
+const Draftinfo = styled.div`
+  color: ${props => props.theme.background};
+  padding: ${props => props.theme.large_padding};
+  margin-bottom: 6px;
+`;
+
 // const Loading
 
 const iconMap = {
@@ -116,36 +124,41 @@ const switchCursorMode = (dispatch, mode) => {
 
 const Editor = props => {
     const uiSettings = useSelector(state => state.editor.ui);
-    const page = useSelector(state => state.editor.file.present.pages[uiSettings.currentPage]);
-    const fileHash = useSelector(state => state.editor.file.present.lastVersionHash);
+    const file = useSelector(state => state.editor.file.present);
+    const page = file.pages;
+    const fileHash = file.lastVersionHash;
     const error = useSelector(state => state.app.error);
     const undoLength = useSelector(state => state.editor.file.past.length);
     const redoLength = useSelector(state => state.editor.file.future.length);
     const user = useSelector(state => state.user);
     const traceImport = useSelector(state => state.editor.ui.import);
-
+    const ocr = useSelector(state => state.editor.ui.import.ocr);
+    const ocrSelection = useSelector(state => state.editor.ui.import.ocrSelection);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const t = useTranslation().t;
-    const theme = useTheme();
-    let {variantId, graphicId} = useParams();
+    let {variantId, graphicId, mode} = useParams();
+    console.log(mode);
 
     useEffect(() => {
-        console.log("Variant ID: " + variantId);
-        console.log("Graphic ID: " + graphicId);
         if (!!variantId) {
             dispatch({
                 type: FILE.OPEN.REQUEST,
-                id: variantId, mode: "edit"
+                id: variantId, data: mode === 'edit' ? {variant_id: variantId} : {derivedFrom: variantId, variantTitle: '', variant_id: null}
+            })
+        } else if (mode === 'copy') { // new graphic
+            dispatch({
+                type: FILE.OPEN.SUCCESS,
+                data: {variant_id: null, graphic_id: null, derivedFrom: null, version_id: null, variantTitle: 'Basis', graphicTitle: ''}
             })
         } else {
             dispatch({
                 type: FILE.OPEN.SUCCESS,
-                data: {}, mode: "new"
+                data: editor.file.present
             })
         }
-    }, []);
+    }, [graphicId, variantId]);
 
     const [openedPanel, setOpenedPanel] = useState(null);
     // todo zu Hook umwandeln, wenn InteractiveSVG eine function component ist
@@ -153,7 +166,6 @@ const Editor = props => {
     const [showBraillePanel, setShowBraillePanel] = useState(false);
     const [handleError, setHandleError] = useState(false);
     const [showImportModal, setShowImportModal] = useState(false);
-    // const [showImportModal, setShowImportModal] = useState(false);
 
     // if (!user.logged_in) navigate("/login")
 
@@ -192,7 +204,7 @@ const Editor = props => {
                               }
                           }
                       ]}>
-            Der Editor scheint beim letzten Mal abgestürzt zu sein. <br />
+            Der Editor scheint beim letzten Mal abgestürzt zu sein. <br/>
             <strong>Möchten Sie das Backup laden?</strong>
         </Modal>
     }
@@ -258,6 +270,28 @@ const Editor = props => {
 
                     <PanelWrapper>
                         <Sidebar>
+                            <Draftinfo onClick={() => {
+                                setOpenedPanel('publish');
+                                setTimeout(() => {
+                                    document.getElementById("label-for-graphic-title").focus();
+                                }, 100);
+                            }}>
+                                <strong>{file.graphicTitle.length === 0 ? <span
+                                    className={'disabled'}>Noch kein Titel</span> : file.graphicTitle}</strong><br/>
+                                {file.graphicTitle.length !== 0 ?
+                                <span>Variante: {file.variantTitle}</span>
+                                    :
+                                    <Button fullWidth primary label={"Titel ändern"} />
+                                }
+
+                                <pre style={{border: '2px solid green', textShadow: '1px 1px 0 black', color: 'lightgreen', fontSize: '11px', padding: '2px 3px'}}>
+                                    Derived from: {file.derivedFrom + ""}<br />
+                                    Mode: {mode}<br />
+                                    Graphic ID: {file.graphic_id + " (" + graphicId + ")"}<br />
+                                    Variant ID: {file.variant_id + " (" + variantId + ")"}<br />
+                                </pre>
+                            </Draftinfo>
+
                             <AccordeonPanel title={"Entwurf"}>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'document'}
                                                             hideFlyout={dragging}
@@ -329,23 +363,38 @@ const Editor = props => {
                     </PanelWrapper>
                 </Wrapper>
 
+                    {/*TODO auslagern? nimmt ziemlich viele Zeilen in Editor.js*/}
                     {showImportModal &&
-                    <Modal title={"Grafik importieren"} fitted actions={[
-                        {label: t("editor:Platzieren"), disabled: traceImport.error || !traceImport.preview, template: "primary", align: "right", action: () => {
-                            // TODO nach Mausklick platzieren, also an InteractiveSCG weitergeben
-                                dispatch({type: OBJECT_UPDATED, preview: methods.embedded.create(0, 0, traceImport.preview)});
+                    <Modal title={"Grafik importieren"} fitted actions={
+                        [{
+                            label: t("editor:Platzieren"),
+                            disabled: traceImport.error || !traceImport.preview,
+                            template: "primary",
+                            align: "right",
+                            action: () => {
+                                // TODO nach Mausklick platzieren, also an InteractiveSVG weitergeben
+                                dispatch({
+                                    type: OBJECT_UPDATED,
+                                    preview: methods.embedded.create(0, 0, traceImport.preview, traceImport.previewName)
+                                });
+                                dispatch({
+                                    type: OBJECT_BULK_ADD,
+                                    objects: ocrSelection.map((ocrIndex, index) => {
+                                        return methods.label.create(SVG_A4_PX_WIDTH + 5, index * 50, 200, 50, ocr[index], undefined, {editMode: false});
+                                    })
+                                })
                                 resetImportModal();
-                            }},
-                        {label: "Abbrechen", action: resetImportModal}
-                    ]}
+                            }
+                        },
+                            {label: "Abbrechen", action: resetImportModal}]}
                            dismiss={resetImportModal}>
-                        <Importer />
+                        <Importer/>
                     </Modal>
                     }
                 </>
             );
         } else {
-            return (<Wrapper><Loader large message={<>Bitte warten, <br />wir bereiten alles vor.</>} /></Wrapper>)
+            return (<Wrapper><Loader large message={<>Bitte warten, <br/>wir bereiten alles vor.</>}/></Wrapper>)
         }
     } catch (error) {
         localStorage.setItem("HAS_EDITOR_CRASHED", "true");

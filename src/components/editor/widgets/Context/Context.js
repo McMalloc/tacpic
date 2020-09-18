@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import ShapeContext from "./ShapeContext";
 import LabelContext from "./LabelContext";
 import {find} from 'lodash';
-import {Upper} from "../../../gui/WidgetContainer";
+import {WidgetWrapper} from "../../../gui/WidgetContainer";
 import Keyedit from "../Keyedit";
 
 // to refactor to function component
@@ -14,15 +14,15 @@ const Context = () => {
         case "ellipse":
         case "rect":
             return (
-                <Upper><ShapeContext/></Upper>
+                <WidgetWrapper><ShapeContext/></WidgetWrapper>
             );
         case "label":
             return (
-                <Upper><LabelContext/></Upper>
+                <WidgetWrapper><LabelContext/></WidgetWrapper>
             );
         case "key":
             return (
-                <Upper><Keyedit/></Upper>
+                <WidgetWrapper><Keyedit/></WidgetWrapper>
             );
         default:
             return null;

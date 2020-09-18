@@ -19,6 +19,9 @@ export const editor = {
         initialized: true,
         import: {
             preview: null,
+            previewName: '',
+            ocr: '',
+            ocrSelection: [],
             pending: false,
             error: null
         },
@@ -30,7 +33,7 @@ export const editor = {
             title: "",
             graphicTitle: "",
             graphicDescription: "",
-            variantTitle: "",
+            variantTitle: "Basis",
             variantDescription: "",
             transcribersNotes: "",
             tags: [],
@@ -39,6 +42,7 @@ export const editor = {
             graphic_id: null,
             version_id: null,
             lastVersionHash: null,
+            derivedFrom: null,
 
             backgroundURL: "",
             keyedStrokes: [],

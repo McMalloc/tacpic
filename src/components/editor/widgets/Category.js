@@ -7,7 +7,7 @@ import styled from 'styled-components/macro';
 import Select from "../../gui/Select";
 import Divider from "../../gui/Divider";
 import {Row} from "../../gui/Grid";
-import {Upper} from "../../gui/WidgetContainer";
+import {WidgetWrapper} from "../../gui/WidgetContainer";
 import {Alert} from "../../gui/Alert"; //TODO aus Datenbank laden
 
 const groupedOptions = [ // TODO auch aus DB
@@ -51,7 +51,7 @@ class Category extends Component {
 
     render() {
         return (
-            <Upper>
+            <WidgetWrapper>
                 {this.state.assistant ?
                     <Classifier onChange={this.handleCategoryChange} categories={cats}/>
                 :
@@ -82,7 +82,7 @@ class Category extends Component {
                         </Row>
                     </>
                 }
-            </Upper>
+            </WidgetWrapper>
         );
     }
 }

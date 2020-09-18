@@ -25,7 +25,13 @@ import {
     searchChangeWatcher,
     catalogueSearchSaga, catalogueLoadMoreSaga
 } from "./catalogue_saga";
-import {contentEditWatcher, labelWriteWatcher, layoutEditWatcher, systemChangeWatcher} from "./label_translate_saga";
+import {
+    contentEditWatcher,
+    labelWriteWatcher,
+    layoutEditWatcher,
+    ocrImportWatcher,
+    systemChangeWatcher
+} from "./label_translate_saga";
 import {renderWatcher} from "./render_saga";
 import {addressRemoveSaga} from "./address_saga";
 import {basketChangeSaga} from "./basket_saga";
@@ -50,7 +56,8 @@ export default function* root() {
                     graphics_no_of_pages: variant.graphics_no_of_pages,
                     file_name: variant.file_name,
                     created_at: variant.created_at,
-                    description: variant.variant_description
+                    description: variant.variant_description,
+                    derived_from: variant.derived_from
                 }
             });
         })),
@@ -66,6 +73,7 @@ export default function* root() {
         call(addressRemoveSaga),
 
         call(createSaga(IMPORT.TRACE, 'post', 'trace', takeLatest, false, id, id)),
+        call(createSaga(IMPORT.OCR, 'post', 'ocr', takeLatest, false, id, id)),
 
         call(orderCreateSaga),
         call(orderIndexSaga),
@@ -98,6 +106,7 @@ export default function* root() {
         call(contentEditWatcher),
         call(systemChangeWatcher),
         call(layoutEditWatcher),
+        call(ocrImportWatcher),
 
         // call(tagToggledWatcher),
         // call(formatToggledWatcher),

@@ -4,7 +4,7 @@ import styled from 'styled-components/macro';
 import {Treeview} from "../../gui/Treeview";
 import {Button} from "../../gui/Button";
 import {Row} from "../../gui/Grid";
-import {Lower, Upper} from "../../gui/WidgetContainer";
+import {Lower, WidgetWrapper} from "../../gui/WidgetContainer";
 import {Icon} from "../../gui/_Icon";
 import {AccordeonMenuEntry, AccordeonPanelFlyoutButton} from "../../gui/Accordeon";
 import Context from "./Context/Context";

@@ -10,7 +10,7 @@ import {
     UPDATE_BRAILLE_CONTENT,
     CHANGE_FILE_PROPERTY,
     CHANGE_PAGE_CONTENT,
-    OBJECT_UPDATED
+    OBJECT_UPDATED, OBJECT_BULK_ADD
 } from "../actions/action_constants";
 import methods from "../components/editor/ReactSVG/methods";
 import uuidv4 from "../utility/uuid";
@@ -85,6 +85,11 @@ const file = (state = {}, action) => {
                 } else {
                     draftState.pages[action.shared_currentPage].objects[index] = action.preview;
                 }
+            });
+        case OBJECT_BULK_ADD:
+            return produce(state, draftState => {
+                draftState
+                    .pages[action.shared_currentPage].objects.push(...action.objects)
             });
         case 'OBJECT_TRANSLATED':
             // TODO sauberer für nested objects
@@ -181,13 +186,19 @@ const file = (state = {}, action) => {
                 draftState.braillePages.formatted = action.formatted;
             });
         case FILE.OPEN.REQUEST:
-            return state;
+            return {...initialEditor.file.present, ...action.data};
         case FILE.OPEN.SUCCESS:
-            let current_file = {...initialEditor.file.present};
+            let current_file = {...state};
+            if (current_file.variant_id === null) {
+                delete action.data.derivedFrom;
+                if (current_file.graphic_id !== null) {
+                    delete action.data.variant_id;
+                    delete action.data.variantTitle;
+                }
+            }
             for (let [key, value] of Object.entries(action.data)) { // assign new values, keep defaults
                 current_file[key] = value;
             }
-            current_file.isNew = action.mode === 'new';
             return current_file;
         case 'OBJECT_REMOVED':
             oldState = cloneDeep(state);

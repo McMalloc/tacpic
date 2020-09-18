@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   
   @media (max-width: 1280px) {
-    flex: 0 1 25%;
+    flex: 0 1 33%;
   }  
   
   @media (max-width: 900px) {
@@ -53,7 +53,7 @@ export default props => {
                     <Preview
                         id={"catalogue-item-" + props.id + "-thumbnail"} thumbnailURL={thumbnailURL} />
                     <Info>
-                        <strong>{props.title}</strong> <br/>
+                        <strong className={"hover-sensitive"}>{props.title}</strong> <br/>
                         <small>
                             {props.variants.length}
                             {props.filtered ? ' zutreffende ' : ' '}

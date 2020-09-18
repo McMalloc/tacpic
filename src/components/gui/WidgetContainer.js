@@ -23,7 +23,7 @@ export const Lower = styled.div`
   box-shadow: 0 0 10px #00000021;
 `;
 
-export const Upper = styled.div`
+export const WidgetWrapper = styled.div`
   flex: 1 1 100%;
   padding: ${props => props.theme.spacing[2]};
   overflow: auto;
