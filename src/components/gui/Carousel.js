@@ -28,21 +28,22 @@ const Navarea = styled.div`
     &.left {
         left: 0;
         padding-left: 2%;
-        &:hover {
-          background: rgb(0,0,0);
-          background: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%);
-          text-shadow: 0 0 5px white;
-        }
+        opacity: 0;
+        transition: opacity 0.1s;
+        background: rgb(0,0,0);
+        background: linear-gradient(90deg, rgba(3,109,110,0.7) 0%, rgba(3,109,110,0.4) 50%, rgba(0,0,0,0) 100%);
+        text-shadow: 0 0 5px white;
+        &:hover { opacity: 1; }
     }
     
     &.right {
         right: 0;
-        //padding-left: 20%;
-        &:hover {
-          background: rgb(0,0,0);
-          background: linear-gradient(270deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%);
-          text-shadow: 0 0 5px white;
-        }
+        opacity: 0;
+        transition: opacity 0.1s;
+        background: rgb(0,0,0);
+        background: linear-gradient(270deg, rgba(3,109,110,0.7) 0%, rgba(3,109,110,0.4) 50%, rgba(0,0,0,0) 100%);
+        text-shadow: 0 0 5px white;
+        &:hover { opacity: 1; }
     } 
 `;
 

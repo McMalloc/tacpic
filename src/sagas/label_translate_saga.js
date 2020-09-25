@@ -3,10 +3,10 @@ import axios from "axios";
 import {wrapAndChunk, wrapLines} from "../utility/wrapLines";
 import {chunk} from "lodash";
 import {API_URL} from "../env"
-import {CHANGE_PAGE_CONTENT, OBJECT_BULK_ADD} from "../actions/action_constants";
+import {CHANGE_IMAGE_DESCRIPTION, CHANGE_PAGE_CONTENT, OBJECT_BULK_ADD} from "../actions/action_constants";
 
 const sanitise = text => {
-    return text.replace("%", "%%")
+    return text.replace("%", "%%").replace(/\u00AD/, "");
 }
 
 export function* labelWriteWatcher() {
@@ -38,16 +38,19 @@ export function* labelWriteWatcher() {
 }
 
 export function* contentEditWatcher() {
-    yield debounce(1000, CHANGE_PAGE_CONTENT, function* (action) {
+    yield debounce(1000, [CHANGE_PAGE_CONTENT, CHANGE_IMAGE_DESCRIPTION], function* (action) {
         try {
             let system = yield select(state => state.editor.file.present.system);
-            let layout = yield select(state => state.editor.file.present.braillePages);
+            let braillePages = yield select(state => state.editor.file.present.braillePages);
+            const concatinated = Object.keys(braillePages.imageDescription)
+                .reduce((accumulator, blockKey) => accumulator + braillePages.imageDescription[blockKey] + "\n\n", "")
+            + braillePages.content;
             const response = yield call(() => {
                 return axios({
                     method: 'POST',
                     url: API_URL + '/braille',
                     data: {
-                        label: sanitise(action.content),
+                        label: sanitise(concatinated),
                         system
                     }
                 });
@@ -55,7 +58,7 @@ export function* contentEditWatcher() {
             yield put({
                 type: 'UPDATE_BRAILLE_CONTENT',
                 braille: response.data,
-                formatted: wrapAndChunk(response.data, layout.cellsPerRow, layout.rowsPerPage)
+                formatted: wrapAndChunk(response.data, braillePages.cellsPerRow, braillePages.rowsPerPage)
             });
         } catch (error) {
             console.error(error);

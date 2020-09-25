@@ -114,11 +114,12 @@ const createLabel = (x = 0, y = 0, width = 100, height = 100, text = '', braille
         smooth: true,
         editMode: true,
         isKey: false,
+        isTitle: false,
         keyVal: '',
         fullCharPrefix: false,
         border: false,
         type: 'label'
-    }
+    };
     return {
         uuid: uuidv4(),
         ...defaults,

@@ -13,7 +13,7 @@ const Braille = styled.div`
   position: absolute;
   //z-index: -1;
   width: 100%;
-  top: ${props => props.offset ? '5mm' : 0}; /*half font size*/
+  top: ${props => props.vOffset ? '5mm' : 0}; /*half font size*/
   white-space: pre-wrap;
   color: black;
   font-size: 10mm;
@@ -112,7 +112,7 @@ const Label = props => {
                         system={system}
                         className={"label-braille"}
                         xmlns={"http://www.w3.org/1999/xhtml"}
-                        offset={props.displayLetters}
+                        vOffset={props.displayLetters}
                         id={'braille_' + props.uuid}>
                         {props.fullCharPrefix && '%'}{props.isKey ? props.keyVal : props.braille}
                     </Braille>

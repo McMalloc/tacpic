@@ -44,6 +44,10 @@ const Alert = props => {
         iconID = "exclamation-triangle";
         colour = theme.danger;
     }
+    if (props.complimentaryCopy) {
+        iconID = "carret-right";
+        colour = 'transparent';
+    }
     return (
         <Wrapper role={(props.warning || props.danger) ? "alert" : ""} {...props} colour={colour}>
             <IconContainer colour={colour}>

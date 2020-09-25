@@ -29,6 +29,7 @@ import methods from "./ReactSVG/methods";
 import Loader from "../gui/Loader";
 import {SVG_A4_PX_WIDTH} from "../../config/constants";
 import {editor} from "../../store/initialState";
+import Verbaliser from "./widgets/Verbaliser";
 
 const Wrapper = styled.div`
   display: flex;
@@ -102,6 +103,7 @@ const Draftinfo = styled.div`
   color: ${props => props.theme.background};
   padding: ${props => props.theme.large_padding};
   margin-bottom: 6px;
+  cursor: pointer;
 `;
 
 // const Loading
@@ -125,8 +127,8 @@ const switchCursorMode = (dispatch, mode) => {
 const Editor = props => {
     const uiSettings = useSelector(state => state.editor.ui);
     const file = useSelector(state => state.editor.file.present);
-    const page = file.pages;
-    const fileHash = file.lastVersionHash;
+        const page = file.pages;
+        const fileHash = file.lastVersionHash;
     const error = useSelector(state => state.app.error);
     const undoLength = useSelector(state => state.editor.file.past.length);
     const redoLength = useSelector(state => state.editor.file.future.length);
@@ -139,13 +141,13 @@ const Editor = props => {
     const navigate = useNavigate();
     const t = useTranslation().t;
     let {variantId, graphicId, mode} = useParams();
-    console.log(mode);
 
     useEffect(() => {
         if (!!variantId) {
             dispatch({
                 type: FILE.OPEN.REQUEST,
-                id: variantId, data: mode === 'edit' ? {variant_id: variantId} : {derivedFrom: variantId, variantTitle: '', variant_id: null}
+                id: variantId,
+                data: mode === 'edit' ? {variant_id: variantId} : {derivedFrom: variantId, variantTitle: '', variant_id: null}
             })
         } else if (mode === 'copy') { // new graphic
             dispatch({
@@ -158,9 +160,10 @@ const Editor = props => {
                 data: editor.file.present
             })
         }
-    }, [graphicId, variantId]);
+    }, [graphicId, variantId, mode]);
 
     const [openedPanel, setOpenedPanel] = useState(null);
+    // const [openedPanel, setOpenedPanel] = useState(null);
     // todo zu Hook umwandeln, wenn InteractiveSVG eine function component ist
     const [dragging, setDragging] = useState(false);
     const [showBraillePanel, setShowBraillePanel] = useState(false);
@@ -345,8 +348,11 @@ const Editor = props => {
                                                             hideFlyout={dragging}
                                                             onClick={() => setOpenedPanel(openedPanel === 'imagedescription' ? null : 'imagedescription')}
                                                             label={"Bildbeschreibung"} icon={"image"}>
-                                    <Writer/>
-                                    {/*<Verbalizer/>*/}
+                                    {/*<Writer/>*/}
+                                    <Verbaliser style={{maxHeight: "100%", height: "100%"}} closeSelf={() => {
+                                        setOpenedPanel(null);
+                                        setShowBraillePanel(true);
+                                    }}/>
                                 </AccordeonPanelFlyoutButton>
                             </AccordeonPanel>
                             <AccordeonPanel title={"Objekte"}>

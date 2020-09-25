@@ -54,7 +54,8 @@ const ModalTitle = styled.h3`
 const ModalContent = styled.div`
   padding: ${props => props.noPadding ? 0 : props.theme.large_padding};
   flex: 1 1 auto;
-  //display: flex;
+  display: flex;
+  flex-direction: column;
   overflow: hidden; 
 `;
 

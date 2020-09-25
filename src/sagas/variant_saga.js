@@ -27,8 +27,10 @@ export const variantGetSaga = createSaga(
     }
 );
 
+// newly added tags need a temporary identifier (uuid) to avoid duplicates
+// the uuid are replaced with null before they are send to the server.
+// the server will then create new tags if the id is null
 const isUuid = string => /[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/.test(string)
-
 const replaceTagUuids = tags => tags.map(tag =>
     ({
         name: tag.name,
@@ -40,8 +42,9 @@ export const variantUpdateSaga = createSaga(
     VARIANT.UPDATE, 'post', 'variants/:variant_id', takeLatest, true, file =>
         ({
             ...file,
+            variantDescription: `${file.braillePages.imageDescription.summary} (${file.braillePages.imageDescription.type})`,
             tags: replaceTagUuids(file.tags),
-            pages: file.pages.map((page, index) => (page.text ? {...page} : {...page, rendering: extractSVG(index)}))
+            pages: file.pages.map((page, index) => ({...page, rendering: extractSVG(index)}))
         })
     );
 
@@ -49,11 +52,13 @@ export const variantCreateSaga = createSaga(
     VARIANT.CREATE, 'post', 'variants', takeLatest, true, file =>
         ({
             ...file,
+            variantDescription: `${file.braillePages.imageDescription.summary} (${file.braillePages.imageDescription.type})`,
             tags: replaceTagUuids(file.tags)
         }));
 
 export const graphicCreateSaga = createSaga(GRAPHIC.CREATE, 'post', 'graphics', takeLatest, true, file =>
     ({
         ...file,
+        variantDescription: `${file.braillePages.imageDescription.summary} (${file.braillePages.imageDescription.type})`,
         tags: replaceTagUuids(file.tags)
     }));

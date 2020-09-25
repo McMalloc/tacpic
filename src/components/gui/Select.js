@@ -12,14 +12,7 @@ const customStyles = {
         ...provided,
         borderColor: standard.midlight,
         fontWeight: 'bold',
-        ":active": {
-            outline: '4px solid rgba(38, 132, 255, 0.7)'
-        }
-    }),
-    container: (provided, state) => ({
-        ":focus": {
-            outline: '4px solid rgba(38, 132, 255, 0.7)'
-        }
+        outline: state.isFocused ? '4px solid rgba(38, 132, 255, 0.7)' : 'none'
     }),
     option: (provided, state) => ({
         ...provided,

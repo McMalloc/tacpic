@@ -56,7 +56,7 @@ const uploadVersion = (dispatch, file, mode) => {
             type: GRAPHIC.CREATE.REQUEST,
             payload: file
         })
-    } else if (file.variant_id === null || mode === 'new') {
+    } else if (file.variant_id === null || mode === 'copy') {
         dispatch({
             type: VARIANT.CREATE.REQUEST,
             payload: file
@@ -106,7 +106,7 @@ const Metadata = props => {
     );
 
     return (
-        <WidgetWrapper>
+        <>
             <Textinput
                 value={file.graphicTitle}
                 onChange={event => {
@@ -118,7 +118,7 @@ const Metadata = props => {
                 }}
                 tip={"help:input_graphic-title"}
                 name={"graphic-title"}
-                disabled={file.derivedFrom !== null}
+                disabled={file.derivedFrom !== null && mode !== 'new'}
                 label={"editor:input_catalogue-title"}
                 sublabel={"editor:input_catalogue-title-sub"}/>
             {file.derivedFrom !== null &&
@@ -206,7 +206,7 @@ const Metadata = props => {
                 <Checkbox onChange={event => setLicenseAgreed(!licenseAgreed)}
                           name={'cb-license-agreed'}
                           checked={licenseAgreed}
-                          label={"Ich stimme der Veröffentlichung unter der liberalen CC-BY-SA 3.0 Lizenz zu."} />
+                          label={"Ich stimme der Veröffentlichung unter der liberalen CC-BY-SA 3.0 Lizenz zu."}/>
                 <a className={"checkbox-additional"} target={"blank"}
                    href={"https://creativecommons.org/licenses/by/4.0/deed.de"}>Lizenz einsehen.</a>
             </p>
@@ -260,13 +260,13 @@ const Metadata = props => {
             }
 
             {showHintModal &&
-            <Modal fitted title={'editor:Titel ändern'} dismiss={() => toggleHintModal(false)}
+            <Modal fitted title={t('editor:Titel ändern')} dismiss={() => toggleHintModal(false)}
                    actions={[
                        {
                            label: "Abbrechen",
                            align: "left",
                            action: () => {
-                               toggleFileModal(false);
+                               toggleHintModal(false);
                                setTimeout(() => {
                                    document.getElementById("label-for-graphic-title").focus();
                                }, 100);
@@ -302,15 +302,17 @@ const Metadata = props => {
                 <p className={'copy'}>
                     <Alert info>Diese Variante basiert auf einer Variante des Entwurfs "{file.graphicTitle}", daher
                         können Sie den Titel
-                        des Entwurfs nicht verändern.</Alert> Finden Sie stattdessen einen passenden Namen für Ihre
-                    Variante.
-                    Entspricht der Inhalt Ihrer Variante nicht mehr dem Titel des Entwurfs, können Sie ihre Variante
-                    auch
-                    in einen eigenständigen Entwurf umwandeln.</p>
+                        des Entwurfs nicht verändern.</Alert>
+                    <Alert complimentaryCopy>
+                        Finden Sie stattdessen einen passenden Namen für Ihre
+                        Variante. Entspricht der Inhalt Ihrer Variante nicht mehr dem Titel des Entwurfs, können Sie
+                        ihre Variante
+                        auch in einen eigenständigen Entwurf umwandeln.</Alert>
+                </p>
 
             </Modal>
             }
-        </WidgetWrapper>
+        </>
     );
 };
 

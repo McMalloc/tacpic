@@ -63,8 +63,8 @@ const ui = (state = {}, action) => {
             return {
                 ...state,
                 scalingFactor,
-                viewPortX: action.viewPortX,
-                viewPortY: action.viewPortY
+                viewPortX: Math.max(Math.min(50, action.viewPortX), -1000),
+                viewPortY: Math.max(Math.min(50, action.viewPortY), -1400)
             };
         case 'VERTICAL_SPACING_SET':
             return {...state, verticalGridSpacing: action.spacing};

@@ -4,12 +4,9 @@ import Manipulator from "./Manipulator";
 
 import {cloneDeep} from "lodash";
 import mapObject from "./index";
-import ContextOptions from "./ContextOptions";
-import {switchCursorMode} from "../../../actions";
 import PathIndicator from "./PathManipulator";
 
-import styled from 'styled-components/macro';
-import methods, {combineBBoxes} from "./methods";
+import methods from "./methods";
 import {init, transformCoords} from "./transform";
 import SVGGrid from "./Grid";
 import {findObject} from "../../../utility/findObject";
@@ -456,6 +453,14 @@ class InteractiveSVG extends Component {
                        translate(${this.props.ui.viewPortX} ${this.props.ui.viewPortY}) 
                        scale(${this.props.ui.scalingFactor})`}>
 
+                    <rect
+                        fill={"transparent"}
+                        stroke={"white"}
+                        x={this.props.bounds.minH}
+                        y={this.props.bounds.minV}
+                        width={this.props.bounds.maxH - this.props.bounds.minH}
+                        height={this.props.bounds.maxV - this.props.bounds.minV} />
+
 
                     {this.props.file.present.pages.map((page, index) => {
                         if (index === this.props.ui.currentPage) return null;
@@ -520,6 +525,11 @@ class InteractiveSVG extends Component {
                          verticalGridSpacing={this.props.file.present.verticalGridSpacing * this.props.ui.scalingFactor}
                          horizontalGridSpacing={this.props.file.present.horizontalGridSpacing * this.props.ui.scalingFactor}/>
                 }
+
+                <text fill={'green'} fontSize={10} x={5} y={30}>
+                    {this.props.ui.viewPortX}, {this.props.ui.viewPortY}&emsp;
+                    [{this.props.ui.scalingFactor}]
+                </text>
 
                 {/*<g id={"mouse-indicators"}>*/}
                 {/*    {this.props.ui.scalingFactor !== 1 &&*/}

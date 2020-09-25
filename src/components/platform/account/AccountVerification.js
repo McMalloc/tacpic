@@ -78,7 +78,7 @@ const AccountVerification = props => {
                             disabled={!(pwdConfirmValid && pwdValid) || user.verification_state === 2} primary
                             type={'submit'}>{t("general:Passwort setzen")}</Button>
                 </div>
-                }
+
             </form>
 
         </Row>

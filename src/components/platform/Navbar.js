@@ -22,17 +22,15 @@ const Wrapper = styled.nav`
 `;
 
 const NavbarItem = styled(NavLink)`
-    //font-family: Quicksand, sans-serif;
-    //font-weight: bold;
     color: ${props => props.theme.brand_secondary};
     text-decoration: none;
     border-radius: ${props => props.theme.border_radius};
     padding: ${props => props.theme.base_padding};
     position: relative;
     display: block;
-    //text-shadow: 1px 1px 0 white;
     border: 1px solid transparent;
-    // margin: ${props => props.small ? 0 : props.theme.spacing[1]} ${props => props.theme.spacing[2]};
+      font-family: "Quicksand", sans-serif;
+  font-size: 18px;
     
     &:not(:last-child) {
       margin-right: ${props => props.theme.spacing[1]};
@@ -43,7 +41,7 @@ const NavbarItem = styled(NavLink)`
     }
    
     &.active {
-    font-weight: bold;
+      font-weight: bold;
       border-color: ${props => props.theme.brand_secondary_lighter};
     }
 `;

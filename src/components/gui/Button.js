@@ -1,7 +1,8 @@
 import styled, {useTheme} from 'styled-components/macro';
-import React, {Component} from "react";
+import React, {Component, useRef, useState} from "react";
 import {fadeIn, slideFromAbove} from "./Animations";
 import {useTranslation} from 'react-i18next';
+import {Icon} from "./_Icon";
 
 const Label = styled.span`
   // padding: ${props => props.noPad ? 0 : props.theme.large_padding} ${props => props.noPad ? 0 : props.primary ? "16px" : props.theme.large_padding};
@@ -9,20 +10,20 @@ const Label = styled.span`
   display: inline-block;
 `;
 
-const Icon = styled.span`
-  //padding: ${props => props.theme.spacing[2]};
-  display: inline-block;
-`;
+// const Icon = styled.span`
+//   //padding: ${props => props.theme.spacing[2]};
+//   display: inline-block;
+// `;
 
 const ButtonBase = styled.button`
   background-color: ${props => props.primary ? props.theme.brand_secondary : "white"};
   color: ${props => props.primary ? props.theme.background : "inherit"};
   border: 1px solid ${props => props.theme.middark};
-  padding: ${props => props.small ?  0 : (props.large ? "8px 18px" : `${props.theme.spacing[1]} ${props.theme.spacing[2]}`)};
+  padding: ${props => props.small ? 0 : (props.large ? "8px 18px" : `${props.theme.spacing[1]} ${props.theme.spacing[2]}`)};
   text-transform: ${props => props.small ? 'uppercase' : 'none'};
   border-radius: 3px;
   cursor: pointer;
-  float: ${props=>props.rightAction ? 'right' : 'none'};
+  float: ${props => props.rightAction ? 'right' : 'none'};
   margin-top: 0;
   position: relative;
   font-size: ${props => props.small ? '0.8em' : '1em'};
@@ -66,21 +67,19 @@ const ButtonBase = styled.button`
 
 // die ref muss heruntergereicht werden, da noch ein styled-component dazwischen steht
 const Button = React.forwardRef((props, ref) => {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const label = props.label || props.children;
     const theme = useTheme();
     return (
         <ButtonBase theme={theme} type={props.type || "button"} ref={ref} {...props}>
             {props.icon &&
-            <Icon primary={props.primary}>
-                <i className={"fas fa-" + props.icon}/>
-            </Icon>
+            <Icon icon={props.icon} primary={props.primary}/>
             }
             {label &&
             <Label icon={props.icon}>
                 {t(label)}
                 {props.isDropdown &&
-                <Caret><i className={"fas fa-caret-down"} /></Caret>
+                <Caret><i className={"fas fa-caret-down"}/></Caret>
                 }
             </Label>
             }
@@ -98,12 +97,15 @@ const Caret = styled.span`
 `;
 
 const Flyout = styled.div`
-  background-color: ${props => props.theme.accent_1_light};
+  background-color: ${props => props.theme.background};
   border-radius: ${props => props.theme.border_radius};
-  box-shadow: 1px 1px 8px rgba(0,0,0,0.3);
-  padding: 1em;
-  border: 1px solid ${props => props.theme.accent_1_light};
-  width: auto;
+  box-shadow: ${props => props.theme.very_distant_shadow};
+  border: 1px solid ${props => props.theme.foreground};
+  min-width: 100%;
+  
+  .flyout-entry {
+    width: ${props => props.flyoutWidth ? props.flyoutWidth + "px" : "auto"};
+  }
 
   position: absolute;
   top: 1.5em;
@@ -111,23 +113,41 @@ const Flyout = styled.div`
   left: ${props => props.rightAlign ? "inherit" : 0};
   z-index: 9998;
   animation: ${fadeIn} 0.1s ease-in, ${slideFromAbove} 0.1s ease-in;
-  
-  // &:before { // Pfeil
-  //   content: '';
-	// position: absolute;
-	// top: 1px;
-	// right: ${props => props.rightAlign ? "1em" : "inherit"};
-  //   left: ${props => props.rightAlign ? "inherit" : "1em"};
-	// width: 0;
-	// height: 0;
-	// border: 0.8em solid transparent;
-	// border-bottom-color: ${props => props.theme.background};
-	// border-top: 0;
-	// margin-left: -0.8em;
-	// margin-top: -0.8em;
-  // }
 `;
 
+const FlyoutEntryWrapper = styled.div`
+  padding: ${props => props.theme.base_padding} ${props => props.theme.large_padding};
+  cursor: pointer;
+  transition: background-color 0.1s, color 0.1s;
+  
+  label {
+    margin-left: 1em;
+  }
+  
+  &:hover {
+    label {
+      text-decoration: underline;
+    }
+    background-color: ${props => props.theme.brand_secondary};
+    color: white;
+  }
+  
+  &:not(:last-child) {
+    border-bottom: 1px solid ${props => props.theme.foreground};
+  }
+`;
+
+export const FlyoutEntry = props => {
+    const {t} = useTranslation();
+    return (
+        <FlyoutEntryWrapper className={"flyout-entry"} tabIndex={0} role={"button"} onClick={props.onClick}>
+            <Icon icon={props.icon}/><label>{t(props.label)}</label>
+            {props.sublabel && <>
+                <br/><small>{t(props.sublabel)}</small>
+            </>}
+        </FlyoutEntryWrapper>
+    )
+}
 
 /* TODO:
     * toggle() wird zweimal aufgerufen bei einem Klick auf den Button, führt zu Fehler bei focus()
@@ -135,73 +155,55 @@ const Flyout = styled.div`
     * das Menü auf Touchgeräten schließen, wenn außerhalb berührt wird (vgl. https://stackoverflow.com/questions/13492881/why-is-blur-event-not-fired-in-ios-safari-mobile-iphone-ipad)
     * WIA-ARIA
 */
-class FlyoutButton extends Component {
-    state = {
-        out: false
-    };
-    eventTimer = -1;
+const FlyoutButton = props => {
+    const [out, setOut] = useState(false)
+    let eventTimer = -1;
 
-    constructor(props) {
-        super(props);
-        this.buttonRef = React.createRef();
-        this.flyoutRef = React.createRef();
-    }
+    const buttonRef = useRef();
+    const flyoutRef = useRef();
 
-    onBlurHandler = () => {
-        this.eventTimer = setTimeout(() => this.close(), 0);
-    };
-
-    onFocusHandler = () => {
-        if (this.eventTimer > 0) {
-            clearTimeout(this.eventTimer);
-            this.eventTimer = -1;
-        }
-    };
-
-    toggle = () => {
-        if (this.state.out) {
-            this.state.out ? this.close() : this.open();
+    const toggle = () => {
+        if (out) {
+            out ? setOut(false) : setOut(true);
         } else { // TODO else war vorher weg, könnte jetzt einen Fehler beherbergen
-            this.state.out ? this.close() : this.open();
+            out ? setOut(false) : setOut(true);
             // the timer will fire after the current render cycle, so the ref is actually in the dom after the flag went true
-            setTimeout(() => this.flyoutRef.current !== null && this.flyoutRef.current.focus(), 0);
+            setTimeout(() => flyoutRef.current !== null && flyoutRef.current.focus(), 0);
         }
     };
 
-    close = () => {
-        this.setState(() => { return {out: false} });
+    const onBlurHandler = () => eventTimer = setTimeout(() => setOut(false), 10);
+    const onFocusHandler = () => {
+        if (eventTimer > 0) {
+            clearTimeout(eventTimer);
+            eventTimer = -1;
+        }
     };
 
-    open = () => {
-        this.setState(() => { return {out: true} });
-    };
-
-    render() {
-        return (
-            <span className={this.props.className} style={{position: "relative"}}>
+    return (
+        <span className={props.className} style={{position: "relative"}}>
                 <Button isDropdown={true}
-                        icon={this.props.icon}
-                        noPad={this.props.noPad}
-                        onBlur={this.onBlurHandler}
-                        onFocus={this.onFocusHandler}
-                        ref={this.buttonRef}
-                        onClick={this.toggle}>
-                    {this.props.label}
+                        icon={props.icon}
+                        noPad={props.noPad}
+                        onBlur={onBlurHandler}
+                        onFocus={onFocusHandler}
+                        ref={buttonRef}
+                        onClick={toggle}>
+                    {props.label}
                 </Button>
-                {this.state.out &&
-                    <Flyout
-                        tabIndex={-1}
-                        onBlur={this.onBlurHandler}
-                        onFocus={this.onFocusHandler}
-                        rightAlign={this.props.rightAlign || false}
-                        ref={this.flyoutRef}>
-                        {this.props.children}
-                    </Flyout>
-                }
+            {out &&
+            <Flyout
+                tabIndex={-1}
+                flyoutWidth={props.flyoutWidth}
+                onBlur={onBlurHandler}
+                onFocus={onFocusHandler}
+                rightAlign={props.rightAlign || false}
+                ref={flyoutRef}>
+                {props.children}
+            </Flyout>
+            }
             </span>
-        )
-
-    }
+    )
 }
 
 export {FlyoutButton, Button, ButtonBase}

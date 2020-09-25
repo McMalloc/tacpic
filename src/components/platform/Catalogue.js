@@ -26,8 +26,8 @@ const TagSidebar = styled.aside`
   }
   
   .custom-tag-list {
-    height: 50vh;
-    overflow-y: scroll;
+    max-height: 50vh;
+    overflow-y: auto;
   }
 `;
 

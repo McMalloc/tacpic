@@ -131,6 +131,7 @@ const catalogueApi = (state = {}, action) => {
             return {
                 ...state,
                 order: {
+                    error: null,
                     pending: true,
                     successful: false,
                     key: action.payload.idempotencyKey
@@ -141,8 +142,18 @@ const catalogueApi = (state = {}, action) => {
                 ...state,
                 basket: [],
                 order: {
+                    ...state.order,
                     pending: false,
                     successful: true
+                }
+            };
+        case ORDER.CREATE.FAILURE:
+            return {
+                ...state,
+                order: {
+                    pending: false,
+                    successful: false,
+                    error: action.message || null
                 }
             };
         case ORDER_RESET:

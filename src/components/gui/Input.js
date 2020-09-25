@@ -32,6 +32,7 @@ const Input = styled.input`
   background-color: ${props => props.disabled ? "transparent" : props.theme.background};
   padding: 5px ${props => props.theme.spacing[1]};
   cursor: ${props => props.disabled ? "not-allowed" : "text"};
+  transition: outline 0.1s;
   
   &.dirty:invalid {
     border-radius: 3px 3px 0 0;
@@ -64,6 +65,25 @@ const Textarea = styled.textarea`
   background-color: ${props => props.disabled ? "transparent" : props.theme.background};
   cursor: ${props => props.disabled ? "not-allowed" : "text"};
   padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[1]};
+    transition: outline 0.1s;
+  
+  &.dirty:invalid {
+    border-radius: 3px 3px 0 0;
+    //box-shadow: 0 0 5px 2px red;
+  }
+  
+  &::placeholder {
+    font-style: italic;
+  }
+  
+  &:focus, &:active {
+     outline: 4px solid rgba(38, 132, 255, 0.7);
+  }
+  
+  &:after {
+    content: "mm";
+    display: block; 
+  }
 `;
 
 const validate = (validations, value) => {

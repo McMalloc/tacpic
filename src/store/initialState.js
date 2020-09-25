@@ -1,14 +1,10 @@
+import methods from "../components/editor/ReactSVG/methods";
+
 export const editor = {
     ui: {
         tool: 'RECT',
         texture: 'diagonal_lines',
         fill: "#1f78b4",
-        mouseCoords: {
-            originX: 0,
-            originY: 0,
-            offsetX: 0,
-            offsetY: 0
-        },
         currentPage: 0,
         scalingFactor: 1,
         viewPortX: 50,
@@ -34,7 +30,6 @@ export const editor = {
             graphicTitle: "",
             graphicDescription: "",
             variantTitle: "Basis",
-            variantDescription: "",
             transcribersNotes: "",
             tags: [],
             category: null,
@@ -44,7 +39,6 @@ export const editor = {
             lastVersionHash: null,
             derivedFrom: null,
 
-            backgroundURL: "",
             keyedStrokes: [],
             keyedTextures: [],
             medium: 'swell',
@@ -64,7 +58,13 @@ export const editor = {
                 cellsPerRow: 33,
                 rowsPerPage: 27,
                 pageNumbers: 0,
+                imageDescription: {
+                  type: "",
+                  summary: "",
+                  details: ""
+                },
                 content: '',
+                concatinated: '',
                 braille: '',
                 formatted: [[]]
             },
@@ -73,7 +73,7 @@ export const editor = {
                     name: "Seite 1",
                     text: false,
                     rendering: '',
-                    objects: []
+                    objects: [methods.label.create(10, 10, 300, 50, '', '', {isTitle: true})]
                 }
             ]
         },

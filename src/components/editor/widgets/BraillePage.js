@@ -1,14 +1,7 @@
 import React, {Component, useEffect} from 'react';
 import styled from 'styled-components/macro';
 import {useSelector} from "react-redux";
-import {wrapLines} from "../../../utility/wrapLines";
-import {chunk} from "lodash";
 import {toBrailleNumbers} from "../../../utility/toBrailleNumber";
-
-// const Widget = styled.div`
-//   position: relative;
-//   height: 300px;
-// `;
 
 const brailleCellWidth = 2.5;
 const brailleCellHeight = 5;
@@ -42,7 +35,7 @@ const Page = styled.div`
   //width: ${a4Width}mm;
   //height: ${a4height}mm;
   
-  font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
+   font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
   font-size: 10mm;
   white-space: pre;
   position: relative;
@@ -75,7 +68,7 @@ const BraillePage = props => {
                             <PageTitle id={`braillepage_preview_${currentPageIndex}_${index}`}>Seite #{index + 1}</PageTitle>
                             <Page {...braillePages} system={system}>
 
-                                    {pageChunk.map((line) => <><span>{line}</span><br/></>)}
+                                {pageChunk.map((line) => <><div>{line}&ensp;</div></>)}
 
                                 {braillePages.pageNumbers > 0 &&
                                 <Pagenumber>{toBrailleNumbers(index + 1)}</Pagenumber>

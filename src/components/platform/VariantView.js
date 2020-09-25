@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {Button} from "../gui/Button";
+import {Button, FlyoutButton, FlyoutEntry} from "../gui/Button";
 import {FILE, ITEM_ADDED_TO_BASKET} from "../../actions/action_constants";
 import {Row} from "../gui/Grid";
 import styled, {useTheme} from "styled-components";
@@ -17,8 +17,10 @@ import {Numberinput} from "../gui/Input";
 import {Currency} from "../gui/Currency";
 import {template} from "lodash";
 import * as moment from 'moment'
-import {API_URL} from "../../env.json";
+import {APP_URL, API_URL} from "../../env.json";
 import Well from "../gui/Well";
+import More from "../gui/More";
+import Label from "../gui/_Label";
 
 const mapFormat = (width, height) => {
     width = parseInt(width);
@@ -42,7 +44,22 @@ const addToBasket = (dispatch, variantId, quantity, product, index = null) => {
 const Details = styled.div`
   display: flex;
   flex-direction: column;
+  padding-bottom: 12px;
   //justify-content: space-between;
+`;
+
+const OrderWidget = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  
+  &>* {
+    flex: 1 1 auto;
+    &:last-child {
+      margin-top: 6px;
+    }
+  }
 `;
 
 const VariantView = props => {
@@ -63,24 +80,23 @@ const VariantView = props => {
     if (!props.id) return null;
     return (
         <Row style={{height: '100%'}}>
-            <div className={"col-md-6 col-xl-4"}>
+            <div className={"col-md-6 col-lg-5 col-xl-3"}>
                 <Carousel single={<span className={'disabled'}>Insgesamt eine Grafikseite.</span>}>
                     {props.document.pages.map((page, index) => {
-                        if (page.text) {
-                            // TODO ordentliche Komponente; wie kann die Größe garantiert werden?
-                            if (page.content.length === 0) return null;
-                            return <div style={{backgroundColor: 'white', padding: 6}}>{page.content}</div>
-                        } else {
-                            return <img key={index}
-                                src={`${API_URL}/thumbnails/${props.file_name}-THUMBNAIL-xl-p${index}.png`}/>
-                        }
+                        return <img key={index} src={`${API_URL}/thumbnails/${props.file_name}-THUMBNAIL-xl-p${index}.png`}/>
                     }).filter(item => item !== null)}
+                    {/*TODO formatierer existiert so auch in einer saga, kann refaktorisiert werden*/}
+                    <div style={{backgroundColor: 'white', padding: 6}}>{
+                        Object.keys(props.document.braillePages.imageDescription)
+                            .reduce((accumulator, blockKey) => accumulator + props.document.braillePages.imageDescription[blockKey] + "\n\n", "")
+                        + props.document.braillePages.content
+                    }</div>
                 </Carousel>
             </div>
-            <Details className={"col-md-6 col-xl-8 xs-first"}>
+            <Details className={"col-md-6 col-lg-7 col-xl-9 xs-first"}>
                 <div>
-                    <h2>{props.title}</h2>
-                    <p>{props.description}</p>
+                    <h2>{props.graphicTitle}: {props.title}</h2>
+                    <More><p>{props.description}</p></More>
                     <p><small>Erstellt am {moment(props.created_at).format("DD.MM.YYYY, HH:mm")} Uhr</small></p>
                 </div>
                 <div>
@@ -128,6 +144,7 @@ const VariantView = props => {
                         </tr>
                         </tbody>
                     </table>
+                    <br />
 
                     {!logged_in &&
                     <Alert info>
@@ -137,24 +154,35 @@ const VariantView = props => {
                     }
 
                     <Toolbar columns={2}>
-                        <Button className={'extra-margin'}
-                                disabled={!logged_in}
-                                fullWidth
-                                icon={'pen'} onClick={() => {
-                            // dispatch({
-                            //     type: FILE.OPEN.REQUEST,
-                            //     id: props.id, mode: "edit"
-                            // })
-                            navigate(`/editor/${graphicId}/variant/${variantId}/edit`);
-                        }}>Verbessern</Button>
+                        <FlyoutButton flyoutWidth={300} disabled={!logged_in} rightAlign icon={'pen'} label={"Im Editor öffnen, um ..."}>
+                            <FlyoutEntry icon={"file-medical"}
+                                         label={"catalogue:variant-copy"}
+                                         onClick={() => navigate(`/editor/${graphicId}/variant/${variantId}/copy`)}
+                                         sublabel={"catalogue:variant-copy-hint"} />
+                            <FlyoutEntry icon={"glasses"}
+                                         label={"catalogue:variant-edit"}
+                                         onClick={() => navigate(`/editor/${graphicId}/variant/${variantId}/edit`)}
+                                         sublabel={"catalogue:variant-edit-hint"} />
+                            <FlyoutEntry icon={"file-export"}
+                                         label={"catalogue:variant-new"}
+                                         onClick={() => navigate(`/editor/copy`)}
+                                         sublabel={"catalogue:variant-new-hint"} />
+                        </FlyoutButton>
 
-                        <Button fullWidth icon={'download'} onClick={() => {
-                            window.location = `${API_URL}/variants/${variantId}/pdf`;
-                        }}>PDF herunterladen</Button>
-
-                        <Button fullWidth icon={'download'} onClick={() => {
-                            window.location = `${API_URL}/variants/${variantId}/brf`;
-                        }}>Brailletext herunterladen</Button>
+                        <FlyoutButton disabled={!logged_in} rightAlign icon={'file-download'} label={"Herunterladen als ..."}>
+                            <FlyoutEntry icon={"file-pdf"}
+                                         label={"catalogue:pdf"}
+                                         onClick={() => window.location = `${APP_URL}/variants/${variantId}/pdf`}
+                                         sublabel={"catalogue:pdf-hint"} />
+                            <FlyoutEntry icon={"file-word"}
+                                         label={"catalogue:rtf"}
+                                         onClick={() => window.location = `${APP_URL}/variants/${variantId}/rtf`}
+                                         sublabel={"catalogue:rtf-hint"} />
+                            <FlyoutEntry icon={"file"}
+                                         label={"catalogue:brf"}
+                                         onClick={() => window.location = `${APP_URL}/variants/${variantId}/brf`}
+                                         sublabel={"catalogue:brf-hint"} />
+                        </FlyoutButton>
                     </Toolbar>
                     <br/>
                     <Well>
@@ -172,7 +200,7 @@ const VariantView = props => {
 
                         <br/>
 
-                        <div style={{display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between'}}>
+                        <OrderWidget>
                             {/*<div style={{display: 'flex'}}>*/}
                             <Numberinput
                                 // disabled={}
@@ -180,6 +208,7 @@ const VariantView = props => {
                                 onChange={event => {
                                     setQuantity(event.currentTarget.value)
                                 }}
+                                min={1}
                                 value={quantity}
                                 label={t(`catalogue:Stück`)}/>
 
@@ -187,11 +216,11 @@ const VariantView = props => {
                                 <Currency
                                     amount={(product === 'graphic' ? props.quote : props.quote_graphics_only) * quantity}/>
 
-                                {quantity !== 1 &&
-                                <small><br/>Einzelpreis: <Currency
+                                {/*{quantity !== 1 &&*/}
+                                <small><br/>Einzelpreis: <Currency normal
                                     amount={(product === 'graphic' ? props.quote : props.quote_graphics_only)}/>
                                 </small>
-                                }
+                                {/*}*/}
                                 <small><br/>{t("zzgl. Versand")}</small>
                             </div>
 
@@ -199,13 +228,11 @@ const VariantView = props => {
                                 onClick={() => addToBasket(dispatch, variantId, quantity, product)}
                                 label={t("catalogue:In den Warenkorb")}
                                 large primary icon={"cart-plus"}/>
-                        </div>
+                        </OrderWidget>
 
                     </Well>
                 </div>
             </Details>
-
-
         </Row>
     );
 };

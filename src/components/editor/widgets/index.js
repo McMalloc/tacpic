@@ -8,7 +8,7 @@ import Proofing from "./Proofing";
 import Key from "./Keyedit";
 import Category from "./Category";
 import Importer from "./Importer";
-import Verbalizer from "./Verbalizer";
+import Verbalizer from "./Verbaliser";
 import Simulator from "./Simulator";
 import Comments from "./Comments";
 import Metadata from "./Metadata";

@@ -16,17 +16,17 @@ import store, {history} from "./store/configureStore";
 import {standard} from "./styles/themes"
 import {BrowserRouter} from "react-router-dom";
 
-const instance = createInstance({
-    urlBase: 'https://tacpic.de',
-    trackerUrl: 'https://analytics.tacpic.de/matomo.php', // optional, default value: `${urlBase}matomo.php`
-    srcUrl: 'https://analytics.tacpic.de/matomo.js', // optional, default value: `${urlBase}matomo.js`
-})
+// const instance = createInstance({
+//     urlBase: 'https://tacpic.de',
+//     trackerUrl: 'https://analytics.tacpic.de/matomo.php', // optional, default value: `${urlBase}matomo.php`
+//     srcUrl: 'https://analytics.tacpic.de/matomo.js', // optional, default value: `${urlBase}matomo.js`
+// })
 
 // bootstrapping the app
     ReactDOM.render(
         <Provider store={store}>
             <ThemeProvider theme={standard}>
-                <MatomoProvider value={instance}>
+                {/*<MatomoProvider value={instance}>*/}
                     <BrowserRouter history={history}>
                         {/*<ConnectedRouter history={history}>*/}
                         <DndProvider backend={HTML5Backend}>
@@ -34,7 +34,7 @@ const instance = createInstance({
                         </DndProvider>
                         {/*</ConnectedRouter>*/}
                     </BrowserRouter>
-                </MatomoProvider>
+                {/*</MatomoProvider>*/}
             </ThemeProvider>
         </Provider>,
         document.getElementById('root'));

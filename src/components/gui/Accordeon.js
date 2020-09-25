@@ -117,6 +117,23 @@ const AccordeonPanelFlyout = styled.div`
   }
 `;
 
+export const useRedraw = (friendID) => {
+    const [isOnline, setIsOnline] = useState(null);
+
+    useEffect(() => {
+        function handleStatusChange(status) {
+            setIsOnline(status.isOnline);
+        }
+
+        ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange);
+        return () => {
+            ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange);
+        };
+    });
+
+    return isOnline;
+}
+
 const AccordeonPanelFlyoutButton = props => {
     // todo put in external component, border-avoiding container
     const panelRef = useRef(null);
@@ -130,9 +147,6 @@ const AccordeonPanelFlyoutButton = props => {
         panelRef.current.style.left = (buttonBBox.left + buttonBBox.width) + "px";
         panelRef.current.style.top = buttonBBox.top + "px";
         const panelBBox = panelRef.current.getBoundingClientRect();
-        console.log(buttonBBox.top);
-        console.log(panelBBox.height);
-        console.log(vh);
         if (vh < buttonBBox.top + panelBBox.height) {
             panelRef.current.style.top = `${vh - (panelBBox.top + panelBBox.height) - 36}px`;
         }

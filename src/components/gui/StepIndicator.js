@@ -1,35 +1,34 @@
 import styled from 'styled-components/macro';
 import React from "react";
-import AtlSelect from 'react-select'
-import AtlCrSelect from 'react-select/creatable'
-import Label from "./_Label";
 import {useTranslation} from 'react-i18next';
-import {standard} from "../../styles/themes";
-import {find} from "lodash";
+import PropTypes from 'prop-types';
 
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 24px 0;
-  position: relative;
-  
-  &:before {
-    position: absolute; 
-    border: 1px solid #999; 
-    height: 0; 
-    display: block; 
-    content: ''; 
-    left: 30px;
-    right: 30px;
-    top: 17px;
-    //z-index: 1;  
-    //margin-left: -1px;
-  }
 `;
 
 const StepWrapper = styled.div`
   text-align: center;
-  z-index: 1;
+  padding: 0 ${props=>props.theme.base_padding};
+  position: relative;
+  flex: 1 1 auto; 
+  
+  &:before {
+    position: absolute; 
+    border: 1px solid #999;
+    height: 0; 
+    display: block; 
+    z-index: -1;
+    content: ''; 
+    left: 0;
+    right: 0;
+    top: 17px;
+  }
+  
+    &:first-child:before { left: 50%; }
+    &:last-child:before { right: 50%; }
   
   label{
     font-weight: ${props=>props.active ? 'bold' : 'normal'};
@@ -46,22 +45,31 @@ const NumberCircle = styled.span`
   background-color: ${props=>props.active ? props.theme.brand_secondary_lighter : 'white'};
   font-weight: ${props=>props.active ? 'bold' : 'normal'};
   color: ${props=>props.active ? 'white' : 'inherit'};
+  cursor: ${props=>props.navigationable ? 'pointer' : 'inherit'};
 `;
 
-const StepIndicator = ({steps, current}) => {
+/**
+ * Component for indicating steps in a process.
+ */
+const StepIndicator = ({steps, current, navigationable}) => {
     const { t } = useTranslation();
 
     return (
         <Wrapper>{steps.map((step, index) => {
             return (
-                <StepWrapper active={current === index}>
-                    <NumberCircle active={current === index}>{index + 1}</NumberCircle>
+                <StepWrapper key={index} onClick={() => navigationable && navigationable(index)} active={current === index}>
+                    <NumberCircle navigationable={!!navigationable} active={current === index}>{index + 1}</NumberCircle>
                     <br /><label>{t(step)}</label>
                 </StepWrapper>
             )
         })}</Wrapper>
     )
 
+};
+
+StepIndicator.propTypes = {
+    steps: PropTypes.arrayOf(PropTypes.string).isRequired,
+    current: PropTypes.number.isRequired
 };
 
 export default StepIndicator

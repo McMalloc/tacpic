@@ -12,19 +12,28 @@ import {Button} from "../gui/Button";
 import Toolbar from "../gui/Toolbar";
 import {API_URL} from "../../env.json";
 import Loader from "../gui/Loader";
+import useMediaQuery from "react-responsive";
 
 const VariantPreviewStyled = styled.div`
   display: flex;
   border: 4px solid transparent;
   position: relative;
-  color: ${props => props.foreground};
-  opacity: ${props => props.active ? 1 : 0.7};
   text-decoration: ${props => props.active ? 'underline' : 'none'};
-  border: 4px solid ${props => props.active ? props.brand_secondary_light : 'transparent'};
-  background-color: ${props => props.active ? props.grey_6 : 'transparent'};
+  border: 2px solid ${props => props.active ? props.brand_secondary_light : 'transparent'};
+  padding: ${props => props.large_padding};
+  
+  background-color: ${props => props.active ? props.grey_6 : "inherit"};
+  color: ${props => props.active ? props.foreground : "inherit"};
+  
+  transition: background-color 0.1s, color 0.1s;
+  
+  img {
+    opacity: ${props => props.active ? 1 : 0.7};
+    transition: opacity 0.2s;
+  }
   
   &:hover {
-    opacity: 1;
+    img {opacity: 1;}
     strong {
       text-decoration: underline;
     }
@@ -40,8 +49,7 @@ const VariantPreviewStyled = styled.div`
     width: 30%;
     height: auto;
     align-self: center;
-    border: 1px solid ${props => props.grey_6};
-    box-shadow: ${props => props.middle_shadow};
+    box-shadow: ${props => props.distant_shadow};
   }
   
   .variant-info {
@@ -51,19 +59,15 @@ const VariantPreviewStyled = styled.div`
   }
 `;
 
-const NewVariantButtonContainer = styled.div`
-  padding: 6px;
-`;
-
 const VariantColumn = styled.div`
-    //flex: 0 0 auto;
     overflow-y: auto;
-    height: 100%;
     padding: 0;
     flex-direction: column;
     display: flex;
-    //border-right: 1px solid ${props => props.theme.brand_secondary_light};
     position: relative;
+    background-color: ${props => props.theme.brand_secondary};
+    color: ${props => props.theme.background};
+    //box-shadow: 3px 0 5px rgba(0,0,0,0.4);
     
     .heading {
       position: sticky;
@@ -76,7 +80,7 @@ const VariantColumn = styled.div`
 const DetailsColumn = styled.div`
     //flex: 0 0 auto;
     overflow: auto;
-    height: 100%;
+    //height: 100%;
     background-color: ${props => props.theme.grey_6};
     padding: ${props => props.theme.large_padding};
 `;
@@ -84,15 +88,13 @@ const DetailsColumn = styled.div`
 const Wrapper = styled.div`
     background-color: ${props => props.theme.grey_6};
     display: flex;
-    flex-direction: row;
-    max-width: 1280px;
     min-width: 400px;
-    flex-wrap: wrap;
+    max-width: 1400px;
     flex: 1 1 auto;
     overflow: hidden;
 `;
 
-const VariantPreview = ({title, id, description, tags, document, file_name, derived_from}) => {
+const VariantPreview = ({title, id, description, tags, document, file_name, derivedTitle}) => {
     let selectedVariantId = useParams().variantId;
     let graphicId = useParams().graphicId;
     const theme = useTheme();
@@ -105,7 +107,7 @@ const VariantPreview = ({title, id, description, tags, document, file_name, deri
             {/*<VariantListingPreview bgUrl={`http://localhost:9292/static/thumbnails/thumbnail-${id}-sm.png`} />*/}
             <div className={'variant-info'}>
                 <strong>{title}</strong><br/>
-                <small>abgeleitet aus {derived_from + ""}</small>
+                {derivedTitle && <small>abgeleitet aus {derivedTitle}</small>}
                 <div>
                     {tags.length !== 0 && tags.map(t => {
                         let completeTag = allTags.find(_t => _t.tag_id === t);
@@ -124,6 +126,8 @@ const CatalogueItemView = ({variantsOverview}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const pending = useSelector(state => state.catalogue.graphicGetPending);
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1024px)' });
+
 
     const viewedGraphic = useSelector(state => state.catalogue.viewedGraphic);
     const viewedVariant = viewedGraphic.variants && viewedGraphic.variants.find(variant => variant.id == variantId);
@@ -141,32 +145,25 @@ const CatalogueItemView = ({variantsOverview}) => {
                 <Loader timeout={1000} message={"Variante wird geladen, einen Moment noch."}/>
                 :
                 <>
-                    <VariantColumn className={"col-xs-12 col-md-4 col-lg-3"}>
+                    <VariantColumn className={"col-xs-12 col-md-3 col-lg-2"}>
                         <div className={'heading'}>
                             <strong>Verfügbare Varianten</strong> ({variantsOverview.length} gesamt)
                         </div>
                         <div>
                             {variantsOverview.map((variant, index) => {
-                                console.log(variant)
+                                const derivedFrom = variantsOverview.find(v => v.id == variant.derived_from);
                                 return (
-                                    <Link className={'no-styled-link'} key={index} to={`/catalogue/${graphicId}/variant/${variant.id}`}>
-                                        <VariantPreview {...variant} />
+                                    <Link className={'no-styled-link'} key={index}
+                                          to={`/catalogue/${graphicId}/variant/${variant.id}`}>
+                                        <VariantPreview derivedTitle={derivedFrom && derivedFrom.title} {...variant} />
                                     </Link>
                                 )
                             })}
                         </div>
-                        <NewVariantButtonContainer>
-                            <Button className={'extra-margin'}
-                                    disabled={!logged_in}
-                                    fullWidth icon={'copy'}
-                                    onClick={() => navigate(`/editor/${graphicId}/variant/${viewedVariant.id}/new`)}>
-                                Neue Variante aus Auswahl</Button>
-                        </NewVariantButtonContainer>
-
                     </VariantColumn>
                     {/*}*/}
-                    <DetailsColumn className={"col-xs-12 col-md-8 col-lg-9"}>
-                        <VariantView {...viewedVariant} />
+                    <DetailsColumn className={"col-xs-12 col-md-9 col-lg-10"}>
+                        <VariantView graphicTitle={viewedGraphic.title} {...viewedVariant} />
                     </DetailsColumn>
                 </>
             }

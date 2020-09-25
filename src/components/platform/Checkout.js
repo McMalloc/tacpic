@@ -184,7 +184,7 @@ const Checkout = props => {
         <br/>
         {back}
         <Button label={"Kostenpflichtig bestellen"}
-                icon={"handshake"}
+                icon={orderState.pending ? "cog fa-spin" : "handshake"}
                 onClick={() => placeOrder(dispatch, shippingAddress, useInvoiceAddress ? invoiceAddress : null, paymentMethod, idempotencyKey)}
                 primary large rightAction
                 disabled={paymentMethod === null || orderState.pending}/>
@@ -229,6 +229,14 @@ const Checkout = props => {
                         {step === 2 && paymentSection}
                         {step === 3 && checkSection}
                     </div>
+
+                    <br />
+                    {orderState.error !== null &&
+                    <><Alert danger>
+                        Bestellung fehlgeschlagen<br/>
+                        {orderState.error.type}: {orderState.error.message}
+                    </Alert><br/></>
+                    }
                 </div>
                 <div className={"col-sm-6 col-sm-offset-1"}>
                     <h2>Warenkorb</h2>

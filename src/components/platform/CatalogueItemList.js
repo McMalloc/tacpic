@@ -42,7 +42,6 @@ const AddButton = styled.div`
   
   &:hover {
   text-decoration: underline;
-  font-size: 110%;
     &:before {
       left: 5%; top: 5%; right: 5%; bottom: 5%; 
       border-color: ${props => props.theme.brand_secondary_light};

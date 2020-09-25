@@ -92,10 +92,10 @@ const App = () => {
                                    element={<Editor/>}/>
                             <Route path="/stats"
                                    element={<Stats/>}/>
-                            <Route path="/"
+                            <Route exact path="/"
                                    element={<Landing/>}/>
-                            <Route path={"*"}
-                                   element={<NotFound/>}/>
+                            {/*<Route path={"*"}*/}
+                            {/*       element={<NotFound/>}/>*/}
                         </Routes>
                 </div>
             </ScrollContent>

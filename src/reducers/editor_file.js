@@ -10,7 +10,7 @@ import {
     UPDATE_BRAILLE_CONTENT,
     CHANGE_FILE_PROPERTY,
     CHANGE_PAGE_CONTENT,
-    OBJECT_UPDATED, OBJECT_BULK_ADD
+    OBJECT_UPDATED, OBJECT_BULK_ADD, CHANGE_IMAGE_DESCRIPTION
 } from "../actions/action_constants";
 import methods from "../components/editor/ReactSVG/methods";
 import uuidv4 from "../utility/uuid";
@@ -178,6 +178,10 @@ const file = (state = {}, action) => {
         case CHANGE_PAGE_CONTENT:
             return produce(state, draftState => {
                 draftState.braillePages.content = action.content;
+            });
+        case CHANGE_IMAGE_DESCRIPTION:
+            return produce(state, draftState => {
+                draftState.braillePages.imageDescription = action.imageDescription;
             });
         case UPDATE_BRAILLE_CONTENT:
             // called when the saga has finished processing the remote braille translation

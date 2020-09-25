@@ -47,8 +47,9 @@
     "orders": "Meine Bestellungen",
     "orders-description": "Bestellstatus und nachverfolgen, Bestellverlauf und Rechnungen",
     "order-status-0": "Offen",
-    "order-status-1": "Abgeschlossen",
-    "order-status-2": "Warte auf Bezahlung",
+    "order-status-1": "An Produktionspartner übergeben",
+    "order-status-2": "Abgeschlossen",
+    "order-status-3": "Warte auf Bezahlung",
     "payment_options": "Bezahlmöglichkeiten",
     "payment_options-description": "Lastschrift oder Paypal einrichten"
   },
@@ -80,7 +81,14 @@
     "de-de-g0.utb": "Deutsch Vollschrift",
     "de-de-g1.ctb": "Deutsch Langschrift",
     "de-de-g2.ctb": "Deutsch Kurzschrift",
-    "variantview_logged-in-hint": "Bitte <%/login logge dich ein%> oder <%/signup erstelle ein Konto%>, um Grafiken zu bearbeiten."
+    "variantview_logged-in-hint": "Bitte <%/login logge dich ein%> oder <%/signup erstelle ein Konto%>, um Grafiken zu bearbeiten.",
+    "open-in-editor": "Im Editor öffnen …",
+    "variant-edit": "… diese Variante zu korrigieren",
+    "variant-edit-hint": "Öffnet die ausgewählte Variante, um z.B. Rechtschreibfehler oder inhaltlich zu korrieren oder eine Bildbeschreibung hinzuzufügen.",
+    "variant-copy": "… eine neue Variante zu erstellen",
+    "variant-copy-hint": "Öffnet die Variante als Grundlage für eine neue Variante für diesen Entwurf, z.B. mit einem anderen Schriftsystem oder Farbgebung.",
+    "variant-new": "… diese Variante als unabhängigen Entwurf zu öffnen",
+    "variant-new-hint": "Öffnet diese Variante als Grundlage für einen neuen, unabhängigen Entwurf."
   },
   "editor": {
     "Context": "Eigenschaften",
@@ -107,11 +115,11 @@
     "label_choose_category": "Sie wissen bereits, um welche Art Grafik es sich handelt?",
     "placeholder_choose_category": "Kategorie wählen",
 
-    "input_catalogue-title": "Titel im Katalog",
+    "input_catalogue-title": "Titel des Entwurfs",
     "input_catalogue-title-sub": "Bezeichnung, unter der die Grafik im Katalog gelistet ist.",
     "input_catalogue-variant-title": "Variantentitel",
     "input_catalogue-variant-title-hint": "Wählen Sie einen Titel, der anderen Nutzenden deutlich macht, wodurch sich Ihre Variante von den bereits bestehenden Varianten unterscheidet.",
-    "input_catalogue-variant-title-hint-alt": "Die erste Variante eines Entwurfs heißt immer Basis.",
+    "input_catalogue-variant-title-hint-alt": "Der Variantentitel \"Basis\" wird automatisch für die erste Variante eines Entwurfs vergeben.",
     "input_catalogue-tags": "Schlagwörter",
     "input_catalogue-tags-sub": "Schlagwörter helfen anderen Nutzenden bei der Suche nach der passenden Grafik.",
     "input_catalogue-desc": "Beschreibung",
@@ -176,13 +184,28 @@
     "finish": "Abschließen",
     "finish_tooltip": "Laden Sie die Grafik in den Katalog hoch oder bestellen Sie Abzüge.",
 
-    "preview_texture-striped": "Schmale Streifen"
+    "preview_texture-striped": "Schmale Streifen",
+
+    "verbalise_type-of-graphic": "Art der Grafik",
+    "verbalise_type-of-graphic-hint": "Definieren Sie zuerst um welche Art von Grafik es sich handelt, z.B. Querschnitt, Liniendiagramm, Lageplan, etc.",
+    "verbalise_summary": "Zusammenfassung",
+    "verbalise_summary-hint": "Geben sie eine eine kurze Zusammenfassung, was auf der Grafik abgebildet ist, z.B.: \"Der Querschnitt durch den menschlichen Körper zeigt dessen inneren Orgeane. Lunge, Herz, Leber...\". Bei Diagrammen sollte hier auch die Achsenbeschriftung angegeben werden.",
+    "verbalise_details": "Detailbeschreibung",
+    "verbalise_details-hint": "Häufig ist es sinnvoll die Details von links oben nach rechts unten zu beschreiben. Wo befindet sich was? Welche Daten sind in der Grafik ablesbar? Wie stehen die abgebildeten Elemente miteinander in Verbindung? z.B.: “Über die Lungenarterie ist die rechte Herzkammer mit der Lunge verbunden.\""
   },
   "categories": {
     "illustration": "(beschriftete) Illustration"
   },
   "colour": {
-    "#a6cee3": "Sanftes Blau",
+    "#000000": "Schwarz, wird ein Relief formen",
+    "#412B82": "violett, Indigo",
+    "#E4120D": "heißes Rot, Kamin",
+    "#C2368C": "tiefes Pink, Magenta",
+    "#018ECC": "sanftes Blau, Cyan",
+    "#F08000": "kräftiges Orange",
+    "#79BA4A": "saftiges Hellgrün, Birke",
+    "#FFEC01": "Goldgelb",
+    "#FFFFFF": "Papierfarben (Unser Schwellpapier hat einen gelblichen Stich)",
     "null": "keine Farbe"
   }
 }
