@@ -118,20 +118,20 @@ const AccordeonPanelFlyout = styled.div`
 `;
 
 export const useRedraw = (friendID) => {
-    const [isOnline, setIsOnline] = useState(null);
-
-    useEffect(() => {
-        function handleStatusChange(status) {
-            setIsOnline(status.isOnline);
-        }
-
-        ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange);
-        return () => {
-            ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange);
-        };
-    });
-
-    return isOnline;
+    // const [isOnline, setIsOnline] = useState(null);
+    //
+    // useEffect(() => {
+    //     function handleStatusChange(status) {
+    //         setIsOnline(status.isOnline);
+    //     }
+    //
+    //     ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange);
+    //     return () => {
+    //         ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange);
+    //     };
+    // });
+    //
+    // return isOnline;
 }
 
 const AccordeonPanelFlyoutButton = props => {
