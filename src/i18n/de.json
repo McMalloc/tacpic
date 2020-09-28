@@ -84,7 +84,7 @@
     "variantview_logged-in-hint": "Bitte <%/login logge dich ein%> oder <%/signup erstelle ein Konto%>, um Grafiken zu bearbeiten.",
     "open-in-editor": "Im Editor öffnen …",
     "variant-edit": "… diese Variante zu korrigieren",
-    "variant-edit-hint": "Öffnet die ausgewählte Variante, um z.B. Rechtschreibfehler oder inhaltlich zu korrieren oder eine Bildbeschreibung hinzuzufügen.",
+    "variant-edit-hint": "Öffnet die ausgewählte Variante, um z.B. orthografische oder inhaltliche Fehler zu korrieren oder eine Bildbeschreibung hinzuzufügen.",
     "variant-copy": "… eine neue Variante zu erstellen",
     "variant-copy-hint": "Öffnet die Variante als Grundlage für eine neue Variante für diesen Entwurf, z.B. mit einem anderen Schriftsystem oder Farbgebung.",
     "variant-new": "… diese Variante als unabhängigen Entwurf zu öffnen",
