@@ -41,13 +41,12 @@ const Searchbar = () => {
             <Bar>
                 <Textinput value={searchTerm}
                            name={"search-bar"}
-                           style={{margin: 0}}
+                           style={{margin: 0, flex: "1 0 100%"}}
                            label={t("catalogue:searchterm")}
                            onChange={event => setSearchTerm(event.target.value)}
                            externalLabel={"search-bar-label"}
                            placeholder={t("catalogue:search-placeholder")}
                 />
-                &ensp;
                 <Button
                     onClick={event => {
                         event.preventDefault();

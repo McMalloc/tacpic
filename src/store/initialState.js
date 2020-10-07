@@ -1,14 +1,15 @@
-import methods from "../components/editor/ReactSVG/methods";
+import methods from "../components/editor/ReactSVG/methods/methods";
+import i18n from 'i18next';
 
 export const editor = {
     ui: {
-        tool: 'RECT',
+        tool: 'PATH',
         texture: 'diagonal_lines',
         fill: "#1f78b4",
         currentPage: 0,
         scalingFactor: 1,
-        viewPortX: 50,
-        viewPortY: 50,
+        viewPortX: 0,
+        viewPortY: 0,
         previewMode: false,
         selectedObjects: [],
         defaultTitle: true,
@@ -38,6 +39,7 @@ export const editor = {
             version_id: null,
             lastVersionHash: null,
             derivedFrom: null,
+            formatVersion: "0.9",
 
             keyedStrokes: [],
             keyedTextures: [],
@@ -73,7 +75,7 @@ export const editor = {
                     name: "Seite 1",
                     text: false,
                     rendering: '',
-                    objects: [methods.label.create(10, 10, 300, 50, '', '', {isTitle: true})]
+                    objects: [methods.label.create(10, 10, 300, 50, i18n.t('editor:title_placeholder'), '', {isTitle: true})]
                 }
             ]
         },

@@ -43,8 +43,8 @@ export function* contentEditWatcher() {
             let system = yield select(state => state.editor.file.present.system);
             let braillePages = yield select(state => state.editor.file.present.braillePages);
             const concatinated = Object.keys(braillePages.imageDescription)
-                .reduce((accumulator, blockKey) => accumulator + braillePages.imageDescription[blockKey] + "\n\n", "")
-            + braillePages.content;
+                    .reduce((accumulator, blockKey) => accumulator + braillePages.imageDescription[blockKey] + "\n\n", "")
+                + braillePages.content;
             const response = yield call(() => {
                 return axios({
                     method: 'POST',
@@ -89,25 +89,26 @@ export function* systemChangeWatcher() {
         if (action.key === 'system') {
             try {
                 let system = action.value;
+                let braillePages = yield select(state => state.editor.file.present.braillePages);
                 let labels = yield select(state => {
                     let labels = [];
                     state.editor.file.present.pages.forEach((page, index) => {
-                        if (page.text) {
-                            labels.push({
-                                text: page.content,
-                                uuid: "__PAGE_" + index
-                            })
-                        } else {
-                            page.objects.forEach(object => {
-                                if (object.type === 'label') {
-                                    labels.push({
-                                        text: object.text,
-                                        uuid: object.uuid
-                                    })
-                                }
-                            })
-                        }
+                        page.objects.forEach(object => {
+                            if (object.type === 'label') {
+                                labels.push({
+                                    text: object.text,
+                                    uuid: object.uuid
+                                })
+                            }
+                        })
                     });
+                    const concatinated = Object.keys(braillePages.imageDescription)
+                            .reduce((accumulator, blockKey) => accumulator + braillePages.imageDescription[blockKey] + "\n\n", "")
+                        + braillePages.content;
+                    labels.push({
+                        text: concatinated,
+                        uuid: '_BRAILLE_PAGES'
+                    })
                     return labels;
                 });
                 const response = yield call(() => {
@@ -134,7 +135,7 @@ export function* systemChangeWatcher() {
 
 export function* ocrImportWatcher() {
     yield takeLatest(OBJECT_BULK_ADD, function* (action) {
-        if (action.objects.length === action.objects.filter(object=>object.type === 'label').length) { // all objects are labels
+        if (action.objects.length === action.objects.filter(object => object.type === 'label').length) { // all objects are labels
             try {
                 let system = yield select(state => state.editor.file.present.system);
                 const response = yield call(() => {

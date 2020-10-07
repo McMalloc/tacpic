@@ -19,6 +19,8 @@ const Wrapper = styled.div`
     background: linear-gradient(180deg, ${props=>props.background}00 0%, ${props=>props.background}cc 50%, ${props=>props.background}ff 90%, ${props=>props.background}ff 100%);
 `;
 
+// TODO https://css-tricks.com/fun-line-height/#:~:text=The%20line%2Dheight%20property%20in,proportional%20to%20the%20font%2Dsize.
+
 const Hint = styled.div`
   position: absolute;
   width: 100%;

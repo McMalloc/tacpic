@@ -87,6 +87,8 @@ const Label = props => {
         state => state.editor.file.system
     );
 
+    // TODO onCLick ändert value, wenn current value != title_placeholder
+
     return (
         <g data-transformable={true}
            id={props.uuid}
@@ -124,6 +126,7 @@ const Label = props => {
                            xmlns={"http://www.w3.org/1999/xhtml"}
                            disabled={!props.editMode}
                            className={"label-black"}
+                           onClick={() => props.isTitle && props.braille.length === 0 && changeText(dispatch, "", props.uuid)}
                            onChange={event => changeText(dispatch, event.target.value, props.uuid)}
                            onBlur={() => exitEditMode(dispatch, props.uuid)}
                            tabIndex={1}

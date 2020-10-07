@@ -4,7 +4,7 @@ import transform from "./transform";
 const filledRect = (colour) => {
     if (colour === undefined) return null;
     if (colour === null) colour = "transparent";
-    return <rect x={0} y={0} width={"100%"} height={"100%"} fill={colour}/>
+    return <rect x={0} y={0} width={200} height={200} fill={colour}/>
 };
 
 const patterns = {

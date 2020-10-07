@@ -1,32 +1,48 @@
 import React from 'react'
-import './PathManipulator.css';
+// import './PathManipulator.scss';
 import {buildPath} from "./PathGeneration";
-import methods from "./methods";
+import methods from "./methods/methods";
 import styled from "styled-components";
 
-const transformView = (coords, scale, offsetX, offsetY) => {
+const transformView = (coords, scaleX, scaleY, x, y, viewPortX, viewPortY) => {
     return coords.map((coord, index) => {
         let transformed = coord;
         if (index % 2 === 0) { // horizontal / x
-            transformed += offsetX;
+            transformed *= scaleX;
+            transformed += x * scaleX + viewPortX;
         } else { // vertikal / y
-            transformed += offsetY;
+            transformed *= scaleY;
+            transformed += y * scaleY + viewPortY;
         }
-        return transformed * scale;
+        return transformed;
     });
 };
 
-const Anchor = styled.rect`
-  fill: white;
-  stroke-width: 0.5px;
-  stroke: green;
-  width: 10px;
-  height: 10px;
+const anchorSize = 8;
+const Anchor = styled.circle`
+  fill: ${props=> props.selected ? 'pink' : 'white'};
+  stroke-width: 3px;
+  stroke: deeppink;
   
   &:hover {
-    fill: green;
+    stroke-width: 5px;
   }
 `;
+const ControlAnchor = styled.rect`
+  fill: ${props=> props.selected ? 'pink' : 'white'};
+  stroke-width: 2px;
+  stroke: deeppink;
+  
+  &:hover {
+    stroke-width: 4px;
+  }
+`;
+
+const CoordLabel = props => {
+    return <rect>
+        <text></text>
+    </rect>
+}
 
 // TODO Koordinaten entsprechend der Pfadtransformation mittransformieren
 // TODO lineare Verbindung zwischen letztem Punkt und Cursorposition
@@ -35,22 +51,22 @@ const PathManipulator = props => {
     //  wie Manipulator nicht mittransformieren, aber die einzelnen Koordinaten
     if (!props.path || props.path.type !== "path") return null;
 
-    const transformedPoints = props.path.points.map(point => {
-        return {coords: transformView(point.coords, props.scale, props.offsetX, props.offsetY), kind: point.kind}
+    let transformedPoints = props.path.points.map(point => {
+        return {
+            ...point, coords: transformView(
+                point.coords, props.scale * props.path.scaleX, props.scale * props.path.scaleY, props.path.x, props.path.y, props.offsetX, props.offsetY)
+        }
     });
-
-    const path = buildPath(transformedPoints);
-
     let offsetX = 0;
     let offsetY = 0;
     if (props.angle !== 0) {
         let bbox = methods.path.getBBox(props.path);
-        offsetX = bbox.width/2 + bbox.x - props.path.x;
-        offsetY = bbox.height/2 + bbox.y - props.path.y;
+        offsetX = bbox.width / 2 + bbox.x - props.path.x;
+        offsetY = bbox.height / 2 + bbox.y - props.path.y;
     }
 
     return (
-        <g transform={`translate(${props.path.x} ${props.path.y}) rotate(${props.path.angle} ${props.scale * (offsetX + props.offsetX)} ${props.scale * (offsetY + props.offsetY)})`}>
+        <g>
             <path
                 stroke={"purple"}
                 id={"PATH-INDICATOR"}
@@ -61,14 +77,96 @@ const PathManipulator = props => {
             />
             {transformedPoints.map((point, index) => {
                 if (point.kind === "LF") return null; // don't draw freeform points
-                return <Anchor
-                    x={point.coords[0] - 5}
-                    y={point.coords[1] - 5}
-                    data-associated-path={props.path.uuid}
-                    data-role={"EDIT-PATH"}
-                    data-start={index === 0}
-                    data-index={index} />
-            })}
+                switch (point.kind.toUpperCase()) {
+                    case 'M':
+                    case 'L':
+                        return (
+                            <React.Fragment key={index}>
+                                <Anchor cx={point.coords[0]}
+                                        cy={point.coords[1]}
+                                        selected={props.editIndex === index}
+                                        className={"translatable"}
+                                        data-role={"EDIT-PATH"}
+                                        data-endpoint={index === 0 || index === transformedPoints.length - 1}
+                                        data-associated-path={props.path.uuid}
+                                        data-index={index}
+                                        data-param={0}
+                                        key={index}
+                                        r={anchorSize} />
+
+                            </React.Fragment>
+
+                        );
+                    case 'C':
+                        let previousSegment = transformedPoints[index - 1].coords;
+                        let prevPointX = previousSegment[previousSegment.length - 2];
+                        let prevPointY = previousSegment[previousSegment.length - 1];
+                        return (
+                            <g key={index}>
+                                <line
+                                    stroke={'black'}
+                                    strokeWidth={0.5}
+                                    x1={prevPointX + anchorSize / 2}
+                                    y1={prevPointY + anchorSize / 2}
+                                    x2={point.coords[0]}
+                                    y2={point.coords[1]}/>
+
+                                <line
+                                    stroke={'black'}
+                                    strokeWidth={0.5}
+                                    x1={point.coords[4] + anchorSize / 2}
+                                    y1={point.coords[5] + anchorSize / 2}
+                                    x2={point.coords[2]}
+                                    y2={point.coords[3]}/>
+
+                                {/*{index !== 1 &&*/}
+                                <ControlAnchor
+                                    x={point.coords[0] - anchorSize/2}
+                                    y={point.coords[1] - anchorSize/2}
+                                    className={"translatable"}
+                                    data-role={"EDIT-PATH"}
+                                    data-associated-path={props.path.uuid}
+                                    data-index={index}
+                                    data-param={0}
+                                    width={anchorSize} height={anchorSize}/>
+                                {/*}*/}
+
+                                <ControlAnchor
+                                    x={point.coords[2] - anchorSize/2}
+                                    y={point.coords[3] - anchorSize/2}
+                                    className={"translatable"}
+                                    data-role={"EDIT-PATH"}
+                                    data-associated-path={props.path.uuid}
+                                    data-index={index}
+                                    data-param={2}
+                                    width={anchorSize} height={anchorSize}/>
+
+                                <Anchor cx={point.coords[4]}
+                                        cy={point.coords[5]}
+                                        className={"translatable"}
+                                        selected={props.editIndex === index}
+                                        data-endpoint={index === 0 || index === transformedPoints.length - 1}
+                                        data-role={"EDIT-PATH"}
+                                        data-associated-path={props.path.uuid}
+                                        data-index={index}
+                                        data-param={4}
+                                        r={anchorSize} />
+                            </g>
+                        );
+
+                    // return <><Anchor
+                    //     key={index}
+                    //     x={point.kind === 'C' ? point.coords[4] : point.coords[0] - anchorSize/2}
+                    //     y={point.kind === 'C' ? point.coords[5] : point.coords[1] - anchorSize/2}
+                    //     data-associated-path={props.path.uuid}
+                    //     data-role={"EDIT-PATH"}
+                    //     data-start={index === 0}
+                    //     data-index={index} />
+                    //     <text x={point.coords[0] + 5} fill={"blue"} fontSize={12}
+                    //           y={point.coords[1] + 5}>{index}: {parseInt(point.coords[0])},{parseInt(point.coords[1])}</text> </>
+                }
+            })
+            }
         </g>
 
     )

@@ -1,8 +1,6 @@
 import {takeLatest, call, put} from 'redux-saga/effects';
-import axios from 'axios';
-import {ADDRESS, CLEAR_USER, USER} from "../actions/action_constants";
+import {USER} from "../actions/action_constants";
 import createSaga from "./saga_utilities";
-import {id} from "./index";
 
 export const userValidateSaga = createSaga(USER.VALIDATE, 'get', 'users/validate', takeLatest, true);
 
@@ -11,6 +9,7 @@ export const userCreateSaga = createSaga(USER.CREATE, 'post', 'create-account', 
         login: request.uname,
         "login-confirm": request.uname,
         password: request.pwd,
+        display_name: request.displayname,
         "password-confirm": request.pwdConfirm,
     }
 }, (response, statusCode, authHeader) => {

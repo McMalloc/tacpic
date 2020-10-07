@@ -1,6 +1,5 @@
 import React from 'react'
-import {compact} from "lodash";
-import methods, {combineBBoxes} from "./methods";
+import methods, {combineBBoxes} from "./methods/methods";
 import {useDispatch, useSelector} from "react-redux";
 import transform from "./transform";
 
@@ -41,17 +40,16 @@ const Manipulator = props => {
 
     if (!selected) return null;
     if (!selected[0]) return null;
+    // if (Object.keys(selected[0]).length === 0 && selected[0].constructor === Object) return null;
 
     let width, height, transformProperty;
-
-    // TODO für Pfade -- wie?? Erstmal Skalieren implementieren
     if (selected.length === 1) { // single objects
         const bbox = methods[selected[0].type].getBBox(selected[0]);
         width = bbox.width * scalingFactor;
         height = bbox.height * scalingFactor;
         transformProperty = transform(
-            bbox.x * scalingFactor + viewPortX - 1,
-            bbox.y * scalingFactor + viewPortY - 1,
+            bbox.x * scalingFactor + viewPortX - 2,
+            bbox.y * scalingFactor + viewPortY - 2,
             selected[0].angle,
             width,
             height
@@ -78,47 +76,42 @@ const Manipulator = props => {
             {/*        <feBlend result="blend" in="SourceGraphic" in2="MAIN-CANVAS" mode="normal" />*/}
             {/*        <feColorMatrix in="blend" type="matrix" values="-1 0 0 0 1*/}
             {/*                                                  0 -1 0 0 1*/}
-            {/*                                                  0 0 -1 0 1*/}
+            {/*                                                  1 0 -1 0 1*/}
             {/*                                                  0 0 0 1 0"/>*/}
             {/*    </filter>*/}
             {/*</defs>*/}
             <rect
                 fill={"none"}
                 // filter="url(#f1)"
-                // style={{backdropFilter: "invert(70%)"}}
-                stroke={'rgba(0,0,0,0.3)'}
-                strokeWidth={5}
-                strokeDasharray={"10,10"}
-                width={width + 2}
-                height={height + 2}
-            />
-            <rect
-                fill={"none"}
-                // filter="url(#f1)"
-                stroke={'green'}
+                stroke={'rgba(255, 20, 147, 0.8)'}
                 strokeWidth={2}
+                strokeDasharray={"5,5"}
                 data-transformable={1}
                 data-role={"MANIPULATOR"}
                 onDoubleClick={() => doubleClickHandler(dispatch, selected, props.onModeChange)}
-                width={width + 2}
-                height={height + 2}
+                width={width + 4}
+                height={height + 4}
             />
             {selected.length === 1 &&
             <>
                 {selected[0].type !== 'path' &&
-                <rect
-                    x={width / 2 - 5}
-                    style={{cursor: "pointer"}}
-                    data-role={"ROTATE"}
-                    y={-10}
-                    width={10} height={10}/>
+                <>
+                    <rect
+                        x={width / 2 - 5}
+                        style={{cursor: "pointer"}}
+                        data-role={"ROTATE"}
+                        y={-10}
+                        width={10} height={10}/>
+                    <rect
+                        x={width - 5}
+                        y={height - 5}
+                        data-role={"SCALE"}
+                        width={10} height={10}/>
+                </>
+
                 }
 
-                <rect
-                    x={width - 5}
-                    y={height - 5}
-                    data-role={"SCALE"}
-                    width={10} height={10}/>
+
             </>
             }
         </g>

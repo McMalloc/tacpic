@@ -118,49 +118,50 @@ const BasketListing = () => {
                 if (!correspondingVariant) return null
                 return (
                     // <CSSTransition in={quote.items} timeout={200} classNames={'item'}>
-                        <ItemPanel>
-                            <div className={'upper'}>
-                                <div className={'left'}>
-                                    <img style={{height: '70px', width: 'auto'}}
-                                         src={`${API_URL}/thumbnails/${correspondingVariant.file_name}-THUMBNAIL-sm-p0.png`}/>
-                                </div>
-                                <div className={'right'}>
-                                    <Link
-                                        to={`/catalogue/${correspondingVariant.graphic_id}/variant/${correspondingVariant.id}`}>
-                                        <strong>{correspondingVariant.graphic_title} ({correspondingVariant.title})</strong>
-                                    </Link>
-                                    <p>
-                                        {correspondingVariant.graphics_no_of_pages} {correspondingVariant.graphic_format} Grafik,&ensp;
-                                        {correspondingVariant.system}
-                                    </p>
+                    <ItemPanel key={index}>
+                        <div className={'upper'}>
+                            <div className={'left'}>
+                                <img style={{height: '70px', width: 'auto'}}
+                                     src={`${API_URL}/thumbnails/${correspondingVariant.file_name}-THUMBNAIL-sm-p0.png`}/>
+                            </div>
+                            <div className={'right'}>
+                                <Link
+                                    to={`/catalogue/${correspondingVariant.graphic_id}/variant/${correspondingVariant.id}`}>
+                                    <strong>{correspondingVariant.graphic_title} ({correspondingVariant.title})</strong>
+                                </Link>
+                                <p>
+                                    {correspondingVariant.graphics_no_of_pages} {correspondingVariant.graphic_format} Grafik,&ensp;
+                                    {correspondingVariant.system}
+                                </p>
 
-                                </div>
                             </div>
-                            <div className={'middle'}>
-                                <Radio
-                                    onChange={value => updateBasket(dispatch, quoteItem.content_id, quoteItem.quantity, value, index)}
-                                    name={"product_type_" + index}
-                                    value={quoteItem.product_id} options={[
-                                    {
-                                        label: `mit Bildbeschreibung als Brailleprägung (${correspondingVariant.braille_no_of_pages} Seiten)`,
-                                        value: "graphic"
-                                    },
-                                    {label: "Bildbeschreibung nur in E-Mail", value: "graphic_nobraille"}
-                                ]}/>
-                            </div>
-                            <div className={'lower'}>
-                                <Button onClick={() => removeItem(dispatch, index)} icon={"times"} data-role={"remove-btn"}
-                                        label={"Entfernen"}/>
-                                <Numberinput min={1} value={quoteItem.quantity} label={'Stück'}
-                                             inline noMargin
-                                             onChange={event => updateBasket(dispatch, quoteItem.content_id, event.target.value, quoteItem.product_id, index)}/>
-                                <Currency amount={quoteItem.gross_price * quoteItem.quantity}/>
-                            </div>
-                        </ItemPanel>
+                        </div>
+                        <div className={'middle'}>
+                            <Radio
+                                onChange={value => updateBasket(dispatch, quoteItem.content_id, quoteItem.quantity, value, index)}
+                                name={"product_type_" + index}
+                                value={quoteItem.product_id} options={[
+                                {
+                                    label: `mit Bildbeschreibung als Brailleprägung (${correspondingVariant.braille_no_of_pages} Seiten)`,
+                                    value: "graphic"
+                                },
+                                {label: "Bildbeschreibung nur in E-Mail", value: "graphic_nobraille"}
+                            ]}/>
+                        </div>
+                        <div className={'lower'}>
+                            <Button onClick={() => removeItem(dispatch, index)} icon={"times"} data-role={"remove-btn"}
+                                    label={"Entfernen"}/>
+                            <Numberinput min={1} value={quoteItem.quantity} label={'Stück'}
+                                         inline noMargin
+                                         onChange={event => updateBasket(dispatch, quoteItem.content_id, event.target.value, quoteItem.product_id, index)}/>
+                            <Currency amount={quoteItem.gross_price * quoteItem.quantity}/>
+                        </div>
+                    </ItemPanel>
                     // </CSSTransition>
                 )
             })}
             <MetaItemTable>
+                <tbody>
                 <MetaItemRow>
 
                     <td>Zwischensumme Artikel</td>
@@ -180,7 +181,7 @@ const BasketListing = () => {
                 </MetaItemRow>
                 <MetaItemRow>
 
-                    <td>{t('inkl. 7% Mehrwertsteuer')}</td>
+                    <td>{t('inkl. 5% Mehrwertsteuer')}</td>
                     <PriceCell><Currency amount={quote.gross_total - quote.net_total}/></PriceCell>
                 </MetaItemRow>
                 <MetaItemRow>
@@ -189,6 +190,8 @@ const BasketListing = () => {
                     <PriceCell className={'overline'}><strong><Currency amount={quote.gross_total}/></strong>
                     </PriceCell>
                 </MetaItemRow>
+                </tbody>
+
             </MetaItemTable>
         </>
     );

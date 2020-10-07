@@ -28,11 +28,16 @@
     "password-hint": "Das Passwort sollte mindestens 8 Zeichen haben.",
     "password-invalid": "Das Passwort sollte mindestens 8 Zeichen haben.",
     "signup": "Konto anlegen",
+    "signup-here": "Hier Konto anlegen",
+    "signup-cta": "Haben Sie noch kein Konto?",
     "login": "Anmelden",
+    "logoff": "Abmelden",
     "my_account": "Persönlicher Bereich",
-    "Warenkorb": "Warenkorb (<%=quantity%> Artikel)",
+    "basket": "Warenkorb (<%=quantity%> Artikel)",
     "catalogue": "Katalog",
-    "required": "Erforderliche Angabe"
+    "required": "Erforderliche Angabe",
+    "display_name": "Anzeigename",
+    "display_name-hint": "Sie können den Anzeigenamen später auch ändern. Er wird verwendet, um ihre Urheberschaft an Grafiken zu kennzeichnen."
   },
   "account": {
     "my_lists": "Meine Listen",
@@ -125,8 +130,10 @@
     "input_catalogue-desc": "Beschreibung",
     "input_catalogue-desc-sub": "Kurze Beschreibung für den Katalog.",
     "input_catalogue-publish": "Veröffentlichen",
+    "input_catalogue-update": "Korrigieren",
     "input_catalogue-save": "Änderungen speichern",
     "catalogue-state-0": "Entwurf",
+    "title_placeholder": "(klicken, um Titel zu vergeben)",
 
     "cb_braille-key-explanation": "(Erklärung, warum Schlüssel ne super Sache sind)",
 

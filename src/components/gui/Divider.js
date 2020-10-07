@@ -20,11 +20,14 @@ const Label = styled.span`
   &:after {
     right: 100%;
     margin-right: ${({theme}) => theme.spacing[3]};
+    background-color: ${({theme}) => theme.grey_3};
   } 
    
   &:before {
     left: 100%;
     margin-left: ${({theme}) => theme.spacing[3]};
+   
+    background-color: ${({theme}) => theme.grey_3};
   }
 `;
 
@@ -44,15 +47,15 @@ const Divider = props => {
     //TODO vertical divider with flexbox
     return (
         <Fragment>
-            {props.vertical ?
+            {/*{props.vertical ?*/}
                 <Line>
                     <Label>{t(props.label)}</Label>
                 </Line>
-            :
-                <Line>
-                    <Label>{t(props.label)}</Label>
-                </Line>
-            }
+            {/* :*/}
+            {/*     <Line>*/}
+            {/*         <Label>{t(props.label)}</Label>*/}
+            {/*     </Line>*/}
+            {/* }*/}
         </Fragment>
     )
 };

@@ -83,7 +83,7 @@ const Basket = props => {
                         </>
                         :
                         <div style={{textAlign: 'center', margin: '12px 0'}}>
-                            <Link to="/checkout">
+                            <Link className={"no-styled-link"} to="/checkout">
                                 <Button icon={"arrow-right"} label={t("commerce:Zur Kasse gehen")} primary large />
                             </Link>
                         </div>

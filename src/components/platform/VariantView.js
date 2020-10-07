@@ -96,7 +96,11 @@ const VariantView = props => {
             <Details className={"col-md-6 col-lg-7 col-xl-9 xs-first"}>
                 <div>
                     <h2>{props.graphicTitle}: {props.title}</h2>
-                    <More><p>{props.description}</p></More>
+                    {props.description && props.description.length > 200 ?
+                        <More><p>{props.description}</p></More>
+                        :
+                        <p>{props.description}</p>
+                    }
                     <p><small>Erstellt am {moment(props.created_at).format("DD.MM.YYYY, HH:mm")} Uhr</small></p>
                 </div>
                 <div>

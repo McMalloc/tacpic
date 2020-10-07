@@ -18,14 +18,14 @@ import Objects from "./widgets/Objects";
 import Writer from "./widgets/Writer";
 import BraillePage from "./widgets/BraillePage";
 import {Radiobar, RadiobarSegment} from "../gui/Radiobar";
-import {AccordeonPanel, AccordeonPanelFlyoutButton} from "../gui/Accordeon";
+import {AccordeonPanel, AccordeonPanelFlyoutButton, useRedraw} from "../gui/Accordeon";
 import GraphicPageSettings from "./widgets/GraphicPageSettings";
 import BraillePageSettings from "./widgets/BraillePageSettings";
 import Document from "./widgets/Document";
 import Error from "../Error";
 import {Modal} from "../gui/Modal";
 import {useNavigate} from "react-router";
-import methods from "./ReactSVG/methods";
+import methods from "./ReactSVG";
 import Loader from "../gui/Loader";
 import {SVG_A4_PX_WIDTH} from "../../config/constants";
 import {editor} from "../../store/initialState";
@@ -140,6 +140,7 @@ const Editor = props => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const t = useTranslation().t;
+    const [rerender] = useRedraw();
     let {variantId, graphicId, mode} = useParams();
 
     useEffect(() => {
@@ -275,9 +276,9 @@ const Editor = props => {
                         <Sidebar>
                             <Draftinfo onClick={() => {
                                 setOpenedPanel('publish');
-                                setTimeout(() => {
-                                    document.getElementById("label-for-graphic-title").focus();
-                                }, 100);
+                                // setTimeout(() => {
+                                //     document.getElementById("label-for-graphic-title").focus();
+                                // }, 100);
                             }}>
                                 <strong>{file.graphicTitle.length === 0 ? <span
                                     className={'disabled'}>Noch kein Titel</span> : file.graphicTitle}</strong><br/>
@@ -295,7 +296,7 @@ const Editor = props => {
                                 </pre>
                             </Draftinfo>
 
-                            <AccordeonPanel title={"Entwurf"}>
+                            <AccordeonPanel collapsedOverride={openedPanel === 'publish'} title={"Entwurf"}>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'document'}
                                                             hideFlyout={dragging}
                                                             className={"padded"}

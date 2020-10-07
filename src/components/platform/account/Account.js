@@ -13,9 +13,11 @@ import AccountInfo from "./AccountInfo";
 import {Outlet} from "react-router";
 import {Alert} from "../../gui/Alert";
 import {Icon} from "../../gui/_Icon";
+import {useTranslation} from "react-i18next";
 
 const Account = props => {
     const user = useSelector(state => state.user);
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     let location = useLocation();
 
@@ -48,9 +50,7 @@ const Account = props => {
         <Outlet/>
         <Row>
             <div className={"col-sm-12"} style={{textAlign: "center"}}>
-                <Button icon={"sign-out-alt"} onClick={event => dispatch({type: USER.LOGOUT.REQUEST})}>
-                    Ausloggen
-                </Button>
+                <Button icon={"sign-out-alt"} onClick={event => dispatch({type: USER.LOGOUT.REQUEST})} label={t("general:logoff")}/>
             </div>
         </Row>
     </>;

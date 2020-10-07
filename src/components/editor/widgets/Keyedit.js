@@ -11,7 +11,7 @@ import {filter, map, flatten, isUndefined, uniq} from "lodash";
 import TexturePalette from "../../gui/TexturePalette";
 import Label from "../../gui/_Label";
 import {Lower, WidgetWrapper} from "../../gui/WidgetContainer";
-import methods from "../ReactSVG/methods";
+import methods from "../ReactSVG";
 import {patternsInUse, patternsInUseSelector} from "../../../reducers/selectors";
 
 const Table = styled.table`

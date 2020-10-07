@@ -143,7 +143,7 @@ const ShapeContext = props => {
                     {selectedObject.type === 'path'&&
                         <>
                             <Checkbox name={"arrow-start"}
-                                      value={selectedObject.startArrow}
+                                      checked={selectedObject.startArrow}
                                       onChange={() => {
                                           changeProp(
                                               dispatch,

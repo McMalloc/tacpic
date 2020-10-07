@@ -6,6 +6,7 @@ import {Multiline, Textinput} from "../../gui/Input";
 import {CHANGE_IMAGE_DESCRIPTION, CHANGE_PAGE_CONTENT} from "../../../actions/action_constants";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
+import {useRedraw} from "../../gui/Accordeon";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -26,6 +27,10 @@ const Verbaliser = props => {
     const imageDescription = useSelector(state => state.editor.file.present.braillePages.imageDescription);
     const {t} = useTranslation();
     const [step, setStep] = useState(0);
+    const [_, redraw] = useRedraw();
+    const setStepWithRedraw = step => {
+        setStep(step); redraw();
+    }
     const buttonLabel = function() {
         if (step === 0) return "Weiter zur Zusammenfassung";
         if (step === 1) return "Weiter zu den Details";
@@ -42,7 +47,7 @@ const Verbaliser = props => {
 
     return (
         <>
-            <StepIndicator navigationable={setStep} steps={steps} current={step}/>
+            <StepIndicator navigationable={setStepWithRedraw} steps={steps} current={step}/>
             {step === 0 &&
             <>
                 <p>{t("editor:verbalise_type-of-graphic-hint")}</p>
@@ -72,7 +77,7 @@ const Verbaliser = props => {
             }
 
             <ButtonWrapper>
-                <Button disabled={step <= 0} onClick={() => setStep(Math.max(0, step - 1))}>
+                <Button disabled={step <= 0} onClick={() => setStepWithRedraw(Math.max(0, step - 1))}>
                     Zurück
                 </Button>
 
@@ -80,7 +85,7 @@ const Verbaliser = props => {
                     if (step + 1 === steps.length) {
                         props.closeSelf(); return;
                     }
-                    setStep(Math.min(steps.length - 1, step + 1))
+                    setStepWithRedraw(Math.min(steps.length - 1, step + 1))
                 }} primary label={buttonLabel}/>
             </ButtonWrapper>
         </>

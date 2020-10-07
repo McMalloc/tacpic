@@ -1,17 +1,18 @@
 import React from 'react'
 import transform from "./transform";
 import './Path.css';
-import patternTemplates, {createPattern} from "./Patterns";
+import {createPattern} from "./Patterns";
 import {getRotation} from "../../../utility/geometry";
-import methods from "./methods";
-import {buildPath, cubicCommand} from "./PathGeneration";
+import methods from "./methods/methods";
+import {buildPath, cubicCommand, lineCommand, quadraticCommand} from "./PathGeneration";
 
 export default function SVGPath(props) {
-    const smoothPathC = buildPath(props.points, cubicCommand, props.closed);
+    const path = buildPath(props.points, props.closed);
+    // const smoothPathC = buildPath(props.points, cubicCommand, props.closed);
     // const smoothPathQ = buildPath(props.points, quadraticCommand, props.closed);
 
     const [offsetX, offsetY] = methods.path.getOffset(props);
-    const transformProperty = `translate(${props.x} ${props.y}) rotate(${props.angle} ${offsetX} ${offsetY})`;
+    const transformProperty = `translate(${props.x} ${props.y}) scale(${props.scaleX} ${props.scaleY}) rotate(${props.angle} ${offsetX} ${offsetY})`;
 
     return (
         <g data-selectable={1} id={props.uuid} transform={transformProperty}>
@@ -23,17 +24,19 @@ export default function SVGPath(props) {
                         fill: "transparent",
                         strokeWidth: 20
                     }}
-                d={smoothPathC}
+                d={path}
             />
             <path
                 style={{
-                    fill: props.pattern.template !== null ? 'url(#pattern-' + props.pattern.template + '-' + props.uuid + '' : props.fill || "none ",
                     cursor: 'pointer',
                     stroke: props.pattern.offset ? props.fill : "black",
-                    strokeWidth: props.border ? props.pattern.offset ? 20 : props.borderWidth / 5 + "mm" : 0,
-                    strokeDasharray: props.pattern.offset ? null : props.borderStyle
+                    strokeWidth: props.border ? props.pattern.offset ? 20 : props.borderWidth + "mm" : 0,
+                    // strokeDasharray: props.pattern.offset ? null : props.borderStyle
                 }}
-                d={smoothPathC}
+                fill={props.pattern.template !== null ? 'url(#pattern-' + props.pattern.template + '-' + props.uuid + '' : props.fill || "none"}
+                d={path}
+                className={"border"}
+                data-uuid={props.uuid}
                 id={props.uuid}
                 data-transformable={!props.inactive}
                 data-selectable={true}
@@ -43,39 +46,39 @@ export default function SVGPath(props) {
             {props.pattern.offset && props.border &&
             <path
                 id={"stroke-" + props.uuid}
+                strokeDasharray={props.borderStyle}
                 style={{
                     fill: "none",
-                    strokeDasharray: props.borderStyle,
                     strokeWidth: props.borderWidth + "mm",
-                    strokeLinecap: "butt",
-                    stroke: "black"
+                    strokeLinecap: "square",
+                    stroke: "rgba(0,0,0,1)"
                 }}
-                d={smoothPathC}
+                d={path}
             />
             }
 
             {props.pattern.offset &&
             <clipPath id={"clip-" + props.uuid}>
-                <path d={smoothPathC}/>
+                <path d={path}/>
             </clipPath>
             }
 
-            {!props.inPreview &&
-            <path
-                stroke={"rgba(100,100,100,0.0)"}
-                strokeWidth={props.border ? 20 : 0}
-                style={
-                    {
-                        fill: 'none', cursor: "pointer"
-                    }
-                }
-                data-uuid={props.uuid}
-                className={"no-print"}
-                d={smoothPathC}
-                data-transformable={!props.inactive}
-                data-selectable={true}
-            />
-            }
+            {/*{!props.inPreview &&*/}
+            {/*<path*/}
+            {/*    stroke={"rgba(100,100,100,0.0)"}*/}
+            {/*    strokeWidth={props.border ? 20 : 0}*/}
+            {/*    style={*/}
+            {/*        {*/}
+            {/*            fill: 'none', cursor: "pointer"*/}
+            {/*        }*/}
+            {/*    }*/}
+            {/*    data-uuid={props.uuid}*/}
+            {/*    className={"no-print"}*/}
+            {/*    d={path}*/}
+            {/*    data-transformable={!props.inactive}*/}
+            {/*    data-selectable={true}*/}
+            {/*/>*/}
+            {/*}*/}
 
             {props.startArrow &&
             <polygon

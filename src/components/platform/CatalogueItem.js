@@ -40,6 +40,14 @@ const Preview = styled.div`
   background-color: ${props => props.theme.background};
 `;
 
+const Title = styled.div`
+  font-weight: bold;
+  max-height: 2.8em;
+  float: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 const Info = styled.div`
   background-color: ${props => props.theme.background};
   padding: 8px;
@@ -57,7 +65,7 @@ export default props => {
                     <Preview
                         id={"catalogue-item-" + props.id + "-thumbnail"} thumbnailURL={thumbnailURL} />
                     <Info>
-                        <strong className={"hover-sensitive"}>{props.title}</strong> <br/>
+                        <Title title={props.title} aria-label={props.title} className={"hover-sensitive"}>{props.title}</Title>
                         <small>
                             {props.variants.length}
                             {props.filtered ? ' zutreffende ' : ' '}

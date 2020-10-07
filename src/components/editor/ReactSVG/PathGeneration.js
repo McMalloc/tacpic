@@ -1,19 +1,23 @@
 // https://medium.com/@francoisromain/smooth-a-svg-path-with-cubic-bezier-curves-e37b49d46c74
 import {getMidpoint, getMirrorPoint} from "../../../utility/geometry";
+import fitCurve from "fit-curve";
 
-export const buildPath = (points, command = lineCommand, closed) => {
+export const buildPath = (points, closed) => {
     // build the d attributes by looping over the points
+    // let _points = fitCurve(points.map(point => point.coords), 50).map(fittedPoint => ({kind: 'LF', coords: fittedPoint}));
     let _points = [...points];
     closed && _points.push({kind: "L", coords: [points[0].coords[0], points[0].coords[1]]});
-    return _points.reduce((acc, point, index, all) => index === 0
-        // if first point
-        ? `M ${point.coords[0]},${point.coords[1]}`
-        // else
-        : `${acc} ${command(point.coords, index, all.map(p => p.coords), closed)}`
-        , '');
+    return _points.reduce((acc, point, index, all) => {
+        const command = point.kind === 'L' || point.kind === 'LF' ? lineCommand : cubicCommand
+        return index === 0
+            // if first point
+            ? `M ${point.coords[0]},${point.coords[1]}`
+            // else
+            : `${acc} ${command(point.coords, index, all.map(p => p.coords), closed)}`
+    }, '');
 };
 
-const lineCommand = point => `L ${point[0]} ${point[1]}`;
+export const lineCommand = point => `L ${point[0]} ${point[1]}`;
 
 const lineProps = (pointA, pointB) => {
     const lengthX = pointB[0] - pointA[0];
@@ -41,7 +45,12 @@ const getControlPoint = (current, previous, next, reverse, smoothing = 0.2) => {
     return [x, y];
 };
 
-export const cubicCommand = (point, index, all, closed) => {
+export const cubicCommand = point => {
+    return `C ${point[0]},${point[1]} ${point[2]},${point[3]} ${point[4]},${point[5]} `
+};
+
+// creates a cubic point with calculated, continous mirrored control point
+export const autoCubicCommand = (point, index, all, closed) => {
     // start control point
     let prev = [0,0];
     if (index === 1 && closed) {

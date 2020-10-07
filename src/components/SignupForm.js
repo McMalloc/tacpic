@@ -22,7 +22,9 @@ const SignupForm = props => {
 
     // input states
     const [uname, setUname] = useState('');
+    const [displayname, setDisplayname] = useState('');
     const [emailValid, setEmailValid] = useState(false);
+    const [displaynameValid, setDisplaynameValid] = useState(false);
 
     useEffect(() => {
         trackPageView()
@@ -55,13 +57,14 @@ const SignupForm = props => {
                         event.preventDefault();
                         emailValid && dispatch({
                             type: USER.CREATE.REQUEST,
-                            payload: {uname}
+                            payload: {uname, displayname}
                         });
                     }}>
                         <Textinput
                             value={uname}
                             label={t("general:email")}
                             sublabel={"general:email-hint"}
+                            required
                             autocomplete={"username"}
                             validations={[
                                 {
@@ -71,6 +74,12 @@ const SignupForm = props => {
                                 }
                             ]}
                             onChange={event => setUname(event.target.value)}
+                            name={'uname'}/>
+                        <Textinput
+                            value={displayname}
+                            label={t("general:display_name")}
+                            sublabel={"general:display_name-hint"}
+                            onChange={event => setDisplayname(event.target.value)}
                             name={'uname'}/>
 
                         <AccountError error={user.error}/>

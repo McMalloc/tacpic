@@ -185,6 +185,11 @@ const catalogueApi = (state = {}, action) => {
                         draftState.basket[index].contentId = action.contentId;
                         draftState.basket[index].productId = action.productId;
                     }
+
+                    if (draftState.basket[index].contentId === action.contentId) {
+                        isUpdate = isUpdate || true;
+                        draftState.basket[index].quantity += action.quantity;
+                    }
                 })
 
                 if (!isUpdate) {

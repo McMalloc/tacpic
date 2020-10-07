@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react'
 import transform from "./transform";
 import {createPattern} from "./Patterns";
-import methods from "./methods";
+import methods from "./methods/methods";
 
 const Embedded = props => {
     const parent = useRef();

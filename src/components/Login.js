@@ -41,7 +41,7 @@ const Login = props => {
                     <div className={'full-width align-center'}>
                         <br />
                         <p>
-                            Haben Sie noch kein Konto? <NavLink to={"/signup"}>Hier registrieren.</NavLink>
+                            {t("general:signup-cta")} <NavLink to={"/signup"}>{t("general:signup-here")}</NavLink>
                         </p>
                     </div>
                 </>

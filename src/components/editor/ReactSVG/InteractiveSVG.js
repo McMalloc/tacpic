@@ -4,9 +4,9 @@ import Manipulator from "./Manipulator";
 
 import {cloneDeep} from "lodash";
 import mapObject from "./index";
-import PathIndicator from "./PathManipulator";
+import PathManipulator from "./PathManipulator";
 
-import methods from "./methods";
+import methods from "./methods/methods";
 import {init, transformCoords} from "./transform";
 import SVGGrid from "./Grid";
 import {findObject} from "../../../utility/findObject";
@@ -30,6 +30,9 @@ class InteractiveSVG extends Component {
         edit: null, // internal edit modes of certain tools whose state doesn't need
                     // to be communicated to the store (but the results will be of course)
         editIndex: -1,
+        editParam: -1,
+        selectedPoint: null,
+        segmentStart: -1,
         mouseOffsetX: 0,
         mouseOffsetY: 0,
         mouseDownX: 0,
@@ -111,7 +114,15 @@ class InteractiveSVG extends Component {
                     this.props.ui.viewPortY);
                 break;
             case 46: // DEL
-                this.props.remove(this.props.ui.selectedObjects);
+                let selectedObject = findObject(
+                    this.props.file.present.pages[this.props.ui.currentPage].objects,
+                    this.props.ui.selectedObjects[0]);
+                if (selectedObject.type === 'path' && this.state.editIndex >= 0) {
+                    this.props.updateObject(methods.path.removePoint(cloneDeep(selectedObject), this.state.editIndex));
+                    this.setState({editIndex: -1});
+                } else {
+                    this.props.remove(this.props.ui.selectedObjects);
+                }
                 break;
             default:
                 break;
@@ -141,7 +152,6 @@ class InteractiveSVG extends Component {
             //  src/components/editor/widgets/ReactSVG/InteractiveSVG.js:105
             // https://stackoverflow.com/questions/39245488/event-path-undefined-with-firefox-and-vue-js
             let target = event.nativeEvent.path[0];
-
             // check if a group was the actual target since the event first fires
             // on visible elements, and later bubbles up to the group
             for (let i = 0; i < event.nativeEvent.path.length; i++) {
@@ -178,21 +188,28 @@ class InteractiveSVG extends Component {
             if (target.dataset.role === 'CANVAS') {
                 unselected = true;
                 this.props.ui.selectedObjects.length !== 0 && this.props.unselect();
+                this.setState({
+                    editIndex: -1
+                });
             }
             if (target.dataset.role === 'ROTATE') this.setState({transform: 'rotate'});
             if (target.dataset.role === 'SCALE') this.setState({transform: 'scale'});
             if (target.dataset.start) this.setState({pathClosing: true});
             if (target.dataset.transformable === "true") this.setState({transform: 'translate'});
 
-            if (target.dataset.role === 'EDIT-PATH') this.setState({
-                edit: target.dataset.associatedPath,
-                preview: {
-                    ...findObject(
-                        this.props.file.present.pages[this.props.ui.currentPage].objects,
-                        target.dataset.associatedPath)
-                },
-                editIndex: parseInt(target.dataset.index)
-            });
+            if (target.dataset.role === 'EDIT-PATH') {
+                console.log("edit path");
+                this.setState({
+                    edit: target.dataset.associatedPath,
+                    preview: {
+                        ...findObject(
+                            this.props.file.present.pages[this.props.ui.currentPage].objects,
+                            target.dataset.associatedPath)
+                    },
+                    editParam: parseInt(target.dataset.param),
+                    editIndex: parseInt(target.dataset.index)
+                })
+            };
 
             let selectedId = null;
 
@@ -227,6 +244,7 @@ class InteractiveSVG extends Component {
                     case 'PATH':
                         if (!target.dataset.transformable && target.dataset.role !== "SCALE" && target.dataset.role !== "ROTATE" && target.dataset.role !== "EDIT-PATH") {
                             this.setState({
+                                segmentStart: 0,
                                 preview: methods.path.create(
                                     Math.min(mouseDownX, this.state.mouseOffsetX),
                                     Math.min(mouseDownY, this.state.mouseOffsetY)
@@ -241,19 +259,22 @@ class InteractiveSVG extends Component {
                     default:
                         break;
                 }
-            } else if (this.state.preview !== null) { //todo
+            } else if (this.state.preview !== null) {
                 if (this.state.preview.type === 'path') {
-                    if (target.dataset.start) {
+                    if (target.dataset.endpoint) {
                         let closingPath = {...this.state.preview};
-                        closingPath.closed = true;
-                        this.props.updateObject(closingPath);
+                        this.props.updateObject({...this.state.preview, closed: parseInt(target.dataset.index) === 0});
+                        console.log("d")
                         this.setState({
                             preview: null,
                             edit: null,
-                            editIndex: 0
+                            editParam: -1,
+                            editIndex: -1
                         });
                     } else {
+                        console.log("add point!");
                         this.setState({
+                            segmentStart: this.state.preview.points.length,
                             preview: methods.path.addPoint(
                                 this.state.preview,
                                 [this.state.mouseOffsetX, this.state.mouseOffsetY],
@@ -265,11 +286,13 @@ class InteractiveSVG extends Component {
                 }
             }
         } catch (error) {
+            console.error(error);
             this.props.throwError(error);
         }
     };
 
     mouseUpHandler = event => {
+        let target = event.nativeEvent.path[0];
         this.setState({
             mouseIsDown: false,
             dragging: false,
@@ -289,24 +312,49 @@ class InteractiveSVG extends Component {
             if (this.props.ui.tool === 'PATH') {
                 if (this.state.transform !== null) {
                     this.props.updateObject(this.state.preview);
+                    console.log("a")
                     this.setState({
                         preview: null
+                    });
+                } else {
+                    // creating freeform path segment
+                    this.state.edit === null && this.setState({
+                        preview: methods.path.smoothSegment(this.state.preview, this.state.segmentStart, this.state.preview.points.length - 1, 10)
                     });
                 }
             } else {
                 // when dragged, create new object
                 this.state.dragging && this.props.updateObject(this.state.preview);
+                console.log("b")
                 this.setState({
                     preview: null
                 });
             }
+
+            // editing paths
             if (this.state.edit !== null) {
-                this.setState({
-                    preview: null,
-                    edit: null,
-                    editIndex: -1
-                });
-                this.props.updateObject(this.state.preview);
+                if (parseInt(target.dataset.index) === this.state.editIndex && target.dataset.endpoint === 'true' && !actuallyMoved) {
+                    const index = parseInt(target.dataset.index);
+                    let preview = index === 0 ? methods.path.reverse(cloneDeep(this.state.preview)) : cloneDeep(this.state.preview)
+                    this.setState({
+                        preview: {
+                            ...preview,
+                            editMode: true
+                        },
+                        editIndex: index === 0 ? this.state.preview.points.length - 1 : index,
+                        editParam: -1,
+                        edit: null,
+                    });
+                } else {
+                    console.log("c")
+                    this.setState({
+                        preview: null,
+                        edit: null,
+                        editParam: -1,
+                        // editIndex: -1
+                    });
+                    this.props.updateObject(this.state.preview);
+                }
             }
         } else {
             if (this.state.transform === null) {
@@ -395,13 +443,13 @@ class InteractiveSVG extends Component {
                 // TODO rotierte Pfade bearbeiten
                 // const [offsetX, offsetY] = methods.path.getOffset(preview);
                 // const [mx, my] = rotatePoint([mouseOffsetX - offsetX, mouseOffsetY - offsetY], -preview.angle);
-                console.log("update path");
                 this.setState({
                     preview: methods.path.changePoint(
                         cloneDeep(preview),
                         [mouseOffsetX - preview.x, mouseOffsetY - preview.y],
                         // [mx + offsetX, my + offsetY],
-                        this.state.editIndex
+                        this.state.editIndex,
+                        this.state.editParam
                     )
                 });
             }
@@ -482,20 +530,21 @@ class InteractiveSVG extends Component {
                     }
                 </g>
 
-                {/*{this.state.preview !== null && this.state.preview.type === 'path' &&*/}
-                <PathIndicator
-                    path={this.state.preview || selectedObject}
-                    offsetX={this.props.ui.viewPortX}
-                    offsetY={this.props.ui.viewPortY}
-                    scale={this.props.ui.scalingFactor}
-                    dragging={this.state.dragging}
-                />
-                {/*}*/}
-
                 <Manipulator
                     onModeChange={this.onModeChange}
                     selected={this.state.preview === null ? selectedObject : this.state.preview}
                 />
+
+                {/*{this.state.preview !== null && this.state.preview.type === 'path' &&*/}
+                <PathManipulator
+                    path={this.state.preview || selectedObject}
+                    offsetX={this.props.ui.viewPortX}
+                    offsetY={this.props.ui.viewPortY}
+                    scale={this.props.ui.scalingFactor}
+                    editIndex={this.state.editIndex}
+                    dragging={this.state.dragging}
+                />
+                {/*}*/}
 
                 {this.state.dragging && this.state.transform === null && this.state.edit === null &&
                 (this.props.ui.tool === 'SELECT' || this.props.ui.tool === 'LABEL') &&

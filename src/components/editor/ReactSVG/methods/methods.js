@@ -1,7 +1,17 @@
-import {cosOfDegs, getMirrorPoint, sinOfDegs} from "../../../utility/geometry";
-import uuidv4 from "../../../utility/uuid";
-import {COLOURS, SVG_A4_PX_WIDTH} from "../../../config/constants";
-import {getTransforms} from "./transform";
+import {cosOfDegs, getMirrorPoint, sinOfDegs} from "../../../../utility/geometry";
+import uuidv4 from "../../../../utility/uuid";
+import {COLOURS, SVG_A4_PX_WIDTH} from "../../../../config/constants";
+import {getTransforms} from "../transform";
+import {
+    addPoint,
+    changePoint,
+    createPath,
+    getOffset,
+    getPathBBox,
+    pathScale, removePoint, reverse,
+    smoothCubicPoint,
+    smoothLastSegment, smoothSegment
+} from "./path";
 
 const defaultStrokeWidth = 1.5;
 const defaultStrokeStyle = "solid";
@@ -20,7 +30,7 @@ const textureColourMapping = {
 
 const createEmbedded = (offsetX = 0, offsetY = 0, markup = '<svg/>', filename = 'Importierte Grafik') => {
     // convert markup to dom by appending it to a dummy element
-    let dummy = document.createElement( 'html' )
+    let dummy = document.createElement('html')
     dummy.innerHTML = markup;
     let originalSVG = dummy.getElementsByTagName('svg')[0];
     let group = originalSVG.children[1];
@@ -44,7 +54,7 @@ const createEmbedded = (offsetX = 0, offsetY = 0, markup = '<svg/>', filename = 
         originalWidth: width,
         originalHeight: height,
         width: Math.min(width, SVG_A4_PX_WIDTH),
-        height: Math.min(height, SVG_A4_PX_WIDTH*aspectRatio),
+        height: Math.min(height, SVG_A4_PX_WIDTH * aspectRatio),
         aspectRatio,
         moniker: filename,
         markup: originalSVG.innerHTML,
@@ -127,31 +137,6 @@ const createLabel = (x = 0, y = 0, width = 100, height = 100, text = '', braille
     }
 };
 
-const createPath = (x = 0, y = 0, template = null, fill = null, moniker = "Kurve") => {
-    return {
-        uuid: uuidv4(),
-        angle: 0,
-        x: 0, y: 0,
-        moniker,
-        editMode: true,
-        border: true,
-        borderWidth: 2,
-        startArrow: false,
-        endArrow: false,
-        closed: false,
-        fill,
-        pattern: {
-            template,
-            offset: true
-        },
-        points: [{
-            kind: 'M',
-            coords: [x, y]
-        }],
-        type: 'path'
-    }
-};
-
 const createKey = (x = 0, y = 0, moniker = "Legende") => {
     return {
         uuid: uuidv4(),
@@ -215,7 +200,7 @@ const getBBox = object => {
             x: bbox.x + object.x,
             y: bbox.y + object.y,
             width: object.width,//bbox.width * (object.width / bbox.width),
-            height: object.height//bbox.height * (object.height / bbox.height)
+            height: object.height //bbox.height * (object.height / bbox.height)
         };
     } else {
         return {x: 0, y: 0, width: 0, height: 0}
@@ -229,21 +214,6 @@ const getKeyBBox = object => {
     } else {
         return {x: 0, y: 0, width: 0, height: 0}
     }
-};
-
-const getPathBBox = path => {
-    // paths need to add their translation parameters to the bbox because
-    // the native getBBox() method will not measure in transform properties
-    let bbox = getBBox(path);
-    bbox.x += path.x;
-    bbox.y += path.y;
-    return bbox;
-};
-
-// get offset to path mid point for rotation purposes
-const getOffset = path => {
-    let bbox = getPathBBox(path);
-    return [bbox.width / 2 + bbox.x - path.x, bbox.height / 2 + bbox.y - path.y];
 };
 
 // TODO durch den Abstand des Reliefs zum Rand ist die bbox verfälscht, muss abgezogen werden
@@ -270,44 +240,6 @@ export const combineBBoxes = (objects, transformed = true) => {
         x: x1, y: y1,
         width: Math.abs(x1 - x2), height: Math.abs(y1 - y2)
     }
-};
-
-// TODO explizit C statt S anlegen, um späteres verändern zu vereinfachen
-const addPoint = (path, mouseCoords, kind) => {
-    path.points.push({
-        kind,
-        coords: [mouseCoords[0], mouseCoords[1]]
-    });
-    return path;
-};
-
-// param 0 CP_ST: control point of start point
-// param 2 CP_E: control point of end point
-// param 4 E: end point
-const changePoint = (path, coords, index = path.points.length - 1, param = 0, kind) => {
-    console.log(path);
-    path.points[index].coords[param] = coords[0];
-    if (!!kind) {
-        path.points[index].kind = kind;
-    }
-    path.points[index].coords[param + 1] = coords[1];
-    return path;
-};
-
-const smoothCubicPoint = (path, index) => {
-    const ref = path.points[index - 1].coords;
-    if (path.points[index - 1].kind === 'M' || path.points[index - 1].kind === 'L')
-        return changePoint(path, ref, index);
-    let mirrored = getMirrorPoint(ref[2], ref[3], ref[4], ref[5]);
-    // if (ref.length === 2) {
-    //     const prevRef = path.points[index - 2].coords;
-    //     mirrored = getMirrorPoint(prevRef[0], prevRef[1], ref[0], ref[1])
-    //     // return changePoint(path, ref, index)
-    // } else {
-    //     mirrored = getMirrorPoint(ref[2], ref[3], ref[4], ref[5]);
-    // }
-    // const mirrored = getMirrorPoint(ref[ref.length - 3], ref[ref.length - 4], ref[ref.length - 1], ref[ref.length - 2]);
-    return changePoint(path, [mirrored.x, mirrored.y], index);
 };
 
 const selectionRotate = (objects, deltaX, deltaY) => {
@@ -354,12 +286,15 @@ const methods = {
         translate: defaultTranslate,
         // translate: translatePath,
         rotate: defaultRotate,
-        scale: p => p,
+        scale: pathScale,
+        smoothSegment,
         getClientBox: defaultGetClientBox,
         create: createPath,
         getBBox: getPathBBox,
         getOffset,
         addPoint,
+        removePoint,
+        reverse,
         smoothCubicPoint,
         changePoint
     },

@@ -117,21 +117,10 @@ const AccordeonPanelFlyout = styled.div`
   }
 `;
 
-export const useRedraw = (friendID) => {
-    // const [isOnline, setIsOnline] = useState(null);
-    //
-    // useEffect(() => {
-    //     function handleStatusChange(status) {
-    //         setIsOnline(status.isOnline);
-    //     }
-    //
-    //     ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange);
-    //     return () => {
-    //         ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange);
-    //     };
-    // });
-    //
-    // return isOnline;
+export const useRedraw = () => { // TODO #935
+    const [rerender, setRerender] = useState(0);
+    const redraw = () => setRerender(rerender + 1);
+    return [rerender, redraw];
 }
 
 const AccordeonPanelFlyoutButton = props => {
@@ -170,7 +159,7 @@ const AccordeonPanelFlyoutButton = props => {
 };
 
 const AccordeonPanel = props => {
-    const [collapsed, setCollapsed] = useState(localStorage.getItem(props.title + "_collapsed") === "false");
+    const [collapsed, setCollapsed] = useState(localStorage.getItem(props.title + "_collapsed") === "false" || !!props.collapsedOverride);
     return (
         <AccordeonPanelWrapper>
             <AccordeonPanelTitle collapsed={collapsed} onClick={() => {

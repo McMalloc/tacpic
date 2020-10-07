@@ -12,7 +12,7 @@ import {
     CHANGE_PAGE_CONTENT,
     OBJECT_UPDATED, OBJECT_BULK_ADD, CHANGE_IMAGE_DESCRIPTION
 } from "../actions/action_constants";
-import methods from "../components/editor/ReactSVG/methods";
+import methods from "../components/editor/ReactSVG";
 import uuidv4 from "../utility/uuid";
 import deepPull from "../utility/deepPull";
 import {editor as initialEditor} from "../store/initialState";
@@ -46,7 +46,12 @@ const file = (state = {}, action) => {
         case VARIANT.CREATE.REQUEST:
             return {...state, state: 'updating'};
         case GRAPHIC.CREATE.SUCCESS:
-            return {...state, state: 'success', variant_id: action.data.default_variant.id, graphic_id: action.data.created_graphic.id};
+            return {
+                ...state,
+                state: 'success',
+                variant_id: action.data.default_variant.id,
+                graphic_id: action.data.created_graphic.id
+            };
         case VARIANT.CREATE.SUCCESS:
             console.log(action);
             return {...state, state: 'success', variant_id: action.data.variant_id};
@@ -79,7 +84,7 @@ const file = (state = {}, action) => {
                 index = draftState
                     .pages[action.shared_currentPage]
                     .objects
-                    .findIndex(obj=> obj.uuid === action.preview.uuid);
+                    .findIndex(obj => obj.uuid === action.preview.uuid);
                 if (index === -1) { // add if not present TODO: delete old adding method
                     draftState.pages[action.shared_currentPage].objects.push(action.preview);
                 } else {
@@ -116,6 +121,7 @@ const file = (state = {}, action) => {
             return produce(state, draftState => {
                 filter(draftState.pages[action.shared_currentPage].objects,
                     {uuid: action.uuid}).forEach(object => {
+                    console.log(object[action.prop]);
                     object[action.prop] = action.value;
 
                     if (action.prop === "isKey") {// && object.keyVal.length === 0) {
@@ -126,19 +132,16 @@ const file = (state = {}, action) => {
         case BRAILLE_BULK_TRANSLATED:
             return produce(state, draftState => {
                 draftState.pages.forEach((page, index) => {
-                    if (page.text) {
-                        const translated = action.labels.find(label => label.uuid === "__PAGE_" + 1).braille;
-                        page.braille = translated;
-                        page.formatted = wrapAndChunk(translated, draftState.braillePages.cellsPerRow, draftState.braillePages.rowsPerPage);
-                    } else {
-                        page.objects.forEach(object => {
-                            if (object.type === 'label') {
-                                let translated = action.labels.find(label => label.uuid === object.uuid);
-                                object.braille = translated.braille;
-                            }
-                        })
-                    }
+                    page.objects.forEach(object => {
+                        if (object.type === 'label') {
+                            let translated = action.labels.find(label => label.uuid === object.uuid);
+                            object.braille = translated.braille;
+                        }
+                    })
                 });
+                const pages = action.labels.find(label => label.uuid === '_BRAILLE_PAGES');
+                draftState.braillePages.braille = pages.braille;
+                draftState.braillePages.formatted = wrapAndChunk(pages.braille, draftState.braillePages.cellsPerRow, draftState.braillePages.rowsPerPage);
             });
         case CHANGE_FILE_PROPERTY:
             return {
@@ -174,7 +177,6 @@ const file = (state = {}, action) => {
                     }
                 }
             });
-
         case CHANGE_PAGE_CONTENT:
             return produce(state, draftState => {
                 draftState.braillePages.content = action.content;

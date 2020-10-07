@@ -3,6 +3,7 @@ import React, {Component, useRef, useState} from "react";
 import {fadeIn, slideFromAbove} from "./Animations";
 import {useTranslation} from 'react-i18next';
 import {Icon} from "./_Icon";
+import {createPortal} from "react-dom";
 
 const Label = styled.span`
   // padding: ${props => props.noPad ? 0 : props.theme.large_padding} ${props => props.noPad ? 0 : props.primary ? "16px" : props.theme.large_padding};
@@ -128,8 +129,8 @@ const FlyoutEntryWrapper = styled.div`
     label {
       text-decoration: underline;
     }
-    background-color: ${props => props.theme.brand_secondary};
-    color: white;
+    background-color: ${props => props.theme.grey_6};
+    //color: white;
   }
   
   &:not(:last-child) {
@@ -200,7 +201,7 @@ const FlyoutButton = props => {
                 rightAlign={props.rightAlign || false}
                 ref={flyoutRef}>
                 {props.children}
-            </Flyout>
+            </Flyout>//, document.getElementById("flyout"))
             }
             </span>
     )

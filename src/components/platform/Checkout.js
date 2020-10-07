@@ -210,7 +210,7 @@ const Checkout = props => {
                         <div>
                             {user.logged_in ?
                                 <><p>Eingeloggt als {user.email}</p>
-                                    <Button label={"Ausloggen"}
+                                    <Button label={t("general:logoff")}
                                             onClick={event => dispatch({type: USER.LOGOUT.REQUEST})}/>
                                     <Button label={"Weiter zur Addresse"} onClick={() => changeStep(1)} primary
                                             rightAction

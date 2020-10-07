@@ -97,7 +97,7 @@ const Navbar = props => {
                 {basket.length > 0 &&
                 <NavbarItem id={"basket-nav-link"} theme={theme} to={'/basket'}>
                     <Icon icon={"shopping-cart"}/>&nbsp;
-                    {template(t("general:Warenkorb"))({quantity: basket.length})}
+                    {template(t("general:basket"))({quantity: basket.length})}
                 </NavbarItem>
                 }
 
