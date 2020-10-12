@@ -2,7 +2,14 @@ import React, {useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import PropTypes from "prop-types";
 import AddressForm from "./AddressForm";
-import {ITEM_ADDED_TO_BASKET, ITEM_REMOVED_FROM_BASKET, ORDER, QUOTE, VARIANTS} from "../../actions/action_constants";
+import {
+    ITEM_ADDED_TO_BASKET,
+    ITEM_REMOVED_FROM_BASKET,
+    ITEM_UPDATED_IN_BASKET,
+    ORDER,
+    QUOTE,
+    VARIANTS
+} from "../../actions/action_constants";
 import {useDispatch, useSelector} from "react-redux";
 import {Currency} from "../gui/Currency";
 import {Numberinput} from "../gui/Input";
@@ -19,7 +26,7 @@ import Well from "../gui/Well";
 
 const updateBasket = (dispatch, variantId, quantity, product, index) => {
     dispatch({
-        type: ITEM_ADDED_TO_BASKET,
+        type: ITEM_UPDATED_IN_BASKET,
         productId: product,
         contentId: parseInt(variantId),
         quantity: parseInt(quantity),

@@ -41,7 +41,7 @@ const Searchbar = () => {
             <Bar>
                 <Textinput value={searchTerm}
                            name={"search-bar"}
-                           style={{margin: 0, flex: "1 0 100%"}}
+                           style={{margin: 0, flex: "1 0 auto"}}
                            label={t("catalogue:searchterm")}
                            onChange={event => setSearchTerm(event.target.value)}
                            externalLabel={"search-bar-label"}

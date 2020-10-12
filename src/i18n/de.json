@@ -83,9 +83,9 @@
     "graphics_only": "Nur Grafikseiten (<%=amount%> Seiten, ",
     "In den Warenkorb": "In den Warenkorb",
     "zzgl. Versand": "zzgl. Versand",
-    "de-de-g0.utb": "Deutsch Vollschrift",
-    "de-de-g1.ctb": "Deutsch Langschrift",
-    "de-de-g2.ctb": "Deutsch Kurzschrift",
+    "de-de-g0.utb": "Deutsche Basisschrift",
+    "de-de-g1.ctb": "Deutsche Vollschrift",
+    "de-de-g2.ctb": "Deutsche Kurzschrift",
     "variantview_logged-in-hint": "Bitte <%/login logge dich ein%> oder <%/signup erstelle ein Konto%>, um Grafiken zu bearbeiten.",
     "open-in-editor": "Im Editor öffnen …",
     "variant-edit": "… diese Variante zu korrigieren",
@@ -133,7 +133,7 @@
     "input_catalogue-update": "Korrigieren",
     "input_catalogue-save": "Änderungen speichern",
     "catalogue-state-0": "Entwurf",
-    "title_placeholder": "(klicken, um Titel zu vergeben)",
+    "title_placeholder": "(doppelklicken, um Titel zu vergeben)",
 
     "cb_braille-key-explanation": "(Erklärung, warum Schlüssel ne super Sache sind)",
 

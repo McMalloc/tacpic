@@ -162,9 +162,31 @@ const defaultRotate = (object, deltaX, deltaY, downX, downY, offsetX, offsetY) =
 };
 
 // TODO scaling für Rechtecke: http://phrogz.net/svg/drag_under_transformation.xhtml
-const defaultScale = (object, offsetX, offsetY) => {
-    object.width += offsetX;
-    object.height += offsetY;
+const defaultScale = (object, offsetX, offsetY, downX, downY, absX, absY) => {
+    if (object.x < absX) {
+        object.width += offsetX;
+    } else {
+        object.x += offsetX;
+        object.width -=offsetX;
+    }
+    if (object.y < absY) {
+        object.height += offsetY;
+    } else {
+        object.y += offsetY;
+        object.height -=offsetY;
+    }
+
+
+    // if (offsetX < 0 || object.x < (downX + offsetX)) {
+    //     object.x += offsetX;
+    //     object.width -=offsetX;
+    // } else object.width += offsetX;
+    //
+    // if (offsetY < 0 || object.y < (downY + offsetY)) {
+    //     object.y += offsetY;
+    //     object.height -=offsetY;
+    // } else object.height += offsetY;
+
     return object;
 };
 

@@ -3,7 +3,7 @@ import i18n from 'i18next';
 
 export const editor = {
     ui: {
-        tool: 'PATH',
+        tool: 'RECT',
         texture: 'diagonal_lines',
         fill: "#1f78b4",
         currentPage: 0,
@@ -75,7 +75,7 @@ export const editor = {
                     name: "Seite 1",
                     text: false,
                     rendering: '',
-                    objects: [methods.label.create(10, 10, 300, 50, i18n.t('editor:title_placeholder'), '', {isTitle: true})]
+                    objects: [methods.label.create(10, 10, 350, 50, i18n.t('editor:title_placeholder'), '', {isTitle: true, editMode: false})]
                 }
             ]
         },

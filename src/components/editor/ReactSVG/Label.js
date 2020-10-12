@@ -3,6 +3,7 @@ import transform from "./transform";
 import _ from "lodash";
 import styled from "styled-components";
 import {connect, useDispatch, useSelector} from "react-redux";
+import {Icon} from "../../gui/_Icon";
 
 //TODO Linebreaks mit absolutem x und relativem y-Wert: https://www.oreilly.com/library/view/svg-text-layout/9781491933817/ch04.html
 
@@ -20,6 +21,13 @@ const Braille = styled.div`
   box-sizing: border-box;
   overflow: visible;
   user-select: none;
+`;
+
+const Indicator = styled.div`
+  position: absolute;
+  top: -16px;
+  color: ${props => props.theme.manipulator};
+  font-size: 12px;
 `;
 
 const Black = styled.textarea`
@@ -49,7 +57,6 @@ const Container = styled.div`
   //overflow: visible;
   border: ${props => props.border ? '1mm black solid' : '1mm transparent solid'};
   //border-color: ${props => props.preview ? 'black' : 'transparent'};
-  background-color: white;//${props => props.preview ? 'transparent' : 'rgba(0,0,0,.03)'} ;
 `;
 
 const changeText = (dispatch, text, uuid) => {
@@ -98,16 +105,17 @@ const Label = props => {
            data-in_edit_mode={props.editMode}
            transform={transform(props.x, props.y, props.angle)}>
             <foreignObject style={{overflow: "visible"}}
-                           onDoubleClick={() => enterEditMode(dispatch, props.uuid)}
+                           onDoubleClick={event => enterEditMode(dispatch, props.uuid)}
                            width={props.width}
                            height={props.height}>
+                {props.editMode && <Indicator><Icon icon={"pen"} /> Bearbeitungsmodus</Indicator>}
                 {/*Bug in WebKit macht die relative Positionierung nötig*/}
                 <Container xmlns={"http://www.w3.org/1999/xhtml"}
                            preview={previewMode}
                            className={"label-container"}
                            border={props.border}
                            onMouseDown={event => props.editMode && event.stopPropagation()}
-                           style={{position: 'relative'}}>
+                           style={{position: 'relative', backgroundColor: props.editMode ? '#ffb8de' : 'white'}}>
                     {props.displayDots &&
                     <Braille
                         preview={previewMode}

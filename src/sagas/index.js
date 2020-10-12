@@ -18,7 +18,7 @@ import {
     GRAPHIC,
     VARIANTS,
     ADDRESS,
-    APP, QUOTE, IMPORT
+    APP, QUOTE, IMPORT, CMS_PAGE
 } from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {
@@ -65,6 +65,9 @@ export default function* root() {
         call(createSaga(QUOTE.GET, 'post', 'quotes', takeLatest, false, id, id)),
 
         call(createSaga(GRAPHIC.GET, 'get', 'graphics/:id', takeLatest, false, id, id)),
+
+        call(createSaga(CMS_PAGE.GET, 'get', 'cms/pages/:id', takeLatest, false, id, id)),
+        call(createSaga(CMS_PAGE.INDEX, 'get', 'cms/pages', takeLatest, false, id, id)),
 
         call(createSaga(ADDRESS.GET, 'get', 'users/addresses', takeLatest, true, id, id)),
         call(createSaga(ADDRESS.CREATE, 'post', 'users/addresses', takeLatest, true, id, id)),

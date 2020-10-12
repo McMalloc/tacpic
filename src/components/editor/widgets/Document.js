@@ -2,6 +2,7 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import Select from "../../gui/Select";
 import {Textinput} from "../../gui/Input";
+import {useTranslation} from "react-i18next";
 
 const changeFileProperty = (dispatch, key, value) => {
     dispatch({
@@ -16,6 +17,7 @@ const Document = props => {
         title,
         system
     } = useSelector(state => state.editor.file.present);
+    const { t } = useTranslation();
 
     return (
         <>
@@ -31,10 +33,10 @@ const Document = props => {
                             onChange={selection => changeFileProperty(dispatch, 'system', selection.value)}
                             label={"editor:select_braille-system"} options={
                         [
-                            {label: "Deutsch Kurzschrift", value: "de-de-g2.ctb"},
-                            {label: "Deutsch Langschrift", value: "de-de-g1.ctb"},
-                            {label: "Deutsch Vollschrift", value: "de-de-g0.utb"},
-                            {label: "Computerbraille 8-Punkt DE Kurzschrift", value: "cb"}
+                            {label: t("catalogue:de-de-g2.ctb"), value: "de-de-g2.ctb"},
+                            {label: t("catalogue:de-de-g1.ctb"), value: "de-de-g1.ctb"},
+                            {label: t("catalogue:de-de-g0.utb"), value: "de-de-g0.utb"},
+                            // {label: "Computerbraille 8-Punkt DE Kurzschrift", value: "cb"}
                         ]
                     }/>
         </>

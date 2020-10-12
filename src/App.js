@@ -62,7 +62,7 @@ const App = () => {
         <Wrapper>
             <Navbar items={navbarItems}/>
             <ScrollContent>
-                <div className={"App" + (!/editor/.test(location.pathname) ? " padded-top container container-fluid" : "")}>
+                <div id={"app-container"} className={"App" + (!/editor/.test(location.pathname) ? " padded-top container container-fluid" : "")}>
                         <Routes>
                             <Route path="/login"
                                    element={<Login/>}/>

@@ -19,6 +19,8 @@ export const standard = {
     grey_5: "#ECECEC",
     grey_6: "#F5F5F5",
 
+    manipulator: "rgba(255, 20, 147, 0.8)",
+
     middle_shadow: "1px 1px 2px rgba(0,0,0,0.4)",
     distant_shadow: "1px 2px 5px rgba(0,0,0,0.3)",
     very_distant_shadow: "3px 1px 8px rgba(0,0,0,0.5);",

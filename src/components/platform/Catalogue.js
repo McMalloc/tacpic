@@ -90,12 +90,12 @@ const Catalogue = props => {
     return (
         <>
             <Row>
-                <div className={"col-xs-10 col-xs-offset-2"}>
+                <div className={"col-xs-8 col-xs-offset-2"}>
                     <h1>Katalog</h1>
                 </div>
             </Row>
             <Row style={{marginBottom: 24}}>
-                <div className={"col-xs-10 col-xs-offset-2"}>
+                <div className={"col-xs-8 col-xs-offset-2"}>
                     <Searchbar/>
                 </div>
             </Row>

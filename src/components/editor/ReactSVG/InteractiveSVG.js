@@ -553,16 +553,11 @@ class InteractiveSVG extends Component {
                         x={Math.min(this.state.t_mouseDownX, this.state.t_mouseOffsetX)}
                         y={Math.min(this.state.t_mouseDownY, this.state.t_mouseOffsetY)}
                         fill={'rgba(0,0,255,0.02)'}
+                        id={"SELECTION-BOX"}
                         stroke={'rgba(0,50,255,0.3)'}
                         strokeWidth={'1px'}
                         width={Math.abs(this.state.t_mouseOffsetX - this.state.t_mouseDownX)}
                         height={Math.abs(this.state.t_mouseOffsetY - this.state.t_mouseDownY)}/>
-                    <text fill={'blue'} fontSize={8} x={this.state.t_mouseDownX} y={this.state.t_mouseDownY + 10}>
-                        {parseInt(this.state.t_mouseDownX) + ", " +
-                        parseInt(this.state.t_mouseDownY)}
-                        {/*this.state.mouseOffsetX,*/}
-                        {/*this.state.mouseOffsetY*/}
-                    </text>
                 </g>
                 }
 
@@ -575,13 +570,12 @@ class InteractiveSVG extends Component {
                          horizontalGridSpacing={this.props.file.present.horizontalGridSpacing * this.props.ui.scalingFactor}/>
                 }
 
-                <text fill={'green'} fontSize={10} x={5} y={30}>
-                    {this.props.ui.viewPortX}, {this.props.ui.viewPortY}&emsp;
-                    [{this.props.ui.scalingFactor}]
-                </text>
-
                 {/*<g id={"mouse-indicators"}>*/}
                 {/*    {this.props.ui.scalingFactor !== 1 &&*/}
+                {/*<text fill={'green'} fontSize={10} x={5} y={30}>*/}
+                {/*    {this.props.ui.viewPortX}, {this.props.ui.viewPortY}&emsp;*/}
+                {/*    [{this.props.ui.scalingFactor}]*/}
+                {/*</text>*/}
                 {/*    <g>*/}
                 {/*        <line x1={this.state.mouseOffsetX}*/}
                 {/*              y1={0} x2={this.state.mouseOffsetX}*/}

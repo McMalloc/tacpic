@@ -6,14 +6,17 @@ import {API_URL} from "../../env.json"
 
 const Wrapper = styled.div`
   padding: 6px;
-  flex: 0 1 33%;
   box-sizing: border-box;
   
   @media (min-width: 1280px) {
     flex: 0 1 33%;
   }   
    
-  @media (min-width: 1920px) {
+  @media (min-width: 900px) {
+    flex: 0 1 33%;
+  }  
+  
+    @media (min-width: 1600px) {
     flex: 0 1 20%;
   }  
   

@@ -6,7 +6,7 @@ import {
     ORDER,
     VARIANTS,
     ITEM_ADDED_TO_BASKET,
-    ITEM_REMOVED_FROM_BASKET, ORDER_RESET, QUOTE, CLEAR_BASKET, LOAD_MORE
+    ITEM_REMOVED_FROM_BASKET, ORDER_RESET, QUOTE, CLEAR_BASKET, LOAD_MORE, ITEM_UPDATED_IN_BASKET
 } from '../actions/action_constants';
 import {produce} from "immer";
 
@@ -179,13 +179,6 @@ const catalogueApi = (state = {}, action) => {
             return produce(state, draftState => {
                 let isUpdate = false;
                 state.basket.forEach((item, index) => {
-                    if (action.index === index) {
-                        isUpdate = isUpdate || true;
-                        draftState.basket[index].quantity = action.quantity; // TODO quantity 0 = remove
-                        draftState.basket[index].contentId = action.contentId;
-                        draftState.basket[index].productId = action.productId;
-                    }
-
                     if (draftState.basket[index].contentId === action.contentId) {
                         isUpdate = isUpdate || true;
                         draftState.basket[index].quantity += action.quantity;
@@ -199,8 +192,16 @@ const catalogueApi = (state = {}, action) => {
                         quantity: action.quantity,
                     })
                 }
-
-
+            });
+        case ITEM_UPDATED_IN_BASKET:
+            return produce(state, draftState => {
+                state.basket.forEach((item, index) => {
+                    if (action.index === index) {
+                        draftState.basket[index].quantity = action.quantity; // TODO quantity 0 = remove
+                        draftState.basket[index].contentId = action.contentId;
+                        draftState.basket[index].productId = action.productId;
+                    }
+                })
             });
         case 'TAG_TOGGLED':
             const tagIndex = state.filterTags.indexOf(action.id);
