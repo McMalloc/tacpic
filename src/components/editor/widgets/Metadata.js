@@ -180,20 +180,6 @@ const Metadata = props => {
                 })}
                 sublabel={"editor:input_catalogue-tags-sub"}/>
 
-            {/*<Multiline*/}
-            {/*    value={file.variantDescription}*/}
-            {/*    onChange={event => {*/}
-            {/*        dispatch({*/}
-            {/*            type: "CHANGE_FILE_PROPERTY",*/}
-            {/*            key: 'variantDescription',*/}
-            {/*            value: event.currentTarget.value*/}
-            {/*        });*/}
-            {/*    }}*/}
-            {/*    disabled={file.graphic_id === null}*/}
-            {/*    label={t("editor:input_variant-desc")}*/}
-            {/*    sublabel={t("editor:input_variant-desc-sub")}/>*/}
-
-
             <hr/>
             <Status>
                 <span>Status:</span>

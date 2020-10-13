@@ -9,7 +9,7 @@ import {Button} from "../../gui/Button";
 import {NavLink, Navigate} from "react-router-dom";
 import {Row} from "../../gui/Grid";
 import {Alert} from "../../gui/Alert";
-import AccountError from "./AccountError";
+import ServerError from "../ServerError";
 
 const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 ";
 
@@ -79,7 +79,7 @@ const ResetPassword = props => {
                     onChange={event => setPwdConfirm(event.target.value)}
                     name={'pwdConfirm'}/>
 
-                <AccountError error={user.error}/>
+                <ServerError error={user.error}/>
 
 
                 <div style={{textAlign: "center"}}>

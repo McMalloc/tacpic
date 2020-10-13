@@ -68,7 +68,7 @@ export default props => {
                     <Preview
                         id={"catalogue-item-" + props.id + "-thumbnail"} thumbnailURL={thumbnailURL} />
                     <Info>
-                        <Title title={props.title} aria-label={props.title} className={"hover-sensitive"}>{props.title}</Title>
+                        <Title title={props.title} aria-label={props.title} className={"hover-sensitive"}>{props.title}</Title><br/>
                         <small>
                             {props.variants.length}
                             {props.filtered ? ' zutreffende ' : ' '}

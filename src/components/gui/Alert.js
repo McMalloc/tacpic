@@ -8,9 +8,8 @@ const Wrapper = styled.div`
   padding: ${props => props.theme.spacing[2]} ${props => props.theme.spacing[2]};
   border: 1px solid ${props => props.colour};
   border-bottom: 5px solid ${props => props.colour};
-  // a {
-  //   color: ${props => props.theme.background};
-  // }
+    background-color: white;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.1) inset;
 `;
 
 const IconContainer = styled.div`
@@ -51,7 +50,7 @@ const Alert = props => {
     return (
         <Wrapper role={(props.warning || props.danger) ? "alert" : ""} {...props} colour={colour}>
             <IconContainer colour={colour}>
-                <i className={"fas fa-" + iconID} />
+                <i className={"fas fa-" + iconID}/>
             </IconContainer>
             <Message {...props}>
                 {props.children}

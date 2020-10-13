@@ -5,7 +5,7 @@ import {Icon} from "../../gui/_Icon";
 import {Button} from "../../gui/Button";
 import {Textinput} from "../../gui/Input";
 import {USER} from "../../../actions/action_constants";
-import AccountError from "./AccountError";
+import ServerError from "../ServerError";
 
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4";
@@ -58,7 +58,7 @@ const ResetPasswordRequest = props => {
                             onChange={event => setEmail(event.target.value)}
                             name={'email'}/>
 
-                        <AccountError error={user.error}/>
+                        <ServerError error={user.error}/>
 
                         <div className={'align-center'}>
                             {/*<input type={"submit"} value={"login"}/>*/}

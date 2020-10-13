@@ -4,30 +4,24 @@ body {
   color: #231F20;
 }
 
-//@font-face {
-//  font-family: "Braille29 DE";
-//  src: url("/webfonts/BrailleDEComputer.woff2") format("woff2"),
-//  url("/webfonts/BrailleDEComputer.woff") format("woff");
-//}
-//
-//@font-face {
-//  font-family: "HBS6";
-//  src: url("/webfonts/hbs6brlt-webfont.woff") format("woff");
-//}
-//
-//@font-face {
-//  font-family: "HBS6Visual";
-//  src: url("/webfonts/hbs6brlvs-webfont.woff") format("woff");
-//}
-//
-//@font-face {
-//  font-family: "HBS8";
-//  src: url("/webfonts/hbs8brlt-webfont.woff") format("woff");
-//}
-
 @font-face {
   font-family: "tacpic swell braille";
   src: url("/webfonts/tacpic_swellbraille.woff") format("woff");
+}
+
+a {
+  &.further-info:before {
+    font-family: FontAwesome;
+    content: "\f0da";
+    display: inline-block;
+    padding-right: 0.3em;
+    transition: padding 0.1s;
+  }
+
+  &.further-info:hover:before {
+    padding-right: 0.1em;
+    padding-left: 0.2em;
+  }
 }
 
 button, input, textarea, select {

@@ -7,6 +7,10 @@
   "tacpic": {
     "welcome": "Willkommen bei Tacpic!"
   },
+  "error": {
+    "AccountError": "Fehler bei Anmeldung",
+    "not whitelisted": "Die E-Mail-Adresse wurde nicht zur Anmeldung freigegeben."
+  },
   "help": {
     "select_braille-system": "Pro Dokument sollte ein einheitliches Punktschriftsystem verwendet werden. Alle Beschriftungen werden in dem hier ausgewählten System angelegt und bestehende Beschriftungen werden umgewandelt.",
     "select_medium": "Unterschiedliche Medien bieten unterschiedliche Möglichkeiten. Der Editor wird für bestimmte Produktionstechniken Funktionen einschränken, sodass Sie keine Vorlage gestalten, die z.B. mit Schwellpapier gar nicht produzierbar ist."
@@ -41,6 +45,7 @@
   },
   "account": {
     "my_lists": "Meine Listen",
+    "accept-privacy-policy": "Ich akzeptiere die Datenschutzbestimmungen.",
     "my_lists-description": "Private Grafiken und Favouritenlisten",
     "my_sub": "Mein Abonnement",
     "my_sub-description": "Abonnement abschließen, kündigen oder ändern",

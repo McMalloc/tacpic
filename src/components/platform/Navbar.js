@@ -95,7 +95,7 @@ const Navbar = props => {
             </NavbarItemGroups>
             <NavbarItemGroups>
                 {basket.length > 0 &&
-                <NavbarItem id={"basket-nav-link"} theme={theme} to={'/basket'}>
+                <NavbarItem id={"basket-nav-link"} to={'/basket'}>
                     <Icon icon={"shopping-cart"}/>&nbsp;
                     {template(t("general:basket"))({quantity: basket.length})}
                 </NavbarItem>
@@ -104,7 +104,7 @@ const Navbar = props => {
                 {user.logged_in ?
                     <>
                         &ensp;<span style={{borderLeft: "1px solid lightgrey"}}>&ensp;</span>
-                        <NavbarItem theme={theme} to={'/account'}>
+                        <NavbarItem to={'/account'}>
                             <Icon icon={"user-circle"}/>&nbsp;
                             {t("general:my_account")}
                         </NavbarItem>
@@ -112,13 +112,15 @@ const Navbar = props => {
                     :
                     <>
                         <NavLink className={"no-styled-link"} to={'/signup?redirect=' + location.pathname}>
-                            <Button primary>
+                            <Button icon={"user-plus"} primary>
                                 {t("general:signup")}
                             </Button>
+                        </NavLink>&ensp;
+                        <NavLink className={"no-styled-link"} to={'/login'}>
+                            <Button icon={"sign-in-alt"}>
+                                {t("general:login")}
+                            </Button>
                         </NavLink>
-                        <NavbarItem theme={theme} to={'/login'}>
-                            {t("general:login")}
-                        </NavbarItem>
                     </>
                 }
 
