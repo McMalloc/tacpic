@@ -28,7 +28,7 @@
     "password": "Passwort",
     "password-confirm": "Passwort wiederholen",
     "password-confirm-invalid": "Die Passwörter stimmen nicht überein.",
-    "email-hint": "Ihre E-Mail dient ausschließlich dazu, ihr Benutzerkonto zu verwalten. Sie erhalten keine Werbung von uns.",
+    "email-hint": "Ihre E-Mail dient ausschließlich dazu, Ihr Benutzerkonto zu verwalten. Sie erhalten keine Werbung von uns.",
     "email-invalid": "Bitte geben Sie eine gültige E-Mail-Adresse an.",
     "password-hint": "Das Passwort sollte mindestens 8 Zeichen haben.",
     "password-invalid": "Das Passwort sollte mindestens 8 Zeichen haben.",
@@ -42,7 +42,7 @@
     "catalogue": "Katalog",
     "required": "Erforderliche Angabe",
     "display_name": "Anzeigename",
-    "display_name-hint": "Sie können den Anzeigenamen später auch ändern. Er wird verwendet, um ihre Urheberschaft an Grafiken zu kennzeichnen."
+    "display_name-hint": "Sie können den Anzeigenamen später auch ändern. Er wird verwendet, um Ihre Urheberschaft an Grafiken zu kennzeichnen."
   },
   "account": {
     "my_lists": "Meine Listen",
