@@ -1,9 +1,10 @@
-import React, {Component} from 'react'
+import React, {Component, useEffect, useState} from 'react'
 import transform from "./transform";
 import _ from "lodash";
 import styled from "styled-components";
 import {connect, useDispatch, useSelector} from "react-redux";
 import {Icon} from "../../gui/_Icon";
+import {getTextWidth} from "../../../utility/getTextWidth";
 
 //TODO Linebreaks mit absolutem x und relativem y-Wert: https://www.oreilly.com/library/view/svg-text-layout/9781491933817/ch04.html
 
@@ -49,14 +50,23 @@ const Black = styled.textarea`
   }
 `;
 
+const Pagenumbers = styled.div`
+  line-height: 12mm;
+  font-size: 14pt;
+  //margin-top: -4mm;
+  font-family: Arial, Helvetica, sans-serif;
+  color: blue;
+  top: -2mm;
+  position: absolute;
+  left: ${props => props.offset + 18}px;
+`;
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
   padding: 2mm;
   box-sizing: border-box;
-  //overflow: visible;
   border: ${props => props.border ? '1mm black solid' : '1mm transparent solid'};
-  //border-color: ${props => props.preview ? 'black' : 'transparent'};
 `;
 
 const changeText = (dispatch, text, uuid) => {
@@ -86,13 +96,21 @@ const enterEditMode = (dispatch, uuid) => {
     });
 };
 
-// TODO onChange for textarea obligatory if value is set (says react)
 const Label = props => {
     const dispatch = useDispatch();
-    const previewMode = useSelector(state => state.editor.ui.previewMode);
     const system = useSelector(
         state => state.editor.file.system
     );
+
+    // if label is title
+    const currentPageNumber = useSelector(state => state.editor.ui.currentPage) + 1;
+    const previewMode = useSelector(state => state.editor.ui.previewMode);
+    const pageNumber = useSelector(state => state.editor.file.present.pages.length);
+
+    const [titleWidth, setTitleWidth] = useState(0);
+    useEffect(() => {
+        props.isTitle && setTitleWidth(getTextWidth(props.text, '14pt', "Arial, Helvetica, sans-serif"));
+    }, [props.text]);
 
     // TODO onCLick ändert value, wenn current value != title_placeholder
 
@@ -108,14 +126,14 @@ const Label = props => {
                            onDoubleClick={event => enterEditMode(dispatch, props.uuid)}
                            width={props.width}
                            height={props.height}>
-                {props.editMode && <Indicator><Icon icon={"pen"} /> Bearbeitungsmodus</Indicator>}
+                {props.editMode && <Indicator><Icon icon={"pen"}/> Bearbeitungsmodus</Indicator>}
                 {/*Bug in WebKit macht die relative Positionierung nötig*/}
                 <Container xmlns={"http://www.w3.org/1999/xhtml"}
                            preview={previewMode}
                            className={"label-container"}
                            border={props.border}
                            onMouseDown={event => props.editMode && event.stopPropagation()}
-                           style={{position: 'relative', backgroundColor: props.editMode ? '#ffb8de' : 'white'}}>
+                           style={{position: 'relative', backgroundColor: props.editMode ? '#ffd2eb' : 'white'}}>
                     {props.displayDots &&
                     <Braille
                         preview={previewMode}
@@ -124,23 +142,28 @@ const Label = props => {
                         xmlns={"http://www.w3.org/1999/xhtml"}
                         vOffset={props.displayLetters}
                         id={'braille_' + props.uuid}>
-                        {props.fullCharPrefix && '%'}{props.isKey ? props.keyVal : props.braille}
+                        {props.fullCharPrefix && '%'}{props.isKey ? props.keyVal : props.braille} {(props.isTitle && !props.pristine) ? ` ${currentPageNumber}/${pageNumber}` : ''}
                     </Braille>
                     }
 
                     {props.displayLetters &&
-                    <Black style={{height: props.height}}
-                           preview={previewMode}
-                           xmlns={"http://www.w3.org/1999/xhtml"}
-                           disabled={!props.editMode}
-                           className={"label-black"}
-                           onClick={() => props.isTitle && props.braille.length === 0 && changeText(dispatch, "", props.uuid)}
-                           onChange={event => changeText(dispatch, event.target.value, props.uuid)}
-                           onBlur={() => exitEditMode(dispatch, props.uuid)}
-                           tabIndex={1}
-                           id={'editable_' + props.uuid}
-                           value={props.isKey ? props.keyVal : props.text}
-                    />
+                    <>
+                        <Black style={{height: props.height}}
+                               preview={previewMode}
+                               xmlns={"http://www.w3.org/1999/xhtml"}
+                               disabled={!props.editMode}
+                               className={"label-black"}
+                               onClick={() => props.isTitle && props.braille.length === 0 && changeText(dispatch, "", props.uuid)}
+                               onChange={event => changeText(dispatch, event.target.value, props.uuid, props.isTitle)}
+                               onBlur={() => exitEditMode(dispatch, props.uuid)}
+                               tabIndex={1}
+                               id={'editable_' + props.uuid}
+                               value={props.isKey ? props.keyVal : props.text}
+                        />
+                        {props.isTitle && !props.pristine &&
+                            <Pagenumbers offset={titleWidth}>{` ${currentPageNumber}/${pageNumber}`}</Pagenumbers>
+                        }
+                        </>
                     }
                 </Container>
             </foreignObject>
@@ -149,4 +172,5 @@ const Label = props => {
 
 };
 
+// + props.isTitle ? ` ${currentPageNumber}/${pageNumber}` : ''
 export default Label;

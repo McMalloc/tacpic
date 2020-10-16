@@ -5,6 +5,7 @@
   "proxy": "http://localhost:9292",
   "dependencies": {
     "@datapunt/matomo-tracker-react": "^0.1.5",
+    "@fortawesome/fontawesome-free": "^5.15.1",
     "axios": "^0.19.2",
     "blueimp-md5": "^2.17.0",
     "color": "^3.1.2",
@@ -40,7 +41,7 @@
     "styled-components-spacing": "^3.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start --host 0.0.0.0",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",

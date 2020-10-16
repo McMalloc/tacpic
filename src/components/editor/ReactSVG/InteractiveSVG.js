@@ -151,16 +151,16 @@ class InteractiveSVG extends Component {
             // TODO FIREFOX: TypeError: event.nativeEvent.path is undefined
             //  src/components/editor/widgets/ReactSVG/InteractiveSVG.js:105
             // https://stackoverflow.com/questions/39245488/event-path-undefined-with-firefox-and-vue-js
-            let target = event.nativeEvent.path[0];
+            let target = event.nativeEvent.target;
             // check if a group was the actual target since the event first fires
             // on visible elements, and later bubbles up to the group
-            for (let i = 0; i < event.nativeEvent.path.length; i++) {
+            /*for (let i = 0; i < event.nativeEvent.path.length; i++) {
                 let element = event.nativeEvent.path[i];
                 if (element.dataset && element.dataset.group) {
                     target = event.nativeEvent.path[i];
                     break;
                 }
-            }
+            }*/
 
             // transform mouse coordinates into svg viewbox
             let transformedCoords = transformCoords(event.clientX, event.clientY);
@@ -264,7 +264,6 @@ class InteractiveSVG extends Component {
                     if (target.dataset.endpoint) {
                         let closingPath = {...this.state.preview};
                         this.props.updateObject({...this.state.preview, closed: parseInt(target.dataset.index) === 0});
-                        console.log("d")
                         this.setState({
                             preview: null,
                             edit: null,
@@ -272,7 +271,6 @@ class InteractiveSVG extends Component {
                             editIndex: -1
                         });
                     } else {
-                        console.log("add point!");
                         this.setState({
                             segmentStart: this.state.preview.points.length,
                             preview: methods.path.addPoint(
@@ -292,7 +290,7 @@ class InteractiveSVG extends Component {
     };
 
     mouseUpHandler = event => {
-        let target = event.nativeEvent.path[0];
+        let target = event.nativeEvent.target;
         this.setState({
             mouseIsDown: false,
             dragging: false,
@@ -312,7 +310,6 @@ class InteractiveSVG extends Component {
             if (this.props.ui.tool === 'PATH') {
                 if (this.state.transform !== null) {
                     this.props.updateObject(this.state.preview);
-                    console.log("a")
                     this.setState({
                         preview: null
                     });
@@ -325,7 +322,6 @@ class InteractiveSVG extends Component {
             } else {
                 // when dragged, create new object
                 this.state.dragging && this.props.updateObject(this.state.preview);
-                console.log("b")
                 this.setState({
                     preview: null
                 });
@@ -346,7 +342,6 @@ class InteractiveSVG extends Component {
                         edit: null,
                     });
                 } else {
-                    console.log("c")
                     this.setState({
                         preview: null,
                         edit: null,

@@ -36,6 +36,7 @@ import {renderWatcher} from "./render_saga";
 import {addressRemoveSaga} from "./address_saga";
 import {basketChangeSaga} from "./basket_saga";
 import {orderCreateSaga, orderIndexSaga} from "./order_saga";
+import {titleEditWatch} from "./title_saga";
 
 export const id = args => args;
 
@@ -106,6 +107,7 @@ export default function* root() {
         call(userResetRequestSaga),
 
         call(labelWriteWatcher),
+        call(titleEditWatch),
         call(contentEditWatcher),
         call(systemChangeWatcher),
         call(layoutEditWatcher),

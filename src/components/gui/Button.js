@@ -25,7 +25,7 @@ const ButtonBase = styled.button`
   border-radius: 3px;
   cursor: pointer;
   float: ${props => props.rightAction ? 'right' : 'none'};
-  margin-top: 0;
+  margin: 0;
   position: relative;
   font-size: ${props => props.small ? '0.8em' : '1em'};
   width: ${props => props.fullWidth ? "100%" : "auto"};

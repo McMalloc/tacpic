@@ -1,30 +1,35 @@
 @import 'styles/_typography.scss';
-@import 'styles/_grid-layout.scss';
 @import 'styles/flexboxgrid.css';
 @import 'styles/_animations.scss';
-@import 'styles/_tooltip.scss';
 @import 'styles/_tables.scss';
 @import 'styles/_elements.scss';
 @import 'styles/_helper.scss';
 @import 'styles/_layout.scss';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
 
 // resets not covered by normalized
 //TODO: flexbox vendor-prefixen für IE10 https://caniuse.com/#feat=flexbox
+html, #root, body {
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
   hyphens: auto;
-  height: 100%;
+}
+
+#modal {
+  position: relative;
+  z-index: 10000;
 }
 
 #flyout {
   //z-index: 9999;
   position: relative;
   overflow: hidden;
-}
-
-html, #root {
-  height: 100%;
 }
 
 img {

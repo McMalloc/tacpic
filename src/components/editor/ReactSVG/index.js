@@ -1,7 +1,7 @@
 import SVGRect from "./Rect";
 import SVGGroup from "./Group";
 import SVGPath from "./Path";
-import Label from "./Label";
+import Label, {Title} from "./Label";
 import React from "react";
 import Ellipse from "./Ellipse";
 import SVGLine from "./Line";

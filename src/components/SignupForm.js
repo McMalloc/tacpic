@@ -56,8 +56,7 @@ const SignupForm = props => {
                         {/*<hr/>*/}
                         <Alert info>
                             Während der Testphase steht aus sicherheitstechnischen und rechtlichen Gründen nur <strong>ausgewählten
-                            Nutzenden mit entsprechenden E-Mail-Addressen</strong> eine Anmeldung offen.<br/> <a
-                            href={"/"} className={"further-info"}>Mehr erfahren</a>
+                            Nutzenden mit entsprechenden E-Mail-Addressen</strong> eine Anmeldung offen.
                         </Alert>
                         <br/>
                         <form onSubmit={(event) => {

@@ -12,7 +12,7 @@ import {
     CHANGE_PAGE_CONTENT,
     OBJECT_UPDATED, OBJECT_BULK_ADD, CHANGE_IMAGE_DESCRIPTION
 } from "../actions/action_constants";
-import methods from "../components/editor/ReactSVG";
+import methods from "../components/editor/ReactSVG/methods/methods";
 import uuidv4 from "../utility/uuid";
 import deepPull from "../utility/deepPull";
 import {editor as initialEditor} from "../store/initialState";
@@ -121,7 +121,6 @@ const file = (state = {}, action) => {
             return produce(state, draftState => {
                 filter(draftState.pages[action.shared_currentPage].objects,
                     {uuid: action.uuid}).forEach(object => {
-                    console.log(object[action.prop]);
                     object[action.prop] = action.value;
 
                     if (action.prop === "isKey") {// && object.keyVal.length === 0) {
@@ -219,10 +218,19 @@ const file = (state = {}, action) => {
 
             return oldState;
         case 'PAGE_ADD':
+            let title, braille = "";
+            state.pages.forEach((page, index) => {
+                page.objects.forEach(object => {
+                    if (object.type === 'label' && object.isTitle) {
+                        title = object.text;
+                        braille = object.braille;
+                    }
+                })
+            });
             return produce(state, draftState => {
                 draftState.pages.push({
                     name: 'Seite ' + (state.pages.length + 1),
-                    objects: [],
+                    objects: [methods.label.create(10, 10, 350, 75, title, braille, {isTitle: true, editMode: false, pristine: false})],
                     render: '',
                 });
             });

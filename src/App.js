@@ -33,7 +33,14 @@ const ScrollContent = styled.div`
 const Wrapper = styled.div`
   display: flex;
   height: 100%;
+  //flex: 1 1 100%;
   background-color: ${props => props.theme.grey_6};
+  flex-direction: column;
+`;
+
+const AppContainer = styled.div`
+  flex: 1 0 auto;
+  display:flex;
   flex-direction: column;
 `;
 
@@ -62,7 +69,7 @@ const App = () => {
         <Wrapper>
             <Navbar items={navbarItems}/>
             <ScrollContent>
-                <div id={"app-container"} className={"App" + (!/editor/.test(location.pathname) ? " padded-top container container-fluid" : "")}>
+                <AppContainer id={"app-container"} className={(!/editor/.test(location.pathname) ? " padded-top container container-fluid" : "")}>
                         <Routes>
                             <Route path="/login"
                                    element={<Login/>}/>
@@ -94,12 +101,12 @@ const App = () => {
                                    element={<Stats/>}/>
                             <Route exact path="/"
                                    element={<Landing/>}/>
-                            {/*<Route path={"*"}*/}
-                            {/*       element={<NotFound/>}/>*/}
+                            <Route path={"*"}
+                                   element={<NotFound/>}/>
                         </Routes>
-                </div>
-            </ScrollContent>
+                </AppContainer>
             <Footer/>
+            </ScrollContent>
             <div id={"dropdown-portal-target"} />
         </Wrapper>
     );

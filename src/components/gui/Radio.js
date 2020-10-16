@@ -34,6 +34,7 @@ const Label = styled.label`
   &:after {
       position: absolute;
       margin-right: 0.5em;
+      left: 0;
       align-self: center;
       text-decoration: none!important;
       content: "\f192";

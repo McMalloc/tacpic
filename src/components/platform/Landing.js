@@ -19,7 +19,7 @@ const Form = styled.div`
   padding: ${props => props.theme.large_padding};
 `;
 
-const Jump = styled.div`
+const Jump = styled(Row)`
   position: absolute;
   top: ${props => props.offset}px;
 `;
@@ -84,13 +84,13 @@ const Landing = () => {
                 </p>
             </Row>
             {offset &&
-            <Jump id={"after-jump"} offset={offset}>
-                <Row style={{justifyContent: "center"}}>
+                <>
+                <Jump offset={offset} id={"after-jump"} style={{justifyContent: "center"}}>
                         <iframe src="https://player.vimeo.com/video/330785558?byline=0"
                                 width={640} height={320} frameBorder="0"
                                 allow="autoplay; fullscreen" allowFullScreen />
                     <script src="https://player.vimeo.com/api/player.js" />
-                </Row>
+                </Jump>
                 <Row>
                     <div className={"col-md-4"}>
                         <IllustrationContainer offset={0}>
@@ -117,7 +117,7 @@ const Landing = () => {
                         <p>Ihre Bestellung wird per Post an Sie versendet.</p>
                     </div>
                 </Row>
-            </Jump>
+            </>
             }
         </Wrapper>
 

@@ -35,8 +35,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  flex: 1 1 auto;
-  height: 100%;
+  flex: 1 1 100%;
+  //height: 100%;
   background-color: ${props => props.theme.brand_secondary};
   
   .loader {
@@ -46,7 +46,7 @@ const Wrapper = styled.div`
 
 const PanelWrapper = styled.div`
   display: flex;
-  flex: 0 1 100%;
+  flex: 1 1 100%;
   flex-direction: row;
   position: relative;
   overflow-y: auto;
@@ -222,7 +222,8 @@ const Editor = props => {
         if (uiSettings.fileOpenSuccess) {
             // throw("boom")
             return (
-                <><Wrapper>
+                <>
+                    <Wrapper>
                     <Radiobar>
                         <RadiobarSegment>
                             {["SELECT", "KEY", "RECT", "ELLIPSE", /*"CUBIC", "QUADRATIC",*/ "LABEL", "PATH", /*"LINE"*/].map((tool, index) => {

@@ -8,8 +8,9 @@
     "welcome": "Willkommen bei Tacpic!"
   },
   "error": {
-    "AccountError": "Fehler bei Anmeldung",
-    "not whitelisted": "Die E-Mail-Adresse wurde nicht zur Anmeldung freigegeben."
+    "AccountError": "Fehler bei Kontoerstellung",
+    "not whitelisted": "Die E-Mail-Adresse wurde nicht zur Anmeldung freigegeben.",
+    "display name already in use": "Der Anzeigename ist bereits in Benutzung. Sie müssen zwar keinen angeben, aber wenn, sollte er eindeutig sein."
   },
   "help": {
     "select_braille-system": "Pro Dokument sollte ein einheitliches Punktschriftsystem verwendet werden. Alle Beschriftungen werden in dem hier ausgewählten System angelegt und bestehende Beschriftungen werden umgewandelt.",

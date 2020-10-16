@@ -7,9 +7,10 @@ const Wrapper = styled.div`
   flex: 1 1 auto;
   z-index: 0;
   position: relative;
+  display: flex;
   // display: ${props => props.hide ? "none" : "block"};
-  max-height: ${props => props.hide ? 0 : "auto"};
-  max-width: ${props => props.hide ? 0 : "auto"};
+  // max-height: ${props => props.hide ? 0 : "auto"};
+  //max-width: ${props => props.hide ? 0 : "auto"};
 `;
 
 const Ruler = styled.div``;

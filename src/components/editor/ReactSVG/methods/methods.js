@@ -16,7 +16,7 @@ import {
 const defaultStrokeWidth = 1.5;
 const defaultStrokeStyle = "solid";
 
-const textureColourMapping = {
+export const textureColourMapping = {
     "diagonal_lines": COLOURS.blue,
     "diagonal_lines_wide": COLOURS.cyan,
     "full": COLOURS.red,
@@ -101,7 +101,8 @@ const ellipseGetBBox = ellipse => {
 const createEllipse = (x = 0, y = 0, width = 100, height = 100, template = 'diagonal_lines', fill = 'white') => {
     return {
         uuid: uuidv4(),
-        x, y, width, height, fill,
+        x, y, width, height,
+        fill: textureColourMapping[template],
         pattern: {
             template,
             offset: true

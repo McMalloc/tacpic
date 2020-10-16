@@ -41,7 +41,7 @@ const Checkout = props => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     useEffect(() => {
-        document.getElementsByClassName("App")[0].scrollTo(0, 0);
+        document.getElementById("app-container").scrollTo(0, 0);
         dispatch({type: ADDRESS.GET.REQUEST})
     }, []);
 
@@ -193,6 +193,15 @@ const Checkout = props => {
     const steps = ["Anmeldung", "Addresse", "Bezahlmethode", "Überprüfen"]
 
     return (
+        <>
+            <Row>
+                <div className={"col-md-6 col-md-offset-3"}>
+                    <Alert danger>
+                        Die Plattform befindet sich in der Alpha-Phase, d.h. sie wird noch getestet.
+                        <strong>Getätigte Bestellungen werden entgegen der Beschriftung nicht ausgelöst und es fallen keine Kosten an.</strong>
+                    </Alert>
+                </div>
+            </Row>
             <Row>
                 <div className={"col-sm-5"}>
                     <div style={{position: 'sticky', top: 12}}>
@@ -246,7 +255,7 @@ const Checkout = props => {
                     <br />
                 </div>
             </Row>
-
+        </>
     );
 };
 

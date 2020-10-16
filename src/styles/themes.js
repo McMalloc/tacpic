@@ -51,7 +51,7 @@ export const standard = {
     },
     spacing: {
         0: '0',
-        1: '3px',
+        1: '4px',
         2: '8px',
         3: '1em',
         4: '1.5em',
