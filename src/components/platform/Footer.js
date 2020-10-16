@@ -93,7 +93,7 @@ const Footer = props => {
                             <Icon icon={"envelope"} />&emsp;<a href={"mailto://kontakt@tacpic.de"}>kontakt@tacpic.de</a>
                         </p>
                     </div>
-                    <div className={"col-md-3"}>
+                    <div className={"col-md-3"} style={{paddingRight: "4em"}}>
                         <div aria-hidden={true} className={"heading"}>&ensp;</div>
                         <img src={"/images/logo_dark.svg"} />
 
