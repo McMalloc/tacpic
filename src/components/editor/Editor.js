@@ -25,7 +25,7 @@ import Document from "./widgets/Document";
 import Error from "../Error";
 import {Modal} from "../gui/Modal";
 import {useNavigate} from "react-router";
-import methods from "./ReactSVG";
+import methods from "./ReactSVG/methods/methods";
 import Loader from "../gui/Loader";
 import {SVG_A4_PX_WIDTH} from "../../config/constants";
 import {editor} from "../../store/initialState";

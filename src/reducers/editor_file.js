@@ -134,13 +134,17 @@ const file = (state = {}, action) => {
                     page.objects.forEach(object => {
                         if (object.type === 'label') {
                             let translated = action.labels.find(label => label.uuid === object.uuid);
-                            object.braille = translated.braille;
+                            if (translated) {
+                                object.braille = translated.braille;
+                            }
                         }
                     })
                 });
                 const pages = action.labels.find(label => label.uuid === '_BRAILLE_PAGES');
-                draftState.braillePages.braille = pages.braille;
-                draftState.braillePages.formatted = wrapAndChunk(pages.braille, draftState.braillePages.cellsPerRow, draftState.braillePages.rowsPerPage);
+                if (pages) {
+                    draftState.braillePages.braille = pages.braille;
+                    draftState.braillePages.formatted = wrapAndChunk(pages.braille, draftState.braillePages.cellsPerRow, draftState.braillePages.rowsPerPage);
+                }
             });
         case CHANGE_FILE_PROPERTY:
             return {

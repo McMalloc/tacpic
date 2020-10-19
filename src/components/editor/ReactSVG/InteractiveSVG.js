@@ -154,13 +154,14 @@ class InteractiveSVG extends Component {
             let target = event.nativeEvent.target;
             // check if a group was the actual target since the event first fires
             // on visible elements, and later bubbles up to the group
-            /*for (let i = 0; i < event.nativeEvent.path.length; i++) {
-                let element = event.nativeEvent.path[i];
+            let path = event.nativeEvent.path || event.nativeEvent.composedPath();
+            for (let i = 0; i < path.length; i++) {
+                let element = path[i];
                 if (element.dataset && element.dataset.group) {
-                    target = event.nativeEvent.path[i];
+                    target = path[i];
                     break;
                 }
-            }*/
+            }
 
             // transform mouse coordinates into svg viewbox
             let transformedCoords = transformCoords(event.clientX, event.clientY);
