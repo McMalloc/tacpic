@@ -18,12 +18,17 @@ export const TagView = styled.span`
   background-color: ${props=>props.theme.grey_5};
   padding: ${props=>props.theme.base_padding} ${props=>props.theme.large_padding};
   border-radius: ${props=>props.theme.border_radius};
-  border: 1px solid ${props=>props.theme.grey_6};
+  //border: 1px solid ${props=>props.theme.grey_6};
   font-size: 14px;
+  
+  &:not(:last-child) {
+    margin-right: 3px;
+  }
   
   &::before {
     font-family: 'Font Awesome 5 Free';
-    content: "\\f02b";
+    content: "\f02b";
+    font-weight: 900;
     padding-right: 3px;
   }
 `;

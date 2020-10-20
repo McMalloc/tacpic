@@ -18,10 +18,12 @@ import {OrderCompleted} from "./components/platform/OrderCompleted";
 import {APP_TITLE} from "./env";
 import Stats from "./components/platform/Stats";
 import AccountVerification from "./components/platform/account/AccountVerification";
-import {useLocation} from "react-router";
+import {Outlet, useLocation} from "react-router";
 import ResetPassword from "./components/platform/account/ResetPassword";
 import NotFound from "./components/NotFound";
 import ResetPasswordRequest from "./components/platform/account/ResetPasswordRequest";
+import Page from "./components/platform/pages/Page";
+import LegalIndex from "./components/platform/Legal";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -52,6 +54,7 @@ const App = () => {
     useEffect(() => {
         dispatch({type: APP.FRONTEND.REQUEST})
         dispatch({type: APP.BACKEND.REQUEST})
+        dispatch({type: APP.LEGAL.REQUEST})
 
         document.title = APP_TITLE;
 
@@ -99,6 +102,9 @@ const App = () => {
                                    element={<Editor/>}/>
                             <Route path="/stats"
                                    element={<Stats/>}/>
+                            <Route path="/legal/:lang/:textTitle"
+                                   element={<LegalIndex />}>
+                            </Route>
                             <Route exact path="/"
                                    element={<Landing/>}/>
                             <Route path={"*"}

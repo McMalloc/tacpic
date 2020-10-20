@@ -25,7 +25,7 @@ const Stats = props => {
                 <p>Aktuelle Version: <span className={"monospace"}>{backend && backend.tag}</span></p>
                 <h2>Changelog</h2>
                 {backend.commits && backend.commits.map(commit => {
-                    return <div style={{marginBottom: 6}}><Expander key={commit.hash}>
+                    return <div key={commit.hash} style={{marginBottom: 6}}><Expander key={commit.hash}>
                         <span><span className={"monospace"}>#{commit.hash}</span> vom <strong>{moment.unix(commit.timestamp).format("DD.MM.YYYYY, HH:mm")}</strong></span>
                         <ul>
                             {commit
@@ -43,7 +43,7 @@ const Stats = props => {
                 <p>Aktuelle Version: <span className={"monospace"}>{frontend && frontend.tag}</span></p>
                 <h2>Changelog</h2>
                 {frontend.commits && frontend.commits.map(commit => {
-                    return <div style={{marginBottom: 6}}><Expander key={commit.hash}>
+                    return <div key={commit.hash} style={{marginBottom: 6}}><Expander key={commit.hash}>
                         <span><span className={"monospace"}>#{commit.hash}</span> vom <strong>{moment.unix(commit.timestamp).format("DD.MM.YYYYY, HH:mm")}</strong></span>
                         <ul>
                             {commit

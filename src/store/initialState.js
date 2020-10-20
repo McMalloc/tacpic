@@ -86,6 +86,7 @@ export const editor = {
 export const app = {
     version: '',
     error: null,
+    legalTexts: [],
     backend: {},
     frontend: {}
 };

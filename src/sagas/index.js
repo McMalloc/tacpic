@@ -18,7 +18,7 @@ import {
     GRAPHIC,
     VARIANTS,
     ADDRESS,
-    APP, QUOTE, IMPORT, CMS_PAGE
+    APP, QUOTE, IMPORT, CMS_PAGE, STATIC_PAGE
 } from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {
@@ -83,6 +83,7 @@ export default function* root() {
         call(orderIndexSaga),
 
         call(createSaga(APP.FRONTEND, 'get', 'FRONTEND.json', takeLatest, false, id, id)),
+        call(createSaga(APP.LEGAL, 'get', 'legal/index', takeLatest, false, id, id)),
         call(createSaga(APP.BACKEND, 'get', 'BACKEND.json', takeLatest, false, id, id)),
 
         call(basketChangeSaga),

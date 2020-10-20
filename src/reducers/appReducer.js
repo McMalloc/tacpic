@@ -12,6 +12,13 @@ const appReducer = (state = {}, action) => {
                 ...state,
                 backend: action.data
             }
+        case APP.LEGAL.SUCCESS:
+            return {
+                ...state,
+                legalTexts: Object.entries(action.data).map(([did, title]) => {
+                    return {did, title}
+                })
+            }
         case ERROR_THROWN:
             return {
                 ...state,
