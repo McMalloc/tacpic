@@ -19,11 +19,6 @@ const Form = styled.div`
   padding: ${props => props.theme.large_padding};
 `;
 
-const Jump = styled(Row)`
-  position: absolute;
-  top: ${props => props.offset}px;
-`;
-
 const Wrapper = styled.div`
   position: relative;
 `;
@@ -53,8 +48,14 @@ const Landing = () => {
     const [offset, setOffset] = useState(null);
 
     useEffect(() => {
-        document.getElementById("app-container") && setOffset(document.getElementById("app-container").getBoundingClientRect().height)
-    })
+        let container = document.getElementById("app-container");
+        let jump = document.getElementById("to-jump");
+        if (container && jump) {
+            let height = container.getBoundingClientRect().height;
+            let offset = jump.getBoundingClientRect().y;
+            setOffset(height - (height - offset));
+        }
+    }, []);
 
     return (
         <Wrapper>
@@ -79,18 +80,20 @@ const Landing = () => {
                 </div>
             </Row>
             <Row>
-                <p style={{textAlign: "center", width: "100%"}}>
+                <p id={"to-jump"} style={{textAlign: "center", width: "100%"}}>
                     <a href={"#after-jump"}>Mehr erfahren<br /><Icon icon={"arrow-down"} /> </a>
                 </p>
             </Row>
             {offset &&
                 <>
-                <Jump offset={offset} id={"after-jump"} style={{justifyContent: "center"}}>
+                <Row id={"after-jump"} style={{justifyContent: "center", marginTop: offset}}>
                         <iframe src="https://player.vimeo.com/video/330785558?byline=0"
                                 width={640} height={320} frameBorder="0"
                                 allow="autoplay; fullscreen" allowFullScreen />
                     <script src="https://player.vimeo.com/api/player.js" />
-                </Jump>
+                </Row>
+                    <br/>
+                    <br/>
                 <Row>
                     <div className={"col-md-4"}>
                         <IllustrationContainer offset={0}>
@@ -117,6 +120,9 @@ const Landing = () => {
                         <p>Ihre Bestellung wird per Post an Sie versendet.</p>
                     </div>
                 </Row>
+                    <br />
+                    <br />
+                    <br />
             </>
             }
         </Wrapper>
