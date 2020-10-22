@@ -50,6 +50,7 @@ const App = () => {
     const t = useTranslation().t;
     const dispatch = useDispatch();
     const location = useLocation();
+    const inEditor = /editor/.test(location.pathname);
 
     useEffect(() => {
         dispatch({type: APP.FRONTEND.REQUEST})
@@ -68,11 +69,12 @@ const App = () => {
         // {label: 'Wissen', to: '/knowledge'},
         // {label: 'Häufige Fragen', to: '/faq'}
     ];
+
     return (
         <Wrapper>
             <Navbar items={navbarItems}/>
             <ScrollContent>
-                <AppContainer id={"app-container"} className={(!/editor/.test(location.pathname) ? " padded-top container container-fluid" : "")}>
+                <AppContainer id={"app-container"} className={(!inEditor ? " padded-top container" : "")}>
                         <Routes>
                             <Route path="/login"
                                    element={<Login/>}/>
@@ -108,10 +110,10 @@ const App = () => {
                             <Route exact path="/"
                                    element={<Landing/>}/>
                             <Route path={"*"}
-                                   element={<NotFound/>}/>
+                                   element={<NotFound />}/>
                         </Routes>
                 </AppContainer>
-            <Footer/>
+                <Footer small={inEditor}/>
             </ScrollContent>
             <div id={"dropdown-portal-target"} />
         </Wrapper>

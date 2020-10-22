@@ -96,8 +96,8 @@ const SignupForm = props => {
                                       name={'cb-privacy-accept'}
                                       checked={privacyAccepted}
                                       label={"account:accept-privacy-policy"}/>
-                            <a target={"blank"}
-                               href={""} className={"checkbox-additional further-info"}>Datenschutzerklärung einsehen.</a><br /><br />
+                            <NavLink target={"blank"}
+                               to={"/legal/de/Datenschutzerklärung"} className={"checkbox-additional"}>Datenschutzerklärung einsehen.</NavLink><br /><br />
 
                             <div style={{textAlign: "center"}}>
                                 <Button disabled={!(emailValid) || user.verification_state === 0 || !privacyAccepted}
@@ -105,11 +105,11 @@ const SignupForm = props => {
                                         icon={user.verification_state === 0 ? "cog fa-spin" : "user-plus"}
                                         onClick={() => trackEvent({category: 'signup', action: 'submit'})}
                                         type={'submit'}>{t("general:signup")}</Button>
-                                <p>
-                                    &emsp;Haben Sie bereits ein Konto? <NavLink to={"/login"}>Hier
-                                    anmelden.</NavLink>
-                                </p>
                             </div>
+                            <p>
+                                Haben Sie bereits ein Konto? <NavLink to={"/login"}>Hier
+                                anmelden.</NavLink>
+                            </p>
                         </form>
                     </div>
                 }

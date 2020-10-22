@@ -9,7 +9,7 @@ export const SVG_A4_PX_WIDTH = 793.7;
 
 export const COLOURS = {
     black:	'#000000',
-    blue: '#412B82',
+    blue: 'rgb(67,44,134)',
     red: '#E4120D',
     magenta: '#C2368C',
     cyan: '#018ECC',

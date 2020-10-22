@@ -8,7 +8,7 @@ const ProtoRow = styled.div`
 
 const Row = props => {
     return (
-        <ProtoRow {...props} className={"row " + props.modifier}>{props.children}</ProtoRow>
+        <ProtoRow {...props} className={"row " + props.className}>{props.children}</ProtoRow>
     )
 };
 

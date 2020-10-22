@@ -9,14 +9,13 @@ import axios from "axios";
 const Content = props => {
     const [content, setContent] = useState("");
     useEffect(() => {
-        console.log(props.title);
         props.title && axios(`/legal/${props.lang}/${props.title}`).then(response => {
             console.log(response);
             setContent(response.data)
         });
     }, [props.title])
-    return <section>
-        <h2>{props.title}</h2>
+    return <section className={"legal-text"}>
+        {/*<h2>{props.title}</h2>*/}
         <div dangerouslySetInnerHTML={{__html: content}}/>
     </section>
 }
@@ -24,7 +23,7 @@ const Content = props => {
 const Index = props => {
     return (
         <>
-            <h2>Rechtliche Informationen</h2>
+            <h2>Übersicht</h2>
             <ul>
                 {props.index.map(text => {
                     return <li key={text.title}>
@@ -42,11 +41,9 @@ const LegalIndex = props => {
     const dispatch = useDispatch();
     const legalTexts = useSelector(state=>state.app.legalTexts);
 
-    useEffect(() => {
-        axios(`/legal/${lang}/${textTitle}`).then(response => null);
-    }, [lang, textTitle])
-
-    console.log(textTitle);
+    // useEffect(() => {
+    //     axios(`/legal/${lang}/${textTitle}`).then(response => null);
+    // }, [lang, textTitle])
 
     return (<>
         <div className={"row"}>

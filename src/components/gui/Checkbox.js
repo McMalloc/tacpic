@@ -70,7 +70,7 @@ const Input = styled.input`
   }  
 
   &:focus + label {
-    box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
+    outline: 4px solid rgba(38, 132, 255, 0.7);
   }
 `;
 
