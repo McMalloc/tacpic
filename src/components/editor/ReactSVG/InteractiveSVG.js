@@ -12,6 +12,7 @@ import SVGGrid from "./Grid";
 import {findObject} from "../../../utility/findObject";
 import {SVGPage} from "./SVGPage";
 import {ERROR_THROWN, SWITCH_CURSOR_MODE} from "../../../actions/action_constants";
+import {TOOL_SENSIBILITY} from "../../../config/constants";
 
 class InteractiveSVG extends Component {
     svgElement = React.createRef();
@@ -43,6 +44,17 @@ class InteractiveSVG extends Component {
 
     componentDidMount() {
         init(this.svgElement.current);
+        const wrapperWidth = this.svgElement.current.getBoundingClientRect().width;
+        const canvasWidth = document.getElementById("VIEWBOX").getBoundingClientRect().width;
+
+        const centeredOffset = wrapperWidth/2 - canvasWidth/2;
+        this.props.changeViewport(
+            this.props.ui.scalingFactor,
+            canvasWidth > wrapperWidth ? 10 :
+                wrapperWidth/2 - canvasWidth/2 < 300 ?
+                    Math.max(centeredOffset, wrapperWidth-canvasWidth-10) :
+                    Math.min(centeredOffset, wrapperWidth-canvasWidth-10),
+            this.props.ui.viewPortY);
     }
 
     currentX = x => x - this.svgElement.current.getBoundingClientRect().left;
@@ -193,10 +205,22 @@ class InteractiveSVG extends Component {
                     editIndex: -1
                 });
             }
+
+            let selectedId = null;
+            if (this.props.ui.tool === 'SELECT') {
+                if (target.dataset.selectable) {
+                    selectedId = target.id || target.dataset.uuid;
+                    this.props.select([selectedId]);
+                }
+            } else {
+
+            }
+
             if (target.dataset.role === 'ROTATE') this.setState({transform: 'rotate'});
             if (target.dataset.role === 'SCALE') this.setState({transform: 'scale'});
             if (target.dataset.start) this.setState({pathClosing: true});
-            if (target.dataset.transformable === "true") this.setState({transform: 'translate'});
+
+            if (target.dataset.transformable === "true" && this.props.ui.tool === 'SELECT') this.setState({transform: 'translate'});
 
             if (target.dataset.role === 'EDIT-PATH') {
                 console.log("edit path");
@@ -210,16 +234,9 @@ class InteractiveSVG extends Component {
                     editParam: parseInt(target.dataset.param),
                     editIndex: parseInt(target.dataset.index)
                 })
-            };
-
-            let selectedId = null;
-
-            if (target.dataset.selectable) {
-                selectedId = target.id || target.dataset.uuid;
-                this.props.select([selectedId]);
             }
 
-            if (this.state.preview === null && target.dataset.selectable !== 'true') {
+            if (this.state.preview === null) { // create a new object
                 switch (this.props.ui.tool) {
                     case 'ELLIPSE':
                     case 'RECT':
@@ -261,7 +278,7 @@ class InteractiveSVG extends Component {
                         break;
                 }
             } else if (this.state.preview !== null) {
-                if (this.state.preview.type === 'path') {
+                if (this.state.preview.type === 'path') { // add points to path that is not complete
                     if (target.dataset.endpoint) {
                         let closingPath = {...this.state.preview};
                         this.props.updateObject({...this.state.preview, closed: parseInt(target.dataset.index) === 0});
@@ -304,8 +321,8 @@ class InteractiveSVG extends Component {
         });
         this.props.isDragging(false); // give info to editor component
 
-        const actuallyMoved = Math.abs(this.state.mouseDownX - this.state.mouseOffsetX) > 3 ||
-            Math.abs(this.state.mouseDownY - this.state.mouseOffsetY) > 3;
+        const actuallyMoved = Math.abs(this.state.mouseDownX - this.state.mouseOffsetX) > TOOL_SENSIBILITY ||
+            Math.abs(this.state.mouseDownY - this.state.mouseOffsetY) > TOOL_SENSIBILITY;
 
         if (this.state.preview !== null) { // set preview in stone (=store)
             if (this.props.ui.tool === 'PATH') {
@@ -322,7 +339,7 @@ class InteractiveSVG extends Component {
                 }
             } else {
                 // when dragged, create new object
-                this.state.dragging && this.props.updateObject(this.state.preview);
+                if (this.state.dragging && actuallyMoved) this.props.updateObject(this.state.preview);
                 this.setState({
                     preview: null
                 });
@@ -497,13 +514,13 @@ class InteractiveSVG extends Component {
                        translate(${this.props.ui.viewPortX} ${this.props.ui.viewPortY}) 
                        scale(${this.props.ui.scalingFactor})`}>
 
-                    <rect
-                        fill={"transparent"}
-                        stroke={"white"}
-                        x={this.props.bounds.minH}
-                        y={this.props.bounds.minV}
-                        width={this.props.bounds.maxH - this.props.bounds.minH}
-                        height={this.props.bounds.maxV - this.props.bounds.minV} />
+                    {/*<rect*/}
+                    {/*    fill={"transparent"}*/}
+                    {/*    stroke={"white"}*/}
+                    {/*    x={this.props.bounds.minH}*/}
+                    {/*    y={this.props.bounds.minV}*/}
+                    {/*    width={this.props.bounds.maxH - this.props.bounds.minH}*/}
+                    {/*    height={this.props.bounds.maxV - this.props.bounds.minV} />*/}
 
 
                     {this.props.file.present.pages.map((page, index) => {

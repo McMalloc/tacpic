@@ -8,7 +8,7 @@ const Label = styled.label`
   //display: flex;
   margin-bottom: 0.5em;
   padding-left: 1.4em;
-  transition: font-weight 0.1s, color 0.1s;
+  transition: font-weight 0.1s, color 0.1s, outline 0.1s;
   position: relative;
   align-items: center;
   color: ${props => props.disabled ? props.theme.grey_4 : "inherit"};

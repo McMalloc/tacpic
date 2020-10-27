@@ -53,12 +53,10 @@ const Black = styled.textarea`
 const Pagenumbers = styled.div`
   line-height: 12mm;
   font-size: 14pt;
-  //margin-top: -4mm;
   font-family: Arial, Helvetica, sans-serif;
   color: blue;
   top: -2mm;
   position: absolute;
-  left: ${props => props.offset + 18}px;
 `;
 
 const Container = styled.div`
@@ -161,7 +159,7 @@ const Label = props => {
                                value={props.isKey ? props.keyVal : props.text}
                         />
                         {props.isTitle && !props.pristine &&
-                            <Pagenumbers offset={titleWidth}>{` ${currentPageNumber}/${pageNumber}`}</Pagenumbers>
+                            <Pagenumbers className={"label-black page-numbers"} style={{left: titleWidth + 18}}>{` ${currentPageNumber}/${pageNumber}`}</Pagenumbers>
                         }
                         </>
                     }

@@ -48,8 +48,8 @@ const Manipulator = props => {
         width = bbox.width * scalingFactor;
         height = bbox.height * scalingFactor;
         transformProperty = transform(
-            bbox.x * scalingFactor + viewPortX - 2,
-            bbox.y * scalingFactor + viewPortY - 2,
+            bbox.x * scalingFactor + viewPortX,
+            bbox.y * scalingFactor + viewPortY,
             selected[0].angle,
             width,
             height
@@ -83,14 +83,12 @@ const Manipulator = props => {
             <rect
                 fill={"none"}
                 // filter="url(#f1)"
-                stroke={'rgba(255, 20, 147, 0.8)'}
-                strokeWidth={2}
-                strokeDasharray={"5,5"}
+                style={{outline: "2px dashed rgba(255, 20, 147, 0.8)"}}
                 data-transformable={1}
                 data-role={"MANIPULATOR"}
                 onDoubleClick={() => doubleClickHandler(dispatch, selected, props.onModeChange)}
-                width={width + 4}
-                height={height + 4}
+                width={width}
+                height={height}
             />
             {selected.length === 1 &&
             <>

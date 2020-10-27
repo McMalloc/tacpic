@@ -85,7 +85,7 @@ const AccordeonPanelFlyout = styled.div`
   top: 0;
   //z-index: 1;
   min-width: 200px;
-  max-width: 400px;
+  max-width: ${props => props.maxWidth ? props.maxWidth : 400}px;
   background-color: ${props => props.theme.grey_6};
   display: ${props => props.hideFlyout ? "none" : "block"};
   padding: ${props => props.theme.large_padding};
@@ -140,26 +140,39 @@ const AccordeonPanelFlyoutButton = props => {
             panelRef.current.style.top = `${vh - (panelBBox.top + panelBBox.height) - 36}px`;
         }
     }, [props.flownOut]);
+
     return (
         <AccordeonPanelButtonWrapper className={props.className}>
-            {props.genericButton ?
-                <div ref={buttonRef}>{props.genericButton}</div>
-                :
-                <Toggle ref={buttonRef} leftAlign toggled={props.flownOut} onClick={props.onClick} fullWidth
-                        label={props.label}
-                        icon={props.icon}/>
-            }
-            {props.children && createPortal(<CSSTransition classNames={"slidein"} in={props.flownOut} timeout={100} appear unmountOnExit>
-                <AccordeonPanelFlyout hideFlyout={props.hideFlyout} ref={panelRef}>
-                    {props.children}
-                </AccordeonPanelFlyout>
-            </CSSTransition>, document.getElementById("flyout"))}
+
+                {/*<pre>{JSON.stringify(pprops)}</pre>*/}
+                {props.genericButton ?
+                    <div ref={buttonRef}>{props.genericButton}</div>
+                    :
+                    <Toggle ref={buttonRef} leftAlign toggled={props.flownOut} onClick={props.onClick} fullWidth
+                            label={props.label}
+                            icon={props.icon}/>
+                }
+                {props.children && createPortal(<CSSTransition classNames={"slidein"} in={props.flownOut} timeout={100} appear unmountOnExit>
+                    <AccordeonPanelFlyout maxWidth={props.maxWidth} hideFlyout={props.hideFlyout} ref={panelRef}>
+                        {props.children}
+                    </AccordeonPanelFlyout>
+                </CSSTransition>, document.getElementById("flyout"))}
+
         </AccordeonPanelButtonWrapper>
     )
 };
 
 const AccordeonPanel = props => {
-    const [collapsed, setCollapsed] = useState(localStorage.getItem(props.title + "_collapsed") === "false" || !!props.collapsedOverride);
+    // console.log(props.openedOverride);
+    // const defaultState = props.openedOverride !== undefined && props.openedOverride ? props.openedOverride : localStorage.getItem(props.title + "_collapsed") === "true";
+    const [collapsed, setCollapsed] = useState(localStorage.getItem(props.title + "_collapsed") === "false");
+    // const [openedByOverride, setOpenedByOverride] = useState(localStorage.getItem(props.title + "_collapsed") === "false");
+
+    // if (collapsed && props.openedOverride) {
+    //     // setOpenedByOverride(true);
+    //     setCollapsed(false);
+    // }
+    // console.log(props.children);
     return (
         <AccordeonPanelWrapper>
             <AccordeonPanelTitle collapsed={collapsed} onClick={() => {

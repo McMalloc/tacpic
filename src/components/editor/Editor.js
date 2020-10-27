@@ -63,6 +63,12 @@ const CanvasWrapper = styled.div`
   box-shadow: 5px 5px 10px rgba(0,0,0,0.3) inset;
 `;
 
+const FlyoutSensitive = styled.div`
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background-color: rgba(0,0,0,0);
+`;
+
 const Sidebar = styled.div`
   flex: 0 1 25%;
   //height: 100%;
@@ -226,7 +232,7 @@ const Editor = props => {
                     <Wrapper>
                     <Radiobar>
                         <RadiobarSegment>
-                            {["SELECT", "KEY", "RECT", "ELLIPSE", /*"CUBIC", "QUADRATIC",*/ "LABEL", "PATH", /*"LINE"*/].map((tool, index) => {
+                            {["SELECT", "KEY", "RECT", "ELLIPSE", "LABEL", "PATH"].map((tool, index) => {
                                 return (
                                     <Toggle
                                         label={"editor:toggle_tools-" + tool}
@@ -235,7 +241,7 @@ const Editor = props => {
                                         icon={iconMap[tool]}
                                         toggled={uiSettings.tool === tool}
                                         onClick={() => {
-                                            switchCursorMode(dispatch, tool);
+                                            switchCursorMode(dispatch, uiSettings.tool === tool ? "SELECT" : tool);
                                         }}
                                     />
                                 )
@@ -294,10 +300,12 @@ const Editor = props => {
                                     Mode: {mode}<br />
                                     Graphic ID: {file.graphic_id + " (" + graphicId + ")"}<br />
                                     Variant ID: {file.variant_id + " (" + variantId + ")"}<br />
+                                    {openedPanel + ''}
                                 </pre>
                             </Draftinfo>
-
-                            <AccordeonPanel collapsedOverride={openedPanel === 'publish'} title={"Entwurf"}>
+                            {/*<AccordeonPanel collapsedOverride={true} title={"Entwurf"}>*/}
+                            {/*<AccordeonPanel openOverride={false} title={"Entwurf"}>*/}
+                            <AccordeonPanel openedOverride={openedPanel === 'publish'} title={"Entwurf"}>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'document'}
                                                             hideFlyout={dragging}
                                                             className={"padded"}
@@ -366,6 +374,9 @@ const Editor = props => {
                             <Canvas isDragging={dragging => setDragging(dragging)} hide={page.text}/>
                             {showBraillePanel &&
                             <BraillePage/>
+                            }
+                            {openedPanel !== null &&
+                                <FlyoutSensitive onClick={() => setOpenedPanel(null)}/>
                             }
                         </CanvasWrapper>
                     </PanelWrapper>

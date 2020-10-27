@@ -9,7 +9,7 @@ export const editor = {
         currentPage: 0,
         scalingFactor: 1,
         viewPortX: 0,
-        viewPortY: 0,
+        viewPortY: 10,
         previewMode: false,
         selectedObjects: [],
         defaultTitle: true,

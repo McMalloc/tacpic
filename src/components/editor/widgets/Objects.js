@@ -66,7 +66,6 @@ const iconMap = {
 const keyDownHandler = (event, selectedUUID, dispatch) => {
     switch (event.which) {// TODO use constants instead of magic numbers
         case 46: // DEL
-            debugger;
             if (!!selectedUUID) return;
             dispatch({
                 type: 'OBJECT_SELECTED',
@@ -149,6 +148,7 @@ const Objects = props => {
                     const active = selectedUUID === object.uuid;
                     return <AccordeonPanelFlyoutButton
                         flownOut={active}
+                        maxWidth={230}
                         hideFlyout={props.hideFlyout}
                         key={index}
                         genericButton={<ObjectEntry active={active} {...object} index={index}/>}>
@@ -156,6 +156,7 @@ const Objects = props => {
                     </AccordeonPanelFlyoutButton>
                 })}
             </Wrapper>
+            {/*Dummy Object, makes drag-and-dropping easier*/}
             <ObjectEntry active={false}  index={-1}/>
         </>
     );
