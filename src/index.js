@@ -11,7 +11,7 @@ import {HTML5Backend} from "react-dnd-html5-backend";
 
 import './index.scss';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import registerServiceWorker, {unregister} from './registerServiceWorker';
 import store, {history} from "./store/configureStore";
 import {standard} from "./styles/themes"
 import {BrowserRouter} from "react-router-dom";
@@ -40,4 +40,5 @@ import {BrowserRouter} from "react-router-dom";
         document.getElementById('root'));
 
 // for debugging purposes
-registerServiceWorker();
+// registerServiceWorker();
+unregister()
