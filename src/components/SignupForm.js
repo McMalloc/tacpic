@@ -27,6 +27,7 @@ const SignupForm = props => {
     const [emailValid, setEmailValid] = useState(false);
     const [displaynameValid, setDisplaynameValid] = useState(false);
     const [privacyAccepted, setPrivacyAccepted] = useState(false);
+    const [newsletterActive, setNewsletterActive] = useState(false);
 
     useEffect(() => {
         trackPageView()
@@ -63,7 +64,7 @@ const SignupForm = props => {
                             event.preventDefault();
                             emailValid && dispatch({
                                 type: USER.CREATE.REQUEST,
-                                payload: {uname, displayname}
+                                payload: {uname, displayname, newsletterActive}
                             });
                         }}>
                             <Textinput
@@ -92,6 +93,11 @@ const SignupForm = props => {
 
                             <p>Für ein Passwort entscheiden Sie sich im nächsten Schritt.</p>
 
+                            <Checkbox onChange={event => setNewsletterActive(!newsletterActive)}
+                                      name={'cb-newsletter-active'}
+                                      checked={newsletterActive}
+                                      label={"account:newsletter-active"}/>
+
                             <Checkbox onChange={event => setPrivacyAccepted(!privacyAccepted)}
                                       name={'cb-privacy-accept'}
                                       checked={privacyAccepted}
@@ -103,7 +109,7 @@ const SignupForm = props => {
                                 <Button disabled={!(emailValid) || user.verification_state === 0 || !privacyAccepted}
                                         primary
                                         icon={user.verification_state === 0 ? "cog fa-spin" : "user-plus"}
-                                        onClick={() => trackEvent({category: 'signup', action: 'submit'})}
+                                        // onClick={() => trackEvent({category: 'signup', action: 'submit'})}
                                         type={'submit'}>{t("general:signup")}</Button>
                             </div>
                             <p>

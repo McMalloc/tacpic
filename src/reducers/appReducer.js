@@ -19,6 +19,11 @@ const appReducer = (state = {}, action) => {
                     return {did, title}
                 })
             }
+        case APP.FRONTEND.FAILURE:
+            return {
+                ...state,
+                error: action.statusCode === 500 ? {type: "not available", message: "backend service not available"} : null
+            }
         case ERROR_THROWN:
             return {
                 ...state,

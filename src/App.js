@@ -24,6 +24,7 @@ import NotFound from "./components/NotFound";
 import ResetPasswordRequest from "./components/platform/account/ResetPasswordRequest";
 import Page from "./components/platform/pages/Page";
 import LegalIndex from "./components/platform/Legal";
+import {Alert} from "./components/gui/Alert";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -51,6 +52,7 @@ const App = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     const inEditor = /editor/.test(location.pathname);
+    const appError = useSelector(state=>state.app.error);
 
     useEffect(() => {
         dispatch({type: APP.FRONTEND.REQUEST})
@@ -73,6 +75,9 @@ const App = () => {
     return (
         <Wrapper>
             <Navbar items={navbarItems}/>
+            {appError !== null &&
+            <Alert danger>Unser Service ist zur Zeit aus technischen Gründen nicht erreichbar.</Alert>
+            }
             <ScrollContent>
                 <AppContainer id={"app-container"} className={(!inEditor ? " padded-top container" : "")}>
                         <Routes>

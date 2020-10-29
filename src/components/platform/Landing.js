@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components/macro";
 import Searchbar from "./Searchbar";
 import {Button} from "../gui/Button";
@@ -11,6 +11,7 @@ import Divider from "../gui/Divider";
 import {getViewport} from "../../utility/viewport";
 import {Icon} from "../gui/_Icon";
 import {Container, Row} from "../gui/Grid";
+import {Alert} from "../gui/Alert";
 
 const Form = styled.div`
   //width: 500px;
@@ -62,6 +63,7 @@ const Landing = () => {
     const t = useTranslation().t;
     const navigate = useNavigate();
     const videoPlayer = useRef();
+    const signedUp = useSelector(state=>state.user.logged_in);
 
     const [showMore, setShowMore] = useState(true);
     const [allowPlayer, setAllowPlayer] = useState(false);
@@ -69,16 +71,7 @@ const Landing = () => {
 
     useEffect(() => {
         setVheight(getViewport().vh);
-        // let container = document.getElementById("app-container");
-        // let jump = document.getElementById("to-jump");
-        // if (container && jump) {
-        //     let height = container.getBoundingClientRect().height;
-        //     let offset = jump.getBoundingClientRect().y;
-        //     // setOffset(height - (height - offset));
-        // }
     }, []);
-
-    console.log(vheight);
 
     return (
         <>
@@ -101,6 +94,22 @@ const Landing = () => {
                                 }}>{t("catalogue:create")}</Button>
                             </div>
                         </Form>
+                        {!signedUp &&
+                        <>
+                            <p> <hr/></p>
+                            <p>
+                                Legen Sie Ihr kostenloses tacpic-Konto an um eigene Grafiken zu erstellen und lassen Sie sich durch unseren Newsletter über die neusten Entwicklungen informieren.<br />
+                                <p>
+                                    <Button large icon={"user-plus"} primary>
+                                        {t("general:signup")}
+                                    </Button>
+                                </p>
+
+                            </p>
+                            <p> <hr/></p>
+                        </>
+                        }
+
                     </div>
                 </div>
                 <div className={"row extra-padding"}>

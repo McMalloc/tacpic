@@ -1,6 +1,7 @@
 import {takeLatest, call, put} from 'redux-saga/effects';
 import {USER} from "../actions/action_constants";
 import createSaga from "./saga_utilities";
+import {id} from "./index";
 
 export const userValidateSaga = createSaga(USER.VALIDATE, 'get', 'users/validate', takeLatest, true);
 
@@ -10,6 +11,7 @@ export const userCreateSaga = createSaga(USER.CREATE, 'post', 'create-account', 
         "login-confirm": request.uname,
         password: request.pwd,
         display_name: request.displayname,
+        newsletter_active: request.newsletterActive,
         "password-confirm": request.pwdConfirm,
     }
 }, (response, statusCode, authHeader) => {
@@ -26,6 +28,7 @@ export const userLoginSaga = createSaga(USER.LOGIN, 'post', 'login', takeLatest,
 export const userVerifySaga = createSaga(USER.VERIFY, 'post', 'verify-account?key=:key', takeLatest, false, request=>request, processLoginResponse);
 export const userResetRequestSaga = createSaga(USER.RESET_REQUEST, 'post', 'reset-password-request', takeLatest, false, request=>request, response=>response);
 export const userResetSaga = createSaga(USER.RESET, 'post', 'reset-password', takeLatest, false, request=>request, response=>response);
+export const userUpdateSaga = createSaga(USER.UPDATE, 'post', 'users/:id', takeLatest, true, id, id);
 
 // TODO doesnt work
 // export const userLogoutSaga = createSaga(USER.LOGIN, 'post', 'login', takeLatest, false, id, () => {

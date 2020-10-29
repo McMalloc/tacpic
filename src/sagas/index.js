@@ -1,7 +1,7 @@
 import {
     logoutWatcher,
     userCreateSaga,
-    userLoginSaga, userResetRequestSaga, userResetSaga,
+    userLoginSaga, userResetRequestSaga, userResetSaga, userUpdateSaga,
     userValidateSaga,
     userVerifySaga
 } from "./user_saga";
@@ -18,7 +18,7 @@ import {
     GRAPHIC,
     VARIANTS,
     ADDRESS,
-    APP, QUOTE, IMPORT, CMS_PAGE, STATIC_PAGE
+    APP, QUOTE, IMPORT, CMS_PAGE, STATIC_PAGE, USER
 } from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {
@@ -103,6 +103,7 @@ export default function* root() {
         call(userLoginSaga),
         call(userValidateSaga),
         call(userCreateSaga),
+        call(userUpdateSaga),
         call(userVerifySaga),
         call(userResetSaga),
         call(userResetRequestSaga),

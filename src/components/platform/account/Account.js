@@ -14,6 +14,7 @@ import {Outlet} from "react-router";
 import {Alert} from "../../gui/Alert";
 import {Icon} from "../../gui/_Icon";
 import {useTranslation} from "react-i18next";
+import Privacy from "./Privacy";
 
 const Account = props => {
     const user = useSelector(state => state.user);
@@ -30,6 +31,7 @@ const Account = props => {
         {key: "addresses", icon: "map-marked"},
         {key: "my_account", icon: "user"},
         {key: "orders", icon: "shopping-basket"},
+        {key: "newsletter", icon: "info"},
         // {key: "my_payment_options", icon: "credit-card"}
     ];
 
@@ -73,6 +75,7 @@ const Account = props => {
                                     <Route path='addresses' element={<span> <Icon icon={"angle-right"} /> Adressen</span>} />
                                     <Route path='my_account' element={<span> <Icon icon={"angle-right"} /> Mein Konto</span>} />
                                     <Route path='orders' element={<span> <Icon icon={"angle-right"} /> Bestellungen</span>} />
+                                    <Route path='newsletter' element={<span> <Icon icon={"angle-right"} /> {t("account:newsletter")}</span>} />
                                 </Routes>
                             </h4>
 
@@ -85,6 +88,7 @@ const Account = props => {
                         <Route path="orders" element={<Orders/>}/>
                         <Route path="my_account" element={<AccountInfo/>}/>
                         <Route path="addresses" element={<Addresses/>}/>
+                        <Route path="newsletter" element={<Privacy/>}/>
                     </Routes>
                     {/*</Row>*/}
                 </>

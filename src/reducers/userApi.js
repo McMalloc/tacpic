@@ -68,7 +68,8 @@ const userApi = (state = {}, action) => {
                 login_pending: false,
                 email: action.data.email,
                 id: action.data.id,
-                displayName: action.data.display_name
+                displayName: action.data.display_name,
+                newsletterActive: action.data.newsletter_active
             };
         case USER.VALIDATE.FAILURE:
             return {
@@ -112,6 +113,17 @@ const userApi = (state = {}, action) => {
         case ORDER.INDEX.SUCCESS:
             return {...state,
                 orders: action.data
+            };
+
+        case USER.UPDATE.REQUEST:
+            return {...state};
+        case USER.UPDATE.SUCCESS:
+            return {...state,
+                newsletterActive: action.data.newsletter_active
+            };
+        case USER.UPDATE.FAILURE:
+            return {...state,
+                error: action.message
             };
         default:
             return state;

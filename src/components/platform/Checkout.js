@@ -138,7 +138,7 @@ const Checkout = props => {
             <Button label={"Weiter zur Bezahlmethode"} onClick={() => changeStep(2)} primary rightAction
                     disabled={!((shippingAddress.id !== null || validShippingAddress)
                         && (!useInvoiceAddress || (invoiceAddress.id !== null || validInvoiceAddress)))}/>
-                    <br />
+            <br/>
         </section>
 
     const paymentSection = <section>
@@ -148,7 +148,8 @@ const Checkout = props => {
                     die Sie innerhalb von 14 Tagen begleichen.</small></div>, value: "invoice"
             },
             {
-                label: <div>PayPal (zur Zeit noch nicht verfügbar)<br/><small>Sie werden nach Abschluss des Bestellvorgangs zu PayPal
+                label: <div>PayPal (zur Zeit noch nicht verfügbar)<br/><small>Sie werden nach Abschluss des
+                    Bestellvorgangs zu PayPal
                     weitergeleitet. Sie benötigen ein PayPal-Benutzerkonto.</small></div>,
                 value: "paypal",
                 disabled: true
@@ -180,14 +181,18 @@ const Checkout = props => {
             {t('commerce:' + paymentMethod)}
         </p>
 
+        <p><strong>Hinweis</strong><br/>
+            Bitte nehmen Sie unsere <a href={"/legal/de/Allgemeine%20Gesch%C3%A4ftsbedingungen%20und%20Kundeninformationen"}>Allgemeinen Geschäftsbedingungen (AGB)</a> zur Kenntnis.
+        </p>
 
         <br/>
         {back}
         <Button label={"Kostenpflichtig bestellen"}
                 icon={orderState.pending ? "cog fa-spin" : "handshake"}
                 onClick={() => placeOrder(dispatch, shippingAddress, useInvoiceAddress ? invoiceAddress : null, paymentMethod, idempotencyKey)}
-                primary large rightAction
+                primary rightAction
                 disabled={paymentMethod === null || orderState.pending}/>
+        <br/>
     </section>
 
     const steps = ["Anmeldung", "Addresse", "Bezahlmethode", "Überprüfen"]
@@ -198,7 +203,8 @@ const Checkout = props => {
                 <div className={"col-md-6 col-md-offset-3"}>
                     <Alert danger>
                         Die Plattform befindet sich in der Alpha-Phase, d.h. sie wird noch getestet.
-                        <strong>Getätigte Bestellungen werden entgegen der Beschriftung nicht ausgelöst und es fallen keine Kosten an.</strong>
+                        <strong>Getätigte Bestellungen werden entgegen der Beschriftung nicht ausgelöst und es fallen
+                            keine Kosten an.</strong>
                     </Alert>
                 </div>
             </Row>
@@ -239,7 +245,7 @@ const Checkout = props => {
                         {step === 3 && checkSection}
                     </div>
 
-                    <br />
+                    <br/>
                     {orderState.error !== null &&
                     <><Alert danger>
                         Bestellung fehlgeschlagen<br/>
@@ -250,9 +256,9 @@ const Checkout = props => {
                 <div className={"col-sm-6 col-sm-offset-1"}>
                     <h2>Warenkorb</h2>
                     <BasketListing/>
-                    <br />
-                    <br />
-                    <br />
+                    <br/>
+                    <br/>
+                    <br/>
                 </div>
             </Row>
         </>
