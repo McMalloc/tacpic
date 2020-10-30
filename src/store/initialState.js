@@ -75,7 +75,10 @@ export const editor = {
                     name: "Seite 1",
                     text: false,
                     rendering: '',
-                    objects: [methods.label.create(10, 10, 350, 75, i18n.t('editor:title_placeholder'), '', {isTitle: true, editMode: false, pristine: true})]
+                    objects: [
+                        methods.label.create(10, 10, 350, 75, i18n.t('editor:title_placeholder'), '', {isTitle: true, editMode: false, pristine: true}),
+                        methods.key.create(100, 100)
+                    ]
                 }
             ]
         },

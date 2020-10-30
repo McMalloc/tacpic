@@ -1,20 +1,16 @@
-import React, {Component} from 'react';
-import {connect, useDispatch, useSelector} from "react-redux";
-import {createFillModeAction, createTextureModeAction} from "../../../../actions";
-import TabPane from "../../../gui/Tabs";
-import {Numberinput, Textinput} from "../../../gui/Input";
+import React from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {Textinput} from "../../../gui/Input";
 import {Checkbox} from "../../../gui/Checkbox";
 import Select from "../../../gui/Select";
-import {Button} from "../../../gui/Button";
 import {Row} from "../../../gui/Grid";
 import Palette from "../../../gui/Palette";
-import {find, isUndefined, debounce} from 'lodash';
 import TexturePalette from "../../../gui/TexturePalette";
-import Tooltip from "../../../gui/Tooltip";
 import {findObject} from "../../../../utility/findObject";
 import {useTranslation} from "react-i18next";
 import {Alert} from "../../../gui/Alert";
 import {borderStyles} from "../../ReactSVG/constants";
+import {COLOURS} from "../../../../config/constants";
 
 const changePattern = (dispatch, uuid, pattern, offset) => {
     dispatch({
@@ -61,8 +57,6 @@ const ShapeContext = props => {
             </Row>
 
             <div>
-                {/*<Tooltip/>*/}
-
                 <fieldset>
                     <legend>Relief</legend>
 
@@ -94,9 +88,7 @@ const ShapeContext = props => {
 
                     <Palette selected={selectedObject.fill}
                              onChange={fill => changeProp(dispatch, selectedObject.uuid, 'fill', fill)}
-                             colours={
-                                 [null, '#000000', '#412B82', '#E4120D', '#C2368C', '#018ECC', '#F08000', '#79BA4A', '#FFEC01', '#FFFFFF']
-                             } extendedColours={null}/>
+                             colours={[null].concat(Object.values(COLOURS))} extendedColours={null}/>
                 </fieldset>
                 <fieldset>
                     <legend>Kontur</legend>

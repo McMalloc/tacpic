@@ -12,7 +12,7 @@ export const extractSVG = index => document.getElementById("page-" + index).oute
 
 // TODO props.uuid als index?
 export default function mapObject(props, index) {
-    if (!props) return null;
+    if (!props || (props.hasOwnProperty('active') && !props.active)) return null;
     switch (props.type) {
         case "rect":
             return <SVGRect key={index} {...props} />;

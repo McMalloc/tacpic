@@ -62,9 +62,9 @@ const AccordeonPanelButtonWrapper = styled.div`
 const AccordeonMenuEntry = styled.div`
   cursor: pointer;
   min-height:12px;
-  border: 2px solid ${props => props.active ? props.theme.brand_primary : 'transparent'};
-  background-color: ${props => props.active ? props.theme.background : 'inherit'}!important;
-  text-decoration: ${props => props.active ? 'underline' : 'inherit'};
+  border: 2px solid ${props => props.active || props.selected ? props.theme.brand_primary : 'transparent'};
+  background-color: ${props => props.active || props.selected ? props.theme.background : 'inherit'}!important;
+  text-decoration: ${props => props.active || props.selected ? 'underline' : 'inherit'};
   padding: 2px 4px;
   border-top: 2px solid ${props => props.hovered ? 'red' : 'inherit'};
   align-items: center;

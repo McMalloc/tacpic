@@ -27,4 +27,15 @@ table {
       }
     }
   }
+
+  &.initial {
+    td {
+      padding: 0;
+      border: 0;
+    }
+
+    tr:hover {
+      background-color: initial;
+    }
+  }
 }

@@ -37,6 +37,31 @@ export function* labelWriteWatcher() {
     })
 }
 
+export function* textureKeyChangeWatcher() {
+    yield debounce(1000, 'KEY_TEXTURE_CHANGED', function* (action) {
+        try {
+            let system = yield select(state => state.editor.file.present.system);
+            const response = yield call(() => {
+                return axios({
+                    method: 'POST',
+                    url: API_URL + '/braille',
+                    data: {
+                        label: sanitise(action.label),
+                        system
+                    }
+                });
+            });
+            yield put({
+                type: 'KEY_TEXTURE_TRANSLATED',
+                braille: response.data,
+                pattern: action.pattern
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    })
+}
+
 export function* contentEditWatcher() {
     yield debounce(1000, [CHANGE_PAGE_CONTENT, CHANGE_IMAGE_DESCRIPTION], function* (action) {
         try {

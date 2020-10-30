@@ -138,12 +138,13 @@ const createLabel = (x = 0, y = 0, width = 100, height = 100, text = '', braille
     }
 };
 
-const createKey = (x = 0, y = 0, moniker = "Legende") => {
+const createKey = (x = 0, y = 0, width = 200, height = 300, moniker = "Legende") => {
     return {
         uuid: uuidv4(),
-        x, y,
+        x, y, width, height,
         moniker,
         editMode: true,
+        active: true,
         border: true,
         borderWidth: 2,
         type: 'key'
@@ -168,13 +169,13 @@ const defaultScale = (object, offsetX, offsetY, downX, downY, absX, absY) => {
         object.width += offsetX;
     } else {
         object.x += offsetX;
-        object.width -=offsetX;
+        object.width -= offsetX;
     }
     if (object.y < absY) {
         object.height += offsetY;
     } else {
         object.y += offsetY;
-        object.height -=offsetY;
+        object.height -= offsetY;
     }
 
 
@@ -231,12 +232,12 @@ const getBBox = object => {
 };
 
 const getKeyBBox = object => {
-    let elem = document.getElementById(object.uuid);
-    if (!!elem) {
-        return elem.getBBox();
-    } else {
-        return {x: 0, y: 0, width: 0, height: 0}
-    }
+    return {
+        x: object.x,
+        y: object.y,
+        width: object.width,//bbox.width * (object.width / bbox.width),
+        height: object.height
+    };
 };
 
 // TODO durch den Abstand des Reliefs zum Rand ist die bbox verfälscht, muss abgezogen werden
@@ -339,9 +340,10 @@ const methods = {
     },
     key: {
         create: createKey,
+        scale: defaultScale,
         translate: defaultTranslate,
         rotate: id,
-        getBBox: getBBox,
+        getBBox: getKeyBBox,
     },
     selection: {
         rotate: selectionRotate

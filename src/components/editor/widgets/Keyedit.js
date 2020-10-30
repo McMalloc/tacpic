@@ -12,7 +12,9 @@ import TexturePalette from "../../gui/TexturePalette";
 import Label from "../../gui/_Label";
 import {Lower, WidgetWrapper} from "../../gui/WidgetContainer";
 import methods from "../ReactSVG";
-import {patternsInUse, patternsInUseSelector} from "../../../reducers/selectors";
+import {keyedLabelsSelector, patternsInUse, patternsInUseSelector} from "../../../reducers/selectors";
+import {Checkbox} from "../../gui/Checkbox";
+import {AccordeonPanel} from "../../gui/Accordeon";
 
 const Table = styled.table`
   width: 100%;
@@ -70,15 +72,26 @@ const addKey = (dispatch) => {
 
 const Keyedit = props => {
     const dispatch = useDispatch();
-    const labelKeys = useSelector(state => {
-        const allObjects = flatten(map(state.editor.file.pages, page => page.objects));
-        return filter(allObjects, "isKey");
-    });
+    const labelKeys = useSelector(keyedLabelsSelector);
     const patternsInUse = useSelector(patternsInUseSelector);
     const keyedTextures = useSelector(state => state.editor.file.present.keyedTextures);
+    const keyObject = useSelector(state => flatten(map(state.editor.file.present.pages, page => page.objects)).find(object => object.type === 'key'));
 
     return (
         <div className={props.className}>
+            {!!keyObject &&
+            <Checkbox name={"show-key"}
+                      value={keyObject.active}
+                      onChange={() => dispatch({
+                          type: 'OBJECT_PROP_CHANGED',
+                          uuid: keyObject.uuid,
+                          prop: 'active',
+                          value: !keyObject.active
+                      })}
+                      label={"Zeige Legende"}/>
+            }
+
+
                 {labelKeys.length === 0 && patternsInUse.length === 0 ?
                     <p className={"disabled"}>Keine Einträge vorhanden. Erzeugen Sie eine abgekürzte Beschriftung oder
                         ein texturisiertes Objekt, um hier ihre Bedeutungen zu vermerken.</p>

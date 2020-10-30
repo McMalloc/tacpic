@@ -30,15 +30,13 @@ const OrderCompleted = props => {
             <p>Wir haben Ihnen eine Bestellübersicht per E-Mail geschickt.</p>
             <p>
                 <NavLink to={"/"}>
-                    Zurück zur Startseite.
+                    Zurück zur Startseite
                 </NavLink>
-            </p>
-            <p>
+                &emsp;|&emsp;
                 <NavLink to={"/account/orders"}>
-                    Bestellungen einsehen.
+                    Bestellungen einsehen
                 </NavLink>
             </p>
-
         </CenterWrapper>
     )
 };

@@ -5,7 +5,6 @@ import {
     GRAPHIC,
     OBJECTS_SWAPPED,
     SET_PAGE_RENDERINGS,
-    NEW_GRAPHIC_STARTED,
     BRAILLE_BULK_TRANSLATED,
     UPDATE_BRAILLE_CONTENT,
     CHANGE_FILE_PROPERTY,
@@ -124,7 +123,7 @@ const file = (state = {}, action) => {
                     object[action.prop] = action.value;
 
                     if (action.prop === "isKey") {// && object.keyVal.length === 0) {
-                        object.keyVal = object.text.slice(0, 3);
+                        object.keyVal = object.text.slice(0, 3).toLowerCase();
                     }
                 });
             });
@@ -250,7 +249,14 @@ const file = (state = {}, action) => {
                     draftState.keyedTextures[index].label = action.label;
                 } else {
                     // add new texture
-                    draftState.keyedTextures.push({pattern: action.pattern, label: action.label});
+                    draftState.keyedTextures.push({pattern: action.pattern, label: action.label, braille: ""});
+                }
+            });
+        case 'KEY_TEXTURE_TRANSLATED':
+            return produce(state, draftState => {
+                const index = draftState.keyedTextures.findIndex(entry => entry.pattern === action.pattern);
+                if (index !== -1) {
+                    draftState.keyedTextures[index].braille = action.braille;
                 }
             });
         case 'OBJECTS_GROUPED':

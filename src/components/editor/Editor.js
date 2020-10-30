@@ -11,7 +11,7 @@ import Canvas from "./widgets/Canvas";
 import Toggle from "../gui/Toggle";
 import {Button} from "../gui/Button";
 import Importer from "./widgets/Importer";
-import Key from "./widgets/Keyedit";
+import Keyedit from "./widgets/Keyedit";
 import Metadata from "./widgets/Metadata";
 import Pages from "./widgets/Pages";
 import Objects from "./widgets/Objects";
@@ -30,6 +30,8 @@ import Loader from "../gui/Loader";
 import {SVG_A4_PX_WIDTH} from "../../config/constants";
 import {editor} from "../../store/initialState";
 import Verbaliser from "./widgets/Verbaliser";
+import ErrorBoundary from "../../ErrorBoundary";
+import {Checkbox} from "../gui/Checkbox";
 
 const Wrapper = styled.div`
   display: flex;
@@ -119,7 +121,6 @@ const iconMap = {
     RECT: 'vector-square',
     ELLIPSE: 'circle',
     PATH: 'bezier-curve',
-    KEY: 'key',
     QUADRATIC: 'bezier-curve',
     LABEL: 'font'
 };
@@ -224,15 +225,13 @@ const Editor = props => {
         setShowImportModal(false);
     }
 
-    try {
-        if (uiSettings.fileOpenSuccess) {
-            // throw("boom")
-            return (
-                <>
-                    <Wrapper>
+    return <ErrorBoundary>
+        {uiSettings.fileOpenSuccess ?
+            <>
+                <Wrapper>
                     <Radiobar>
                         <RadiobarSegment>
-                            {["SELECT", "KEY", "RECT", "ELLIPSE", "LABEL", "PATH"].map((tool, index) => {
+                            {["SELECT", "RECT", "ELLIPSE", "LABEL", "PATH"].map((tool, index) => {
                                 return (
                                     <Toggle
                                         label={"editor:toggle_tools-" + tool}
@@ -290,16 +289,22 @@ const Editor = props => {
                                 <strong>{file.graphicTitle.length === 0 ? <span
                                     className={'disabled'}>Noch kein Titel</span> : file.graphicTitle}</strong><br/>
                                 {file.graphicTitle.length !== 0 ?
-                                <span>Variante: {file.variantTitle}</span>
+                                    <span>Variante: {file.variantTitle}</span>
                                     :
-                                    <Button fullWidth primary label={"Titel ändern"} />
+                                    <Button fullWidth primary label={"Titel ändern"}/>
                                 }
 
-                                <pre style={{border: '2px solid green', textShadow: '1px 1px 0 black', color: 'lightgreen', fontSize: '11px', padding: '2px 3px'}}>
-                                    Derived from: {file.derivedFrom + ""}<br />
-                                    Mode: {mode}<br />
-                                    Graphic ID: {file.graphic_id + " (" + graphicId + ")"}<br />
-                                    Variant ID: {file.variant_id + " (" + variantId + ")"}<br />
+                                <pre style={{
+                                    border: '2px solid green',
+                                    textShadow: '1px 1px 0 black',
+                                    color: 'lightgreen',
+                                    fontSize: '11px',
+                                    padding: '2px 3px'
+                                }}>
+                                    Derived from: {file.derivedFrom + ""}<br/>
+                                    Mode: {mode}<br/>
+                                    Graphic ID: {file.graphic_id + " (" + graphicId + ")"}<br/>
+                                    Variant ID: {file.variant_id + " (" + variantId + ")"}<br/>
                                     {openedPanel + ''}
                                 </pre>
                             </Draftinfo>
@@ -332,14 +337,8 @@ const Editor = props => {
                                 <Pages/>
                             </AccordeonPanel>
                             <AccordeonPanel title={"Legende"}>
-                                <AccordeonPanelFlyoutButton flownOut={openedPanel === 'key'}
-                                                            className={"padded"}
-                                                            hideFlyout={dragging}
-                                                            onClick={() => setOpenedPanel(openedPanel === 'key' ? null : 'key')}
-                                                            label={"Einfügen"} icon={"key"}>
 
-                                </AccordeonPanelFlyoutButton>
-                                <Key className={"padded"}/>
+                                <Keyedit className={"padded"}/>
                             </AccordeonPanel>
                             <AccordeonPanel title={"Brailleseiten"}>
                                 <AccordeonPanelFlyoutButton flownOut={showBraillePanel}
@@ -376,50 +375,45 @@ const Editor = props => {
                             <BraillePage/>
                             }
                             {openedPanel !== null &&
-                                <FlyoutSensitive onClick={() => setOpenedPanel(null)}/>
+                            <FlyoutSensitive onClick={() => setOpenedPanel(null)}/>
                             }
                         </CanvasWrapper>
                     </PanelWrapper>
                 </Wrapper>
 
-                    {/*TODO auslagern? nimmt ziemlich viele Zeilen in Editor.js*/}
-                    {showImportModal &&
-                    <Modal title={"Grafik importieren"} fitted actions={
-                        [{
-                            label: t("editor:Platzieren"),
-                            disabled: traceImport.error || !traceImport.preview,
-                            template: "primary",
-                            align: "right",
-                            action: () => {
-                                // TODO nach Mausklick platzieren, also an InteractiveSVG weitergeben
-                                dispatch({
-                                    type: OBJECT_UPDATED,
-                                    preview: methods.embedded.create(0, 0, traceImport.preview, traceImport.previewName)
-                                });
-                                dispatch({
-                                    type: OBJECT_BULK_ADD,
-                                    objects: ocrSelection.map((ocrIndex, index) => {
-                                        return methods.label.create(SVG_A4_PX_WIDTH + 5, index * 50, 200, 50, ocr[index], undefined, {editMode: false});
-                                    })
+                {/*TODO auslagern? nimmt ziemlich viele Zeilen in Editor.js*/}
+                {showImportModal &&
+                <Modal title={"Grafik importieren"} fitted actions={
+                    [{
+                        label: t("editor:Platzieren"),
+                        disabled: traceImport.error || !traceImport.preview,
+                        template: "primary",
+                        align: "right",
+                        action: () => {
+                            // TODO nach Mausklick platzieren, also an InteractiveSVG weitergeben
+                            dispatch({
+                                type: OBJECT_UPDATED,
+                                preview: methods.embedded.create(0, 0, traceImport.preview, traceImport.previewName)
+                            });
+                            dispatch({
+                                type: OBJECT_BULK_ADD,
+                                objects: ocrSelection.map((ocrIndex, index) => {
+                                    return methods.label.create(SVG_A4_PX_WIDTH + 5, index * 50, 200, 50, ocr[index], undefined, {editMode: false});
                                 })
-                                resetImportModal();
-                            }
-                        },
-                            {label: "Abbrechen", action: resetImportModal}]}
-                           dismiss={resetImportModal}>
-                        <Importer/>
-                    </Modal>
-                    }
-                </>
-            );
-        } else {
-            return (<Wrapper><Loader large message={<>Bitte warten, <br/>wir bereiten alles vor.</>}/></Wrapper>)
+                            })
+                            resetImportModal();
+                        }
+                    },
+                        {label: "Abbrechen", action: resetImportModal}]}
+                       dismiss={resetImportModal}>
+                    <Importer/>
+                </Modal>
+                }
+            </>
+            :
+            <Wrapper><Loader large message={<>Bitte warten, <br/>wir bereiten alles vor.</>}/></Wrapper>
         }
-    } catch (error) {
-        localStorage.setItem("HAS_EDITOR_CRASHED", "true");
-        return <Error {...error} />
-    }
-
+    </ErrorBoundary>
 };
 
 export default Editor;

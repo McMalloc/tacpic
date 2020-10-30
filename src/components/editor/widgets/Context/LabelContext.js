@@ -69,7 +69,7 @@ const LabelContext = props => {
                               "isKey",
                               !selectedObject.isKey)
                           }
-                          label={"Schlüssel"}/>
+                          label={"Abkürzen und Legendeneintrag erzeugen"}/>
 
                 <Textinput disabled={!selectedObject.isKey}
                            onChange={event => changeProp(

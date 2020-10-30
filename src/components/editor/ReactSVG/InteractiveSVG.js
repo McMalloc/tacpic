@@ -494,6 +494,7 @@ class InteractiveSVG extends Component {
         return (
             <svg
                 xmlns={"http://www.w3.org/2000/svg"}
+                // xmlns:xhtml={"http://www.w3.org/1999/xhtml"}
                 version={"1.2"}
                 width={'100%'} height={'100%'}
                 data-role={"CANVAS"}
@@ -534,7 +535,7 @@ class InteractiveSVG extends Component {
                              excludes={this.state.preview ? [this.state.preview.uuid] : []}/>
 
                     {this.state.preview !== null &&
-                    mapObject(this.state.preview, -1)
+                        mapObject(this.state.preview, -1)
                     }
 
                     {this.state.preview !== null && this.state.preview.type === 'path' && !this.state.dragging &&

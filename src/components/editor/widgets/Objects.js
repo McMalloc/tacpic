@@ -116,10 +116,10 @@ const ObjectEntry = props => {
 
     drag(drop(ref));
     if (props.index === -1) return <AccordeonMenuEntry hovered={isOver} ref={ref} />
-    return <AccordeonMenuEntry active={props.active}
+    return <AccordeonMenuEntry selected={props.selected}
                                hovered={isOver}
                                ref={ref}
-                               onClick={() => select(dispatch, props.active ? null : props.uuid)}>
+                               onClick={() => select(dispatch, props.selected ? null : props.uuid)}>
         <Icon icon={iconMap[props.type]}/>
         <Icon icon={"grip-lines"} style={{cursor: 'move!important', marginLeft: '8px', color: '#cccccc'}}/>
         <ObjectPreview>
@@ -145,19 +145,19 @@ const Objects = props => {
             {/*<div>Vordergrund</div>*/}
             <Wrapper onKeyDown={event => keyDownHandler(event, selectedUUID, dispatch)}>
                 {objects.map((object, index) => {
-                    const active = selectedUUID === object.uuid;
+                    const selected = selectedUUID === object.uuid;
                     return <AccordeonPanelFlyoutButton
-                        flownOut={active}
+                        flownOut={selected}
                         maxWidth={230}
                         hideFlyout={props.hideFlyout}
                         key={index}
-                        genericButton={<ObjectEntry active={active} {...object} index={index}/>}>
+                        genericButton={<ObjectEntry selected={selected} {...object} index={index}/>}>
                         <Context/>
                     </AccordeonPanelFlyoutButton>
                 })}
             </Wrapper>
             {/*Dummy Object, makes drag-and-dropping easier*/}
-            <ObjectEntry active={false}  index={-1}/>
+            <ObjectEntry selected={false}  index={-1}/>
         </>
     );
 };

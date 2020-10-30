@@ -71,15 +71,6 @@ const Manipulator = props => {
 
     return (
         <g transform={transformProperty}>
-            {/*<defs>*/}
-            {/*    <filter id="f1" x="0" y="0" width="200%" height="200%">*/}
-            {/*        <feBlend result="blend" in="SourceGraphic" in2="MAIN-CANVAS" mode="normal" />*/}
-            {/*        <feColorMatrix in="blend" type="matrix" values="-1 0 0 0 1*/}
-            {/*                                                  0 -1 0 0 1*/}
-            {/*                                                  1 0 -1 0 1*/}
-            {/*                                                  0 0 0 1 0"/>*/}
-            {/*    </filter>*/}
-            {/*</defs>*/}
             <rect
                 fill={"none"}
                 // filter="url(#f1)"
