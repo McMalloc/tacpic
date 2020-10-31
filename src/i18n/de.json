@@ -94,7 +94,7 @@
     "de-de-g0.utb": "Deutsche Basisschrift",
     "de-de-g1.ctb": "Deutsche Vollschrift",
     "de-de-g2.ctb": "Deutsche Kurzschrift",
-    "variantview_logged-in-hint": "Bitte <%/login melde dich an%> oder <%/signup erstelle ein Konto%>, um Grafiken zu bearbeiten.",
+    "variantview_logged-in-hint": "Bitte <%/login melden Sie sich an%> oder <%/signup legen Sie ein Konto an%>, um Grafiken veröfentlichen zu können.",
     "open-in-editor": "Im Editor öffnen …",
     "variant-edit": "… diese Variante zu korrigieren",
     "variant-edit-hint": "Öffnet die ausgewählte Variante, um z.B. orthografische oder inhaltliche Fehler zu korrieren oder eine Bildbeschreibung hinzuzufügen.",
