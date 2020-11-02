@@ -7,8 +7,9 @@ export const patternsInUseSelector = state => {
 
 export const keyedLabelsSelector = state => {
     const allObjects = flatten(state.editor.file.present.pages.map(page => page.objects));
-    return allObjects.filter(object => object && object.isKey).map(({braille, keyVal, text}) => ({
+    return allObjects.filter(object => object && object.isKey).map(({braille, keyVal, text, uuid}) => ({
         keyVal,
+        uuid,
         braille,
         text
     }));

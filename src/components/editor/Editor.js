@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import md5 from 'blueimp-md5';
 
-import '../../styles/Editor.css';
 import styled from 'styled-components/macro';
 import {useTranslation} from "react-i18next";
 import {FILE, IMPORT, OBJECT_BULK_ADD, OBJECT_UPDATED, SWITCH_CURSOR_MODE} from "../../actions/action_constants";
@@ -15,14 +14,12 @@ import Keyedit from "./widgets/Keyedit";
 import Metadata from "./widgets/Metadata";
 import Pages from "./widgets/Pages";
 import Objects from "./widgets/Objects";
-import Writer from "./widgets/Writer";
 import BraillePage from "./widgets/BraillePage";
 import {Radiobar, RadiobarSegment} from "../gui/Radiobar";
 import {AccordeonPanel, AccordeonPanelFlyoutButton, useRedraw} from "../gui/Accordeon";
 import GraphicPageSettings from "./widgets/GraphicPageSettings";
 import BraillePageSettings from "./widgets/BraillePageSettings";
 import Document from "./widgets/Document";
-import Error from "../Error";
 import {Modal} from "../gui/Modal";
 import {useNavigate} from "react-router";
 import methods from "./ReactSVG/methods/methods";
@@ -31,7 +28,7 @@ import {SVG_A4_PX_WIDTH} from "../../config/constants";
 import {editor} from "../../store/initialState";
 import Verbaliser from "./widgets/Verbaliser";
 import ErrorBoundary from "../../ErrorBoundary";
-import {Checkbox} from "../gui/Checkbox";
+import {findObject} from "../../utility/findObject";
 
 const Wrapper = styled.div`
   display: flex;
@@ -148,6 +145,13 @@ const Editor = props => {
     const navigate = useNavigate();
     const t = useTranslation().t;
     const [rerender] = useRedraw();
+    const [openedPanel, setOpenedPanel] = useState(null);
+    // todo zu Hook umwandeln, wenn InteractiveSVG eine function component ist
+    const [dragging, setDragging] = useState(false);
+    const [showBraillePanel, setShowBraillePanel] = useState(false);
+    const [handleError, setHandleError] = useState(false);
+    const [showImportModal, setShowImportModal] = useState(false);
+
     let {variantId, graphicId, mode} = useParams();
 
     useEffect(() => {
@@ -170,16 +174,30 @@ const Editor = props => {
         }
     }, [graphicId, variantId, mode]);
 
-    const [openedPanel, setOpenedPanel] = useState(null);
-    // const [openedPanel, setOpenedPanel] = useState(null);
-    // todo zu Hook umwandeln, wenn InteractiveSVG eine function component ist
-    const [dragging, setDragging] = useState(false);
-    const [showBraillePanel, setShowBraillePanel] = useState(false);
-    const [handleError, setHandleError] = useState(false);
-    const [showImportModal, setShowImportModal] = useState(false);
+    // LOGIC REGARDING ACCORDEON PANEL
+    const [accordeonStates, setAccordeonStates] = useState(JSON.parse(localStorage.getItem('accordeonStates')) || {});
+    const toggleAccordeon = (title, override) => {
+        const newState = {...accordeonStates,
+            [title]: override || !accordeonStates[title]
+        };
+        setAccordeonStates(newState);
+        localStorage.setItem("accordeonStates", JSON.stringify(newState));
+    }
 
-    // if (!user.logged_in) navigate("/login")
+    const selectedObject = useSelector(state => {
+        console.log(state.editor.file.present.pages[state.editor.ui.currentPage].objects)
+        console.log(state.editor.ui.selectedObjects[0])
+        return findObject(
+            state.editor.file.present.pages[state.editor.ui.currentPage].objects,
+            state.editor.ui.selectedObjects[0])
+    })
+    if (!accordeonStates.key && selectedObject && selectedObject.type === 'key') {
+        console.log("toggle");
+        toggleAccordeon('key', true);
+    };
 
+
+    // ERROR HANDLING
     if (localStorage.getItem("HAS_EDITOR_CRASHED") === 'true') {
         console.log("crashed");
         if (uiSettings.fileOpenSuccess) {
@@ -192,7 +210,6 @@ const Editor = props => {
             }
         }
     }
-
     if (handleError) {
         return <Modal fitted title={'Sitzung wiederherstellen'} dismiss={() => setHandleError(false)}
                       actions={[
@@ -308,9 +325,10 @@ const Editor = props => {
                                     {openedPanel + ''}
                                 </pre>
                             </Draftinfo>
-                            {/*<AccordeonPanel collapsedOverride={true} title={"Entwurf"}>*/}
-                            {/*<AccordeonPanel openOverride={false} title={"Entwurf"}>*/}
-                            <AccordeonPanel openedOverride={openedPanel === 'publish'} title={"Entwurf"}>
+                            <AccordeonPanel
+                                collapsed={!accordeonStates.draft}
+                                onClick={() => toggleAccordeon('draft')}
+                                title={"Entwurf"}>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'document'}
                                                             hideFlyout={dragging}
                                                             className={"padded"}
@@ -326,7 +344,8 @@ const Editor = props => {
                                     <Metadata/>
                                 </AccordeonPanelFlyoutButton>
                             </AccordeonPanel>
-                            <AccordeonPanel title={"Grafikseiten"}>
+                            <AccordeonPanel collapsed={!accordeonStates.graphicPages}
+                                            onClick={() => toggleAccordeon('graphicPages')} title={"Grafikseiten"}>
                                 <AccordeonPanelFlyoutButton flownOut={openedPanel === 'graphicSettings'}
                                                             className={"padded"}
                                                             hideFlyout={dragging}
@@ -336,11 +355,13 @@ const Editor = props => {
                                 </AccordeonPanelFlyoutButton>
                                 <Pages/>
                             </AccordeonPanel>
-                            <AccordeonPanel title={"Legende"}>
+                            <AccordeonPanel collapsed={!accordeonStates.key}
+                                            onClick={() => toggleAccordeon('key')} title={"Legende"}>
 
                                 <Keyedit className={"padded"}/>
                             </AccordeonPanel>
-                            <AccordeonPanel title={"Brailleseiten"}>
+                            <AccordeonPanel collapsed={!accordeonStates.braillePages}
+                                            onClick={() => toggleAccordeon('braillePages')} title={"Brailleseiten"}>
                                 <AccordeonPanelFlyoutButton flownOut={showBraillePanel}
                                                             className={"padded"}
                                                             onClick={() => setShowBraillePanel(!showBraillePanel)}
@@ -364,7 +385,8 @@ const Editor = props => {
                                     }}/>
                                 </AccordeonPanelFlyoutButton>
                             </AccordeonPanel>
-                            <AccordeonPanel title={"Objekte"}>
+                            <AccordeonPanel collapsed={!accordeonStates.objects}
+                                            onClick={() => toggleAccordeon('objects')}  title={"Objekte"}>
                                 <Objects hideFlyout={dragging}/>
                             </AccordeonPanel>
                         </Sidebar>

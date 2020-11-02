@@ -43,7 +43,6 @@ const Placeholder = styled.div`
 
 const BigLogo = styled.img`
   width: 300px;
-  margin: 10vh 0 5vh 0;
 `;
 
 const IllustrationContainer = styled.div`
@@ -80,8 +79,9 @@ const Landing = () => {
                     <br/>
                     <div className={layout}>
                         <Form>
-                            <div>
-                                <BigLogo src={"/images/logo.svg"} alt={"tapic Logo"}/>
+                            <div style={{margin: "10vh 0 5vh 0"}}>
+                                <BigLogo src={"/images/logo.svg"} alt={"tapic Logo"}/><br/>
+                                <small>Taktile Medien für sehbehinderte Menschen</small>
                             </div>
                             <Searchbar/>
                             <br/><br/><br/>

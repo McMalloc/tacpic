@@ -80,70 +80,81 @@ const Keyedit = props => {
     return (
         <div className={props.className}>
             {!!keyObject &&
-            <Checkbox name={"show-key"}
-                      value={keyObject.active}
-                      onChange={() => dispatch({
-                          type: 'OBJECT_PROP_CHANGED',
-                          uuid: keyObject.uuid,
-                          prop: 'active',
-                          value: !keyObject.active
-                      })}
-                      label={"Zeige Legende"}/>
+            <>
+                <Checkbox name={"show-key"}
+                          value={keyObject.active}
+                          onChange={() => dispatch({
+                              type: 'OBJECT_PROP_CHANGED',
+                              uuid: keyObject.uuid,
+                              prop: 'active',
+                              value: !keyObject.active
+                          })}
+                          label={"Zeige Legende"}/>
+                <Checkbox name={"anchor-key"}
+                          value={keyObject.anchored}
+                          onChange={() => dispatch({
+                              type: 'OBJECT_PROP_CHANGED',
+                              uuid: keyObject.uuid,
+                              prop: 'anchored',
+                              value: !keyObject.anchored
+                          })}
+                          label={"Legende fixieren"}/>
+            </>
             }
 
 
-                {labelKeys.length === 0 && patternsInUse.length === 0 ?
-                    <p className={"disabled"}>Keine Einträge vorhanden. Erzeugen Sie eine abgekürzte Beschriftung oder
-                        ein texturisiertes Objekt, um hier ihre Bedeutungen zu vermerken.</p>
-                    :
-                    <Table>
-                        <thead>
-                        <tr>
-                            <td id={"label-column-head"}>Beschriftung</td>
-                            <td>Schlüssel</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {labelKeys.map((entry, index) => {
-                            return (
-                                <tr key={index}>
-                                    <td><KeyInput
+            {labelKeys.length === 0 && patternsInUse.length === 0 ?
+                <p className={"disabled"}>Keine Einträge vorhanden. Erzeugen Sie eine abgekürzte Beschriftung oder
+                    ein texturisiertes Objekt, um hier ihre Bedeutungen zu vermerken.</p>
+                :
+                <Table>
+                    <thead>
+                    <tr>
+                        <td id={"label-column-head"}>Beschriftung</td>
+                        <td>Schlüssel</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {labelKeys.map((entry, index) => {
+                        return (
+                            <tr key={index}>
+                                <td><KeyInput
+                                    aria-labelledby={"label-column-head"}
+                                    onChange={event => changeLabelEntry(dispatch, entry.uuid, "text", event.currentTarget.value)}
+                                    value={entry.text || ''}/></td>
+                                <td style={{width: 60, paddingLeft: 10}}>
+                                    <KeyInput
                                         aria-labelledby={"label-column-head"}
-                                        onChange={event => changeLabelEntry(dispatch, entry.uuid, "text", event.currentTarget.value)}
-                                        value={entry.text || ''}/></td>
-                                    <td style={{width: "50px"}}>
-                                        <KeyInput
-                                            aria-labelledby={"label-column-head"}
-                                            onChange={event => changeLabelEntry(dispatch, entry.uuid, "keyVal", event.currentTarget.value)}
-                                            value={entry.keyVal || ''}
-                                        />
+                                        onChange={event => changeLabelEntry(dispatch, entry.uuid, "keyVal", event.currentTarget.value)}
+                                        value={entry.keyVal || ''}
+                                    />
 
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                        {patternsInUse.map((pattern, index) => {
-                            const textureIndex = keyedTextures.findIndex(entry => entry.pattern === pattern);
-                            const key = textureIndex !== -1 ? keyedTextures[textureIndex] : {};
-                            return (
-                                <tr key={index}>
-                                    <td>
-                                        <Textinput
-                                            aria-labelledby={"label-column-head"}
-                                            onChange={event => changePatternEntry(
-                                                dispatch,
-                                                pattern,
-                                                event.currentTarget.value)}
-                                            value={key.label || ''}/>
+                                </td>
+                            </tr>
+                        )
+                    })}
+                    {patternsInUse.map((pattern, index) => {
+                        const textureIndex = keyedTextures.findIndex(entry => entry.pattern === pattern);
+                        const key = textureIndex !== -1 ? keyedTextures[textureIndex] : {};
+                        return (
+                            <tr key={index}>
+                                <td>
+                                    <Textinput
+                                        aria-labelledby={"label-column-head"}
+                                        onChange={event => changePatternEntry(
+                                            dispatch,
+                                            pattern,
+                                            event.currentTarget.value)}
+                                        value={key.label || ''}/>
 
-                                    </td>
-                                    <td><TexturePreview template={pattern}/></td>
-                                </tr>
-                            )
-                        })}
-                        </tbody>
-                    </Table>
-                }
+                                </td>
+                                <td><TexturePreview template={pattern}/></td>
+                            </tr>
+                        )
+                    })}
+                    </tbody>
+                </Table>
+            }
         </div>
     );
 };

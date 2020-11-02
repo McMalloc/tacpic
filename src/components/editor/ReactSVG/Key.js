@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import transform from "./transform";
 import {createPattern} from "./Patterns";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {filter, flatten, map, uniq} from "lodash";
 import Rect from "./Rect";
 import styled from "styled-components";
 import {keyedLabelsSelector, patternsInUseSelector} from "../../../reducers/selectors";
+import {pixelToPx} from "../../../utility/mmToPx";
 
 const Braille = styled.span`
   font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
@@ -26,53 +27,59 @@ const Black = styled.span`
   color: blue;
 `;
 
+const Labelrow = styled.tr`
+  cursor: pointer;
+  &:hover td {
+    background-color: lightgrey;
+  }
+`;
+
 export default props => {
     const patternsInUse = useSelector(patternsInUseSelector);
     const keyedTextures = useSelector(state => state.editor.file.present.keyedTextures);
+    const scalingFactor = useSelector(state => state.editor.ui.scalingFactor);
     const keyedLabels = useSelector(keyedLabelsSelector);
+    const dispatch = useDispatch();
+    // const {}
 
-    const longestKey = Math.max(...keyedLabels.map(entry => entry.keyVal.length));
-    const texturePreviewWidth = Math.max(15, 6 * longestKey); // 6 ist der Zeichenabstand TODO in Konstanten sammeln
+    const texturePreviewWidth = 15;
     const texturePreviewHeight = 10;
     const padding = 3;
     const boxPadding = 10;
-    const lineHeightOffset = 27; // SVG text 0,0 ist at lower right, while geometry's 0,0 is at upper right
 
     const [height, setHeight] = useState(0);
 
-    useEffect(() => {
-        const elem = document.querySelector(`#container-${props.uuid}`);
-        elem && setHeight(elem.getBoundingClientRect().height);
-    }, [])
+    const [internalCoords, setInternalCoords] = useState({x: 0, y: 0});
+    const keyElem = useRef();
 
-    let skippedPatterns = 0;
+    useEffect(() => {
+        const keyBBox = keyElem.current.getBoundingClientRect();
+        const pageBBox = document.getElementById("page-0").getBoundingClientRect();
+
+        setInternalCoords({ // TODO um magic number kümmern
+            x: (pageBBox.width - pixelToPx(keyBBox.width) - 75) / scalingFactor,
+            y: (pageBBox.height - pixelToPx(keyBBox.height) - 75) / scalingFactor
+        })
+    }, [props.anchored, props.width]);
 
     // TODO eingetragene labels müssen auch von liblouis übersetzt werden
     return (
         <g>
-            {/*<rect*/}
-            {/*    x={props.x}*/}
-            {/*    y={props.y}*/}
-            {/*    width={props.width}*/}
-            {/*    data-transformable={!props.inactive}*/}
-            {/*    data-selectable={true}*/}
-            {/*    data-uuid={props.uuid}*/}
-            {/*    height={props.height}*/}
-            {/*    fill={"transparent"} strokeWidth={"1mm"}*/}
-            {/*    stroke={"black"}/>*/}
-            <foreignObject x={props.x} y={props.y} style={{overflow: 'visible'}}
+            <foreignObject x={props.anchored ? internalCoords.x : props.x} y={props.anchored ? internalCoords.y : props.y} style={{overflow: 'visible'}}
                            width={1} height={1}>
                 {/*width={props.width} height={props.height}>*/}
                 <table className={'initial'} style={{backgroundColor: 'white', border: '1mm solid black', width: props.width}}
-                       data-transformable={true}
-                       data-selectable={true}
+                       ref={keyElem}
+                       id={"container-" + props.uuid}
+                       data-internal-x={internalCoords.x}
+                       data-internal-y={internalCoords.y}
                        data-uuid={props.uuid}
                        xmlns={"http://www.w3.org/1999/xhtml"}>
                     <tbody>
                     <tr>
-                        <td data-selectable={true} data-uuid={props.uuid} style={{padding: "2mm 6mm 0 2mm"}} colSpan={2}>
-                            <Braille data-selectable={true} data-uuid={props.uuid}>legende</Braille>
-                            <Black data-selectable={true} data-uuid={props.uuid}>Legende</Black>
+                        <td style={{padding: "2mm 6mm 0 2mm"}} colSpan={2}>
+                            <Braille className={"key-label-braille"} data-selectable={true} data-transformable={true} data-uuid={props.uuid}>legende</Braille>
+                            <Black className={"key-label-black"} data-selectable={true} data-transformable={true} data-uuid={props.uuid}>Legende</Black>
                         </td>
                     </tr>
                     {keyedTextures.map((entry, index) => {
@@ -88,25 +95,24 @@ export default props => {
                                     </svg>
                                 </td>
                                 <td style={{paddingBottom: '2mm', verticalAlign: 'top'}}>
-                                    <Braille className={"label-braille"}>{entry.braille}</Braille>
-                                    <Black className={"label-black"}>{entry.label}</Black>
+                                    <Braille className={"key-label-braille"}>{entry.braille}</Braille>
+                                    <Black className={"key-label-black"}>{entry.label}</Black>
                                 </td>
                             </tr>
                         )
                     })}
                     {keyedLabels.map((entry, index) => {
-                        const offsetIndex = index + keyedTextures.length - skippedPatterns;
                         return (
-                            <tr key={index}>
+                            <Labelrow key={index} onClick={() => dispatch({type: 'OBJECT_SELECTED', uuids: [entry.uuid]})}>
                                 <td style={{verticalAlign: 'top', padding: "2mm 6mm 0 2mm"}}>
-                                    <Braille className={"label-braille"}>{entry.keyVal}</Braille>
-                                    <Black className={"label-black"}>{entry.keyVal}</Black>
+                                    <Braille className={"key-label-braille"}>{entry.keyVal}</Braille>
+                                    <Black className={"key-label-black"}>{entry.keyVal}</Black>
                                 </td>
                                 <td style={{padding: "2mm 6mm 0 2mm"}}>
-                                    <Braille className={"label-braille"}>{entry.braille}</Braille>
-                                    <Black className={"label-black"}>{entry.text}</Black>
+                                    <Braille className={"key-label-braille"}>{entry.braille}</Braille>
+                                    <Black className={"key-label-black"}>{entry.text}</Black>
                                 </td>
-                            </tr>
+                            </Labelrow>
                         )
                     })}
                     </tbody>

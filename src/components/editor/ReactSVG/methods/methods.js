@@ -145,6 +145,7 @@ const createKey = (x = 0, y = 0, width = 200, height = 300, moniker = "Legende")
         moniker,
         editMode: true,
         active: true,
+        anchored: true,
         border: true,
         borderWidth: 2,
         type: 'key'
@@ -233,8 +234,8 @@ const getBBox = object => {
 
 const getKeyBBox = object => {
     return {
-        x: object.x,
-        y: object.y,
+        x: object.anchored ? document.getElementById("container-" + object.uuid).dataset.internalX : object.x,
+        y: object.anchored ? document.getElementById("container-" + object.uuid).dataset.internalY : object.y,
         width: object.width,//bbox.width * (object.width / bbox.width),
         height: object.height
     };

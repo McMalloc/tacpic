@@ -33,7 +33,6 @@ export default function SVGRect(props) {
                   transform={transformProperty}
                   style={
                       {
-                          cursor: 'pointer',
                           fill: template !== null ? 'url(#pattern-' + template + '-' + props.uuid + '' : props.fill || "transparent",
                           stroke: props.pattern.offset ? props.fill : "black",
                           strokeWidth: props.border ? props.pattern.offset ? 20 : props.borderWidth : 0,
@@ -56,6 +55,7 @@ export default function SVGRect(props) {
                 strokeDasharray={props.borderStyle}
                 data-transformable={!props.inactive}
                 data-selectable={true}
+                className={"object-rect"}
                 stroke={"black"}
                 width={props.width}
                 height={props.height}

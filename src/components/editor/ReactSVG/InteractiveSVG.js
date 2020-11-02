@@ -13,6 +13,15 @@ import {findObject} from "../../../utility/findObject";
 import {SVGPage} from "./SVGPage";
 import {ERROR_THROWN, SWITCH_CURSOR_MODE} from "../../../actions/action_constants";
 import {TOOL_SENSIBILITY} from "../../../config/constants";
+import styled from "styled-components";
+
+const SVG = styled.svg`
+  width: 100%;
+  height: 100%;
+  touch-action: none; 
+  outline: none; 
+  cursor: ${({isPanning, selectedTool}) => isPanning ? 'move' : 'inherit'};
+`;
 
 class InteractiveSVG extends Component {
     svgElement = React.createRef();
@@ -212,9 +221,7 @@ class InteractiveSVG extends Component {
                     selectedId = target.id || target.dataset.uuid;
                     this.props.select([selectedId]);
                 }
-            } else {
-
-            }
+            } else {}
 
             if (target.dataset.role === 'ROTATE') this.setState({transform: 'rotate'});
             if (target.dataset.role === 'SCALE') this.setState({transform: 'scale'});
@@ -492,13 +499,12 @@ class InteractiveSVG extends Component {
             visibleObjects,
             this.props.ui.selectedObjects[0]) : undefined;
         return (
-            <svg
+            <SVG
                 xmlns={"http://www.w3.org/2000/svg"}
-                // xmlns:xhtml={"http://www.w3.org/1999/xhtml"}
                 version={"1.2"}
-                width={'100%'} height={'100%'}
                 data-role={"CANVAS"}
                 id={"MAIN-CANVAS"}
+                className={"tool-" + this.props.ui.tool}
                 onMouseDown={this.mouseDownHandler}
                 onKeyDown={this.keyDownHandler}
                 onKeyUp={this.keyUpHandler}
@@ -508,8 +514,7 @@ class InteractiveSVG extends Component {
                 onWheel={this.wheelHandler}
                 onInput={this.keyDownHandler}
                 ref={this.svgElement}
-                tabIndex={0}
-                style={{touchAction: 'none', outline: 'none', cursor: this.state.panning ? 'move' : 'inherit'}}>
+                tabIndex={0}>
 
                 <g id={"VIEWBOX"} transform={`
                        translate(${this.props.ui.viewPortX} ${this.props.ui.viewPortY}) 
@@ -584,6 +589,8 @@ class InteractiveSVG extends Component {
                          horizontalGridSpacing={this.props.file.present.horizontalGridSpacing * this.props.ui.scalingFactor}/>
                 }
 
+                {/*<rect id={"REFERENCE"} width={1} height={1} x={-1} y={-1} />*/}
+
                 {/*<g id={"mouse-indicators"}>*/}
                 {/*    {this.props.ui.scalingFactor !== 1 &&*/}
                 {/*<text fill={'green'} fontSize={10} x={5} y={30}>*/}
@@ -623,7 +630,7 @@ class InteractiveSVG extends Component {
                 {/*        {parseInt(this.state.t_mouseOffsetY)}</text>*/}
                 {/*</g>*/}
 
-            </svg>
+            </SVG>
             // </div>
         )
     }

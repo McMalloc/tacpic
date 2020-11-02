@@ -1,0 +1,22 @@
+svg {
+  text {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  text::selection {
+    background: none;
+  }
+
+  &.tool-SELECT {
+    *[data-selectable=true] {
+      //outline: 1px solid magenta;
+      &:hover {
+        cursor: pointer;
+        //outline: 1px solid magenta;
+      }
+    }
+  }
+}

@@ -165,7 +165,7 @@ const AccordeonPanelFlyoutButton = props => {
 const AccordeonPanel = props => {
     // console.log(props.openedOverride);
     // const defaultState = props.openedOverride !== undefined && props.openedOverride ? props.openedOverride : localStorage.getItem(props.title + "_collapsed") === "true";
-    const [collapsed, setCollapsed] = useState(localStorage.getItem(props.title + "_collapsed") === "false");
+    // const [collapsed, setCollapsed] = useState(localStorage.getItem(props.title + "_collapsed") === "false");
     // const [openedByOverride, setOpenedByOverride] = useState(localStorage.getItem(props.title + "_collapsed") === "false");
 
     // if (collapsed && props.openedOverride) {
@@ -175,14 +175,11 @@ const AccordeonPanel = props => {
     // console.log(props.children);
     return (
         <AccordeonPanelWrapper>
-            <AccordeonPanelTitle collapsed={collapsed} onClick={() => {
-                localStorage.setItem(props.title + "_collapsed", collapsed + "");
-                setCollapsed(!collapsed)
-            }}>
+            <AccordeonPanelTitle onClick={props.onClick} collapsed={props.collapsed}>
                 <Icon icon={"caret-right"}/>
                 <span>{props.title}</span>
             </AccordeonPanelTitle>
-            {!collapsed &&
+            {!props.collapsed &&
                 <AccordeonPanelContent>
                     {props.children}
                 </AccordeonPanelContent>
