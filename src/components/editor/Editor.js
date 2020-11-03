@@ -31,30 +31,30 @@ import ErrorBoundary from "../../ErrorBoundary";
 import {findObject} from "../../utility/findObject";
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(100px, 1fr) 3fr;
+  max-height: 100%;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: 
+      "toolbar  toolbar"
+      "sidebar canvas";
+  
   position: relative;
-  flex: 1 1 100%;
-  //height: 100%;
   background-color: ${props => props.theme.brand_secondary};
+  
+  .editor-toolbar {
+    grid-area: toolbar;
+  }
   
   .loader {
     color: white;
   }
 `;
 
-const PanelWrapper = styled.div`
-  display: flex;
-  flex: 1 1 100%;
-  flex-direction: row;
-  position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
-`;
-
 const CanvasWrapper = styled.div`
-  display: flex;
-  flex: 1 0 auto;
+  grid-area: canvas;
+  max-height: 100%;
   position: relative;
   background-color: rgba(0,0,0,0.1);
   border-radius: ${props => props.theme.border_radius} 0 0 ${props => props.theme.border_radius};
@@ -62,46 +62,16 @@ const CanvasWrapper = styled.div`
   box-shadow: 5px 5px 10px rgba(0,0,0,0.3) inset;
 `;
 
+const Sidebar = styled.div`
+  grid-area: sidebar;
+  max-height: 100%;
+  overflow: auto;
+`;
+
 const FlyoutSensitive = styled.div`
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
   background-color: rgba(0,0,0,0);
-`;
-
-const Sidebar = styled.div`
-  flex: 0 1 25%;
-  //height: 100%;
-  overflow: auto;
-  min-width: 200px;
-  max-width: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-`;
-
-const ModalSidebar = styled(Sidebar)`
-    border-left: 2px solid ${props => props.theme.brand_secondary_light};
-    border-right: none;
-    box-shadow: -3px 0 6px rgba(0,0,0,0.3);
-    max-width: 500px;
-    position: absolute;
-    right: -500px; top: 0; bottom: 0;
-    transition: right 0.2s;
-    border-radius: ${props => props.theme.border_radius} 0 0 0;
-`;
-
-const FixedSidebar = styled(Sidebar)`
-    min-width: 300px;
-    max-width: 400px;
-    border-radius: 0 ${props => props.theme.border_radius}  0 0;
-`;
-
-const SidebarPanel = styled.div`
-  flex: ${props => props.flexGrow}  1 30%;
-  display: flex;
-  overflow: auto;
-  flex-direction: column;
-  border-bottom: 2px solid ${props => props.theme.brand_secondary_light};
 `;
 
 const Draftinfo = styled.div`
@@ -131,8 +101,8 @@ const switchCursorMode = (dispatch, mode) => {
 const Editor = props => {
     const uiSettings = useSelector(state => state.editor.ui);
     const file = useSelector(state => state.editor.file.present);
-        const page = file.pages;
-        const fileHash = file.lastVersionHash;
+    const page = file.pages;
+    const fileHash = file.lastVersionHash;
     const error = useSelector(state => state.app.error);
     const undoLength = useSelector(state => state.editor.file.past.length);
     const redoLength = useSelector(state => state.editor.file.future.length);
@@ -159,12 +129,23 @@ const Editor = props => {
             dispatch({
                 type: FILE.OPEN.REQUEST,
                 id: variantId,
-                data: mode === 'edit' ? {variant_id: variantId} : {derivedFrom: variantId, variantTitle: '', variant_id: null}
+                data: mode === 'edit' ? {variant_id: variantId} : {
+                    derivedFrom: variantId,
+                    variantTitle: '',
+                    variant_id: null
+                }
             })
         } else if (mode === 'copy') { // new graphic
             dispatch({
                 type: FILE.OPEN.SUCCESS,
-                data: {variant_id: null, graphic_id: null, derivedFrom: null, version_id: null, variantTitle: 'Basis', graphicTitle: ''}
+                data: {
+                    variant_id: null,
+                    graphic_id: null,
+                    derivedFrom: null,
+                    version_id: null,
+                    variantTitle: 'Basis',
+                    graphicTitle: ''
+                }
             })
         } else {
             dispatch({
@@ -177,7 +158,8 @@ const Editor = props => {
     // LOGIC REGARDING ACCORDEON PANEL
     const [accordeonStates, setAccordeonStates] = useState(JSON.parse(localStorage.getItem('accordeonStates')) || {});
     const toggleAccordeon = (title, override) => {
-        const newState = {...accordeonStates,
+        const newState = {
+            ...accordeonStates,
             [title]: override || !accordeonStates[title]
         };
         setAccordeonStates(newState);
@@ -185,8 +167,6 @@ const Editor = props => {
     }
 
     const selectedObject = useSelector(state => {
-        console.log(state.editor.file.present.pages[state.editor.ui.currentPage].objects)
-        console.log(state.editor.ui.selectedObjects[0])
         return findObject(
             state.editor.file.present.pages[state.editor.ui.currentPage].objects,
             state.editor.ui.selectedObjects[0])
@@ -194,7 +174,8 @@ const Editor = props => {
     if (!accordeonStates.key && selectedObject && selectedObject.type === 'key') {
         console.log("toggle");
         toggleAccordeon('key', true);
-    };
+    }
+    ;
 
 
     // ERROR HANDLING
@@ -246,7 +227,7 @@ const Editor = props => {
         {uiSettings.fileOpenSuccess ?
             <>
                 <Wrapper>
-                    <Radiobar>
+                    <Radiobar className={"editor-toolbar"}>
                         <RadiobarSegment>
                             {["SELECT", "RECT", "ELLIPSE", "LABEL", "PATH"].map((tool, index) => {
                                 return (
@@ -294,113 +275,109 @@ const Editor = props => {
                         {/*<Toggle primary onClick={() => {*/}
                         {/*}} label={"Neu"}/>*/}
                     </Radiobar>
+                    <Sidebar>
+                        <Draftinfo onClick={() => {
+                            setOpenedPanel('publish');
+                            // setTimeout(() => {
+                            //     document.getElementById("label-for-graphic-title").focus();
+                            // }, 100);
+                        }}>
+                            <strong>{file.graphicTitle.length === 0 ? <span
+                                className={'disabled'}>Noch kein Titel</span> : file.graphicTitle}</strong><br/>
+                            {file.graphicTitle.length !== 0 ?
+                                <span>Variante: {file.variantTitle}</span>
+                                :
+                                <Button fullWidth primary label={"Titel ändern"}/>
+                            }
 
-                    <PanelWrapper>
-                        <Sidebar>
-                            <Draftinfo onClick={() => {
-                                setOpenedPanel('publish');
-                                // setTimeout(() => {
-                                //     document.getElementById("label-for-graphic-title").focus();
-                                // }, 100);
+                            <pre style={{
+                                border: '2px solid green',
+                                textShadow: '1px 1px 0 black',
+                                color: 'lightgreen',
+                                fontSize: '11px',
+                                padding: '2px 3px'
                             }}>
-                                <strong>{file.graphicTitle.length === 0 ? <span
-                                    className={'disabled'}>Noch kein Titel</span> : file.graphicTitle}</strong><br/>
-                                {file.graphicTitle.length !== 0 ?
-                                    <span>Variante: {file.variantTitle}</span>
-                                    :
-                                    <Button fullWidth primary label={"Titel ändern"}/>
-                                }
-
-                                <pre style={{
-                                    border: '2px solid green',
-                                    textShadow: '1px 1px 0 black',
-                                    color: 'lightgreen',
-                                    fontSize: '11px',
-                                    padding: '2px 3px'
-                                }}>
                                     Derived from: {file.derivedFrom + ""}<br/>
                                     Mode: {mode}<br/>
                                     Graphic ID: {file.graphic_id + " (" + graphicId + ")"}<br/>
                                     Variant ID: {file.variant_id + " (" + variantId + ")"}<br/>
-                                    {openedPanel + ''}
+                                {openedPanel + ''}
                                 </pre>
-                            </Draftinfo>
-                            <AccordeonPanel
-                                collapsed={!accordeonStates.draft}
-                                onClick={() => toggleAccordeon('draft')}
-                                title={"Entwurf"}>
-                                <AccordeonPanelFlyoutButton flownOut={openedPanel === 'document'}
-                                                            hideFlyout={dragging}
-                                                            className={"padded"}
-                                                            onClick={() => setOpenedPanel(openedPanel === 'document' ? null : 'document')}
-                                                            label={"Einrichten"} icon={"cog"}>
-                                    <Document/>
-                                </AccordeonPanelFlyoutButton>
-                                <AccordeonPanelFlyoutButton flownOut={openedPanel === 'publish'}
-                                                            className={"padded"}
-                                                            hideFlyout={dragging}
-                                                            onClick={() => setOpenedPanel(openedPanel === 'publish' ? null : 'publish')}
-                                                            label={"Veröffentlichen"} icon={"upload"}>
-                                    <Metadata/>
-                                </AccordeonPanelFlyoutButton>
-                            </AccordeonPanel>
-                            <AccordeonPanel collapsed={!accordeonStates.graphicPages}
-                                            onClick={() => toggleAccordeon('graphicPages')} title={"Grafikseiten"}>
-                                <AccordeonPanelFlyoutButton flownOut={openedPanel === 'graphicSettings'}
-                                                            className={"padded"}
-                                                            hideFlyout={dragging}
-                                                            onClick={() => setOpenedPanel(openedPanel === 'graphicSettings' ? null : 'graphicSettings')}
-                                                            label={"Einrichten"} icon={"cog"}>
-                                    <GraphicPageSettings/>
-                                </AccordeonPanelFlyoutButton>
-                                <Pages/>
-                            </AccordeonPanel>
-                            <AccordeonPanel collapsed={!accordeonStates.key}
-                                            onClick={() => toggleAccordeon('key')} title={"Legende"}>
+                        </Draftinfo>
+                        <AccordeonPanel
+                            collapsed={!accordeonStates.draft}
+                            onClick={() => toggleAccordeon('draft')}
+                            title={"Entwurf"}>
+                            <AccordeonPanelFlyoutButton flownOut={openedPanel === 'document'}
+                                                        hideFlyout={dragging}
+                                                        className={"padded"}
+                                                        onClick={() => setOpenedPanel(openedPanel === 'document' ? null : 'document')}
+                                                        label={"Einrichten"} icon={"cog"}>
+                                <Document/>
+                            </AccordeonPanelFlyoutButton>
+                            <AccordeonPanelFlyoutButton flownOut={openedPanel === 'publish'}
+                                                        className={"padded"}
+                                                        hideFlyout={dragging}
+                                                        onClick={() => setOpenedPanel(openedPanel === 'publish' ? null : 'publish')}
+                                                        label={"Veröffentlichen"} icon={"upload"}>
+                                <Metadata/>
+                            </AccordeonPanelFlyoutButton>
+                        </AccordeonPanel>
+                        <AccordeonPanel collapsed={!accordeonStates.graphicPages}
+                                        onClick={() => toggleAccordeon('graphicPages')} title={"Grafikseiten"}>
+                            <AccordeonPanelFlyoutButton flownOut={openedPanel === 'graphicSettings'}
+                                                        className={"padded"}
+                                                        hideFlyout={dragging}
+                                                        onClick={() => setOpenedPanel(openedPanel === 'graphicSettings' ? null : 'graphicSettings')}
+                                                        label={"Einrichten"} icon={"cog"}>
+                                <GraphicPageSettings/>
+                            </AccordeonPanelFlyoutButton>
+                            <Pages/>
+                        </AccordeonPanel>
+                        <AccordeonPanel collapsed={!accordeonStates.key}
+                                        onClick={() => toggleAccordeon('key')} title={"Legende"}>
 
-                                <Keyedit className={"padded"}/>
-                            </AccordeonPanel>
-                            <AccordeonPanel collapsed={!accordeonStates.braillePages}
-                                            onClick={() => toggleAccordeon('braillePages')} title={"Brailleseiten"}>
-                                <AccordeonPanelFlyoutButton flownOut={showBraillePanel}
-                                                            className={"padded"}
-                                                            onClick={() => setShowBraillePanel(!showBraillePanel)}
-                                                            label={"Einblenden"} icon={"mag"}/>
-                                <AccordeonPanelFlyoutButton flownOut={openedPanel === 'brailleSettings'}
-                                                            className={"padded"}
-                                                            hideFlyout={dragging}
-                                                            onClick={() => setOpenedPanel(openedPanel === 'brailleSettings' ? null : 'brailleSettings')}
-                                                            label={"Einrichten"} icon={"braille"}>
-                                    <BraillePageSettings/>
-                                </AccordeonPanelFlyoutButton>
-                                <AccordeonPanelFlyoutButton flownOut={openedPanel === 'imagedescription'}
-                                                            className={"padded"}
-                                                            hideFlyout={dragging}
-                                                            onClick={() => setOpenedPanel(openedPanel === 'imagedescription' ? null : 'imagedescription')}
-                                                            label={"Bildbeschreibung"} icon={"image"}>
-                                    {/*<Writer/>*/}
-                                    <Verbaliser style={{maxHeight: "100%", height: "100%"}} closeSelf={() => {
-                                        setOpenedPanel(null);
-                                        setShowBraillePanel(true);
-                                    }}/>
-                                </AccordeonPanelFlyoutButton>
-                            </AccordeonPanel>
-                            <AccordeonPanel collapsed={!accordeonStates.objects}
-                                            onClick={() => toggleAccordeon('objects')}  title={"Objekte"}>
-                                <Objects hideFlyout={dragging}/>
-                            </AccordeonPanel>
-                        </Sidebar>
-
-                        <CanvasWrapper>
-                            <Canvas isDragging={dragging => setDragging(dragging)} hide={page.text}/>
-                            {showBraillePanel &&
-                            <BraillePage/>
-                            }
-                            {openedPanel !== null &&
-                            <FlyoutSensitive onClick={() => setOpenedPanel(null)}/>
-                            }
-                        </CanvasWrapper>
-                    </PanelWrapper>
+                            <Keyedit className={"padded"}/>
+                        </AccordeonPanel>
+                        <AccordeonPanel collapsed={!accordeonStates.braillePages}
+                                        onClick={() => toggleAccordeon('braillePages')} title={"Brailleseiten"}>
+                            <AccordeonPanelFlyoutButton flownOut={showBraillePanel}
+                                                        className={"padded"}
+                                                        onClick={() => setShowBraillePanel(!showBraillePanel)}
+                                                        label={"Einblenden"} icon={"mag"}/>
+                            <AccordeonPanelFlyoutButton flownOut={openedPanel === 'brailleSettings'}
+                                                        className={"padded"}
+                                                        hideFlyout={dragging}
+                                                        onClick={() => setOpenedPanel(openedPanel === 'brailleSettings' ? null : 'brailleSettings')}
+                                                        label={"Einrichten"} icon={"braille"}>
+                                <BraillePageSettings/>
+                            </AccordeonPanelFlyoutButton>
+                            <AccordeonPanelFlyoutButton flownOut={openedPanel === 'imagedescription'}
+                                                        className={"padded"}
+                                                        hideFlyout={dragging}
+                                                        onClick={() => setOpenedPanel(openedPanel === 'imagedescription' ? null : 'imagedescription')}
+                                                        label={"Bildbeschreibung"} icon={"image"}>
+                                {/*<Writer/>*/}
+                                <Verbaliser style={{maxHeight: "100%", height: "100%"}} closeSelf={() => {
+                                    setOpenedPanel(null);
+                                    setShowBraillePanel(true);
+                                }}/>
+                            </AccordeonPanelFlyoutButton>
+                        </AccordeonPanel>
+                        <AccordeonPanel collapsed={!accordeonStates.objects}
+                                        onClick={() => toggleAccordeon('objects')} title={"Objekte"}>
+                            <Objects hideFlyout={dragging}/>
+                        </AccordeonPanel>
+                    </Sidebar>
+                    <CanvasWrapper>
+                        <Canvas isDragging={dragging => setDragging(dragging)} hide={page.text}/>
+                        {showBraillePanel &&
+                        <BraillePage/>
+                        }
+                        {openedPanel !== null &&
+                        <FlyoutSensitive onClick={() => setOpenedPanel(null)}/>
+                        }
+                    </CanvasWrapper>
                 </Wrapper>
 
                 {/*TODO auslagern? nimmt ziemlich viele Zeilen in Editor.js*/}

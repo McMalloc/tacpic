@@ -1,27 +1,31 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import styled from 'styled-components/macro';
 import InteractiveSVG from "../ReactSVG/InteractiveSVG";
-import Scrollbars from "../../gui/Scrollbars";
 
 const Wrapper = styled.div`
-  flex: 1 1 auto;
   z-index: 0;
   position: relative;
-  display: flex;
-  // display: ${props => props.hide ? "none" : "block"};
-  // max-height: ${props => props.hide ? 0 : "auto"};
-  //max-width: ${props => props.hide ? 0 : "auto"};
+  max-width: 100%;
+  max-height: 100%;
+  overflow: scroll;
+  touch-action: none;
 `;
 
 const Ruler = styled.div``;
 
 const Canvas = props => {
     const wrapperRef = useRef();
-    const minH = -50, maxH = 1000, minV = -50, maxV = 1400;
+    // const minH = -50, maxH = 1000, minV = -50, maxV = 1400;
+    useEffect(() => {
+        // workaround so the default can be prevented
+        wrapperRef.current.addEventListener("wheel", event => event.preventDefault(), {passive: false})
+    })
     return (
-        <Wrapper ref={wrapperRef} {...props}>
-            <InteractiveSVG bounds={{minH, maxH, minV, maxV}} isDragging={props.isDragging}/>
-            <Scrollbars wrapperRef={wrapperRef} minH={minH} maxH={maxH} minV={minV} maxV={maxV}/>
+        <Wrapper onKeyDown={event => event.preventDefault()} ref={wrapperRef} {...props}>
+            <InteractiveSVG
+                // bounds={{minH, maxH, minV, maxV}}
+                wrapperRef={wrapperRef} isDragging={props.isDragging}/>
+            {/*<Scrollbars wrapperRef={wrapperRef} minH={minH} maxH={maxH} minV={minV} maxV={maxV}/>*/}
         </Wrapper>
     )
 

@@ -78,8 +78,8 @@ export default props => {
                     <tbody>
                     <tr>
                         <td style={{padding: "2mm 6mm 0 2mm"}} colSpan={2}>
-                            <Braille className={"key-label-braille"} data-selectable={true} data-transformable={true} data-uuid={props.uuid}>legende</Braille>
                             <Black className={"key-label-black"} data-selectable={true} data-transformable={true} data-uuid={props.uuid}>Legende</Black>
+                            <Braille className={"key-label-braille"} data-selectable={true} data-transformable={true} data-uuid={props.uuid}>legende</Braille>
                         </td>
                     </tr>
                     {keyedTextures.map((entry, index) => {
@@ -95,8 +95,8 @@ export default props => {
                                     </svg>
                                 </td>
                                 <td style={{paddingBottom: '2mm', verticalAlign: 'top'}}>
-                                    <Braille className={"key-label-braille"}>{entry.braille}</Braille>
                                     <Black className={"key-label-black"}>{entry.label}</Black>
+                                    <Braille className={"key-label-braille"}>{entry.braille}</Braille>
                                 </td>
                             </tr>
                         )
@@ -105,12 +105,12 @@ export default props => {
                         return (
                             <Labelrow key={index} onClick={() => dispatch({type: 'OBJECT_SELECTED', uuids: [entry.uuid]})}>
                                 <td style={{verticalAlign: 'top', padding: "2mm 6mm 0 2mm"}}>
-                                    <Braille className={"key-label-braille"}>{entry.keyVal}</Braille>
                                     <Black className={"key-label-black"}>{entry.keyVal}</Black>
+                                    <Braille className={"key-label-braille"}>{entry.keyVal}</Braille>
                                 </td>
                                 <td style={{padding: "2mm 6mm 0 2mm"}}>
-                                    <Braille className={"key-label-braille"}>{entry.braille}</Braille>
                                     <Black className={"key-label-black"}>{entry.text}</Black>
+                                    <Braille className={"key-label-braille"}>{entry.braille}</Braille>
                                 </td>
                             </Labelrow>
                         )

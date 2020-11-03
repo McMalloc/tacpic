@@ -42,9 +42,13 @@ const Wrapper = styled.div`
 `;
 
 const AppContainer = styled.div`
-  flex: 1 0 auto;
+  flex: 1 ${props => props.inEditor ? 1 : 0} auto;
+  overflow-y: ${props => props.inEditor ? 'hidden' : 'visible'};
+  
   display:flex;
   flex-direction: column;
+  
+  padding-top: ${props => props.inEditor ? 0 : '1em'};
 `;
 
 const App = () => {
@@ -79,7 +83,7 @@ const App = () => {
             <Alert danger>Unser Service ist zur Zeit aus technischen Gründen nicht erreichbar.</Alert>
             }
             <ScrollContent>
-                <AppContainer id={"app-container"} className={(!inEditor ? " padded-top container" : "")}>
+                <AppContainer id={"app-container"} inEditor={inEditor} className={(!inEditor ? " container" : "")}>
                         <Routes>
                             <Route path="/login"
                                    element={<Login/>}/>

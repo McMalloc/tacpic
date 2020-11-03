@@ -5,7 +5,7 @@ import {useTranslation} from "react-i18next";
 
 const ToggleButton = styled(Button)`
   &[aria-pressed="true"] {
-    background-color: ${props => props.theme.accent_1};
+    background-color: ${props => props.theme.brand_primary};
     box-shadow: inset 2px 2px 1px rgba(0,0,0,0.4);
     text-decoration: underline;
     text-shadow: 0 0 1px ${props => props.theme.background};

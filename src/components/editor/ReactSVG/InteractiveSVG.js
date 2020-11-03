@@ -16,8 +16,8 @@ import {TOOL_SENSIBILITY} from "../../../config/constants";
 import styled from "styled-components";
 
 const SVG = styled.svg`
-  width: 100%;
-  height: 100%;
+  width: 1500px;
+  height: 1500px;
   touch-action: none; 
   outline: none; 
   cursor: ${({isPanning, selectedTool}) => isPanning ? 'move' : 'inherit'};
@@ -27,9 +27,11 @@ class InteractiveSVG extends Component {
     svgElement = React.createRef();
     state = {
         showContext: false,
-
         dragging: false,
         panning: false,
+        panningRefX: 0,
+        panningRefY: 0,
+        modifierKey: null,
         mouseIsDown: false,
         // openPath: false,
         pathClosing: false,
@@ -70,6 +72,7 @@ class InteractiveSVG extends Component {
     currentY = y => y - this.svgElement.current.getBoundingClientRect().top;
 
     wheelHandler = event => {
+        if (this.state.modifierKey !== 32) return;
         let factor = event.nativeEvent.deltaY <= 0 ? 0.95 : 1.05;
         this.props.changeViewport(
             this.props.ui.scalingFactor + (event.nativeEvent.deltaY > 0 ? -0.1 : 0.1),
@@ -79,6 +82,21 @@ class InteractiveSVG extends Component {
 
     keyDownHandler = event => {
         switch (event.which) {// TODO use constants instead of magic numbers
+            case 13: // ENTER
+                if (this.state.preview === null) break;
+                this.props.updateObject(this.state.preview);
+                this.setState({
+                    preview: null
+                });
+                break;
+            case 32: // space
+                if (this.state.modifierKey === 32) break;
+                event.stopPropagation();
+                event.preventDefault();
+                this.setState({
+                    modifierKey: 32
+                })
+                break;
             case 38: // up
                 event.stopPropagation();
                 event.preventDefault();
@@ -86,13 +104,6 @@ class InteractiveSVG extends Component {
                     this.props.ui.scalingFactor,
                     this.props.ui.viewPortX,
                     this.props.ui.viewPortY - 10);
-                break;
-            case 13: // ENTER
-                if (this.state.preview === null) break;
-                this.props.updateObject(this.state.preview);
-                this.setState({
-                    preview: null
-                });
                 break;
             case 39: // right
                 event.stopPropagation();
@@ -155,6 +166,11 @@ class InteractiveSVG extends Component {
         event.stopPropagation();
         event.preventDefault();
         switch (event.which) {// TODO use constants instead of magic numbers
+            case 32: // space
+                this.setState({
+                    modifierKey: null
+                })
+                break;
             default:
                 break;
         }
@@ -199,9 +215,12 @@ class InteractiveSVG extends Component {
             // TODO: transparenten Manipulator abfangen
             //  transform sollte auch bei einem klick auf den manipulator funktionieren, für gruppen
 
-            if (event.ctrlKey) {
+            if (this.state.modifierKey === 32) { // space pressed
+                console.log(this.state.panningRefX, event.pageX);
                 this.setState({
-                    panning: true
+                    panning: true,
+                    panningRefX: this.props.wrapperRef.current.scrollLeft + event.pageX,
+                    panningRefY: this.props.wrapperRef.current.scrollTop + event.pageY,
                 });
                 return;
             }
@@ -320,6 +339,8 @@ class InteractiveSVG extends Component {
             mouseIsDown: false,
             dragging: false,
             panning: false,
+            panningRefX: 0,
+            panningRefY: 0,
             transform: null,
             lastMouseUpX: this.state.mouseOffsetX,
             lastMouseUpY: this.state.mouseOffsetY,
@@ -422,11 +443,14 @@ class InteractiveSVG extends Component {
             }
 
             if (this.state.panning) {
-                this.props.changeViewport(
-                    this.props.ui.scalingFactor,
-                    this.props.ui.viewPortX - (this.state.t_mouseOffsetX - this.currentX(event.clientX)),
-                    this.props.ui.viewPortY - (this.state.t_mouseOffsetY - this.currentY(event.clientY))
-                )
+                this.props.wrapperRef.current.scrollLeft = this.state.panningRefX - event.pageX;
+                this.props.wrapperRef.current.scrollTop = this.state.panningRefY - event.pageY;
+
+                // this.props.changeViewport(
+                //     this.props.ui.scalingFactor,
+                //     this.props.ui.viewPortX - (this.state.t_mouseOffsetX - this.currentX(event.clientX)),
+                //     this.props.ui.viewPortY - (this.state.t_mouseOffsetY - this.currentY(event.clientY))
+                // )
             }
 
             let preview = this.state.preview;
@@ -566,7 +590,7 @@ class InteractiveSVG extends Component {
                 {/*}*/}
 
                 {this.state.dragging && this.state.transform === null && this.state.edit === null &&
-                (this.props.ui.tool === 'SELECT' || this.props.ui.tool === 'LABEL') &&
+                ((this.props.ui.tool === 'SELECT' || this.props.ui.tool === 'LABEL') && !this.state.panning) &&
                 <g>
                     <rect
                         x={Math.min(this.state.t_mouseDownX, this.state.t_mouseOffsetX)}
