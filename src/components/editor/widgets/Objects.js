@@ -147,7 +147,7 @@ const Objects = props => {
                 {objects.map((object, index) => {
                     const selected = selectedUUID === object.uuid;
                     return <AccordeonPanelFlyoutButton
-                        flownOut={selected}
+                        flownOut={object.type !== 'key' && selected}
                         maxWidth={230}
                         hideFlyout={props.hideFlyout}
                         key={index}

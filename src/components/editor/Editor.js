@@ -33,7 +33,7 @@ import {findObject} from "../../utility/findObject";
 const Wrapper = styled.div`
   display: grid;
   flex: 1 1 auto;
-  grid-template-columns: minmax(100px, 1fr) 3fr;
+  grid-template-columns: minmax(200px, 350px) 3fr;
   max-height: 100%;
   grid-template-rows: auto 1fr;
   grid-template-areas: 
@@ -277,6 +277,7 @@ const Editor = props => {
                     </Radiobar>
                     <Sidebar>
                         <Draftinfo onClick={() => {
+                            toggleAccordeon('draft', true);
                             setOpenedPanel('publish');
                             // setTimeout(() => {
                             //     document.getElementById("label-for-graphic-title").focus();
@@ -290,19 +291,19 @@ const Editor = props => {
                                 <Button fullWidth primary label={"Titel ändern"}/>
                             }
 
-                            <pre style={{
-                                border: '2px solid green',
-                                textShadow: '1px 1px 0 black',
-                                color: 'lightgreen',
-                                fontSize: '11px',
-                                padding: '2px 3px'
-                            }}>
-                                    Derived from: {file.derivedFrom + ""}<br/>
-                                    Mode: {mode}<br/>
-                                    Graphic ID: {file.graphic_id + " (" + graphicId + ")"}<br/>
-                                    Variant ID: {file.variant_id + " (" + variantId + ")"}<br/>
-                                {openedPanel + ''}
-                                </pre>
+                            {/*<pre style={{*/}
+                            {/*    border: '2px solid green',*/}
+                            {/*    textShadow: '1px 1px 0 black',*/}
+                            {/*    color: 'lightgreen',*/}
+                            {/*    fontSize: '11px',*/}
+                            {/*    padding: '2px 3px'*/}
+                            {/*}}>*/}
+                            {/*        Derived from: {file.derivedFrom + ""}<br/>*/}
+                            {/*        Mode: {mode}<br/>*/}
+                            {/*        Graphic ID: {file.graphic_id + " (" + graphicId + ")"}<br/>*/}
+                            {/*        Variant ID: {file.variant_id + " (" + variantId + ")"}<br/>*/}
+                            {/*    {openedPanel + ''}*/}
+                            {/*    </pre>*/}
                         </Draftinfo>
                         <AccordeonPanel
                             collapsed={!accordeonStates.draft}

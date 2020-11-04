@@ -32,7 +32,6 @@ export default function SVGEllipse(props) {
                 data-uuid={props.uuid}
                 transform={transformProperty}
                 style={{
-                    cursor: 'pointer',
                     fill: template !== null ? 'url(#pattern-' + template + '-' + props.uuid + '' : props.fill || "transparent",
                     stroke: props.pattern.offset ? props.fill : "black",
                     strokeWidth: props.border ? props.pattern.offset ? 20 : props.borderWidth : 0,

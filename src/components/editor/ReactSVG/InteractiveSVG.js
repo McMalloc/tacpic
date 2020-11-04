@@ -16,11 +16,11 @@ import {TOOL_SENSIBILITY} from "../../../config/constants";
 import styled from "styled-components";
 
 const SVG = styled.svg`
-  width: 1500px;
-  height: 1500px;
+  width: ${props => props.scale * 1500}px;
+  height: ${props => props.scale * 1500}px;
   touch-action: none; 
   outline: none; 
-  cursor: ${({isPanning, selectedTool}) => isPanning ? 'move' : 'inherit'};
+  cursor: ${({isPanning}) => isPanning ? 'move' : 'inherit'};
 `;
 
 class InteractiveSVG extends Component {
@@ -533,6 +533,8 @@ class InteractiveSVG extends Component {
                 onKeyDown={this.keyDownHandler}
                 onKeyUp={this.keyUpHandler}
                 onMouseUp={this.mouseUpHandler}
+                isPanning={this.state.panning}
+                scale={this.props.ui.scalingFactor}
                 onMouseMove={this.mouseMoveHandler}
                 onMouseLeave={this.mouseUpHandler}
                 onWheel={this.wheelHandler}

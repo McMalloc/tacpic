@@ -28,7 +28,6 @@ export default function SVGPath(props) {
             />
             <path
                 style={{
-                    cursor: 'pointer',
                     stroke: props.pattern.offset ? props.fill : "black",
                     strokeWidth: props.border ? props.pattern.offset ? 20 : props.borderWidth + "mm" : 0,
                     // strokeDasharray: props.pattern.offset ? null : props.borderStyle

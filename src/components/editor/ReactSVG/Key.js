@@ -6,7 +6,8 @@ import {filter, flatten, map, uniq} from "lodash";
 import Rect from "./Rect";
 import styled from "styled-components";
 import {keyedLabelsSelector, patternsInUseSelector} from "../../../reducers/selectors";
-import {pixelToPx} from "../../../utility/mmToPx";
+import {mmToPx, pixelToPx} from "../../../utility/mmToPx";
+import {SAFE_BORDER} from "../../../config/constants";
 
 const Braille = styled.span`
   font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
@@ -37,7 +38,7 @@ const Labelrow = styled.tr`
 export default props => {
     const patternsInUse = useSelector(patternsInUseSelector);
     const keyedTextures = useSelector(state => state.editor.file.present.keyedTextures);
-    const scalingFactor = useSelector(state => state.editor.ui.scalingFactor);
+    const {scalingFactor, currentPage} = useSelector(state => state.editor.ui);
     const keyedLabels = useSelector(keyedLabelsSelector);
     const dispatch = useDispatch();
     // const {}
@@ -54,11 +55,11 @@ export default props => {
 
     useEffect(() => {
         const keyBBox = keyElem.current.getBoundingClientRect();
-        const pageBBox = document.getElementById("page-0").getBoundingClientRect();
+        const pageBBox = document.getElementById("page-" + currentPage).getBoundingClientRect();
 
-        setInternalCoords({ // TODO um magic number kümmern
-            x: (pageBBox.width - pixelToPx(keyBBox.width) - 75) / scalingFactor,
-            y: (pageBBox.height - pixelToPx(keyBBox.height) - 75) / scalingFactor
+        setInternalCoords({
+            x: (pageBBox.width - pixelToPx(keyBBox.width) - pixelToPx(mmToPx(SAFE_BORDER))) / scalingFactor,
+            y: (pageBBox.height - pixelToPx(keyBBox.height) - pixelToPx(mmToPx(SAFE_BORDER))) / scalingFactor
         })
     }, [props.anchored, props.width]);
 
@@ -85,7 +86,10 @@ export default props => {
                     {keyedTextures.map((entry, index) => {
                         return (
                             <tr key={index}>
-                                <td style={{padding: "2mm 6mm 0 2mm", verticalAlign: 'top'}}>
+                                <td style={{padding: "2mm 6mm 0 2mm", verticalAlign: 'top',
+                                    minWidth: texturePreviewWidth + 'mm',
+                                    maxWidth: texturePreviewWidth + 'mm',
+                                    width: texturePreviewWidth + 'mm'}}>
                                     <svg width={texturePreviewWidth + "mm"} height={texturePreviewHeight + "mm"}
                                          xmlns={"http://www.w3.org/2000/svg"}><Rect
                                         inactive={true}
@@ -108,7 +112,7 @@ export default props => {
                                     <Black className={"key-label-black"}>{entry.keyVal}</Black>
                                     <Braille className={"key-label-braille"}>{entry.keyVal}</Braille>
                                 </td>
-                                <td style={{padding: "2mm 6mm 0 2mm"}}>
+                                <td style={{paddingBottom: '2mm'}}>
                                     <Black className={"key-label-black"}>{entry.text}</Black>
                                     <Braille className={"key-label-braille"}>{entry.braille}</Braille>
                                 </td>

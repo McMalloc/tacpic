@@ -79,7 +79,7 @@ const LabelContext = props => {
                                event.currentTarget.value)}
                            value={selectedObject.keyVal}
                            aria-labelledby={"is-key"}/>
-                <p>{t("editor:cb_braille-key-explanation")}</p>
+                {/*<p>{t("editor:cb_braille-key-explanation")}</p>*/}
             </fieldset>
 
             <fieldset>

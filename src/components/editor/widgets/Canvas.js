@@ -9,6 +9,28 @@ const Wrapper = styled.div`
   max-height: 100%;
   overflow: scroll;
   touch-action: none;
+  
+  ::-webkit-scrollbar-corner {
+    background-color: rgba(255,255,255,.1);
+  }
+  
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255,255,255,.08);
+    }
+   
+    
+    ::-webkit-scrollbar-thumb {
+        border-radius: 3px;
+        border: 1px solid rgba(0,0,0,0.2);
+        background-color: ${props => props.theme.brand_primary};
+        &:hover {
+          background-color: rgba(252,228,0, 0.8);
+        }
+        //-webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+    }
 `;
 
 const Ruler = styled.div``;
