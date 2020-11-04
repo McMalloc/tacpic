@@ -60,6 +60,7 @@ const iconMap = {
     rect: 'vector-square',
     ellipse: 'circle',
     label: 'braille',
+    key: 'key',
     path: 'bezier-curve'
 }
 

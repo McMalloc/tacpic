@@ -125,6 +125,7 @@ const Editor = props => {
     let {variantId, graphicId, mode} = useParams();
 
     useEffect(() => {
+        if (handleError) return;
         if (!!variantId) {
             dispatch({
                 type: FILE.OPEN.REQUEST,
@@ -165,7 +166,6 @@ const Editor = props => {
         setAccordeonStates(newState);
         localStorage.setItem("accordeonStates", JSON.stringify(newState));
     }
-
     const selectedObject = useSelector(state => {
         return findObject(
             state.editor.file.present.pages[state.editor.ui.currentPage].objects,
@@ -175,23 +175,32 @@ const Editor = props => {
         console.log("toggle");
         toggleAccordeon('key', true);
     }
-    ;
-
 
     // ERROR HANDLING
-    if (localStorage.getItem("HAS_EDITOR_CRASHED") === 'true') {
-        console.log("crashed");
-        if (uiSettings.fileOpenSuccess) {
-            const backup = localStorage.getItem("EDITOR_BACKUP");
-            const backupHash = md5(backup);
+    // if (localStorage.getItem("HAS_EDITOR_CRASHED") === 'true') {
+    //     console.log("crashed");
+    if (uiSettings.fileOpenSuccess && !handleError) {
+        const backup = localStorage.getItem("EDITOR_BACKUP");
+        if (backup !== null) {
             const parsed = JSON.parse(backup);
+            const backupHash = md5(JSON.stringify(parsed.pages.map(page=>{
+                delete page.rendering;
+                return page;
+            })));
+            console.log(parsed.pages[0]);
+            console.log(page[0]);
+            console.log("backup: ", backupHash);
+            console.log("server: ", fileHash);
             if (fileHash !== backupHash && parsed.variant_id === parseInt(variantId)) {
                 setHandleError(true)
                 localStorage.setItem("HAS_EDITOR_CRASHED", "false");
             }
         }
     }
-    if (handleError) {
+    // }
+
+    if (false) {
+    // if (handleError) {
         return <Modal fitted title={'Sitzung wiederherstellen'} dismiss={() => setHandleError(false)}
                       actions={[
                           {

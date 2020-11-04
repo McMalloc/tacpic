@@ -2,6 +2,7 @@ import createSaga from "./saga_utilities";
 import {GRAPHIC, VARIANT} from "../actions/action_constants";
 import {takeLatest} from "redux-saga/effects";
 import {extractSVG} from "../components/editor/ReactSVG";
+import md5 from "blueimp-md5";
 
 export const variantGetSaga = createSaga(
     VARIANT.GET, 'get', 'variants/:id', takeLatest, true, undefined,
@@ -44,6 +45,10 @@ export const variantUpdateSaga = createSaga(
             ...file,
             variantDescription: `${file.braillePages.imageDescription.summary} (${file.braillePages.imageDescription.type})`,
             tags: replaceTagUuids(file.tags),
+            // hash: md5(JSON.stringify(file.pages.map(page=>{
+            //     delete page.rendering;
+            //     return page;
+            // }))),
             pages: file.pages.map((page, index) => ({...page, rendering: extractSVG(index)}))
         })
     );

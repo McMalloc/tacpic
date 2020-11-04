@@ -4,7 +4,7 @@ import {extractSVG} from "../components/editor/ReactSVG";
 
 // TODO pauschal auch Durchführen vor dem Speichern
 export function* renderWatcher() {
-    yield debounce(1000, ['OBJECT_PROP_CHANGED', 'OBJECT_UPDATED', FILE.OPEN.SUCCESS], function* (action) {
+    yield debounce(1000, ['OBJECT_PROP_CHANGED', 'OBJECT_UPDATED'], function* (action) {
         try {
             let file = yield select(state => state.editor.file);
             if (action.type !== FILE.OPEN.SUCCESS) localStorage.setItem("EDITOR_BACKUP", JSON.stringify(file.present));

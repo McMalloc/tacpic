@@ -188,14 +188,15 @@ const Metadata = props => {
                     Entwurf
                 </Indicator>
             </Status>
-            <p>
+            <div>
                 <Checkbox onChange={event => setLicenseAgreed(!licenseAgreed)}
                           name={'cb-license-agreed'}
                           checked={licenseAgreed}
                           label={"Ich stimme der Veröffentlichung unter der liberalen CC-BY-SA 3.0 Lizenz zu."}/>
                 <a className={"checkbox-additional"} target={"blank"}
                    href={"https://creativecommons.org/licenses/by-sa/4.0/deed.de"}>Lizenz einsehen.</a>
-            </p>
+            </div>
+            <br/>
             <Button onClick={() => {
                 toggleFileModal(true);
                 uploadVersion(dispatch, file, mode)

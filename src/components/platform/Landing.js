@@ -32,8 +32,8 @@ const Placeholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid ${props=>props.theme.grey_4};
-  border-radius: ${props=>props.theme.border_radius};
+  border: 2px solid ${props => props.theme.grey_4};
+  border-radius: ${props => props.theme.border_radius};
   cursor: pointer;
   
   &:hover {
@@ -62,9 +62,9 @@ const Landing = () => {
     const t = useTranslation().t;
     const navigate = useNavigate();
     const videoPlayer = useRef();
-    const signedUp = useSelector(state=>state.user.logged_in);
+    const signedUp = useSelector(state => state.user.logged_in);
 
-    const [showMore, setShowMore] = useState(true);
+    const [showMore, setShowMore] = useState(false);
     const [allowPlayer, setAllowPlayer] = useState(false);
     const [vheight, setVheight] = useState(false);
 
@@ -119,8 +119,6 @@ const Landing = () => {
                 </div>
             </div>
 
-            {showMore &&
-            <>
                 <div className={"row"} id={"after-jump"}>
                     <div className={"col-xs-12 col-sm-6"}>
                         <h2>Mit unserem tacpic Online-Editor können Sie jetzt schnell und einfach taktile Grafiken
@@ -131,20 +129,26 @@ const Landing = () => {
                         <p>Der tacpic Online-Editor ist ein nutzerfreundliches Programm und stellt eine Alternative zu
                             komplexer Grafiksoftware dar. Er wurde als Webanwendung speziell für die Gestaltung von
                             Grafikvorlagen für Tastgrafiken konzipiert.</p>
-                        <p>Nachdem Sie ihre Tastgrafik entworfen haben, können Sie diese über unseren Druckservice in
-                            Auftrag geben oder den Entwurf herunterladen und mit geeigneten Geräten selbst
-                            produzieren</p>
-                        <p>Wenn Sie über unseren Druckservice bestellen, werden die Grafiken auf Schwellpapier gedruckt
-                            und anschließend angeschwellt, sodass ein buntes Relief entsteht, welches sowohl taktil als
-                            auch visuell erfasst werden kann. Auf diese Weise schlagen Sie eine Brücke zwischen sehenden
-                            und sehbeeinträchtigten Menschen.</p>
-                        <p>Wir befinden uns noch in der Testphase, daher steht Ihnen der Editor kostenlos zur Verfügung.
-                            Ebenfalls haben Sie momentan die Möglichkeit die Entwürfe für die eigenhändige Produktion
-                            gratis herunterzuladen. Unser Ziel ist es zunächst mithilfe der Community den Onlinekatalog
-                            mit Grafikvorlagen zu befüllen und den Service für Sie zu perfektionieren. In einem nächsten
-                            Schritt wird es dann erforderlich sein, Lizenzen für die Freischaltung der Downloadfunktion
-                            zu erwerben. Der Editor wird Ihnen dauerhaft kostenlos zu Verfügung stehen. Mehr
-                            Informationen zum Lizenzmodell erhalten sie hier.</p>
+                        {showMore ?
+                            <>
+                                <p>Nachdem Sie ihre Tastgrafik entworfen haben, können Sie diese über unseren Druckservice in
+                                    Auftrag geben oder den Entwurf herunterladen und mit geeigneten Geräten selbst
+                                    produzieren</p>
+                                <p>Wenn Sie über unseren Druckservice bestellen, werden die Grafiken auf Schwellpapier gedruckt
+                                    und anschließend angeschwellt, sodass ein buntes Relief entsteht, welches sowohl taktil als
+                                    auch visuell erfasst werden kann. Auf diese Weise schlagen Sie eine Brücke zwischen sehenden
+                                    und sehbeeinträchtigten Menschen.</p>
+                                <p>Wir befinden uns noch in der Testphase, daher steht Ihnen der Editor kostenlos zur Verfügung.
+                                    Ebenfalls haben Sie momentan die Möglichkeit die Entwürfe für die eigenhändige Produktion
+                                    gratis herunterzuladen. Unser Ziel ist es zunächst mithilfe der Community den Onlinekatalog
+                                    mit Grafikvorlagen zu befüllen und den Service für Sie zu perfektionieren. In einem nächsten
+                                    Schritt wird es dann erforderlich sein, Lizenzen für die Freischaltung der Downloadfunktion
+                                    zu erwerben. Der Editor wird Ihnen dauerhaft kostenlos zu Verfügung stehen. Mehr
+                                    Informationen zum Lizenzmodell erhalten sie hier.</p>
+                            </>
+                            :
+                            <Button label={"Weiter lesen"} onClick={() => setShowMore(true)} />
+                        }
                     </div>
 
                     <div className={"col-xs-12 col-sm-6"}>
@@ -185,7 +189,7 @@ const Landing = () => {
                 <div className={"row extra-padding"}>
                     <img src={"images/key.jpg"} alt={""}/>
                 </div>
-                <div className={"row extra-padding"}>
+                <div className={"row"}>
                     <h2 style={{textAlign: 'center', width: '100%'}}>tacpic bietet</h2>
                 </div>
                 <div className={"row extra-padding"}>
@@ -235,17 +239,14 @@ const Landing = () => {
                         {allowPlayer ?
                             <iframe title="vimeo-player" src="https://www.youtube.com/embed/-HUqk2zYi54" width="100%"
                                     height="auto" style={{height: "15em"}} frameBorder={0} allowFullScreen={true}/>
-                                    :
+                            :
                             <Placeholder onClick={() => setAllowPlayer(true)}>Inhalte von Youtube laden</Placeholder>
                         }
                         <p style={{textAlign: "right"}}><small>Film von&nbsp;<a
                             href="https://www.lichtempfindlich.org/">lichtempfindlich</a></small></p>
                     </div>
                 </div>
-            </>
-            }
         </>
-
     );
 };
 

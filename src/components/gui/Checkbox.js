@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-import React, {Component, Fragment} from "react";
+import React from "react";
 import {useTranslation} from "react-i18next";
 import {Sub} from "./_Label";
 
@@ -18,7 +18,7 @@ const Label = styled.label`
   }
   
   &:before {
-      left: 0em;
+      left: 0;
       top: 0.1em;
       width: 1em;
       height: 1em;

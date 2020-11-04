@@ -54,6 +54,8 @@ export default props => {
     const keyElem = useRef();
 
     useEffect(() => {
+        if (!props.anchored) return;
+        // throw "error";
         const keyBBox = keyElem.current.getBoundingClientRect();
         const pageBBox = document.getElementById("page-" + currentPage).getBoundingClientRect();
 
@@ -61,7 +63,7 @@ export default props => {
             x: (pageBBox.width - pixelToPx(keyBBox.width) - pixelToPx(mmToPx(SAFE_BORDER))) / scalingFactor,
             y: (pageBBox.height - pixelToPx(keyBBox.height) - pixelToPx(mmToPx(SAFE_BORDER))) / scalingFactor
         })
-    }, [props.anchored, props.width]);
+    }, [props.anchored, props.width, keyedLabels, keyedTextures]);
 
     // TODO eingetragene labels müssen auch von liblouis übersetzt werden
     return (

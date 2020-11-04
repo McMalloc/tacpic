@@ -120,15 +120,15 @@ const Catalogue = props => {
                             <Checkbox onChange={() => toggleSystem(dispatch, 'de-de-g0.utb')}
                                       name={'system-toggle-de-de-g0.utb'}
                                       checked={catalogue.filterSystem.includes('de-de-g0.utb')}
-                                      label={'Vollschrift'}/>
+                                      label={'catalogue:de-de-g0.utb'}/>
                             <Checkbox onChange={() => toggleSystem(dispatch, 'de-de-g1.ctb')}
                                       name={'system-toggle-de-de-g1.ctb'}
                                       checked={catalogue.filterSystem.includes('de-de-g1.ctb')}
-                                      label={'Langschrift'}/>
+                                      label={'catalogue:de-de-g1.ctb'}/>
                             <Checkbox onChange={() => toggleSystem(dispatch, 'de-de-g2.ctb')}
                                       name={'system-toggle-de-de-g2.ctb'}
                                       checked={catalogue.filterSystem.includes('de-de-g2.ctb')}
-                                      label={'Kurzschrift'}/>
+                                      label={'catalogue:de-de-g2.ctb'}/>
                         </div>
                         <br/>
 
