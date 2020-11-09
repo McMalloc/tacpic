@@ -1,5 +1,5 @@
 import layouts from "../components/editor/widgets/layouts.js"
-import {FILE, IMPORT} from "../actions/action_constants";
+import {FILE, IMPORT, SUPPRESS_BACKUP} from "../actions/action_constants";
 
 let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so
 let lastObjectsProps = [];
@@ -95,29 +95,8 @@ const ui = (state = {}, action) => {
             return {...state, initialized: true};
         case 'PAGE_CHANGE':
             return {...state, selectedObjects: [], currentPage: action.number};
-        case 'LAYOUT_SET':
-            //TODO da es ein Nebeneffekt ist und sogar blockt, sollte es auch eine Saga werden, die dann wiederum die eigentlich Action,
-            // die die render props beeinflusst abfeuert
-            const fromLS = JSON.parse(localStorage.getItem("custom_layout_" + action.layoutIndex));
-            return {
-                ...state,
-                currentLayout: action.layoutIndex,
-                previewMode: action.layoutIndex === 8,
-                widgetConfig: fromLS !== null ? fromLS : layouts[action.layoutIndex]
-            };
-        case 'WIDGET_VISIBILITY_TOGGLED':
-            return {
-                ...state,
-                widgetConfig: state.widgetConfig.map(widget => {
-                    if (widget.i !== action.id) {
-                        return widget;
-                    } else {
-                        widget.visible = action.state;
-                        return widget;
-                    }
-                })
-
-            };
+        case SUPPRESS_BACKUP:
+            return {...state, suppressBackup: action.flag || false};
         default:
             return state;
     }

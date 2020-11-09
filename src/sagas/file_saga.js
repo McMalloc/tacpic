@@ -18,7 +18,7 @@ export function* openFileWatcher() {
         if (success) {
             yield put({
                 type: FILE.OPEN.SUCCESS,
-                data: success.data, mode
+                data: {...success.data, ...action.data}, mode
             });
             yield put({type: 'CLEAR'})
         } else {

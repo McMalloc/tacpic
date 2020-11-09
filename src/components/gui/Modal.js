@@ -2,7 +2,7 @@ import styled from 'styled-components/macro';
 import React, {Component} from "react";
 import {createPortal} from "react-dom";
 import {fadeIn, slideFromAbove} from "./Animations";
-import {Icon} from "./_Icon";
+import { withTranslation } from 'react-i18next';
 import {Button} from "./Button";
 
 const Backdrop = styled.div`
@@ -94,7 +94,7 @@ class Modal extends Component {
             <Backdrop id={"modal-backdrop"} onClick={this.props.dismiss}>
                 <Window fitted={this.props.fitted} onClick={event=>event.stopPropagation()}>
                     <ModalHeader>
-                        <ModalTitle>{this.props.title}</ModalTitle>
+                        <ModalTitle>{this.props.t(this.props.title)}</ModalTitle>
                         {typeof this.props.dismiss === "function" && <Button onClick={this.props.dismiss} id={"close-modal-button"} icon={"times"}></Button>}
                         {/*<ModalClose>{typeof this.props.dismiss === "function" && <Icon onClick={this.props.dismiss} icon={"times"} />}</ModalClose>*/}
                     </ModalHeader>
@@ -127,4 +127,4 @@ class Modal extends Component {
 }
 
 
-export {Modal}
+export default withTranslation()(Modal)

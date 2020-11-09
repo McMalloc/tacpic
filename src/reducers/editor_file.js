@@ -39,7 +39,7 @@ const file = (state = {}, action) => {
         case VARIANT.UPDATE.SUCCESS:
             return {...state, state: 'success'};
         case VARIANT.UPDATE.FAILURE:
-            return {...state, state: 'failure'};
+            return {...state, state: 'failure', error: action.error};
 
         case GRAPHIC.CREATE.REQUEST:
         case VARIANT.CREATE.REQUEST:
@@ -194,20 +194,9 @@ const file = (state = {}, action) => {
                 draftState.braillePages.formatted = action.formatted;
             });
         case FILE.OPEN.REQUEST:
-            return {...initialEditor.file.present, ...action.data};
+            return {...initialEditor.file.present};
         case FILE.OPEN.SUCCESS:
-            let current_file = {...state};
-            if (current_file.variant_id === null) {
-                delete action.data.derivedFrom;
-                if (current_file.graphic_id !== null) {
-                    delete action.data.variant_id;
-                    delete action.data.variantTitle;
-                }
-            }
-            for (let [key, value] of Object.entries(action.data)) { // assign new values, keep defaults
-                current_file[key] = value;
-            }
-            return current_file;
+            return {...state, ...action.data};
         case 'OBJECT_REMOVED':
             oldState = cloneDeep(state);
 

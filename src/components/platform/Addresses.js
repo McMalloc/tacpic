@@ -9,7 +9,7 @@ import AddressView from "./AddressView";
 import styled from 'styled-components/macro';
 import {Alert} from "../gui/Alert";
 import ButtonBar from "../gui/ButtonBar";
-import {Modal} from "../gui/Modal";
+import Modal from "../gui/Modal";
 
 const AddressWrapper = styled.div`
     background-color: ${props => props.theme.background};

@@ -169,7 +169,7 @@ const VariantView = props => {
                                          sublabel={"catalogue:variant-edit-hint"} />
                             <FlyoutEntry icon={"file-export"}
                                          label={"catalogue:variant-new"}
-                                         onClick={() => navigate(`/editor/copy`)}
+                                         onClick={() => navigate(`/editor/${graphicId}/variant/${variantId}/new`)}
                                          sublabel={"catalogue:variant-new-hint"} />
                         </FlyoutButton>
 

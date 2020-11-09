@@ -11,7 +11,7 @@ const Bar = styled.form`
   width: 100%;
   align-items: flex-end;
   text-align: left;
-  justify-content: center;
+  //justify-content: center;
 `;
 
 const Label = styled.label`
@@ -41,7 +41,7 @@ const Searchbar = () => {
             <Bar>
                 <Textinput value={searchTerm}
                            name={"search-bar"}
-                           style={{margin: 0, flex: "1 0 auto"}}
+                           style={{margin: 0, width: '100%'}}
                            label={t("catalogue:searchterm")}
                            onChange={event => setSearchTerm(event.target.value)}
                            externalLabel={"search-bar-label"}

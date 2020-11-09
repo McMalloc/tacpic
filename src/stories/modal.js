@@ -4,7 +4,7 @@ import {storiesOf} from "@storybook/react";
 import { StateDecorator, Store } from "@sambego/storybook-state";
 
 import {Button} from "../components/gui/Button";
-import {Modal} from "../components/gui/Modal";
+import Modal from "../components/gui/Modal";
 
 let store = new Store({
     showModal: false

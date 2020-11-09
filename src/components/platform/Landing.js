@@ -12,6 +12,7 @@ import {getViewport} from "../../utility/viewport";
 import {Icon} from "../gui/_Icon";
 import {Container, Row} from "../gui/Grid";
 import {Alert} from "../gui/Alert";
+import Well from "../gui/Well";
 
 const Form = styled.div`
   //width: 500px;
@@ -94,21 +95,6 @@ const Landing = () => {
                                 }}>{t("catalogue:create")}</Button>
                             </div>
                         </Form>
-                        {!signedUp &&
-                        <>
-                            <p> <hr/></p>
-                            <p>
-                                Legen Sie Ihr kostenloses tacpic-Konto an um eigene Grafiken zu erstellen und lassen Sie sich durch unseren Newsletter über die neusten Entwicklungen informieren.<br />
-                                <p>
-                                    <Button large icon={"user-plus"} primary>
-                                        {t("general:signup")}
-                                    </Button>
-                                </p>
-
-                            </p>
-                            <p> <hr/></p>
-                        </>
-                        }
 
                     </div>
                 </div>
@@ -119,133 +105,159 @@ const Landing = () => {
                 </div>
             </div>
 
-                <div className={"row"} id={"after-jump"}>
-                    <div className={"col-xs-12 col-sm-6"}>
-                        <h2>Mit unserem tacpic Online-Editor können Sie jetzt schnell und einfach taktile Grafiken
-                            online gestalten.</h2>
-                        <p>Nachdem Sie ihre Tastgrafik entworfen haben, können Sie diese über unseren Druckservice in
-                            Auftrag geben oder den Entwurf herunterladen und mit geeigneten Geräten selbst
-                            produzieren</p>
-                        <p>Der tacpic Online-Editor ist ein nutzerfreundliches Programm und stellt eine Alternative zu
-                            komplexer Grafiksoftware dar. Er wurde als Webanwendung speziell für die Gestaltung von
-                            Grafikvorlagen für Tastgrafiken konzipiert.</p>
-                        {showMore ?
-                            <>
-                                <p>Nachdem Sie ihre Tastgrafik entworfen haben, können Sie diese über unseren Druckservice in
-                                    Auftrag geben oder den Entwurf herunterladen und mit geeigneten Geräten selbst
-                                    produzieren</p>
-                                <p>Wenn Sie über unseren Druckservice bestellen, werden die Grafiken auf Schwellpapier gedruckt
-                                    und anschließend angeschwellt, sodass ein buntes Relief entsteht, welches sowohl taktil als
-                                    auch visuell erfasst werden kann. Auf diese Weise schlagen Sie eine Brücke zwischen sehenden
-                                    und sehbeeinträchtigten Menschen.</p>
-                                <p>Wir befinden uns noch in der Testphase, daher steht Ihnen der Editor kostenlos zur Verfügung.
-                                    Ebenfalls haben Sie momentan die Möglichkeit die Entwürfe für die eigenhändige Produktion
-                                    gratis herunterzuladen. Unser Ziel ist es zunächst mithilfe der Community den Onlinekatalog
-                                    mit Grafikvorlagen zu befüllen und den Service für Sie zu perfektionieren. In einem nächsten
-                                    Schritt wird es dann erforderlich sein, Lizenzen für die Freischaltung der Downloadfunktion
-                                    zu erwerben. Der Editor wird Ihnen dauerhaft kostenlos zu Verfügung stehen. Mehr
-                                    Informationen zum Lizenzmodell erhalten sie hier.</p>
-                            </>
-                            :
-                            <Button label={"Weiter lesen"} onClick={() => setShowMore(true)} />
-                        }
-                    </div>
+            <div className={"row"} id={"after-jump"}>
+                <div className={"col-xs-12 col-sm-6"}>
+                    <h2>Mit unserem tacpic Online-Editor können Sie jetzt schnell und einfach taktile Grafiken
+                        online gestalten.</h2>
+                    <p>Nachdem Sie ihre Tastgrafik entworfen haben, können Sie diese über unseren Druckservice in
+                        Auftrag geben oder den Entwurf herunterladen und mit geeigneten Geräten selbst
+                        produzieren</p>
+                    <p>Der tacpic Online-Editor ist ein nutzerfreundliches Programm und stellt eine Alternative zu
+                        komplexer Grafiksoftware dar. Er wurde als Webanwendung speziell für die Gestaltung von
+                        Grafikvorlagen für Tastgrafiken konzipiert.</p>
+                    {showMore ?
+                        <>
+                            <p>Nachdem Sie ihre Tastgrafik entworfen haben, können Sie diese über unseren Druckservice
+                                in
+                                Auftrag geben oder den Entwurf herunterladen und mit geeigneten Geräten selbst
+                                produzieren</p>
+                            <p>Wenn Sie über unseren Druckservice bestellen, werden die Grafiken auf Schwellpapier
+                                gedruckt
+                                und anschließend angeschwellt, sodass ein buntes Relief entsteht, welches sowohl taktil
+                                als
+                                auch visuell erfasst werden kann. Auf diese Weise schlagen Sie eine Brücke zwischen
+                                sehenden
+                                und sehbeeinträchtigten Menschen.</p>
+                            <p>Wir befinden uns noch in der Testphase, daher steht Ihnen der Editor kostenlos zur
+                                Verfügung.
+                                Ebenfalls haben Sie momentan die Möglichkeit die Entwürfe für die eigenhändige
+                                Produktion
+                                gratis herunterzuladen. Unser Ziel ist es zunächst mithilfe der Community den
+                                Onlinekatalog
+                                mit Grafikvorlagen zu befüllen und den Service für Sie zu perfektionieren. In einem
+                                nächsten
+                                Schritt wird es dann erforderlich sein, Lizenzen für die Freischaltung der
+                                Downloadfunktion
+                                zu erwerben. Der Editor wird Ihnen dauerhaft kostenlos zu Verfügung stehen. Mehr
+                                Informationen zum Lizenzmodell erhalten sie hier.</p>
+                        </>
+                        :
+                        <Button label={"Weiter lesen"} onClick={() => setShowMore(true)}/>
+                    }
+                </div>
 
-                    <div className={"col-xs-12 col-sm-6"}>
-                        <Video ref={videoPlayer} onLoadStart={() => videoPlayer.current.volume = 0.35}
-                               src={"images/konzept_tacpic.mp4"} controls={true} poster={"images/thumbnail.jpg"}/>
-                        {/*<iframe src="https://player.vimeo.com/video/330785558?byline=0"*/}
-                        {/*        width={640} height={320} frameBorder="0"*/}
-                        {/*        allow="autoplay; fullscreen" allowFullScreen />*/}
-                        <script src="https://player.vimeo.com/api/player.js"/>
-                    </div>
+                <div className={"col-xs-12 col-sm-6"}>
+                    <Video ref={videoPlayer} onLoadStart={() => videoPlayer.current.volume = 0.35}
+                           src={"images/konzept_tacpic.mp4"} controls={true} poster={"images/thumbnail.jpg"}/>
+                    {/*<iframe src="https://player.vimeo.com/video/330785558?byline=0"*/}
+                    {/*        width={640} height={320} frameBorder="0"*/}
+                    {/*        allow="autoplay; fullscreen" allowFullScreen />*/}
+                    <script src="https://player.vimeo.com/api/player.js"/>
                 </div>
-                <div className={"row extra-padding"}>
-                    <div className={"col-xs-12 col-sm-4"}>
-                        <IllustrationContainer offset={0}>
-                            <img src={"/images/200902_Konzept-02.svg"}/>
-                        </IllustrationContainer>
+            </div>
 
-                        <h3>1. Grafik gestalten</h3>
-                        <p>Entwerfen Sie Ihre Grafik im tacpic Online-Editor.</p>
-                    </div>
-                    <div className={"col-xs-12 col-sm-4"}>
-                        <IllustrationContainer offset={24}>
-                            <img src={"/images/200902_Konzept-03.svg"}/>
-                        </IllustrationContainer>
-                        <h3>2. Produktion</h3>
-                        <p>Auf Bestellung rpoduzieren wir Ihren Entwurf als Tastgrafik auf Schwellpapier.</p>
-                        <Divider label={"gui:or"}/>
-                        <p>Sie laden Ihren Entwurf herunter und nutzen ihn für die eigene Produktion.</p>
-                    </div>
-                    <div className={"col-xs-12 col-sm-4"}>
-                        <IllustrationContainer offset={36}>
-                            <img src={"/images/200902_Konzept-04.svg"}/>
-                        </IllustrationContainer>
-                        <h3>3. Lieferung</h3>
-                        <p>Ihre Bestellung wird per Post an Sie versendet.</p>
-                    </div>
-                </div>
-                <div className={"row extra-padding"}>
-                    <img src={"images/key.jpg"} alt={""}/>
-                </div>
-                <div className={"row"}>
-                    <h2 style={{textAlign: 'center', width: '100%'}}>tacpic bietet</h2>
-                </div>
-                <div className={"row extra-padding"}>
-                    <div className={"col-xs-12 col-sm-4"}>
-                        <IllustrationContainer><img src={"images/icon_community.svg"} alt="" role="presentation"/>
-                        </IllustrationContainer>
-                        <h3 id="nutzerfreundlich-effizient">Nutzerfreundlich &amp; effizient</h3>
-                        <p>Kernstück ist ein nutzerfreundliches Programm, das eine Alternative zu komplexer
-                            Grafiksoftware darstellt. Die Bearbeitungsfunktionen nehmen Rücksicht auf die Möglichkeiten
-                            und Grenzen des Tastsinns. Die
-                            Software leitet durch den gesamten Gestaltungsprozess und bietet zahlreiche
-                            Hilfestellungen.</p>
+            {!signedUp &&
+            <div className={"row extra-padding"}>
+                <Well className={layout}>
+                    <p>
+                        Legen Sie Ihr kostenloses tacpic-Konto an um eigene Grafiken zu erstellen und lassen Sie sich
+                        durch
+                        unseren Newsletter über die neusten Entwicklungen informieren.</p>
+                    <p>
+                        <Button large icon={"user-plus"} primary>
+                            {t("general:signup")}
+                        </Button>
+                    </p>
+                </Well>
+            </div>
+            }
 
-                    </div>
-                    <div className={"col-xs-12 col-sm-4"}>
-                        <IllustrationContainer><img src={"images/icon_netzwerk.svg"} alt="" role="presentation"/>
-                        </IllustrationContainer>
-                        <h3 id="community">Community</h3>
-                        <p>Nach der Gestaltung können die Grafikvorlagen in einem öffentlichen Katalog zugänglich
-                            gemacht werden. Andere Nutzende können
-                            Verbesserungen nach dem Wiki-Prinzip einpflegen.</p>
+            <div className={"row extra-padding"}>
+                <div className={"col-xs-12 col-sm-4"}>
+                    <IllustrationContainer offset={0}>
+                        <img src={"/images/200902_Konzept-02.svg"}/>
+                    </IllustrationContainer>
 
-                    </div>
-                    <div className={"col-xs-12 col-sm-4"}>
-                        <IllustrationContainer><img src={"images/icon_guenstig.svg"} alt="" role="presentation"/>
-                        </IllustrationContainer>
-                        <h3 id="individuell-preisg-nstig">Individuell &amp; preisgünstig</h3>
-                        <p>Tacpic macht es möglich, individuelle Grafiken für Privatpersonen auf kostengünstige Weise
-                            umzusetzen. Profitieren können vor allem sehbehinderte Schülerinnen und Schüler in
-                            Inklusionsklassen, deren Unterrichtsmaterial speziell auf ihre Bedürfnisse angepasst werden
-                            muss.</p>
+                    <h3>1. Grafik gestalten</h3>
+                    <p>Entwerfen Sie Ihre Grafik im tacpic Online-Editor.</p>
+                </div>
+                <div className={"col-xs-12 col-sm-4"}>
+                    <IllustrationContainer offset={24}>
+                        <img src={"/images/200902_Konzept-03.svg"}/>
+                    </IllustrationContainer>
+                    <h3>2. Produktion</h3>
+                    <p>Auf Bestellung produzieren wir Ihren Entwurf als Tastgrafik auf Schwellpapier.</p>
+                    <Divider label={"gui:or"}/>
+                    <p>Sie laden Ihren Entwurf herunter und nutzen ihn für die eigene Produktion.</p>
+                </div>
+                <div className={"col-xs-12 col-sm-4"}>
+                    <IllustrationContainer offset={36}>
+                        <img src={"/images/200902_Konzept-04.svg"}/>
+                    </IllustrationContainer>
+                    <h3>3. Lieferung</h3>
+                    <p>Ihre Bestellung wird per Post an Sie versendet.</p>
+                </div>
+            </div>
+            <div className={"row extra-padding"}>
+                <img src={"images/key.jpg"} alt={""}/>
+            </div>
+            <div className={"row"}>
+                <h2 style={{textAlign: 'center', width: '100%'}}>tacpic bietet</h2>
+            </div>
+            <div className={"row extra-padding"}>
+                <div className={"col-xs-12 col-sm-4"}>
+                    <IllustrationContainer><img src={"images/icon_community.svg"} alt="" role="presentation"/>
+                    </IllustrationContainer>
+                    <h3 id="nutzerfreundlich-effizient">Nutzerfreundlich &amp; effizient</h3>
+                    <p>Kernstück ist ein nutzerfreundliches Programm, das eine Alternative zu komplexer
+                        Grafiksoftware darstellt. Die Bearbeitungsfunktionen nehmen Rücksicht auf die Möglichkeiten
+                        und Grenzen des Tastsinns. Die
+                        Software leitet durch den gesamten Gestaltungsprozess und bietet zahlreiche
+                        Hilfestellungen.</p>
 
-                    </div>
                 </div>
-                <div className={"row extra-padding"}>
-                    <div className={"col-xs-12 col-sm-6"}>
-                        <h2>Über Uns</h2><p>Entstanden ist die Idee im Rahmen eines Semesterprojektes unter Leitung von
-                        Prof. Dominik Schumacher im Master-Studiengang Interaction Design an der Hochschule
-                        Magdeburg-Stendal.
-                        Nach dem erfolgreichen Studienabschluss gründeten die Absolventen Laura Evers, Florentin
-                        Förschler und Robert Wlcek tacpic, um einer breiten Öffentlichkeit die Möglichkeit zu geben,
-                        taktile Grafiken zu gestalten und zugänglich zu machen.</p>
-                        {/*<p><a href="mailto:kontakt@tacpic.de?subject=Bitte eigenen Betreff einsetzen">Schreiben Sie*/}
-                        {/*    uns!</a></p>*/}
-                    </div>
-                    <div className={"col-md-6"}>
-                        {allowPlayer ?
-                            <iframe title="vimeo-player" src="https://www.youtube.com/embed/-HUqk2zYi54" width="100%"
-                                    height="auto" style={{height: "15em"}} frameBorder={0} allowFullScreen={true}/>
-                            :
-                            <Placeholder onClick={() => setAllowPlayer(true)}>Inhalte von Youtube laden</Placeholder>
-                        }
-                        <p style={{textAlign: "right"}}><small>Film von&nbsp;<a
-                            href="https://www.lichtempfindlich.org/">lichtempfindlich</a></small></p>
-                    </div>
+                <div className={"col-xs-12 col-sm-4"}>
+                    <IllustrationContainer><img src={"images/icon_netzwerk.svg"} alt="" role="presentation"/>
+                    </IllustrationContainer>
+                    <h3 id="community">Community</h3>
+                    <p>Nach der Gestaltung können die Grafikvorlagen in einem öffentlichen Katalog zugänglich
+                        gemacht werden. Andere Nutzende können
+                        Verbesserungen nach dem Wiki-Prinzip einpflegen.</p>
+
                 </div>
+                <div className={"col-xs-12 col-sm-4"}>
+                    <IllustrationContainer><img src={"images/icon_guenstig.svg"} alt="" role="presentation"/>
+                    </IllustrationContainer>
+                    <h3 id="individuell-preisg-nstig">Individuell &amp; preisgünstig</h3>
+                    <p>Tacpic macht es möglich, individuelle Grafiken für Privatpersonen auf kostengünstige Weise
+                        umzusetzen. Profitieren können vor allem sehbehinderte Schülerinnen und Schüler in
+                        Inklusionsklassen, deren Unterrichtsmaterial speziell auf ihre Bedürfnisse angepasst werden
+                        muss.</p>
+
+                </div>
+            </div>
+            <div className={"row extra-padding"}>
+                <div className={"col-xs-12 col-sm-6"}>
+                    <h2>Über Uns</h2><p>Entstanden ist die Idee im Rahmen eines Semesterprojektes unter Leitung von
+                    Prof. Dominik Schumacher im Master-Studiengang Interaction Design an der Hochschule
+                    Magdeburg-Stendal.
+                    Nach dem erfolgreichen Studienabschluss gründeten die Absolventen Laura Evers, Florentin
+                    Förschler und Robert Wlcek tacpic, um einer breiten Öffentlichkeit die Möglichkeit zu geben,
+                    taktile Grafiken zu gestalten und zugänglich zu machen.</p>
+                    {/*<p><a href="mailto:kontakt@tacpic.de?subject=Bitte eigenen Betreff einsetzen">Schreiben Sie*/}
+                    {/*    uns!</a></p>*/}
+                </div>
+                <div className={"col-md-6"}>
+                    {allowPlayer ?
+                        <iframe title="vimeo-player" src="https://www.youtube.com/embed/-HUqk2zYi54" width="100%"
+                                height="auto" style={{height: "15em"}} frameBorder={0} allowFullScreen={true}/>
+                        :
+                        <Placeholder onClick={() => setAllowPlayer(true)}>Inhalte von Youtube laden</Placeholder>
+                    }
+                    <p style={{textAlign: "right"}}><small>Film von&nbsp;<a
+                        href="https://www.lichtempfindlich.org/">lichtempfindlich</a></small></p>
+                </div>
+            </div>
         </>
     );
 };

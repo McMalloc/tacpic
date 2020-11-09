@@ -91,8 +91,8 @@ class InteractiveSVG extends Component {
                 break;
             case 32: // space
                 if (this.state.modifierKey === 32) break;
-                event.stopPropagation();
-                event.preventDefault();
+                // event.stopPropagation();
+                // event.preventDefault();
                 this.setState({
                     modifierKey: 32
                 })

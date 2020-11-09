@@ -1,4 +1,5 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import PropTypes from "prop-types";
 import styled from 'styled-components/macro';
 import {useTranslation} from "react-i18next";
 import {Icon} from "./_Icon";
@@ -33,7 +34,7 @@ const Loader = props => {
         <Wrapper large={props.large} className={"loader"}>
             <Icon icon={`cog fa-3x fa-spin`} />
             {showMessage ?
-                <Message>{props.message}</Message>
+                <Message>{t(props.message)}</Message>
                 : <p>&ensp;</p>
             }
         </Wrapper>
@@ -41,3 +42,9 @@ const Loader = props => {
 };
 
 export default Loader;
+
+Loader.propTypes = {
+  large: PropTypes.bool,
+  message: PropTypes.string,
+  timeout: PropTypes.number
+}

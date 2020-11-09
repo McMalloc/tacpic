@@ -6,7 +6,7 @@ import Select from "../../gui/Select";
 import {Button} from "../../gui/Button";
 import {WidgetWrapper} from "../../gui/WidgetContainer";
 import {GRAPHIC, VERSION, VARIANT} from "../../../actions/action_constants";
-import {Modal} from "../../gui/Modal";
+import Modal from "../../gui/Modal";
 import {Alert} from "../../gui/Alert";
 import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
@@ -14,6 +14,8 @@ import {NavLink} from "react-router-dom";
 import uuidv4 from "../../../utility/uuid";
 import {useParams} from "react-router";
 import {Checkbox} from "../../gui/Checkbox";
+import Loader from "../../gui/Loader";
+import ServerError from "../../platform/ServerError";
 
 const Status = styled.div`
   display: flex;
@@ -210,10 +212,10 @@ const Metadata = props => {
             </Button>
 
             {showFileModal &&
-            <Modal fitted title={'editor:modal_filestate_title'} dismiss={() => toggleFileModal(false)}
+            <Modal fitted title={'editor:publish_modal_filestate-title'} dismiss={() => toggleFileModal(false)}
                    actions={[
                        {
-                           label: "Weiter bearbeiten",
+                           label: "editor:publish_button_continue-editing",
                            align: "left",
                            disabled: file.state === 'updating',
                            action: () => {
@@ -222,7 +224,7 @@ const Metadata = props => {
                            }
                        },
                        {
-                           label: "Zurück zum Katalog",
+                           label: "editor:publish_button_back",
                            align: "right",
                            template: 'primary',
                            disabled: file.state === 'updating',
@@ -230,18 +232,23 @@ const Metadata = props => {
                        }
                    ]}
             >
-
                 {file.state === 'updating' &&
-                <Alert info>
-                    <p>{t('editor:filestate_updating-pending')}</p>
-                </Alert>
+                <Loader message={"editor:publish_loader_message"} timeout={3000}/>
                 }
                 {file.state === 'success' &&
                 <Alert success>
-                    <p>{t('editor:filestate_updating-success')}</p>
+                    {t('editor:publish_alert_success')}
                 </Alert>
                 }
-                {file.state === 'failure' && t('editor:filestate_updating-failure')}
+                {file.state === 'failure' &&
+                    <>
+                        <Alert danger>
+                            {t('editor:publish_alert_failure')}
+                        </Alert>
+                        <ServerError error={file.error} />
+                    </>
+
+                }
 
             </Modal>
             }

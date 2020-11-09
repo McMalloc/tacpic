@@ -4,7 +4,7 @@ import {Icon} from "./_Icon";
 import {withTranslation} from "react-i18next";
 import connect from "react-redux/es/connect/connect";
 import {layoutChanged, layoutSet} from "../../actions";
-import {Modal} from "./Modal";
+import Modal from "./Modal";
 import Popover from "react-popover";
 import Hint from "./Popover";
 

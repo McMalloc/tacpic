@@ -4,8 +4,15 @@ import md5 from 'blueimp-md5';
 
 import styled from 'styled-components/macro';
 import {useTranslation} from "react-i18next";
-import {FILE, IMPORT, OBJECT_BULK_ADD, OBJECT_UPDATED, SWITCH_CURSOR_MODE} from "../../actions/action_constants";
-import {useParams} from "react-router-dom";
+import {
+    FILE,
+    IMPORT,
+    OBJECT_BULK_ADD,
+    OBJECT_UPDATED,
+    SUPPRESS_BACKUP,
+    SWITCH_CURSOR_MODE
+} from "../../actions/action_constants";
+import {Prompt, useParams} from "react-router-dom";
 import Canvas from "./widgets/Canvas";
 import Toggle from "../gui/Toggle";
 import {Button} from "../gui/Button";
@@ -20,7 +27,8 @@ import {AccordeonPanel, AccordeonPanelFlyoutButton, useRedraw} from "../gui/Acco
 import GraphicPageSettings from "./widgets/GraphicPageSettings";
 import BraillePageSettings from "./widgets/BraillePageSettings";
 import Document from "./widgets/Document";
-import {Modal} from "../gui/Modal";
+import Modal from "../gui/Modal";
+import * as moment from 'moment'
 import {useNavigate} from "react-router";
 import methods from "./ReactSVG/methods/methods";
 import Loader from "../gui/Loader";
@@ -29,6 +37,7 @@ import {editor} from "../../store/initialState";
 import Verbaliser from "./widgets/Verbaliser";
 import ErrorBoundary from "../../ErrorBoundary";
 import {findObject} from "../../utility/findObject";
+import {Alert} from "../gui/Alert";
 
 const Wrapper = styled.div`
   display: grid;
@@ -110,43 +119,54 @@ const Editor = props => {
     const traceImport = useSelector(state => state.editor.ui.import);
     const ocr = useSelector(state => state.editor.ui.import.ocr);
     const ocrSelection = useSelector(state => state.editor.ui.import.ocrSelection);
-
+    const selectedObject = useSelector(state => {
+        return findObject(
+            state.editor.file.present.pages[state.editor.ui.currentPage].objects,
+            state.editor.ui.selectedObjects[0])
+    })
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const t = useTranslation().t;
     const [rerender] = useRedraw();
     const [openedPanel, setOpenedPanel] = useState(null);
+    const [accordeonStates, setAccordeonStates] = useState(JSON.parse(localStorage.getItem('accordeonStates')) || {});
     // todo zu Hook umwandeln, wenn InteractiveSVG eine function component ist
     const [dragging, setDragging] = useState(false);
     const [showBraillePanel, setShowBraillePanel] = useState(false);
-    const [handleError, setHandleError] = useState(false);
+    const [handleBackup, setHandleBackup] = useState(false);
     const [showImportModal, setShowImportModal] = useState(false);
 
     let {variantId, graphicId, mode} = useParams();
 
     useEffect(() => {
-        if (handleError) return;
         if (!!variantId) {
+            let overrides = {};
+            switch (mode) {
+                case 'edit': // edit an variant, e.g. keep variant_id and graphic_id, assign new version_id
+                    overrides = {variant_id: variantId}
+                    break;
+                case 'copy': // create a new variant, e.g. keep graphic_id, assign new variant_id
+                    overrides = {
+                        derivedFrom: variantId,
+                        variantTitle: '',
+                        variant_id: null
+                    }
+                    break;
+                case 'new': // create a new graphic, e.g.assign new variant_id and graphic_id
+                    overrides = {
+                        derivedFrom: null,
+                        variantTitle: '',
+                        variant_id: null,
+                        graphic_id: null
+                    }
+                    break;
+                default:
+                    break;
+            }
             dispatch({
                 type: FILE.OPEN.REQUEST,
-                id: variantId,
-                data: mode === 'edit' ? {variant_id: variantId} : {
-                    derivedFrom: variantId,
-                    variantTitle: '',
-                    variant_id: null
-                }
-            })
-        } else if (mode === 'copy') { // new graphic
-            dispatch({
-                type: FILE.OPEN.SUCCESS,
-                data: {
-                    variant_id: null,
-                    graphic_id: null,
-                    derivedFrom: null,
-                    version_id: null,
-                    variantTitle: 'Basis',
-                    graphicTitle: ''
-                }
+                id: variantId, mode,
+                data: overrides
             })
         } else {
             dispatch({
@@ -154,10 +174,70 @@ const Editor = props => {
                 data: editor.file.present
             })
         }
+        return () => {
+            dispatch({
+                type: SUPPRESS_BACKUP, flag: false
+            })
+        }
     }, [graphicId, variantId, mode]);
 
+    if (false) {
+    // if (!uiSettings.suppressBackup) {
+        let backup = JSON.parse(localStorage.getItem("EDITOR_BACKUP"));
+        const backup_date = moment(JSON.parse(localStorage.getItem("EDITOR_BACKUP_DATE")));
+        if (!!backup) {
+            return <Modal fitted title={'Sitzung wiederherstellen'} dismiss={() => setHandleBackup(false)}
+                          actions={[
+                              {
+                                  label: "Nein, Sicherung verwerfen",
+                                  align: "left",
+                                  action: () => {
+                                      localStorage.removeItem("EDITOR_BACKUP");
+                                      localStorage.removeItem("EDITOR_BACKUP_DATE");
+                                      dispatch({
+                                          type: SUPPRESS_BACKUP, flag: true
+                                      })
+                                  }
+                              },
+                              {
+                                  label: "Ja, Sicherung öffnen",
+                                  align: "right",
+                                  template: 'primary',
+                                  action: () => {
+                                      localStorage.removeItem("EDITOR_BACKUP");
+                                      localStorage.removeItem("EDITOR_BACKUP_DATE");
+                                      dispatch({
+                                          type: FILE.OPEN.SUCCESS,
+                                          data: backup,
+                                          mode: "edit"
+                                      })
+                                      dispatch({
+                                          type: SUPPRESS_BACKUP, flag: true
+                                      })
+                                  }
+                              }
+                          ]}>
+                <Alert info>
+                    Es liegt die Sicherung einer früheren Sitzung vor.
+                </Alert>
+                <div className={"some-extra-padding"}>
+                    <table><tbody><tr>
+                        <td style={{textAlign: 'right', paddingRight: '1em'}}>Datum der Sicherung:</td>
+                        <td><strong>{backup_date.format("DD. MMM YYYY, HH:mm")} Uhr</strong></td>
+                    </tr><tr>
+                        <td style={{textAlign: 'right', paddingRight: '1em'}}>Entwurfstitel:</td>
+                        <td><strong>{backup.graphicTitle}</strong></td>
+                    </tr><tr>
+                        <td style={{textAlign: 'right', paddingRight: '1em'}}>Variantentitel:</td>
+                        <td><strong>{backup.variantTitle}</strong></td>
+                    </tr></tbody></table>
+                </div>
+                <p>Möchten Sie das Backup laden?</p>
+            </Modal>
+        }
+    }
+
     // LOGIC REGARDING ACCORDEON PANEL
-    const [accordeonStates, setAccordeonStates] = useState(JSON.parse(localStorage.getItem('accordeonStates')) || {});
     const toggleAccordeon = (title, override) => {
         const newState = {
             ...accordeonStates,
@@ -166,66 +246,8 @@ const Editor = props => {
         setAccordeonStates(newState);
         localStorage.setItem("accordeonStates", JSON.stringify(newState));
     }
-    const selectedObject = useSelector(state => {
-        return findObject(
-            state.editor.file.present.pages[state.editor.ui.currentPage].objects,
-            state.editor.ui.selectedObjects[0])
-    })
-    if (!accordeonStates.key && selectedObject && selectedObject.type === 'key') {
-        console.log("toggle");
-        toggleAccordeon('key', true);
-    }
 
-    // ERROR HANDLING
-    // if (localStorage.getItem("HAS_EDITOR_CRASHED") === 'true') {
-    //     console.log("crashed");
-    if (uiSettings.fileOpenSuccess && !handleError) {
-        const backup = localStorage.getItem("EDITOR_BACKUP");
-        if (backup !== null) {
-            const parsed = JSON.parse(backup);
-            const backupHash = md5(JSON.stringify(parsed.pages.map(page=>{
-                delete page.rendering;
-                return page;
-            })));
-            console.log(parsed.pages[0]);
-            console.log(page[0]);
-            console.log("backup: ", backupHash);
-            console.log("server: ", fileHash);
-            if (fileHash !== backupHash && parsed.variant_id === parseInt(variantId)) {
-                setHandleError(true)
-                localStorage.setItem("HAS_EDITOR_CRASHED", "false");
-            }
-        }
-    }
-    // }
-
-    if (false) {
-    // if (handleError) {
-        return <Modal fitted title={'Sitzung wiederherstellen'} dismiss={() => setHandleError(false)}
-                      actions={[
-                          {
-                              label: "Nein",
-                              align: "left",
-                              action: () => setHandleError(false)
-                          },
-                          {
-                              label: "Ja",
-                              align: "right",
-                              template: 'primary',
-                              action: () => {
-                                  dispatch({
-                                      type: FILE.OPEN.SUCCESS,
-                                      data: JSON.parse(localStorage.getItem("EDITOR_BACKUP")),
-                                      mode: "edit"
-                                  })
-                                  setHandleError(false);
-                              }
-                          }
-                      ]}>
-            Der Editor scheint beim letzten Mal abgestürzt zu sein. <br/>
-            <strong>Möchten Sie das Backup laden?</strong>
-        </Modal>
-    }
+    if (!accordeonStates.key && selectedObject && selectedObject.type === 'key') toggleAccordeon('key', true);
 
     const resetImportModal = () => {
         dispatch({type: IMPORT.TRACE.FAILURE, message: null});
@@ -233,6 +255,10 @@ const Editor = props => {
     }
 
     return <ErrorBoundary>
+        {/*<Prompt*/}
+        {/*    when={false}*/}
+        {/*    message='Es gibt ungesicherte Änderungen. Wollen Sie den Editor wirklich verlassen?'*/}
+        {/*/>*/}
         {uiSettings.fileOpenSuccess ?
             <>
                 <Wrapper>
@@ -300,19 +326,19 @@ const Editor = props => {
                                 <Button fullWidth primary label={"Titel ändern"}/>
                             }
 
-                            {/*<pre style={{*/}
-                            {/*    border: '2px solid green',*/}
-                            {/*    textShadow: '1px 1px 0 black',*/}
-                            {/*    color: 'lightgreen',*/}
-                            {/*    fontSize: '11px',*/}
-                            {/*    padding: '2px 3px'*/}
-                            {/*}}>*/}
-                            {/*        Derived from: {file.derivedFrom + ""}<br/>*/}
-                            {/*        Mode: {mode}<br/>*/}
-                            {/*        Graphic ID: {file.graphic_id + " (" + graphicId + ")"}<br/>*/}
-                            {/*        Variant ID: {file.variant_id + " (" + variantId + ")"}<br/>*/}
-                            {/*    {openedPanel + ''}*/}
-                            {/*    </pre>*/}
+                            <pre style={{
+                                border: '2px solid green',
+                                textShadow: '1px 1px 0 black',
+                                color: 'lightgreen',
+                                fontSize: '11px',
+                                padding: '2px 3px'
+                            }}>
+                                    Derived from: {file.derivedFrom + ""}<br/>
+                                    Mode: {mode}<br/>
+                                    Graphic ID: {file.graphic_id + " (url: " + graphicId + ")"}<br/>
+                                    Variant ID: {file.variant_id + " (url: " + variantId + ")"}<br/>
+                                {openedPanel + ''}
+                                </pre>
                         </Draftinfo>
                         <AccordeonPanel
                             collapsed={!accordeonStates.draft}

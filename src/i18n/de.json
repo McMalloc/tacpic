@@ -39,6 +39,7 @@
     "logoff": "Abmelden",
     "my_account": "Persönlicher Bereich",
     "basket": "Warenkorb (<%=quantity%> Artikel)",
+    "empty_basket": "",
     "catalogue": "Katalog",
     "required": "Erforderliche Angabe",
     "display_name": "Anzeigename",
@@ -207,7 +208,14 @@
     "verbalise_summary": "Zusammenfassung",
     "verbalise_summary-hint": "Geben sie eine eine kurze Zusammenfassung, was auf der Grafik abgebildet ist, z.B.: \"Der Querschnitt durch den menschlichen Körper zeigt dessen inneren Orgeane. Lunge, Herz, Leber...\". Bei Diagrammen sollte hier auch die Achsenbeschriftung angegeben werden.",
     "verbalise_details": "Detailbeschreibung",
-    "verbalise_details-hint": "Häufig ist es sinnvoll die Details von links oben nach rechts unten zu beschreiben. Wo befindet sich was? Welche Daten sind in der Grafik ablesbar? Wie stehen die abgebildeten Elemente miteinander in Verbindung? z.B.: “Über die Lungenarterie ist die rechte Herzkammer mit der Lunge verbunden.\""
+    "verbalise_details-hint": "Häufig ist es sinnvoll die Details von links oben nach rechts unten zu beschreiben. Wo befindet sich was? Welche Daten sind in der Grafik ablesbar? Wie stehen die abgebildeten Elemente miteinander in Verbindung? z.B.: “Über die Lungenarterie ist die rechte Herzkammer mit der Lunge verbunden.\"",
+
+    "publish_modal_filestate-title": "Veröffentlichen",
+    "publish_alert_success": "Ihre Arbeit wurde im Katalog veröffentlicht.",
+    "publish_alert_failure": "Beim Veröffentlichen ist ein Fehler aufgetreten.",
+    "publish_loader_message": "Das Veröffentlichen im Katalog kann einige Sekunden dauern.",
+    "publish_button_continue-editing": "Weiter bearbeiten",
+    "publish_button_back": "Zurück zum Katalog"
   },
   "categories": {
     "illustration": "(beschriftete) Illustration"

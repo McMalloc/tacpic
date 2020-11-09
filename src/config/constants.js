@@ -8,6 +8,16 @@ export const SVG_MIME = 'image/svg+xml';
 export const SVG_A4_PX_WIDTH = 793.7;
 export const TOOL_SENSIBILITY = 15;
 export const SAFE_BORDER = 10;
+export const BACKUP_INTERVAL = 10000;
+
+export const LG_SCREEN = '@media only screen and (min-width: 75em)';
+export const MD_SCREEN = '@media only screen and (min-width: 64em)';
+export const SM_SCREEN = '@media only screen and (min-width: 48em)';
+export const QUERIES = {
+    sm: SM_SCREEN.slice(7), // omit '@media' string neccessary for CSS
+    md: MD_SCREEN.slice(7),
+    lg: LG_SCREEN.slice(7)
+}
 
 export const COLOURS = {
     black:	'#000000',

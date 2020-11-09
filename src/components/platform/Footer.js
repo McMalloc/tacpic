@@ -67,7 +67,7 @@ const Footer = props => {
                     </div>
                     :
                     <>
-                        <div className={"col-md-4"}>
+                        <div className={"col-md-4 col-xs-12"}>
                             <p>
                                 <span className={"heading"}>Information</span>
                                 {legalTexts.map((text, index) => {
@@ -80,7 +80,7 @@ const Footer = props => {
 
                             </p>
                         </div>
-                        <div className={"col-md-4"}>
+                        <div className={"col-md-4 col-xs-12"}>
                             <p>
                                 <span className={"heading"}>Kontakt</span>
                                 tacpic UG (haftungsbeschränkt) <br/>
@@ -94,7 +94,7 @@ const Footer = props => {
                                 href={"mailto://kontakt@tacpic.de"}>kontakt@tacpic.de</a>
                             </p>
                         </div>
-                        <div className={"col-md-4"}>
+                        <div className={"col-md-4 col-xs-12"}>
                             {/*<img src={"/images/logo_dark.svg"} />*/}
                             <p>
                                 <span className={"heading"}>Gefördert durch</span>

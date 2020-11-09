@@ -15,12 +15,16 @@ import registerServiceWorker, {unregister} from './registerServiceWorker';
 import store, {history} from "./store/configureStore";
 import {standard} from "./styles/themes"
 import {BrowserRouter} from "react-router-dom";
+import {BreakpointProvider} from "./contexts/breakpoints";
+import {LG_SCREEN, MD_SCREEN, QUERIES, SM_SCREEN} from "./config/constants";
 
 // const instance = createInstance({
 //     urlBase: 'https://tacpic.de',
 //     trackerUrl: 'https://analytics.tacpic.de/matomo.php', // optional, default value: `${urlBase}matomo.php`
 //     srcUrl: 'https://analytics.tacpic.de/matomo.js', // optional, default value: `${urlBase}matomo.js`
 // })
+
+
 
 // bootstrapping the app
     ReactDOM.render(
@@ -30,7 +34,9 @@ import {BrowserRouter} from "react-router-dom";
                     <BrowserRouter history={history}>
                         {/*<ConnectedRouter history={history}>*/}
                         <DndProvider backend={HTML5Backend}>
-                            <App/>
+                            <BreakpointProvider queries={QUERIES}>
+                                <App/>
+                            </BreakpointProvider>
                         </DndProvider>
                         {/*</ConnectedRouter>*/}
                     </BrowserRouter>

@@ -6,7 +6,6 @@ import {
     userVerifySaga
 } from "./user_saga";
 import {call, all, takeLatest} from "redux-saga/effects";
-import localstorageWatcher from "./localstorage_saga";
 import {
     variantUpdateSaga,
     variantGetSaga,
@@ -37,6 +36,7 @@ import {addressRemoveSaga} from "./address_saga";
 import {basketChangeSaga} from "./basket_saga";
 import {orderCreateSaga, orderIndexSaga} from "./order_saga";
 import {titleEditWatch} from "./title_saga";
+import {backupNeededWatcher, backupWatcher} from "./backup_saga";
 
 export const id = args => args;
 
@@ -97,7 +97,8 @@ export default function* root() {
         call(variantUpdateSaga),
         call(variantCreateSaga),
         call(graphicCreateSaga),
-        call(localstorageWatcher),
+        call(backupWatcher),
+        call(backupNeededWatcher),
 
         call(logoutWatcher),
         call(userLoginSaga),

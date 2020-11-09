@@ -7,7 +7,7 @@ import styled from "styled-components";
 import {Row} from "../gui/Grid";
 import {Checkbox} from "../gui/Checkbox";
 import Searchbar from "./Searchbar";
-import {Modal} from "../gui/Modal";
+import Modal from "../gui/Modal";
 import {CatalogueItemView} from "./CatalogueItemView";
 import {Route, useNavigate} from "react-router-dom";
 import {Routes, useParams} from "react-router";
@@ -95,12 +95,12 @@ const Catalogue = props => {
                 </div>
             </Row>
             <Row style={{marginBottom: 24}}>
-                <div className={"col-xs-8 col-xs-offset-2"}>
+                <div className={"col-md-10 col-md-offset-2 col-sm-12"}>
                     <Searchbar/>
                 </div>
             </Row>
             <Row>
-                <div className={"col-xs-2 col-lg-2"}>
+                <div className={"col-xs-12 col-lg-2"}>
                     <TagSidebar>
                         <strong>Format</strong>
                         <div className={"tag-wrapper"}>
@@ -135,7 +135,7 @@ const Catalogue = props => {
                         <TagList />
                     </TagSidebar>
                 </div>
-                <div className={"col-xs-10 col-lg-10"}>
+                <div className={"col-xs-12 col-lg-10"}>
                     <CatalogueItemList graphics={catalogue.graphics}/>
                     {!!graphicId &&
                     <Modal title={graphicOverview && graphicOverview.title} noPadding={true} fitted

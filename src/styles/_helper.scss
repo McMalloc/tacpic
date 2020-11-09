@@ -30,6 +30,10 @@
   padding: 4em 0;
 }
 
+.some-extra-padding {
+  padding: 1em 0;
+}
+
 .extra-margin {
   &:not(:last-child) {
     margin-bottom: 12px;

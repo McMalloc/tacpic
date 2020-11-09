@@ -8,7 +8,7 @@ import {Checkbox} from "../gui/Checkbox";
 import {Container, Row} from "../gui/Grid";
 import {Alert} from "../gui/Alert";
 import {Button} from "../gui/Button";
-import {Modal} from "../gui/Modal";
+import Modal from "../gui/Modal";
 import {EWR, GERMAN_STATES} from "../../config/constants";
 
 const submitAddress = (dispatch, address) => {
