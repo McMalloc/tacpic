@@ -4,11 +4,15 @@ import {fadeIn, slideFromAbove} from "./Animations";
 import {useTranslation} from 'react-i18next';
 import {Icon} from "./_Icon";
 import {createPortal} from "react-dom";
+import PropTypes from "prop-types";
+import More from "./More";
+import Toggle from "./Toggle";
 
 const Label = styled.span`
   // padding: ${props => props.noPad ? 0 : props.theme.large_padding} ${props => props.noPad ? 0 : props.primary ? "16px" : props.theme.large_padding};
   padding-left: ${props => props.icon ? (props.large ? props.theme.spacing[3] : props.theme.spacing[2]) : 0};
   display: inline-block;
+  white-space: nowrap;
 `;
 
 // const Icon = styled.span`
@@ -80,13 +84,20 @@ const Button = React.forwardRef((props, ref) => {
             <Label icon={props.icon}>
                 {t(label)}
                 {props.isDropdown &&
-                <Caret><i className={"fas fa-caret-down"}/></Caret>
+                <>&nbsp;<Icon icon={"caret-down"}/></>
                 }
             </Label>
             }
         </ButtonBase>
     )
 });
+
+Button.propTypes = {
+    label: PropTypes.string.isRequired,
+    isDropdown: PropTypes.bool, // if caret will be displayed
+    icon: PropTypes.string, // fontawesome icon id
+    primary: PropTypes.bool, // primary colour scheme
+};
 
 const Caret = styled.span`
   margin-left: 0.5em;
@@ -97,114 +108,4 @@ const Caret = styled.span`
   z-index: ${props => props.down ? 9999 : "inherit"};
 `;
 
-const Flyout = styled.div`
-  background-color: ${props => props.theme.background};
-  border-radius: ${props => props.theme.border_radius};
-  box-shadow: ${props => props.theme.very_distant_shadow};
-  border: 1px solid ${props => props.theme.foreground};
-  min-width: 100%;
-  
-  .flyout-entry {
-    width: ${props => props.flyoutWidth ? props.flyoutWidth + "px" : "auto"};
-  }
-
-  position: absolute;
-  top: 1.5em;
-  right: ${props => props.rightAlign ? 0 : "inherit"};
-  left: ${props => props.rightAlign ? "inherit" : 0};
-  z-index: 9998;
-  animation: ${fadeIn} 0.1s ease-in, ${slideFromAbove} 0.1s ease-in;
-`;
-
-const FlyoutEntryWrapper = styled.div`
-  padding: ${props => props.theme.base_padding} ${props => props.theme.large_padding};
-  cursor: pointer;
-  transition: background-color 0.1s, color 0.1s;
-  
-  label {
-    margin-left: 1em;
-  }
-  
-  &:hover {
-    label {
-      text-decoration: underline;
-    }
-    background-color: ${props => props.theme.grey_6};
-    //color: white;
-  }
-  
-  &:not(:last-child) {
-    border-bottom: 1px solid ${props => props.theme.foreground};
-  }
-`;
-
-export const FlyoutEntry = props => {
-    const {t} = useTranslation();
-    return (
-        <FlyoutEntryWrapper className={"flyout-entry"} tabIndex={0} role={"button"} onClick={props.onClick}>
-            <Icon icon={props.icon}/><label>{t(props.label)}</label>
-            {props.sublabel && <>
-                <br/><small>{t(props.sublabel)}</small>
-            </>}
-        </FlyoutEntryWrapper>
-    )
-}
-
-/* TODO:
-    * toggle() wird zweimal aufgerufen bei einem Klick auf den Button, führt zu Fehler bei focus()
-    * Nach Öffnen des Flyouts sollte das erste Element mit tabindex fokussiert werden, nicht das Menü selbst
-    * das Menü auf Touchgeräten schließen, wenn außerhalb berührt wird (vgl. https://stackoverflow.com/questions/13492881/why-is-blur-event-not-fired-in-ios-safari-mobile-iphone-ipad)
-    * WIA-ARIA
-*/
-const FlyoutButton = props => {
-    const [out, setOut] = useState(false)
-    let eventTimer = -1;
-
-    const buttonRef = useRef();
-    const flyoutRef = useRef();
-
-    const toggle = () => {
-        if (out) {
-            out ? setOut(false) : setOut(true);
-        } else { // TODO else war vorher weg, könnte jetzt einen Fehler beherbergen
-            out ? setOut(false) : setOut(true);
-            // the timer will fire after the current render cycle, so the ref is actually in the dom after the flag went true
-            setTimeout(() => flyoutRef.current !== null && flyoutRef.current.focus(), 0);
-        }
-    };
-
-    const onBlurHandler = () => eventTimer = setTimeout(() => setOut(false), 10);
-    const onFocusHandler = () => {
-        if (eventTimer > 0) {
-            clearTimeout(eventTimer);
-            eventTimer = -1;
-        }
-    };
-
-    return (
-        <span className={props.className} style={{position: "relative"}}>
-                <Button isDropdown={true}
-                        icon={props.icon}
-                        noPad={props.noPad}
-                        onBlur={onBlurHandler}
-                        onFocus={onFocusHandler}
-                        ref={buttonRef}
-                        onClick={toggle}>
-                    {props.label}
-                </Button>
-            {out &&
-            <Flyout
-                tabIndex={-1}
-                flyoutWidth={props.flyoutWidth}
-                onBlur={onBlurHandler}
-                onFocus={onFocusHandler}
-                rightAlign={props.rightAlign || false}
-                ref={flyoutRef}>
-                {props.children}
-            </Flyout>//, document.getElementById("flyout"))
-            }
-            </span>
-    )
-}
-
-export {FlyoutButton, Button, ButtonBase}
+export {Button, ButtonBase}

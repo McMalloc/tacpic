@@ -3,7 +3,8 @@ import React, {Component} from "react";
 import {createPortal} from "react-dom";
 import {fadeIn, slideFromAbove} from "./Animations";
 import { withTranslation } from 'react-i18next';
-import {Button} from "./Button";
+import { Button } from "./Button";
+import {SM_SCREEN} from "../../config/constants"
 
 const Backdrop = styled.div`
   background-color: rgba(3,113,113,0.5);
@@ -24,8 +25,11 @@ const Window = styled.div`
   box-shadow: -1px 1px 11px 0px rgba(0, 0, 0, 0.87); //${props => props.theme.distant_shadow};
   background-color: ${props => props.theme.background};
   animation: ${slideFromAbove} 0.1s ease-in;
-  width: ${props=> props.fitted ? 'auto' : '100%'};
-  margin: 20px;
+  width: ${props => props.fitted ? 'auto' : '100%'};
+  margin: 0;
+  ${SM_SCREEN} {
+    margin: 20px;
+  }
   max-height: 90%;
   transition: height 0.2s, width 0.2s;
   // ${props=> props.fitted ? '' : 'height: 90%'};

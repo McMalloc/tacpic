@@ -15,7 +15,7 @@ import {Burgermenu} from "../gui/Burgermenu";
 const Wrapper = styled.nav`
   display: flex;
   background-color: white;
-  padding: ${props => props.tinyMenu ? 0 : '6px'};
+  padding: 6px;
   flex-wrap: wrap;
   width: 100%;
   box-sizing: border-box;
@@ -155,7 +155,7 @@ const Navbar = props => {
                     <NavbarItemGroups>
                         <Burgermenu>
                             {sections}
-                            <hr />
+                            <hr/>
                             {user.logged_in ? accountLink : loginSignupLinks}
                         </Burgermenu>
                         {logo}

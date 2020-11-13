@@ -4,7 +4,7 @@ import {action} from "@storybook/addon-actions";
 import Widget from "../components/gui/WidgetContainer";
 import React, {Fragment} from "react";
 import {Responsive, WidthProvider} from "react-grid-layout";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {TabPane} from "../components/gui/Tabs";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import styled, {useTheme} from "styled-components";
+import styled, {useTheme} from "styled-components/macro";
 import PropTypes from "prop-types";
 import StepIndicator from "./StepIndicator";
 

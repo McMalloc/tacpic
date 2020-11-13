@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import styled from 'styled-components/macro';
-import {Button, FlyoutButton} from "./Button";
+import {Button} from "./Button";
+import {FlyoutButton} from "./FlyoutButton";
 
 // TODO: Minimieren-Button
 const Wrapper = styled.div`

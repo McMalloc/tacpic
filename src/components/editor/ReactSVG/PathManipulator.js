@@ -2,7 +2,7 @@ import React from 'react'
 // import './PathManipulator.scss';
 import {buildPath} from "./PathGeneration";
 import methods from "./methods/methods";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 const transformView = (coords, scaleX, scaleY, x, y, viewPortX, viewPortY) => {
     return coords.map((coord, index) => {

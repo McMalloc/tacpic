@@ -13,7 +13,7 @@ import {findObject} from "../../../utility/findObject";
 import {SVGPage} from "./SVGPage";
 import {ERROR_THROWN, SWITCH_CURSOR_MODE} from "../../../actions/action_constants";
 import {TOOL_SENSIBILITY} from "../../../config/constants";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 const SVG = styled.svg`
   width: ${props => props.scale * 1500}px;

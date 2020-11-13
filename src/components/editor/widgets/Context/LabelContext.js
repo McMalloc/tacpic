@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Checkbox} from "../../../gui/Checkbox";
 import {Multiline, Textinput} from "../../../gui/Input";
 import {find} from "lodash";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {useTranslation} from "react-i18next";
 import Well from "../../../gui/Well";
 import Expander from "../../../gui/Expander";

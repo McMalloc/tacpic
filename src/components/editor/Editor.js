@@ -326,7 +326,7 @@ const Editor = props => {
                                 <Button fullWidth primary label={"Titel ändern"}/>
                             }
 
-                            <pre style={{
+                            {/* <pre style={{
                                 border: '2px solid green',
                                 textShadow: '1px 1px 0 black',
                                 color: 'lightgreen',
@@ -338,7 +338,7 @@ const Editor = props => {
                                     Graphic ID: {file.graphic_id + " (url: " + graphicId + ")"}<br/>
                                     Variant ID: {file.variant_id + " (url: " + variantId + ")"}<br/>
                                 {openedPanel + ''}
-                                </pre>
+                                </pre> */}
                         </Draftinfo>
                         <AccordeonPanel
                             collapsed={!accordeonStates.draft}

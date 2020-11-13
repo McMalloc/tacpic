@@ -2,19 +2,13 @@ import React, {Component} from 'react';
 import styled from 'styled-components/macro';
 import {Padding, p, px} from 'styled-components-spacing';
 import {connect, useDispatch, useSelector} from "react-redux";
-import {OBJECT} from "../constants";
-import {Button, FlyoutButton} from "../../gui/Button";
 import TexturePreview from "../../gui/TexturePreview";
 import {Textinput} from "../../gui/Input";
 import {Row} from "../../gui/Grid";
 import {filter, map, flatten, isUndefined, uniq} from "lodash";
-import TexturePalette from "../../gui/TexturePalette";
-import Label from "../../gui/_Label";
-import {Lower, WidgetWrapper} from "../../gui/WidgetContainer";
 import methods from "../ReactSVG";
 import {keyedLabelsSelector, patternsInUse, patternsInUseSelector} from "../../../reducers/selectors";
 import {Checkbox} from "../../gui/Checkbox";
-import {AccordeonPanel} from "../../gui/Accordeon";
 
 const Table = styled.table`
   width: 100%;

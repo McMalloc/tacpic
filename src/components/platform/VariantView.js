@@ -1,10 +1,11 @@
 import React, {useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {Button, FlyoutButton, FlyoutEntry} from "../gui/Button";
-import {FILE, ITEM_ADDED_TO_BASKET} from "../../actions/action_constants";
+import {Button} from "../gui/Button";
+import {FlyoutButton, FlyoutEntry} from "../gui/FlyoutButton";
+import {ITEM_ADDED_TO_BASKET} from "../../actions/action_constants";
 import {Row} from "../gui/Grid";
-import styled, {useTheme} from "styled-components";
+import styled, {useTheme} from "styled-components/macro";
 import {useTranslation} from "react-i18next";
 import {Icon} from "../gui/_Icon";
 import {TagView} from "./Tag";
@@ -20,7 +21,7 @@ import * as moment from 'moment'
 import {APP_URL, API_URL} from "../../env.json";
 import Well from "../gui/Well";
 import More from "../gui/More";
-import Label from "../gui/_Label";
+import { SM_SCREEN } from "../../config/constants";
 
 const mapFormat = (width, height) => {
     width = parseInt(width);
@@ -45,7 +46,61 @@ const Details = styled.div`
   display: flex;
   flex-direction: column;
   padding-bottom: 12px;
+  grid-area: details;
   //justify-content: space-between;
+`;
+
+const Title = styled.h2`
+  grid-area: title;
+  margin-top: 0;
+`;
+
+const Wrapper = styled.div`
+    box-sizing: border-box;
+    display: grid;
+    max-height: 100%;
+    grid-template-columns: 1fr;
+    column-gap: 0.5rem;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas: 
+            "title"
+            "preview"
+            "details"
+            "order";
+
+    .order {
+        grid-area: order;
+    }
+
+    flex: 0 1 auto;
+    box-sizing: border-box;
+    padding: ${props => props.theme.large_padding};
+
+    min-width: 100vw;
+    height: 100%;
+    overflow-y: auto;
+    scroll-snap-align: start;
+
+    ${SM_SCREEN} {
+        min-width: auto;
+        padding: 0;
+        height: auto;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 2fr 1fr;
+        grid-template-areas: 
+            "preview  title"
+            "preview  details"
+            "preview  order";
+            }
+`;
+
+const Preview = styled.div`
+    grid-area: preview;
+    padding: 0 20%;
+
+    ${SM_SCREEN} {
+        padding: 0 ${props => props.theme.large_padding};
+    }
 `;
 
 const OrderWidget = styled.div`
@@ -79,8 +134,8 @@ const VariantView = props => {
 
     if (!props.id) return null;
     return (
-        <Row style={{height: '100%'}}>
-            <div className={"col-md-6 col-lg-5 col-xl-3"}>
+        <Wrapper>
+            <Preview>
                 <Carousel single={<span className={'disabled'}>Insgesamt eine Grafikseite.</span>}>
                     {props.document.pages.map((page, index) => {
                         return <img key={index} src={`${API_URL}/thumbnails/${props.file_name}-THUMBNAIL-xl-p${index}.png`}/>
@@ -92,14 +147,16 @@ const VariantView = props => {
                         + props.document.braillePages.content
                     }</div>
                 </Carousel>
-            </div>
-            <Details className={"col-md-6 col-lg-7 col-xl-9 xs-first"}>
+            </Preview>
+            <Title>{props.graphicTitle}: {props.title}</Title>
+            <Details>
                 <div>
-                    <h2>{props.graphicTitle}: {props.title}</h2>
-                    {props.description && props.description.length > 200 ?
+                    {props.description.trim() !== "()" ? props.description.length > 200 ?
                         <More><p>{props.description}</p></More>
                         :
                         <p>{props.description}</p>
+                    :
+                        <em>(Keine Beschreibung)</em>
                     }
                     <p><small>Erstellt am {moment(props.created_at).format("DD.MM.YYYY, HH:mm")} Uhr</small></p>
                 </div>
@@ -188,10 +245,11 @@ const VariantView = props => {
                                          sublabel={"catalogue:brf-hint"} />
                         </FlyoutButton>
                     </Toolbar>
-                    <br/>
-                    <Well>
+                </div>
+            </Details>
+            <Well className={"order"}>
                         <h3>Bestellen</h3>
-                        <Radio onChange={setProduct} value={product} name={"graphic_only_or_both"} options={[
+                        <Radio onChange={setProduct} value={product} name={"graphic_only_or_both_" + props.id} options={[
                             {
                                 label: template(t(`catalogue:graphics_and_braille`))({amount: props.braille_no_of_pages + props.graphic_no_of_pages}),
                                 value: "graphic"
@@ -235,9 +293,7 @@ const VariantView = props => {
                         </OrderWidget>
 
                     </Well>
-                </div>
-            </Details>
-        </Row>
+        </Wrapper>
     );
 };
 

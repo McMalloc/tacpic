@@ -10,10 +10,6 @@ const Label = styled.label`
   transition: font-weight 0.2s, color 0.2s;
   cursor: pointer;
   
-  &:checked {
-    text-decoration: underline;
-  }
-  
   &:last-child {
     margin-bottom: inherit;
   }
@@ -21,27 +17,12 @@ const Label = styled.label`
   &:before {
       position: relative;
       margin-right: 0.5em;
-      //padding: 0 0.5em;
-      align-self: center;
-      font-family: 'Font Awesome 5 Free';
-      text-decoration: none!important;
-      font-weight: 400;
-      content: "\f111";
-      opacity: ${props => props.active ? 0 : 1};
-      transition: background-color 0.1s;
-  }  
-  
-  &:after {
-      position: absolute;
-      margin-right: 0.5em;
       left: 0;
       align-self: center;
       text-decoration: none!important;
-      content: "\f192";
+      content: "\f111";
       font-family: 'Font Awesome 5 Free';
-      opacity: 0;
-      transition: opacity 0.1s;
-  }
+  }  
   
   &:hover {
     text-decoration: underline;
@@ -57,18 +38,13 @@ const Input = styled.input`
   width: 0;
   margin: 0;
   
-  &:checked+label {
+  &:checked + label {
     font-weight: bold;
-    // color: ${props => props.theme.accent_1};
   } 
   
-  &:checked + label:after {
-    opacity: 1;
+  &:checked + label:before {
+    content: "\f192";
   }  
-  
-  &:focus + label {
-    box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
-  }
 `;
 
 const Wrapper = styled.div`

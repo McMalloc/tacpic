@@ -37,14 +37,10 @@ const AccordeonPanelTitle = styled.div`
   
   &:hover {
     background-color: ${props => props.theme.brand_secondary_lighter};
-    span {
-      text-decoration: underline;
-    }
+    span { text-decoration: underline; }
   }
   
-  span {
-    margin-left: 12px;
-  }
+  span { margin-left: 12px; }
   
   i {
     position: absolute;
@@ -79,7 +75,7 @@ const AccordeonMenuEntry = styled.div`
   }
 `;
 
-const AccordeonPanelFlyout = styled.div`
+const AccordeonPanelFlyout = styled.div` // eigentlich ein Flyout
   position: fixed;
   left: 0;
   top: 0;
@@ -143,8 +139,6 @@ const AccordeonPanelFlyoutButton = props => {
 
     return (
         <AccordeonPanelButtonWrapper className={props.className}>
-
-                {/*<pre>{JSON.stringify(pprops)}</pre>*/}
                 {props.genericButton ?
                     <div ref={buttonRef}>{props.genericButton}</div>
                     :
@@ -157,22 +151,11 @@ const AccordeonPanelFlyoutButton = props => {
                         {props.children}
                     </AccordeonPanelFlyout>
                 </CSSTransition>, document.getElementById("flyout"))}
-
         </AccordeonPanelButtonWrapper>
     )
 };
 
 const AccordeonPanel = props => {
-    // console.log(props.openedOverride);
-    // const defaultState = props.openedOverride !== undefined && props.openedOverride ? props.openedOverride : localStorage.getItem(props.title + "_collapsed") === "true";
-    // const [collapsed, setCollapsed] = useState(localStorage.getItem(props.title + "_collapsed") === "false");
-    // const [openedByOverride, setOpenedByOverride] = useState(localStorage.getItem(props.title + "_collapsed") === "false");
-
-    // if (collapsed && props.openedOverride) {
-    //     // setOpenedByOverride(true);
-    //     setCollapsed(false);
-    // }
-    // console.log(props.children);
     return (
         <AccordeonPanelWrapper>
             <AccordeonPanelTitle onClick={props.onClick} collapsed={props.collapsed}>

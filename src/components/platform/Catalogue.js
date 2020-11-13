@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {CATALOGUE, GRAPHIC, LOAD_MORE, TAGS} from "../../actions/action_constants";
 import CatalogueItemList from "./CatalogueItemList";
 import TagList from "./TagList";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {Row} from "../gui/Grid";
 import {Checkbox} from "../gui/Checkbox";
 import Searchbar from "./Searchbar";
@@ -12,23 +12,32 @@ import {CatalogueItemView} from "./CatalogueItemView";
 import {Route, useNavigate} from "react-router-dom";
 import {Routes, useParams} from "react-router";
 import {Button} from "../gui/Button";
+import {FlyoutButton} from "../gui/FlyoutButton";
 import {Icon} from "../gui/_Icon";
+import {useBreakpoint} from "../../contexts/breakpoints";
+import { SM_SCREEN } from '../../config/constants';
 
 const TagSidebar = styled.aside`
   position: sticky;
-  top: ${props=>props.theme.large_padding};
-  
+  top: ${(props) => props.theme.large_padding};
+
   .tag-wrapper {
     padding: 2px 0 2px 4px;
     margin-top: 2px;
-    border-radius: ${props => props.theme.border_radius};
-    border: 1px solid ${props => props.theme.grey_4};
+    border-radius: ${(props) => props.theme.border_radius};
+    border: 1px solid ${(props) => props.theme.grey_4};
   }
-  
+
   .custom-tag-list {
     max-height: 50vh;
     overflow-y: auto;
   }
+`;
+
+const SearchFilterBar = styled.div`
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 2em;
 `;
 
 const queryGraphics = (dispatch, tags = [], terms = [], format = [], system = [], limit = 50, offset = 0) => {
@@ -47,18 +56,13 @@ const queryGraphics = (dispatch, tags = [], terms = [], format = [], system = []
     })
 };
 
-const loadMore = (dispatch, catalogue) => {
-    dispatch({
-        type: LOAD_MORE
-    })
-};
-
 const toggleFormat = (dispatch, format) => {
     dispatch({
         type: 'FORMAT_TOGGLED',
         format
     })
 };
+
 const toggleSystem = (dispatch, system) => {
     dispatch({
         type: 'SYSTEM_TOGGLED',
@@ -71,6 +75,7 @@ const Catalogue = props => {
         state => state.catalogue
     );
     const dispatch = useDispatch();
+    const breakpoints = useBreakpoint();
 
     const navigate = useNavigate();
     const {graphicId} = useParams();
@@ -87,74 +92,85 @@ const Catalogue = props => {
         })
     }, []);
 
+    const tagSidebar = <TagSidebar>
+        <strong>Format</strong>
+        <div className={"tag-wrapper"}>
+
+            <Checkbox onChange={event => toggleFormat(dispatch, 'a4')}
+                      name={'format-toggle-a4'}
+                      value={catalogue.filterFormat.includes('a4')}
+                      label={'DIN A4'}/>
+            <Checkbox onChange={event => toggleFormat(dispatch, 'a3')}
+                      name={'format-toggle-a3'}
+                      value={catalogue.filterFormat.includes('a3')}
+                      label={'DIN A3'}/>
+        </div>
+        <br/>
+        <strong>Schriftsystem</strong>
+        <div className={"tag-wrapper"}>
+            {['de-de-g0.utb', 'de-de-g1.ctb', 'de-de-g2.ctb'].map(system =>
+                <Checkbox onChange={() => toggleSystem(dispatch, system)}
+                          key={system}
+                          name={'system-toggle-' + system}
+                          value={catalogue.filterSystem.includes(system)}
+                          label={'catalogue:' + system}/>
+            )}
+        </div>
+        <br/>
+
+        <TagList/>
+    </TagSidebar>
+
     return (
         <>
             <Row>
-                <div className={"col-xs-8 col-xs-offset-2"}>
+                <div className={"col-xs-12 col-md-8 col-md-offset-2"}>
                     <h1>Katalog</h1>
                 </div>
             </Row>
-            <Row style={{marginBottom: 24}}>
-                <div className={"col-md-10 col-md-offset-2 col-sm-12"}>
-                    <Searchbar/>
-                </div>
-            </Row>
-            <Row>
-                <div className={"col-xs-12 col-lg-2"}>
-                    <TagSidebar>
-                        <strong>Format</strong>
-                        <div className={"tag-wrapper"}>
 
-                            <Checkbox onChange={event => toggleFormat(dispatch, 'a4')}
-                                      name={'format-toggle-a4'}
-                                      checked={catalogue.filterFormat.includes('a4')}
-                                      label={'DIN A4'}/>
-                            <Checkbox onChange={event => toggleFormat(dispatch, 'a3')}
-                                      name={'format-toggle-a3'}
-                                      checked={catalogue.filterFormat.includes('a3')}
-                                      label={'DIN A3'}/>
+            {breakpoints.md ?
+                <>
+                    <Row>
+                        <div className={"col-md-6 col-md-offset-2 extra-margin double"}>
+                            <Searchbar/>
                         </div>
-                        <br/>
-                        <strong>Schriftsystem</strong>
-                        <div className={"tag-wrapper"}>
-                            <Checkbox onChange={() => toggleSystem(dispatch, 'de-de-g0.utb')}
-                                      name={'system-toggle-de-de-g0.utb'}
-                                      checked={catalogue.filterSystem.includes('de-de-g0.utb')}
-                                      label={'catalogue:de-de-g0.utb'}/>
-                            <Checkbox onChange={() => toggleSystem(dispatch, 'de-de-g1.ctb')}
-                                      name={'system-toggle-de-de-g1.ctb'}
-                                      checked={catalogue.filterSystem.includes('de-de-g1.ctb')}
-                                      label={'catalogue:de-de-g1.ctb'}/>
-                            <Checkbox onChange={() => toggleSystem(dispatch, 'de-de-g2.ctb')}
-                                      name={'system-toggle-de-de-g2.ctb'}
-                                      checked={catalogue.filterSystem.includes('de-de-g2.ctb')}
-                                      label={'catalogue:de-de-g2.ctb'}/>
+                    </Row>
+                    <Row>
+                        <div className={"col-md-2"}>
+                            {tagSidebar}
                         </div>
-                        <br/>
+                        <div className={"col-md-10"}>
+                            <CatalogueItemList graphics={catalogue.graphics}/>
+                        </div>
+                    </Row>
+                </>
 
-                        <TagList />
-                    </TagSidebar>
-                </div>
-                <div className={"col-xs-12 col-lg-10"}>
-                    <CatalogueItemList graphics={catalogue.graphics}/>
-                    {!!graphicId &&
-                    <Modal title={graphicOverview && graphicOverview.title} noPadding={true} fitted
-                           dismiss={() => navigate("/catalogue")}>
+                : <>
+                    <Row>
+                        <SearchFilterBar className={"col-xs-12"}>
+                            <Searchbar/>
+                            &emsp;
+                            <FlyoutButton label={"Filter"}>
+                                {tagSidebar}
+                            </FlyoutButton>
+                        </SearchFilterBar>
+                    </Row>
+                    <Row>
+                        <div className={"col-xs-12"}>
+                            <CatalogueItemList graphics={catalogue.graphics}/>
+                        </div>
+                    </Row>
+                </>
+            }
 
-                        <CatalogueItemView variantsOverview={graphicOverview.variants || []}/>
+            {!!graphicId &&
+            <Modal title={graphicOverview && graphicOverview.title} noPadding={true} fitted
+                   dismiss={() => navigate("/catalogue")}>
 
-                    </Modal>}
-                    <div className={"align-center padded-top"}>
-                        <Button primary label={"Mehr laden"} large disabled={catalogue.loadMorePending}
-                                icon={catalogue.loadMorePending ? "cog fa-spin" : "ellipsis-h"} onClick={() => {
-                            loadMore(dispatch, catalogue);
-                        }}/>
-                    </div>
+                <CatalogueItemView variantsOverview={graphicOverview.variants || []}/>
 
-                </div>
-            </Row>
-            <br/>
-
+            </Modal>}
         </>
     )
 };

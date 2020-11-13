@@ -140,7 +140,7 @@ class Tile extends Component {
         });
     }
 
-    render() {
+  render() {
         return (
             <Container {...this.props} onClick={this.props.onClick}>
                 <ImageWrapper onMouseEnter={this.handleMousenter} onMouseLeave={this.onMouseLeave}>

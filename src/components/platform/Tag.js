@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Checkbox} from "../gui/Checkbox";
 import {useDispatch, useSelector} from "react-redux";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 const toggleTag = (dispatch, value, id) => {
     console.log(value);
@@ -44,7 +44,7 @@ const Tag = ({name, tag_id}) => {
             <Checkbox onChange={event => toggleTag(dispatch, event.target.name, tag_id)}
                       name={'tag-toggle-' + name}
                       id={"cb-tag-" + tag_id}
-                      checked={checked}
+                      value={checked}
                       label={name}/>
         </div>
 

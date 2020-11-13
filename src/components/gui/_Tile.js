@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 const Tile = styled.div`
   box-shadow: ${props => props.theme.middle_shadow}; // 1px 1px 5px rgba(0,0,0,0.4);

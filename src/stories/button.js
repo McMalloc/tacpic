@@ -1,5 +1,6 @@
 import {storiesOf} from "@storybook/react";
-import {Button, FlyoutButton} from "../components/gui/Button";
+import {Button} from "../components/gui/Button";
+import {FlyoutButton} from "../components/gui/FlyoutButton";
 import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
 import React from "react";
 import Toggle from "../components/gui/Toggle";

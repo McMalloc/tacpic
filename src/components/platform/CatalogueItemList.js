@@ -1,11 +1,12 @@
 import React, {useState} from "react";
 import {Route, Routes, useNavigate, useParams} from "react-router-dom";
 import CatalogueItem, {Wrapper as CatalogueItemWrapper} from "./CatalogueItem";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {useDispatch, useSelector} from "react-redux";
 import {Icon} from "../gui/_Icon";
 import {Alert} from "../gui/Alert";
-import {FILE} from "../../actions/action_constants";
+import {FILE, LOAD_MORE} from "../../actions/action_constants";
+import {Button} from "../gui/Button";
 
 const FlexRow = styled.div`
   display: flex;
@@ -58,6 +59,7 @@ const CatalogueItemList = props => {
             state.catalogue.filterFormat.length === 0 &&
             state.catalogue.filterSystem.length === 0
     );
+    const loadMorePending = useSelector(state => state.catalogue.loadMorePending);
 
     return (
         <>
@@ -79,6 +81,14 @@ const CatalogueItemList = props => {
                     </AddButton>
                 </CatalogueItemWrapper>
             </FlexRow>
+            <div className={"align-center padded-top"}>
+                <Button primary label={"Mehr laden"} large disabled={loadMorePending}
+                        icon={loadMorePending ? "cog fa-spin" : "ellipsis-h"} onClick={() => {
+                    dispatch({
+                        type: LOAD_MORE
+                    });
+                }}/>
+            </div>
         </>
 
     );

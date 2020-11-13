@@ -1,7 +1,7 @@
 import React, {Component, useEffect, useState} from 'react'
 import transform from "./transform";
 import _ from "lodash";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {connect, useDispatch, useSelector} from "react-redux";
 import {Icon} from "../../gui/_Icon";
 import {getTextWidth} from "../../../utility/getTextWidth";

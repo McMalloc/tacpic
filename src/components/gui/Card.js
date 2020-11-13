@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import styled, {useTheme} from "styled-components";
+import styled, {useTheme} from "styled-components/macro";
 import {useTranslation} from "react-i18next";
 import {NavLink} from "react-router-dom";
 import Tile from "./_Tile";

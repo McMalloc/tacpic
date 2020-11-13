@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Button} from "./gui/Button";
 import {VARIANT, FILE, USER} from "../actions/action_constants";
 import {Row} from "./gui/Grid";
-import styled, {useTheme} from "styled-components";
+import styled, {useTheme} from "styled-components/macro";
 import {useTranslation} from "react-i18next";
 import {Icon} from "./gui/_Icon";
 import {TagView} from "./platform/Tag";
@@ -17,10 +17,11 @@ const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-
 
 const Login = props => {
     const {t} = useTranslation();
+    const navigate = useNavigate();
     const user = useSelector(state => state.user);
 
     if (user.logged_in) {
-        return <Navigate push to="/catalogue"/>;
+        return navigate("/catalogue");
     }
 
     return (

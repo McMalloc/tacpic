@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components/macro";
 import Searchbar from "./Searchbar";
 import {Button} from "../gui/Button";
-import {useNavigate} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import CenterWrapper from "../gui/_CenterWrapper";
 import {FILE} from "../../actions/action_constants";
 import Divider from "../gui/Divider";
@@ -164,9 +164,11 @@ const Landing = () => {
                         durch
                         unseren Newsletter über die neusten Entwicklungen informieren.</p>
                     <p>
-                        <Button large icon={"user-plus"} primary>
-                            {t("general:signup")}
-                        </Button>
+                        <NavLink className={"no-styled-link"} to={'/signup'}>
+                            <Button icon={"user-plus"} primary>
+                                {t("general:signup")}
+                            </Button>
+                        </NavLink>
                     </p>
                 </Well>
             </div>

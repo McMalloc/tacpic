@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Checkbox} from "../gui/Checkbox";
 import {useDispatch, useSelector} from "react-redux";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {Row} from "../gui/Grid";
 import moment from 'moment';
 import Expander from "../gui/Expander";

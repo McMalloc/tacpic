@@ -4,7 +4,7 @@ import {createPattern} from "./Patterns";
 import {useDispatch, useSelector} from "react-redux";
 import {filter, flatten, map, uniq} from "lodash";
 import Rect from "./Rect";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {keyedLabelsSelector, patternsInUseSelector} from "../../../reducers/selectors";
 import {mmToPx, pixelToPx} from "../../../utility/mmToPx";
 import {SAFE_BORDER} from "../../../config/constants";
