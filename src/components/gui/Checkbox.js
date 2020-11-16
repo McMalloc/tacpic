@@ -4,44 +4,25 @@ import {useTranslation} from "react-i18next";
 import {Sub} from "./_Label";
 
 const Label = styled.label`
-  //font-size: 0.9em;
-  //display: flex;
-  margin-bottom: 0.5em;
-  padding-left: 1.4em;
-  transition: font-weight 0.1s, color 0.1s, outline 0.1s;
   position: relative;
-  align-items: center;
-  color: ${props => props.disabled ? props.theme.grey_4 : "inherit"};
+  display: flex;
+  align-self: center;
+  margin-bottom: 0.5em;
+  transition: font-weight 0.2s, color 0.2s;
+  cursor: pointer;
   
   &:last-child {
   margin-bottom: inherit;
   }
   
   &:before {
-      left: 0;
-      top: 0.1em;
-      width: 1em;
-      height: 1em;
-      position: absolute;
+      position: relative;
       margin-right: 0.5em;
+      left: 0;
       align-self: center;
-      box-sizing: border-box;
-      content: "";
-      border-radius: ${props => props.theme.border_radius};
-      border: 1px solid ${props => props.disabled ? props.theme.grey_4 : props.theme.midlight};
-      background-color: ${props => props.disabled ? "transparent" : "white"};
-      transition: background-color 0.1s;
-  }
-  
-  &:after {
-    position: absolute;
-    transition: opacity 0.1s;
-    display: inline-block;
-    color: white;
-    height: 0;
-    font-size: 16px;
-    left: 0.2em;
-    top: 0;
+      text-decoration: none!important;
+      content: "\f0c8";
+      font-family: 'Font Awesome 5 Free';
   }
   
   &:hover {
@@ -54,19 +35,10 @@ const Input = styled.input`
   width: 0;
   margin: 0;
 
-  &:checked + label {
-    //font-weight: 700;
-    color: ${props => props.theme.brand_secondary};
-    font-weight: bold;
-    
-    &:before {
-      background-color: ${props => props.theme.brand_secondary};
-      border-color: ${props => props.theme.brand_secondary};
-    }
-  }  
-
-  &:checked + label:after {
-    content: "✔";
+  &:checked + label:before {
+      font-weight: bold;
+      text-decoration: none!important;
+      content: "\f14a";
   }  
 
   &:focus + label {

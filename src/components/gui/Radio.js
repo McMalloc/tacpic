@@ -39,12 +39,15 @@ const Input = styled.input`
   margin: 0;
   
   &:checked + label {
-    font-weight: bold;
+    color: ${props => props.theme.brand_secondary};
   } 
-  
+
   &:checked + label:before {
+    font-weight: bold;
+    text-decoration: none!important;
     content: "\f192";
-  }  
+  } 
+
 `;
 
 const Wrapper = styled.div`

@@ -31,7 +31,7 @@ const ButtonBase = styled.button`
   float: ${props => props.rightAction ? 'right' : 'none'};
   margin: 0;
   position: relative;
-  font-size: ${props => props.small ? '0.8em' : '1em'};
+  font-size: ${props => props.small ? '0.8rem' : '1rem'};
   width: ${props => props.fullWidth ? "100%" : "auto"};
   transition: box-shadow 0.15s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.15s;
   display: inline-flex;

@@ -1,10 +1,6 @@
-import React, {Component, useRef, useState} from 'react';
-import {connect, useDispatch, useSelector} from "react-redux";
+import React, {useRef, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import styled from 'styled-components/macro';
-import {Treeview} from "../../gui/Treeview";
-import {Button} from "../../gui/Button";
-import {Row} from "../../gui/Grid";
-import {Lower, WidgetWrapper} from "../../gui/WidgetContainer";
 import {Icon} from "../../gui/_Icon";
 import {AccordeonMenuEntry, AccordeonPanelFlyoutButton} from "../../gui/Accordeon";
 import Context from "./Context/Context";

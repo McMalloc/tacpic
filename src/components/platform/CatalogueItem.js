@@ -2,26 +2,22 @@ import React from "react";
 import styled from "styled-components/macro";
 import {Link} from "react-router-dom";
 import Tile from "../gui/_Tile";
-import {API_URL} from "../../env.json"
+import { API_URL } from "../../env.json"
+import {LG_SCREEN, MD_SCREEN, SM_SCREEN} from "../../config/constants";
 
 const Wrapper = styled.div`
   padding: 6px;
   box-sizing: border-box;
-  
-  @media (min-width: 1280px) {
-    flex: 0 1 33%;
-  }   
-   
-  @media (min-width: 900px) {
+  flex: 0 1 50%;
+
+  ${SM_SCREEN} {
     flex: 0 1 33%;
   }  
-  
-    @media (min-width: 1600px) {
+  ${MD_SCREEN} {
+    flex: 0 1 33%;
+  }  
+  ${LG_SCREEN} {
     flex: 0 1 20%;
-  }  
-  
-  @media (max-width: 900px) {
-    flex: 0 1 50%;
   }
   
   &:before {

@@ -12,7 +12,7 @@ import {Checkbox} from "../../gui/Checkbox";
 
 const Table = styled.table`
   width: 100%;
-  font-size: 0.9em;
+  font-size: 0.9rem;
   
   thead {
     font-weight: 700;

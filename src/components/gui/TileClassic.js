@@ -23,7 +23,7 @@ const ImageWrapper = styled.div`
     position: absolute;
     content: "\f061";
     font-family: 'Font Awesome 5 Free';
-    font-size: 200%;
+    font-size: 2rem;
     ${p(2)};
     bottom: 0;
     right: 50px;

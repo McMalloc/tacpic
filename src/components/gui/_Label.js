@@ -4,7 +4,6 @@ import {useTranslation} from 'react-i18next';
 import {Icon} from "./_Icon";
 
 const Main = styled.label`
-  //font-size: 0.9em;
   display: ${props => props.inline ? "inline" : "block"};
   color: ${props => props.disabled ? props.theme.middark : "inherit"};
   margin-bottom: ${props => props.noMargin ? 0 : props.theme.spacing[3]};

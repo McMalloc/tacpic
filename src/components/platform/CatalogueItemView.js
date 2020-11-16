@@ -77,17 +77,14 @@ const VariantColumn = styled.div`
 `;
 
 const DetailsColumn = styled.div`
-  //flex: 0 0 auto;
   overflow: auto;
-  //height: 100%;
   background-color: ${(props) => props.theme.grey_6};
-  padding: ${(props) => props.theme.large_padding};
 `;
 
 const Wrapper = styled.div`
   background-color: ${(props) => props.theme.grey_6};
   display: flex;
-  min-width: 400px;
+  min-width: 300px;
   max-width: 1400px;
   flex: 1 1 auto;
   overflow: hidden;
@@ -151,7 +148,7 @@ const CatalogueItemView = ({ variantsOverview }) => {
   //     console.log("right");
   //   }
   // });
-  const { sm } = useBreakpoint();
+  const { md } = useBreakpoint();
 
   const viewedGraphic = useSelector((state) => state.catalogue.viewedGraphic);
   const viewedVariant =
@@ -201,7 +198,7 @@ const CatalogueItemView = ({ variantsOverview }) => {
           message={"Variante wird geladen, einen Moment noch."}
         />
       ) : (
-        sm ? <>
+        md ? <>
           {variantColumn}
           <DetailsColumn className={"col-sm-10 col-md-9 col-lg-10"}>
             <VariantView

@@ -1,4 +1,0 @@
-Name	Beschreibung	Features	Fortschritt	Link
-Button	Klickbares Element, das einen Vorgang auslöst	Flyout|Icons|Templates	3	Button,Kontext
-Modal	Modalfenster, das den Fokus auf den aktuellen Vorgang lenkt	Automatisches Layout|Schließen durch Außenklick	2	Modal,Standard
-TreeView	Hierarchische Listenansicht	Aus- und einklappbar|Icons	1	

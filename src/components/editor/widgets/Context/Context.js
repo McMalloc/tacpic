@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {useSelector} from "react-redux";
 import ShapeContext from "./ShapeContext";
 import LabelContext from "./LabelContext";
 import {find} from 'lodash';
-import {WidgetWrapper} from "../../../gui/WidgetContainer";
 import Keyedit from "../Keyedit";
 
 // to refactor to function component
@@ -14,15 +13,15 @@ const Context = () => {
         case "ellipse":
         case "rect":
             return (
-                <WidgetWrapper><ShapeContext/></WidgetWrapper>
+                <ShapeContext/>
             );
         case "label":
             return (
-                <WidgetWrapper><LabelContext/></WidgetWrapper>
+                <LabelContext/>
             );
         case "key":
             return (
-                <WidgetWrapper><Keyedit/></WidgetWrapper>
+                <Keyedit/>
             );
         default:
             return null;

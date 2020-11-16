@@ -1,7 +1,6 @@
 import React, {Component, useEffect} from 'react';
 import styled from 'styled-components/macro';
 import {useDispatch, useSelector} from "react-redux";
-import {Lower, WidgetWrapper} from "../../gui/WidgetContainer";
 import {Multiline} from "../../gui/Input";
 import {Alert} from "../../gui/Alert";
 import {CHANGE_PAGE_CONTENT} from "../../../actions/action_constants";

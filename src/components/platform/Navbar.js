@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-import React, {useState} from "react";
+import React from "react";
 import {useTranslation} from "react-i18next";
 import {NavLink} from "react-router-dom";
 import {useLocation} from "react-router-dom";
@@ -9,13 +9,13 @@ import {Button} from "../gui/Button";
 import {LG_SCREEN, MD_SCREEN, SM_SCREEN} from "../../config/constants";
 import {template} from "lodash";
 import {useBreakpoint} from "../../contexts/breakpoints";
-import breakpoint from "styled-components-breakpoint";
 import {Burgermenu} from "../gui/Burgermenu";
 
 const Wrapper = styled.nav`
   display: flex;
   background-color: white;
   padding: 6px;
+  flex: 0 1 auto;
   flex-wrap: wrap;
   width: 100%;
   box-sizing: border-box;
@@ -39,10 +39,9 @@ const NavbarItem = styled(NavLink)`
     border-radius: ${props => props.theme.border_radius};
     padding: ${props => props.theme.base_padding};
     position: relative;
-    display: block;
     border: 1px solid transparent;
     font-family: "Quicksand", sans-serif;
-    font-size: 18px;
+    font-size: 1rem;
     
     &:not(:last-child) {
       margin-right: ${props => props.theme.spacing[1]};
@@ -85,12 +84,11 @@ const Navbar = props => {
     const user = useSelector(state => state.user);
     const basket = useSelector(state => state.catalogue.basket);
     const dispatch = useDispatch();
-    const breakpoints = useBreakpoint();
+    const {md} = useBreakpoint();
 
 
     const logo = <NavbarItemGroups>
-
-        <NavLink style={{height: 30}} to={"/"}><Logo src={"/images/logo.svg"}/></NavLink>
+        <NavLink to={"/"}><Logo src={"/images/logo.svg"}/></NavLink>
         <span style={{
             color: "white",
             fontSize: '12px',
@@ -136,8 +134,8 @@ const Navbar = props => {
     </NavbarItem>
 
     return (
-        <Wrapper tinyMenu={!breakpoints.sm}>
-            {breakpoints.sm ?
+        <Wrapper tinyMenu={!md}>
+            {md ?
                 <>
                     <NavbarItemGroups>
                         {logo}

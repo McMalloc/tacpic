@@ -10,9 +10,10 @@ import {Icon} from "../gui/_Icon";
 const FooterStyled = styled.footer`
    background-color: ${props => props.theme.brand_secondary};
    color: ${props => props.theme.background};
-   font-size: 0.9em;
+   font-size: 0.9rem;
    line-height: 120%;
    padding: 6px 0;
+   margin-top: ${props => props.small ? 0 : '2rem'};
    
    a {
       color: inherit;
@@ -23,7 +24,7 @@ const FooterStyled = styled.footer`
       text-transform: uppercase;
       display: block;
       letter-spacing: 1px; 
-      font-size: 0.8em;
+      font-size: 0.8rem;
       opacity: 0.8;
       margin-bottom: 3px;
    }
@@ -38,7 +39,7 @@ const FooterImageContainer = styled.span`
 
 const Version = styled.div`
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-  font-size: 80%;
+  font-size: 0.8rem;
   color: lightgreen;
   padding: 1px 3px;
   border-radius: 2px;
@@ -59,7 +60,7 @@ const Footer = props => {
     );
 
     return (
-        <FooterStyled>
+        <FooterStyled small={props.small}>
             <div className={"container"}><Row>
                 {props.small ?
                     <div className={"col-md-12 align-center"}>

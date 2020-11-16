@@ -5,7 +5,7 @@ import {useTranslation} from "react-i18next";
 const Label = styled.span`
   position: relative;
   display: inline-block;
-  font-size: 0.8em;
+  font-size: 0.8rem;
   letter-spacing: 0.2px;
   
   &:after, &:before {

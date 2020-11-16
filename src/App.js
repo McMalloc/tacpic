@@ -24,7 +24,8 @@ import NotFound from "./components/NotFound";
 import ResetPasswordRequest from "./components/platform/account/ResetPasswordRequest";
 import Page from "./components/platform/pages/Page";
 import LegalIndex from "./components/platform/Legal";
-import {Alert} from "./components/gui/Alert";
+import { Alert } from "./components/gui/Alert";
+import {MD_SCREEN} from "./config/constants";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -42,7 +43,7 @@ const Wrapper = styled.div`
 `;
 
 const AppContainer = styled.div`
-  flex: 1 ${props => props.inEditor ? 1 : 0} auto;
+  flex: 1 ${props => props.inEditor ? 1 : 0} 100%;
   overflow-y: ${props => props.inEditor ? 'hidden' : 'visible'};
   
   display:flex;

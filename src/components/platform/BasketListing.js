@@ -81,7 +81,7 @@ const MetaItemRow = styled.tr`
     font-weight: bold;
    
     td:last-child {
-      font-size: 150%;
+      font-size: 1.5rem;
       text-decoration: underline;
       color: ${props => props.theme.brand_secondary};
     }
@@ -90,7 +90,7 @@ const MetaItemRow = styled.tr`
 const PriceCell = styled.td`
   text-align: right;
   min-width: min-content;
-  width: 200px;
+  /* width: 100px; */
 `;
 
 const BasketListing = () => {

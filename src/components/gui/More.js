@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 const Hint = styled.div`
   position: absolute;
   width: 100%;
-  font-size: 90%;
+  font-size: 0.9rem;
   text-shadow: 1px 1px 0 white;
   text-align: center;
   bottom: 0;

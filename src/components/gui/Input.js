@@ -26,11 +26,10 @@ const Input = styled.input`
   display: ${props => props.inline ? "inline" : "block"};
   width: ${props => props.inline ? "inherit" : "100%"};
   box-sizing: border-box;
-  height: 30px;
   border: 1px solid ${props => props.theme.midlight};
   border-radius: 3px;
   background-color: ${props => props.disabled ? "transparent" : props.theme.background};
-  padding: 5px ${props => props.theme.spacing[1]};
+  padding: 4px ${props => props.theme.spacing[1]};
   cursor: ${props => props.disabled ? "not-allowed" : "text"};
   transition: outline 0.1s;
   

@@ -4,7 +4,6 @@ import styled from 'styled-components/macro';
 import {Multiline, Textinput} from "../../gui/Input";
 import Select from "../../gui/Select";
 import {Button} from "../../gui/Button";
-import {WidgetWrapper} from "../../gui/WidgetContainer";
 import {GRAPHIC, VERSION, VARIANT} from "../../../actions/action_constants";
 import Modal from "../../gui/Modal";
 import {Alert} from "../../gui/Alert";
@@ -28,7 +27,7 @@ const Indicator = styled.span`
   display: inline-block;
   text-transform: uppercase;
   color: ${props => props.theme.background};
-  font-size: 0.8em;
+  font-size: 0.8rem;
   letter-spacing: 2px;
   border-radius: ${props => props.theme.border_radius};
   padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[2]};
@@ -48,7 +47,7 @@ const Indicator = styled.span`
 
 const Hint = styled.div`
   text-align: right;
-  font-size: 90%;
+  font-size: 0.9rem;
   font-style: italic;
 `;
 
@@ -99,12 +98,10 @@ const Metadata = props => {
     });
 
     if (!logged_in) return (
-        <WidgetWrapper>
             <Alert info>
                 Bitte <NavLink to={'/login'}>logge dich ein</NavLink> oder <NavLink to={'/signup'}>erstelle ein
                 Konto</NavLink>, um Grafiken zu erstellen.
             </Alert>
-        </WidgetWrapper>
     );
 
     return (

@@ -1,9 +1,6 @@
 import styled from 'styled-components/macro';
 import React, {Component} from "react";
-import {Numberinput, Textinput, Multiline} from "./Input";
-import {Checkbox} from "./Checkbox";
-import {Button} from "./Button";
-import {Lower, WidgetWrapper} from "./WidgetContainer";
+import {Textinput, Multiline} from "./Input";
 
 const Wrapper = styled.div`
   // color: ${props => props.theme.accent_1_light};

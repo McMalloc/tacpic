@@ -21,7 +21,7 @@ const requestQuote = (dispatch, quoteComment, basket, emailCopy) => {
 
 // TODO auslagern
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 ";
+const layout = "col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-4 col-lg-offset-4 ";
 
 const Basket = props => {
     const user = useSelector(state => state.user);
@@ -45,7 +45,7 @@ const Basket = props => {
     return (
         <div className={"container"}>
             <div className={"row"}>
-                <div className={"col-md-6 col-md-offset-3 col-xs-12"}>
+                <div className={layout}>
                     <h1>Warenkorb</h1>
                     <BasketListing/>
                     {quote.gross_total > MAX_VALUE_FOR_ORDER ?

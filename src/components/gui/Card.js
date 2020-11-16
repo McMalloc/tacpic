@@ -18,8 +18,6 @@ const Title = styled.div`
   span:nth-child(2) {
     flex: 0 1 auto;
   }
-  //font-size: 1.1em;
-   // border-bottom: 1px solid ${props => props.theme.brand_secondary_verylight};
 `;
 
 const Description = styled.div`

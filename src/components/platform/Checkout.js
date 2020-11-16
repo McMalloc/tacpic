@@ -200,16 +200,16 @@ const Checkout = props => {
     return (
         <>
             <Row>
-                <div className={"col-md-6 col-md-offset-3"}>
+                <div className={"col-xs-12 col-lg-6 col-lg-offset-3"}>
                     <Alert danger>
-                        Die Plattform befindet sich in der Alpha-Phase, d.h. sie wird noch getestet.
+                        Die Plattform befindet sich in der Alpha-Phase, d.h. sie wird noch getestet. 
                         <strong>Getätigte Bestellungen werden entgegen der Beschriftung nicht ausgelöst und es fallen
                             keine Kosten an.</strong>
                     </Alert>
                 </div>
             </Row>
             <Row>
-                <div className={"col-sm-5"}>
+                <div className={"col-sm-12 col-md-5"}>
                     <div style={{position: 'sticky', top: 12}}>
 
                         <StepIndicator steps={steps} current={step}/>
@@ -253,12 +253,13 @@ const Checkout = props => {
                     </Alert><br/></>
                     }
                 </div>
-                <div className={"col-sm-6 col-sm-offset-1"}>
-                    <h2>Warenkorb</h2>
-                    <BasketListing/>
-                    <br/>
-                    <br/>
-                    <br/>
+                <div className={"col-sm-12 col-md-6 col-md-offset-1"}>
+                    <div style={{position: 'sticky', top: 12}}>
+                        <h2>Warenkorb</h2>
+                        <BasketListing/>
+                        <br/>
+                        <br/>
+                    </div>
                 </div>
             </Row>
         </>

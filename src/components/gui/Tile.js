@@ -73,7 +73,7 @@ const Container = styled.div`
       content: '\\f061';
       //content: "hi";
       font-family: 'Font Awesome 5 Free';
-      font-size: 130%;
+      font-size: 1.3rem;
       ${p(2)};
       bottom: 0;
       left: -50px;

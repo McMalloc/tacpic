@@ -2,17 +2,7 @@ import styled from 'styled-components/macro';
 import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {Icon} from "./_Icon";
-import {Button} from "./Button";
-
-// const Button = styled(Button)`
-//     color: ${props => props.theme.brand_secondary};
-//     text-decoration: none;
-//     border-radius: ${props => props.theme.border_radius};
-//     padding: ${props => props.theme.base_padding};
-//     display: block;
-//     border: 1px solid transparent;
-//     font-size: 18px;
-// `;
+import { Button } from "./Button";
 
 const Menu = styled.div`
   position:fixed;

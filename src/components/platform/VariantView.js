@@ -21,7 +21,7 @@ import * as moment from 'moment'
 import {APP_URL, API_URL} from "../../env.json";
 import Well from "../gui/Well";
 import More from "../gui/More";
-import { SM_SCREEN } from "../../config/constants";
+import { MD_SCREEN, SM_SCREEN } from "../../config/constants";
 
 const mapFormat = (width, height) => {
     width = parseInt(width);
@@ -58,6 +58,7 @@ const Title = styled.h2`
 const Wrapper = styled.div`
     box-sizing: border-box;
     display: grid;
+    position: relative;
     max-height: 100%;
     grid-template-columns: 1fr;
     column-gap: 0.5rem;
@@ -81,7 +82,7 @@ const Wrapper = styled.div`
     overflow-y: auto;
     scroll-snap-align: start;
 
-    ${SM_SCREEN} {
+    ${MD_SCREEN} {
         min-width: auto;
         padding: 0;
         height: auto;
@@ -98,7 +99,9 @@ const Preview = styled.div`
     grid-area: preview;
     padding: 0 20%;
 
-    ${SM_SCREEN} {
+    ${MD_SCREEN} {
+        position: sticky;
+        top: 0;
         padding: 0 ${props => props.theme.large_padding};
     }
 `;
