@@ -9,7 +9,7 @@ const Container = styled.div`
   background-color: ${props => props.theme.accent_1_light};
   position: absolute;
   padding: ${props => props.theme.spacing[2]};
-  border-radius: 3px;
+  border-radius: ${props => props.theme.border_radius};
   border: 1px solid ${props => props.theme.midlight};
   box-shadow: ${props => props.theme.distant_shadow};
   left: ${props => props.left + "px"};

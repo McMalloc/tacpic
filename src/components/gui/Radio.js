@@ -24,7 +24,7 @@ const Label = styled.label`
       font-family: 'Font Awesome 5 Free';
   }  
   
-  &:hover {
+  &:hover .label {
     text-decoration: underline;
   }
 `;
@@ -44,7 +44,7 @@ const Input = styled.input`
 
   &:checked + label:before {
     font-weight: bold;
-    text-decoration: none!important;
+    text-decoration: none;
     content: "\f192";
   } 
 
@@ -88,16 +88,10 @@ const Radio = props => {
                             checked={option.value === props.value}
                             value={option.value}
                             type={"radio"}/>
-                        {option.component ?
-                            <BigLabel active={option.value === props.value} htmlFor={props.name + "-" + option.value}>
-                                {option.component}
-                            </BigLabel>
-                            :
                             <Label active={option.value === props.value}
                                    htmlFor={props.name + "-" + option.value}>
-                                {option.label}
+                                <span className={"label"}>{option.component ? option.component : option.label}</span>
                             </Label>
-                        }
                     </Wrapper>
                 )
             })}

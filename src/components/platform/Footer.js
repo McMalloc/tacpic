@@ -6,14 +6,19 @@ import i18n from 'i18next';
 import {useSelector} from "react-redux";
 import {Row} from "../gui/Grid";
 import {Icon} from "../gui/_Icon";
+import { MD_SCREEN } from '../../config/constants';
 
 const FooterStyled = styled.footer`
    background-color: ${props => props.theme.brand_secondary};
    color: ${props => props.theme.background};
-   font-size: 0.9rem;
+   font-size: 0.8rem;
    line-height: 120%;
    padding: 6px 0;
    margin-top: ${props => props.small ? 0 : '2rem'};
+
+   ${MD_SCREEN} {
+       font-size: 0.9rem;
+   }
    
    a {
       color: inherit;

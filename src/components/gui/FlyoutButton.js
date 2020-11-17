@@ -151,6 +151,7 @@ const FlyoutButton = (props) => {
         icon={props.icon}
         toggled={out}
         noPad={props.noPad}
+        disabled={props.disabled}
         onBlur={onBlurHandler}
         onFocus={onFocusHandler}
         ref={buttonRef}

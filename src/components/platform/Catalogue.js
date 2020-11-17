@@ -23,6 +23,7 @@ const TagSidebar = styled.aside`
 
   .tag-wrapper {
     padding: 2px 0 2px 4px;
+    box-sizing: border-box;
     margin-top: 2px;
     border-radius: ${(props) => props.theme.border_radius};
     border: 1px solid ${(props) => props.theme.grey_4};

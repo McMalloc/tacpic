@@ -26,7 +26,7 @@ const ButtonBase = styled.button`
   border: 1px solid ${props => props.theme.middark};
   padding: ${props => props.small ? 0 : (props.large ? "8px 18px" : `${props.theme.spacing[1]} ${props.theme.spacing[2]}`)};
   text-transform: ${props => props.small ? 'uppercase' : 'none'};
-  border-radius: 3px;
+  border-radius: ${props => props.theme.border_radius};
   cursor: pointer;
   float: ${props => props.rightAction ? 'right' : 'none'};
   margin: 0;

@@ -4,7 +4,7 @@ import {createPortal} from "react-dom";
 import {fadeIn, slideFromAbove} from "./Animations";
 import { withTranslation } from 'react-i18next';
 import { Button } from "./Button";
-import {SM_SCREEN} from "../../config/constants"
+import {SM_SCREEN, MD_SCREEN} from "../../config/constants"
 
 const Backdrop = styled.div`
   background-color: rgba(3,113,113,0.5);

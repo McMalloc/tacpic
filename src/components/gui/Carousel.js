@@ -62,40 +62,41 @@ const View = styled.div`
         }
     
     position: relative;
-    border: 1px solid ${props => props.grey_6};
-    box-shadow: ${props => props.distant_shadow};
+    border: 1px solid ${props => props.theme.grey_6};
+    box-shadow: ${props => props.theme.distant_shadow};
 `
 
 const Carousel = props => {
     const {t} = useTranslation();
     const [position, setPosition] = useState(0);
     const theme = useTheme();
+    const validChildren = props.children.filter(c => !!c);
     return (
         <Wrapper>
-            <View {...theme}>
-                {props.children[position]}
+            <View>
+                {validChildren[position]}
 
                 {position !== 0 &&
                 <Navarea onClick={() => setPosition(Math.max(position - 1, 0))} className={"left"}>
                     <Icon icon={"chevron-left"}/>
                 </Navarea>
                 }
-                {position !== props.children.length - 1 &&
-                <Navarea onClick={() => setPosition(Math.min(position + 1, props.children.length))} className={"right"}>
+                {position !== validChildren.length - 1 &&
+                <Navarea onClick={() => setPosition(Math.min(position + 1, validChildren.length))} className={"right"}>
                     <Icon icon={"chevron-right"}/>
                 </Navarea>
                 }
                 {/*<Next>rechts</Next>*/}
             </View>
             <Navigation>
-                {props.children.length === 1 ?
+                {validChildren.length === 1 ?
                     <>{props.single || null}</>
                     :
                     <>
                         Seite&#32;
                         <Radiobar>
                             <RadiobarSegment>
-                                {props.children.map((Elem, index) => {
+                                {validChildren.map((Elem, index) => {
                                     if (Elem === null) return null;
                                     return (
                                         <Toggle toggled={index === position} onClick={() => setPosition(index)}

@@ -78,6 +78,7 @@ const VariantColumn = styled.div`
 
 const DetailsColumn = styled.div`
   overflow: auto;
+  padding: ${(props) => props.theme.large_padding};
   background-color: ${(props) => props.theme.grey_6};
 `;
 
@@ -138,16 +139,8 @@ const VariantCarousel = props => {
 
 const CatalogueItemView = ({ variantsOverview }) => {
   let { graphicId, variantId } = useParams();
-  const logged_in = useSelector((state) => state.user.logged_in);
   const dispatch = useDispatch();
   const pending = useSelector((state) => state.catalogue.graphicGetPending);
-  // const gestureBind = useDrag(({ vxvy: [vx], last }) => {
-  //   if (last && vx < 0.3) {
-  //     console.log("left");
-  //   } else if (last && vx > 0.3) {
-  //     console.log("right");
-  //   }
-  // });
   const { md } = useBreakpoint();
 
   const viewedGraphic = useSelector((state) => state.catalogue.viewedGraphic);
@@ -209,8 +202,7 @@ const CatalogueItemView = ({ variantsOverview }) => {
           </> :
             <div style={{
               width: 100 * (viewedGraphic.variants.length + 1) + "vw",
-              'overflow-y': 'visible',
-              'overflow-x': 'auto',
+              overflow: "auto visible",
               display: 'flex',
               scrollSnapType: 'x mandatory',
               scrollBehavior: 'smooth',

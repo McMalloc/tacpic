@@ -23,7 +23,7 @@ const Wrapper = styled.div`
    
     
     ::-webkit-scrollbar-thumb {
-        border-radius: 3px;
+        border-radius: ${props => props.theme.border_radius};
         border: 1px solid rgba(0,0,0,0.2);
         background-color: ${props => props.theme.brand_primary};
         &:hover {

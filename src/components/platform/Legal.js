@@ -47,10 +47,10 @@ const LegalIndex = props => {
 
     return (<>
         <div className={"row"}>
-            <div className={"col-md-4"}>
+            <div className={"col-xs-12 col-md-4"}>
                 <Index index={legalTexts} />
             </div>
-            <div className={"col-md-8"}>
+            <div className={"col-xs-12 col-md-8"}>
                 <Content lang={lang} title={textTitle}/>
             </div>
 

@@ -27,14 +27,14 @@ const Input = styled.input`
   width: ${props => props.inline ? "inherit" : "100%"};
   box-sizing: border-box;
   border: 1px solid ${props => props.theme.midlight};
-  border-radius: 3px;
+  border-radius: ${props => props.theme.border_radius};
   background-color: ${props => props.disabled ? "transparent" : props.theme.background};
   padding: 4px ${props => props.theme.spacing[1]};
   cursor: ${props => props.disabled ? "not-allowed" : "text"};
   transition: outline 0.1s;
   
   &.dirty:invalid {
-    border-radius: 3px 3px 0 0;
+    border-radius: ${props => props.theme.border_radius} ${props => props.theme.border_radius} 0 0;
     //box-shadow: 0 0 5px 2px red;
   }
   
@@ -60,14 +60,14 @@ const Textarea = styled.textarea`
   max-width: 100%;
   box-sizing: border-box;
   border: 1px solid ${props => props.theme.midlight};
-  border-radius: 3px;
+  border-radius: ${props => props.theme.border_radius};
   background-color: ${props => props.disabled ? "transparent" : props.theme.background};
   cursor: ${props => props.disabled ? "not-allowed" : "text"};
   padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[1]};
     transition: outline 0.1s;
   
   &.dirty:invalid {
-    border-radius: 3px 3px 0 0;
+    border-radius: ${props => props.theme.border_radius} ${props => props.theme.border_radius} 0 0;
     //box-shadow: 0 0 5px 2px red;
   }
   

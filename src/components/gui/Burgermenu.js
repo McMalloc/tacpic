@@ -47,7 +47,14 @@ const Burgermenu = props => {
                     <Menu onClick={() => setCollapsed(!collapsed)}>
                         <Button icon={"times"} />
                         <ul>
-                            {props.children.map((c, i) => <li key={i}>{c}</li>)}
+              {props.children.map((component, index) => {
+                if (Array.isArray(component)) {
+                  return <>
+                    {component.map((element, i) => <li key={i}>{element}</li>)}
+                  </>
+                }
+                return <li key={index}>{component}</li>
+              })}
                         </ul>
 
                     </Menu>

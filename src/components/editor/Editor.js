@@ -38,6 +38,7 @@ import Verbaliser from "./widgets/Verbaliser";
 import ErrorBoundary from "../../ErrorBoundary";
 import {findObject} from "../../utility/findObject";
 import {Alert} from "../gui/Alert";
+import { useBreakpoint } from '../../contexts/breakpoints';
 
 const Wrapper = styled.div`
   display: grid;
@@ -126,6 +127,7 @@ const Editor = props => {
     })
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { lg } = useBreakpoint();
     const t = useTranslation().t;
     const [rerender] = useRedraw();
     const [openedPanel, setOpenedPanel] = useState(null);
@@ -180,6 +182,14 @@ const Editor = props => {
             })
         }
     }, [graphicId, variantId, mode]);
+
+    if (!lg) {
+        return <div className={"row"}>
+            <div className={"col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3"}>
+            <Alert warning>{t('editor:not_available-screen')}</Alert>
+            </div>
+        </div>
+    }
 
     if (false) {
     // if (!uiSettings.suppressBackup) {

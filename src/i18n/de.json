@@ -106,6 +106,7 @@
     "variant-new-hint": "Öffnet diese Variante als Grundlage für einen neuen, unabhängigen Entwurf."
   },
   "editor": {
+    "not_available-screen": "Der Editor steht zur Zeit leider nicht auf mobilen Geräten bzw. kleinen Bildschirmen zur Verfügung.",
     "Context": "Eigenschaften",
     "Intro": "Willkommen!",
     "Canvas": "Leinwand",

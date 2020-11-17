@@ -1,0 +1,45 @@
+digraph finite_state_machine {
+
+node [shape = circle];
+
+// State tarnsitions are essentially user interactions or consequences thereof.
+
+// available information:
+// - current path that is being edited
+PATH_DRAW 		[label="PATH_DRAW"]
+
+// available information:
+// - what is being dragged  | two different
+// - what is being selected | things!
+// - current cursor coordinates
+DRAGGING 	[label="DRAGGING"]
+
+// TOOL is used to interactively generate objects which size the user should specify before drawing by clamping
+// available information:
+// - selected tool
+TOOL		[label="TOOL"]
+
+SELECT      [label="SELECT"]
+
+// editing label objects
+// available information:
+// - current label that is being edited
+EDIT [label="EDIT"]
+
+// - - - - - - - -
+
+TOOL	-> DRAGGING	[label="mousedown\nmanipulator\narea"]
+TOOL	-> DRAGGING	[label="mousedown\nmanipulator\nscale handle"]
+TOOL	-> DRAGGING	[label="mousedown\nsvg"]
+
+TOOL -> EDIT [label="mousedown\nLABEL"]
+EDIT -> TOOL [label="mousedown\nSVG"]
+DRAGGING	-> TOOL		[label="mouseup\nSVG"]
+TOOL	-> DRAGGING		[label="mousedown\nmanipulator\nrotate handle"]
+PATH_DRAW -> TOOL [label="cancel"]
+PATH_DRAW -> TOOL [label="cancel"]
+PATH_DRAW -> DRAGGING [label="mousedown\nVERTEX or CONTROL POINT"]
+DRAGGING -> PATH_DRAW [label="mouseup\nSVG"]
+
+}
+

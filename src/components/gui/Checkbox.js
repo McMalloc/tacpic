@@ -3,7 +3,7 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import {Sub} from "./_Label";
 
-const Label = styled.label`
+const CheckboxLabel = styled.label`
   position: relative;
   display: flex;
   align-self: center;
@@ -20,12 +20,12 @@ const Label = styled.label`
       margin-right: 0.5em;
       left: 0;
       align-self: center;
-      text-decoration: none!important;
+      text-decoration: none;
       content: "\f0c8";
       font-family: 'Font Awesome 5 Free';
   }
   
-  &:hover {
+  &:hover .label {
     text-decoration: ${props => props.disabled ? "none" : "underline"};
   }
 `;
@@ -65,12 +65,12 @@ const Checkbox = props => {
                      checked={props.value}
                      value={props.value}
                      type={"checkbox"} />
-                 <Label disabled={props.disabled} checked={props.checked} htmlFor={props.name + "-cb"}>
-                     {t(props.label)}
+                 <CheckboxLabel disabled={props.disabled} checked={props.checked} htmlFor={props.name + "-cb"}>
+                     <span className={'label'}>{t(props.label)}</span>
                      {props.sublabel &&
                      <><br/><Sub>{t(props.sublabel)}</Sub></>
                      }
-                 </Label>
+                 </CheckboxLabel>
             </Wrapper>
         )
 };

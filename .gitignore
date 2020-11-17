@@ -18,6 +18,8 @@ src/env.json
 .env.test.local
 .env.production.local
 .idea
+.history
+.vscode
 
 /public/FRONTEND_VERSION.txt
 /public/FRONTEND.txt

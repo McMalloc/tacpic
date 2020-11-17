@@ -22,6 +22,8 @@ import {APP_URL, API_URL} from "../../env.json";
 import Well from "../gui/Well";
 import More from "../gui/More";
 import { MD_SCREEN, SM_SCREEN } from "../../config/constants";
+import useIntersect from "../../contexts/intersections";
+import { useBreakpoint } from "../../contexts/breakpoints";
 
 const mapFormat = (width, height) => {
     width = parseInt(width);
@@ -78,6 +80,10 @@ const Wrapper = styled.div`
     padding: ${props => props.theme.large_padding};
 
     min-width: 100vw;
+
+    ${SM_SCREEN} {
+        min-width: calc(100vw - 40px); // subtraction of modal window margins
+    }
     height: 100%;
     overflow-y: auto;
     scroll-snap-align: start;
@@ -100,9 +106,12 @@ const Preview = styled.div`
     padding: 0 20%;
 
     ${MD_SCREEN} {
-        position: sticky;
-        top: 0;
         padding: 0 ${props => props.theme.large_padding};
+
+        &>div {
+            position: sticky;
+            top: 0;
+        }
     }
 `;
 
@@ -119,6 +128,7 @@ const OrderWidget = styled.div`
     }
   }
 `;
+const scrollThreshold = 0.9;
 
 const VariantView = props => {
     // The `path` lets us build <Route> paths that are
@@ -127,28 +137,36 @@ const VariantView = props => {
     const navigate = useNavigate();
     const {t} = useTranslation();
     const theme = useTheme();
+    const { lg } = useBreakpoint();
     let {graphicId, variantId} = useParams();
     const dispatch = useDispatch();
     const tags = useSelector(state => state.catalogue.tags);
     const logged_in = useSelector(state => state.user.logged_in);
     const [product, setProduct] = useState('graphic');
     const [quantity, setQuantity] = useState(1);
+    const [ref, entry] = useIntersect({threshold: scrollThreshold});
     // TODO Suchbegriff aus Store holen und in Variantenbeschreibung hervorheben
+
+    if (entry.intersectionRatio > scrollThreshold) {
+        window.history.replaceState(null, null, `/catalogue/${graphicId}/variant/${props.id}`)
+    }
 
     if (!props.id) return null;
     return (
-        <Wrapper>
+        <Wrapper ref={ref}>
             <Preview>
                 <Carousel single={<span className={'disabled'}>Insgesamt eine Grafikseite.</span>}>
                     {props.document.pages.map((page, index) => {
                         return <img key={index} src={`${API_URL}/thumbnails/${props.file_name}-THUMBNAIL-xl-p${index}.png`}/>
                     }).filter(item => item !== null)}
                     {/*TODO formatierer existiert so auch in einer saga, kann refaktorisiert werden*/}
-                    <div style={{backgroundColor: 'white', padding: 6}}>{
-                        Object.keys(props.document.braillePages.imageDescription)
-                            .reduce((accumulator, blockKey) => accumulator + props.document.braillePages.imageDescription[blockKey] + "\n\n", "")
-                        + props.document.braillePages.content
-                    }</div>
+                    {props.braille_no_of_pages > 0 &&
+                        <div style={{ backgroundColor: 'white', padding: 6 }}>{
+                            Object.keys(props.document.braillePages.imageDescription)
+                                .reduce((accumulator, blockKey) => accumulator + props.document.braillePages.imageDescription[blockKey] + "\n\n", "")
+                            + props.document.braillePages.content
+                        }</div>
+                    }
                 </Carousel>
             </Preview>
             <Title>{props.graphicTitle}: {props.title}</Title>
@@ -217,8 +235,9 @@ const VariantView = props => {
                     </Alert>
                     }
 
+                    {!lg && <Alert warning>{t('editor:not_available-screen')}</Alert>}  
                     <Toolbar columns={2}>
-                        <FlyoutButton flyoutWidth={300} disabled={!logged_in} rightAlign icon={'pen'} label={"Im Editor öffnen, um ..."}>
+                        <FlyoutButton flyoutWidth={300} disabled={!logged_in || !lg} rightAlign icon={'pen'} label={"Im Editor öffnen, um ..."}>
                             <FlyoutEntry icon={"file-medical"}
                                          label={"catalogue:variant-copy"}
                                          onClick={() => navigate(`/editor/${graphicId}/variant/${variantId}/copy`)}
@@ -251,17 +270,21 @@ const VariantView = props => {
                 </div>
             </Details>
             <Well className={"order"}>
-                        <h3>Bestellen</h3>
-                        <Radio onChange={setProduct} value={product} name={"graphic_only_or_both_" + props.id} options={[
-                            {
-                                label: template(t(`catalogue:graphics_and_braille`))({amount: props.braille_no_of_pages + props.graphic_no_of_pages}),
-                                value: "graphic"
-                            },
-                            {
-                                label: template(t(`catalogue:graphics_only`))({amount: props.graphic_no_of_pages}) + ` - ${((props.quote - props.quote_graphics_only) / 100).toFixed(2).replace('.', ',')} €)`,
-                                value: "graphic_nobraille"
-                            }]}>
-                        </Radio>
+                <h3>Bestellen</h3>
+                {props.braille_no_of_pages > 0 ?
+                    <Radio onChange={setProduct} value={product} name={"graphic_only_or_both_" + props.id} options={[
+                        {
+                            label: template(t(`catalogue:graphics_and_braille`))({ amount: props.braille_no_of_pages + props.graphic_no_of_pages }),
+                            value: "graphic"
+                        },
+                        {
+                            label: template(t(`catalogue:graphics_only`))({ amount: props.graphic_no_of_pages }) + ` ${((props.quote - props.quote_graphics_only) / 100).toFixed(2).replace('.', ',')}€ günstiger)`,
+                            value: "graphic_nobraille"
+                        }]}>
+                    </Radio>
+                    : 
+                    <p>{props.graphic_no_of_pages} Grafikseite(n)</p>
+                }
 
                         <br/>
 

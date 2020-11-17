@@ -11,7 +11,7 @@ const Wrapper = styled.div`
       justify-content: center;
       align-items: center;
       position: relative;
-      border-radius: 3px;
+      border-radius: ${props => props.theme.border_radius};
       
       &:after {
         position: absolute;
