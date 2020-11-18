@@ -103,6 +103,10 @@
     "variant-copy": "… eine neue Variante zu erstellen",
     "variant-copy-hint": "Öffnet die Variante als Grundlage für eine neue Variante für diesen Entwurf, z.B. mit einem anderen Schriftsystem oder Farbgebung.",
     "variant-new": "… diese Variante als unabhängigen Entwurf zu öffnen",
+    "no_title": "Ohne Titel",
+    "no_graphic_found": "Keine Grafiken gefunden.",
+    "new_graphic": "Neue Grafik.",
+    "load_more": "Mehr anzeigen",
     "variant-new-hint": "Öffnet diese Variante als Grundlage für einen neuen, unabhängigen Entwurf."
   },
   "editor": {

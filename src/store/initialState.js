@@ -102,6 +102,7 @@ export const catalogue = {
     filterSystem: [],
     tags: [],
     limit: 50,
+    exhausted: false,
     offset: 0,
     graphics: [],
     viewedGraphic: {},

@@ -1,7 +1,8 @@
-import {put, race, take, takeLatest, select, takeMaybe, fork} from "redux-saga/effects";
+import {put, takeLatest, select} from "redux-saga/effects";
 import {CATALOGUE, LOAD_MORE} from "../actions/action_constants";
 import createSaga from "./saga_utilities";
-import {groupBy} from "lodash";
+import { groupBy } from "lodash";
+import i18n from 'i18next';
 
 const mapGraphics = graphics => {
     let groupedGraphics = groupBy(graphics, 'graphic_id');
@@ -9,7 +10,7 @@ const mapGraphics = graphics => {
     // the API delivers a join table, so the redundant information can be mapped to a multilayer array
     for (let [graphic_id, variants] of Object.entries(groupedGraphics)) {
         mappableGraphics.push({
-            title: groupedGraphics[graphic_id][0].graphic_title || 'Ohne Titel',
+            title: groupedGraphics[graphic_id][0].graphic_title || i18n.t('catalogue:no_title'),
             description: groupedGraphics[graphic_id][0].graphic_description || '',
             user_id: groupedGraphics[graphic_id][0].original_author_id || '',
             id: graphic_id,
@@ -36,16 +37,13 @@ const mapGraphics = graphics => {
 export const catalogueSearchSaga = createSaga(
     CATALOGUE.SEARCH, 'get',
     'graphics?tags=:tags&search=:terms&system=:system&format=:format&limit=:limit&offset=:offset',
-    takeLatest, false, undefined, mapGraphics
+    takeLatest, false, undefined, graphics => ({graphics: mapGraphics(graphics), count: graphics.length})
 );
 
 export const catalogueLoadMoreSaga = createSaga(
     CATALOGUE.MORE, 'get',
     'graphics?tags=:tags&search=:terms&system=:system&format=:format&limit=:limit&offset=:offset',
-    takeLatest, false, request => {
-        console.log(request);
-        return request;
-    }, mapGraphics
+    takeLatest, false, request => request, graphics => ({graphics: mapGraphics(graphics), count: graphics.length})
 );
 
 const catalogueSearch = catalogue => {

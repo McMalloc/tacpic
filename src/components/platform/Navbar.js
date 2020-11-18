@@ -41,6 +41,7 @@ const NavbarItem = styled(NavLink)`
     margin: 0 ${props => props.theme.base_padding};
     position: relative;
     border-bottom: 3px solid transparent;
+    border-top: 4px solid transparent!important;
     /* font-family: "Quicksand", sans-serif; */
     white-space: nowrap;
     /* flex: 0 1 0; */

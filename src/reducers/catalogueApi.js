@@ -32,7 +32,7 @@ const catalogueApi = (state = {}, action) => {
             };
         case CATALOGUE.MORE.SUCCESS:
             return {
-                ...state, graphics: state.graphics.concat(action.data), loadMorePending: false
+                ...state, graphics: state.graphics.concat(action.data.graphics), exhausted: action.data.count < state.limit, loadMorePending: false
             };
 
         case CATALOGUE.SEARCH.REQUEST:
@@ -44,7 +44,7 @@ const catalogueApi = (state = {}, action) => {
             };
         case CATALOGUE.SEARCH.SUCCESS:
             return {
-                ...state, graphics: action.data, searchPending: false
+                ...state, graphics: action.data.graphics, exhausted: action.data.count < state.limit, searchPending: false
             };
         case CATALOGUE.SEARCH.FAILURE:
             return {

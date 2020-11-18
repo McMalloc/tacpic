@@ -124,7 +124,7 @@ const Label = props => {
                            onDoubleClick={event => enterEditMode(dispatch, props.uuid)}
                            width={props.width}
                            height={props.height}>
-                {props.editMode && <Indicator><Icon icon={"pen"}/> Bearbeitungsmodus</Indicator>}
+                {props.editMode && <Indicator className={'editor-ui'}><Icon icon={"pen"}/> Bearbeitungsmodus</Indicator>}
                 {/*Bug in WebKit macht die relative Positionierung nötig*/}
                 <Container xmlns={"http://www.w3.org/1999/xhtml"}
                            preview={previewMode}

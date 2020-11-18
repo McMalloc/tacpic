@@ -41,7 +41,7 @@ const SearchFilterBar = styled.div`
   margin-bottom: 2em;
 `;
 
-const queryGraphics = (dispatch, tags = [], terms = [], format = [], system = [], limit = 50, offset = 0) => {
+const queryGraphics = (dispatch, tags = [], terms = [], format = [], system = [], limit = 30, offset = 0) => {
     dispatch({
         type: CATALOGUE.SEARCH.REQUEST,
         payload: {
