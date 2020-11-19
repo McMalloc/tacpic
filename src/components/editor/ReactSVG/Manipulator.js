@@ -42,6 +42,9 @@ const Manipulator = props => {
     if (!selected[0]) return null;
     // if (Object.keys(selected[0]).length === 0 && selected[0].constructor === Object) return null;
 
+
+    console.log(selected);
+
     let width, height, transformProperty;
     if (selected.length === 1) { // single objects
         const bbox = methods[selected[0].type].getBBox(selected[0]);
@@ -67,7 +70,6 @@ const Manipulator = props => {
             height
         );
     }
-
 
     return (
         <g transform={transformProperty}>

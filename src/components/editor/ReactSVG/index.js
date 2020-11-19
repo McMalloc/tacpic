@@ -4,7 +4,6 @@ import SVGPath from "./Path";
 import Label, {Title} from "./Label";
 import React from "react";
 import Ellipse from "./Ellipse";
-import SVGLine from "./Line";
 import Key from "./Key";
 import Embedded from "./Embedded";
 
@@ -30,8 +29,6 @@ export default function mapObject(props, index) {
             );
         case "path":
             return <SVGPath key={index} {...props} inPreview={index === -1}/>;
-        case "line":
-            return <SVGLine key={index} {...props} />;
         case "ellipse":
             return <Ellipse key={index} {...props} />;
         case "label":

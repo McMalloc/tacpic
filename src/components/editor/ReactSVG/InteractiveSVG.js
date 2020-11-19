@@ -237,7 +237,7 @@ class InteractiveSVG extends Component {
             let selectedId = null;
             if (this.props.ui.tool === 'SELECT') {
                 if (target.dataset.selectable) {
-                    selectedId = target.id || target.dataset.uuid;
+                    selectedId = target.dataset.uuid || target.id;
                     this.props.select([selectedId]);
                 }
             } else {}

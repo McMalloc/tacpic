@@ -1,5 +1,4 @@
 import React from 'react'
-import transform from "./transform";
 import './Path.css';
 import {createPattern} from "./Patterns";
 import {getRotation} from "../../../utility/geometry";
@@ -45,6 +44,9 @@ export default function SVGPath(props) {
             {props.pattern.offset && props.border &&
             <path
                 id={"stroke-" + props.uuid}
+                data-uuid={props.uuid}
+                data-transformable={!props.inactive}
+                data-selectable={true}
                 strokeDasharray={props.borderStyle}
                 style={{
                     fill: "none",

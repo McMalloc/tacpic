@@ -132,7 +132,6 @@ export const reverse = path => {
         }
         return reversedPoint;
     });
-    console.log(path.points)
     return path;
 }
 
@@ -140,8 +139,6 @@ export const smoothSegment = (path, start, end, error) => {
     let segment = path.points.slice(start, end);
     if (segment.length === 0) return path;
     let coordsOnly = segment.map(point => point.coords);
-    console.log(start);
-    console.log(end);
 
     let smoothedSegment = fitCurve(coordsOnly, error).map((fittedCubicPoint, index) => {
         if (start === 0 && index === 0) {
