@@ -76,7 +76,7 @@
     "transform-to-list": "In Liste umwandeln",
     "total": "Summe (<%=amount%> Artikel)",
     "invoice": "Rechnung",
-    "invoice_payment_hint": "Rechnung",
+    "invoice_payment_hint": "Sie erhalten zusammen mit der Ware eine Rechnung, die Sie innerhalb von 20 Tagen begleichen.",
     "paypal": "PayPal (zur Zeit noch nicht verfügbar)",
     "paypal_payment_hint": "Sie werden nach Abschluss des Bestellvorgangs zu PayPal weitergeleitet. Sie benötigen ein PayPal-Benutzerkonto.",
     "shipping": "zzgl. Versand",

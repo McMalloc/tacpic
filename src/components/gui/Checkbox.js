@@ -5,7 +5,6 @@ import {Sub} from "./_Label";
 
 const CheckboxLabel = styled.label`
   position: relative;
-  display: flex;
   align-self: center;
   margin-bottom: 0.5em;
   transition: font-weight 0.2s, color 0.2s;

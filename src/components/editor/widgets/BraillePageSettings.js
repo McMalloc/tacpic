@@ -59,7 +59,7 @@ const BraillePageSettings = props => {
             <fieldset>
                 {/*<legend>Format</legend>*/}
                 <Row>
-                    <div className={"col-sm-12"}>
+                    {/* <div className={"col-sm-12"}>
                         <Select label={"editor:label_page-format"} default={"a4"} options={
                             [
                                 {label: "A4", value: "a4"},
@@ -67,7 +67,7 @@ const BraillePageSettings = props => {
                                 {label: "Marburger Format (27 × 34 cm)", value: "marburg"}
                             ]}
                         />
-                    </div>
+                    </div> */}
                     <div className={"col-sm-12"}>
                         <PageGrid>
                             <GridCell>

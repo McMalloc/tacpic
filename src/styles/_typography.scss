@@ -34,6 +34,13 @@ html {
 }
 
 @font-face {
+  font-family: Roboto;
+  src: url("/webfonts/Roboto-MediumItalic.ttf");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
   font-family: Quicksand;
   src: url("/webfonts/Quicksand-Regular.ttf");
   font-weight: normal;
