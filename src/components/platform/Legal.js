@@ -10,9 +10,9 @@ const Content = props => {
     const [content, setContent] = useState("");
     useEffect(() => {
         props.title && axios(`/legal/${props.lang}/${props.title}`).then(response => {
-            console.log(response);
             setContent(response.data)
         });
+        document.getElementById('scroll-content').scrollTo(0, 0);
     }, [props.title])
     return <section className={"legal-text"}>
         {/*<h2>{props.title}</h2>*/}
@@ -20,9 +20,24 @@ const Content = props => {
     </section>
 }
 
+const IndexWrapper = styled.div`
+    position: sticky;
+    top: ${props => props.theme.large_padding};
+
+
+    ul {
+        list-style: none;
+        padding-left: 0;
+
+        li {
+            padding: ${props => props.theme.large_padding} ${props => props.theme.base_padding};
+        }
+    }
+`;
+
 const Index = props => {
     return (
-        <>
+        <IndexWrapper>
             <h2>Übersicht</h2>
             <ul>
                 {props.index.map(text => {
@@ -31,7 +46,7 @@ const Index = props => {
                     </li>
                 })}
             </ul>
-        </>
+        </IndexWrapper>
     )
 }
 
@@ -47,7 +62,7 @@ const LegalIndex = props => {
 
     return (<>
         <div className={"row"}>
-            <div className={"col-xs-12 col-md-4"}>
+            <div style={{position: 'relative'}} className={"col-xs-12 col-md-4"}>
                 <Index index={legalTexts} />
             </div>
             <div className={"col-xs-12 col-md-8"}>

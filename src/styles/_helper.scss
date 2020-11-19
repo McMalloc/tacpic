@@ -34,6 +34,11 @@
   padding: 1em 0;
 }
 
+.sticky {
+  position: sticky;
+  top: 0;
+}
+
 .extra-margin {
   &:not(:last-child) {
     margin-bottom: 12px;

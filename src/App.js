@@ -83,7 +83,7 @@ const App = () => {
             {appError !== null &&
             <Alert danger>Unser Service ist zur Zeit aus technischen Gründen nicht erreichbar.</Alert>
             }
-            <ScrollContent>
+            <ScrollContent id={"scroll-content"}>
                 <AppContainer id={"app-container"} inEditor={inEditor} className={(!inEditor ? " container" : "")}>
                         <Routes>
                             <Route path="/login"
