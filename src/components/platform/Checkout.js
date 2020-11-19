@@ -144,13 +144,15 @@ const Checkout = props => {
     const paymentSection = <section>
         <Radio padded value={paymentMethod} name={'payment-method'} onChange={setPaymentMethod} options={[
             {
-                label: <div>Rechnung<br/><small>Sie erhalten zusammen mit der Ware eine Rechnung,
-                    die Sie innerhalb von 14 Tagen begleichen.</small></div>, value: "invoice"
+                label: <div>{t('commerce:invoice')}<br />
+                    <small>{t('commerce:invoice_payment_hint')}</small>
+                </div>,
+                value: "invoice"
             },
             {
-                label: <div>PayPal (zur Zeit noch nicht verfügbar)<br/><small>Sie werden nach Abschluss des
-                    Bestellvorgangs zu PayPal
-                    weitergeleitet. Sie benötigen ein PayPal-Benutzerkonto.</small></div>,
+                label: <div>{t('commerce:paypal')}<br />
+                <small>{t('commerce:paypal_payment_hint')}</small>
+            </div>,
                 value: "paypal",
                 disabled: true
             }

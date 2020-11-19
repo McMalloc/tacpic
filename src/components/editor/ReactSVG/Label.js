@@ -1,19 +1,17 @@
-import React, {Component, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import transform from "./transform";
 import _ from "lodash";
 import styled from "styled-components/macro";
-import {connect, useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Icon} from "../../gui/_Icon";
 import {getTextWidth} from "../../../utility/getTextWidth";
 
 //TODO Linebreaks mit absolutem x und relativem y-Wert: https://www.oreilly.com/library/view/svg-text-layout/9781491933817/ch04.html
 
 const Braille = styled.div`
-  line-height: 12mm;
+  line-height: 14mm;
   font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
-  //font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
   position: absolute;
-  //z-index: -1;
   width: 100%;
   top: ${props => props.vOffset ? '5mm' : 0}; /*half font size*/
   white-space: pre-wrap;
@@ -32,7 +30,7 @@ const Indicator = styled.div`
 `;
 
 const Black = styled.textarea`
-  line-height: 12mm;
+  line-height: 14mm;
   font-size: 14pt;
   margin-top: -4mm;
   font-family: Arial, Helvetica, sans-serif;
