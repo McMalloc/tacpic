@@ -43,12 +43,12 @@ import { useBreakpoint } from '../../contexts/breakpoints';
 const Wrapper = styled.div`
   display: grid;
   flex: 1 1 auto;
-  grid-template-columns: minmax(200px, 350px) 3fr;
+  grid-template-columns: minmax(200px, 350px) 3fr 3fr;
   max-height: 100%;
   grid-template-rows: auto 1fr;
   grid-template-areas: 
-      "toolbar  toolbar"
-      "sidebar canvas";
+      "toolbar  toolbar toolbar"
+      "sidebar canvas braillepage";
   
   position: relative;
   background-color: ${props => props.theme.brand_secondary};
@@ -63,13 +63,17 @@ const Wrapper = styled.div`
 `;
 
 const CanvasWrapper = styled.div`
-  grid-area: canvas;
+  grid-area: ${props => props.full ? 'canvas / canvas / canvas / braillepage' : 'canvas'};
   max-height: 100%;
   position: relative;
   background-color: rgba(0,0,0,0.1);
   border-radius: ${props => props.theme.border_radius} 0 0 ${props => props.theme.border_radius};
   overflow: hidden;
   box-shadow: 5px 5px 10px rgba(0,0,0,0.3) inset;
+`;
+
+const BraillePageWrapper = styled(BraillePage)`
+  grid-area: braillepage;
 `;
 
 const Sidebar = styled.div`
@@ -415,15 +419,15 @@ const Editor = props => {
                             <Objects hideFlyout={dragging}/>
                         </AccordeonPanel>
                     </Sidebar>
-                    <CanvasWrapper>
+                    <CanvasWrapper full={!showBraillePanel}>
                         <Canvas isDragging={dragging => setDragging(dragging)} hide={page.text}/>
-                        {showBraillePanel &&
-                        <BraillePage/>
-                        }
                         {openedPanel !== null &&
                         <FlyoutSensitive onClick={() => setOpenedPanel(null)}/>
                         }
                     </CanvasWrapper>
+                    {showBraillePanel &&
+                        <BraillePageWrapper />
+                        }
                 </Wrapper>
 
                 {/*TODO auslagern? nimmt ziemlich viele Zeilen in Editor.js*/}

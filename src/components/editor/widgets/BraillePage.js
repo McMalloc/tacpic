@@ -2,6 +2,7 @@ import React, {Component, useEffect} from 'react';
 import styled from 'styled-components/macro';
 import {useSelector} from "react-redux";
 import {toBrailleNumbers} from "../../../utility/toBrailleNumber";
+import { Alert } from '../../gui/Alert';
 
 const brailleCellWidth = 2.5;
 const brailleCellHeight = 5;
@@ -17,6 +18,11 @@ const Wrapper = styled.div`
   flex-direction: column;
   overflow: auto;
   flex: 1 1 auto;
+
+  ${Alert} {
+    margin: 6px 20%;
+    box-sizing: border-box;
+  }
 `;
 
 const Page = styled.div`
@@ -58,11 +64,18 @@ const BraillePage = props => {
     const system = useSelector(state => state.editor.file.present.system);
     const braillePages = useSelector(state => state.editor.file.present.braillePages);
     // TODO in props stecken, der Editor weiß ohnehin Bescheid
+  
+  console.log(braillePages);
+  if (braillePages.braille.trim().length === 0) {
+    return <Wrapper>
+      <Alert info>Noch kein Inhalt für Brailleseiten vorhanden.</Alert>
+    </Wrapper>
+  }
 
     return (
         <Wrapper>
             {/*<h1>&emsp;Vorschau</h1>*/}
-            <div>
+          
                 {braillePages.formatted && braillePages.formatted.map((pageChunk, index) => {
                     return (<a key={index}>
                             <PageTitle id={`braillepage_preview_${currentPageIndex}_${index}`}>Seite #{index + 1}</PageTitle>
@@ -76,7 +89,6 @@ const BraillePage = props => {
                             </Page></a>
                     )
                 })}
-            </div>
         </Wrapper>
 
     )
