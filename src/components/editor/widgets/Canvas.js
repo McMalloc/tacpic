@@ -5,8 +5,8 @@ import InteractiveSVG from "../ReactSVG/InteractiveSVG";
 const Wrapper = styled.div`
   z-index: 0;
   position: relative;
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   overflow: scroll;
   touch-action: none;
   
@@ -21,7 +21,6 @@ const Wrapper = styled.div`
     background-color: rgba(255,255,255,.08);
     }
    
-    
     ::-webkit-scrollbar-thumb {
         border-radius: ${props => props.theme.border_radius};
         border: 1px solid rgba(0,0,0,0.2);

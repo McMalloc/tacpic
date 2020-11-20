@@ -1,4 +1,3 @@
-import layouts from "../components/editor/widgets/layouts.js"
 import {FILE, IMPORT, SUPPRESS_BACKUP} from "../actions/action_constants";
 
 let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so
@@ -58,7 +57,7 @@ const ui = (state = {}, action) => {
         case 'TRANSFORM_END':
             return {...state, mode: lastMode};
         case 'CHANGE_VIEWPORT':
-            let scalingFactor = action.scalingFactor < 0.05 ? 0.1 :
+            let scalingFactor = action.scalingFactor < 0.5 ? 0.5 :
                 Math.round(action.scalingFactor * roundingAccuracy) / roundingAccuracy; // regain accuracy from wonky javascript rounding
             return {
                 ...state,

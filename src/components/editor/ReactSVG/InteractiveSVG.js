@@ -76,8 +76,8 @@ class InteractiveSVG extends Component {
         let factor = event.nativeEvent.deltaY <= 0 ? 0.95 : 1.05;
         this.props.changeViewport(
             this.props.ui.scalingFactor + (event.nativeEvent.deltaY > 0 ? -0.1 : 0.1),
-            this.props.ui.viewPortX * factor,
-            this.props.ui.viewPortY * factor);
+            this.props.ui.viewPortX,
+            this.props.ui.viewPortY);
     };
 
     keyDownHandler = event => {
