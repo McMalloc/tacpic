@@ -17,6 +17,7 @@ const AddressWrapper = styled.div`
   border: 1px solid ${props => props.theme.grey_4};
   padding: ${props => props.theme.large_padding};
  margin-bottom: ${props => props.theme.large_padding};
+ margin-right: ${props => props.theme.large_padding};
 `;
 
 const updateAddress = (dispatch, address) => {
@@ -43,13 +44,13 @@ const Addresses = () => {
     const [showForm, setShowForm] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [addressToBeRemoved, setAddressToBeRemoved] = useState({});
-    const [initial, setInitial] = useState({is_invoice_addr: false});
+    const [initial, setInitial] = useState({ is_invoice_addr: false });
 
     useEffect(() => {
         dispatch({
             type: ADDRESS.GET.REQUEST
         })
-    }, [showForm]);
+    }, [addresses]);
 
     return (
         <>
@@ -77,7 +78,7 @@ const Addresses = () => {
                 </Modal>
                 }
 
-                <div className={"col-sm-8 col-xs-12"}>
+                <div className={"col-xs-12 col-md-8 col-md-offset-2"}>
                     {addresses.map(address => {
                         return <AddressWrapper key={address.id}>
                             <AddressView editable {...address} />

@@ -24,7 +24,7 @@ body {
 
 #modal {
   position: relative;
-  z-index: 10000;
+  // z-index: 10000;
 }
 
 #flyout {
@@ -41,8 +41,4 @@ img {
 a.no-styled-link {
   text-decoration: none;
   color: inherit;
-}
-
-#modal-portal-target {
-  z-index: 9000;
 }

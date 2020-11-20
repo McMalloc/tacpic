@@ -18,7 +18,7 @@ const Backdrop = styled.div`
   justify-content: center;
   animation: ${fadeIn} 0.1s ease-in;
   cursor: zoom-out;
-  z-index: 1000;
+  /* z-index: 1000; */
 `;
 
 const Window = styled.div`
@@ -39,7 +39,7 @@ const Window = styled.div`
   overflow: hidden;
   flex-direction: column;
   cursor: default;
-  z-index: 100;
+  /* z-index: 100; */
 `;
 
 const ModalHeader = styled.div`
