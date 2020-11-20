@@ -1,8 +1,8 @@
-import React, {Component, useEffect} from 'react';
-import styled from 'styled-components/macro';
-import {useSelector} from "react-redux";
-import {toBrailleNumbers} from "../../../utility/toBrailleNumber";
-import { Alert } from '../../gui/Alert';
+import React, { Component, useEffect } from "react";
+import styled from "styled-components/macro";
+import { useSelector } from "react-redux";
+import { toBrailleNumbers } from "../../../utility/toBrailleNumber";
+import { Alert } from "../../gui/Alert";
 
 const brailleCellWidth = 2.5;
 const brailleCellHeight = 5;
@@ -29,11 +29,13 @@ const Page = styled.div`
   z-index: 0;
   
   //padding: 5mm 2.5mm;
-  padding-top: ${props => brailleCellHeight * props.marginTop}mm;
-  padding-left: ${props => brailleCellWidth * props.marginLeft}mm;
-  padding-right: ${props => brailleCellWidth * (maxCellsPerA4Row - props.cellsPerRow)}mm;
-  padding-bottom: ${props => brailleCellHeight * (maxRowsPerA4Page - props.rowsPerPage)}mm;
-  margin: ${props => props.theme.large_padding};
+  padding-top: ${(props) => brailleCellHeight * props.marginTop}mm;
+  padding-left: ${(props) => brailleCellWidth * props.marginLeft}mm;
+  padding-right: ${(props) =>
+    brailleCellWidth * (maxCellsPerA4Row - props.cellsPerRow)}mm;
+  padding-bottom: ${(props) =>
+    brailleCellHeight * (maxRowsPerA4Page - props.rowsPerPage)}mm;
+  margin: ${(props) => props.theme.large_padding};
   background-color: white;
   box-sizing: border-box;
   width: fit-content;
@@ -41,15 +43,16 @@ const Page = styled.div`
   //width: ${a4Width}mm;
   //height: ${a4height}mm;
   
-   font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
+   font-family: ${(props) =>
+     props.system === "cb" ? "HBS8" : "tacpic swell braille"};
   font-size: 10mm;
   white-space: pre;
   position: relative;
 `;
 
 const PageTitle = styled.div`
-  margin: ${props => props.theme.large_padding};
-  color: ${props => props.theme.background};
+  margin: ${(props) => props.theme.large_padding};
+  color: ${(props) => props.theme.background};
 `;
 
 const Pagenumber = styled.div`
@@ -59,40 +62,52 @@ const Pagenumber = styled.div`
   text-align: center;
 `;
 
-const BraillePage = props => {
-    const currentPageIndex = useSelector(state => state.editor.ui.currentPage);
-    const system = useSelector(state => state.editor.file.present.system);
-    const braillePages = useSelector(state => state.editor.file.present.braillePages);
-    // TODO in props stecken, der Editor weiß ohnehin Bescheid
-  
+const BraillePage = (props) => {
+  const currentPageIndex = useSelector((state) => state.editor.ui.currentPage);
+  const system = useSelector((state) => state.editor.file.present.system);
+  const braillePages = useSelector(
+    (state) => state.editor.file.present.braillePages
+  );
+  // TODO in props stecken, der Editor weiß ohnehin Bescheid
+
   console.log(braillePages);
   if (braillePages.braille.trim().length === 0) {
-    return <Wrapper>
-      <Alert info>Noch kein Inhalt für Brailleseiten vorhanden.</Alert>
-    </Wrapper>
+    return (
+      <Wrapper>
+        <Alert info>Noch kein Inhalt für Brailleseiten vorhanden.</Alert>
+      </Wrapper>
+    );
   }
 
-    return (
-        <Wrapper>
-            {/*<h1>&emsp;Vorschau</h1>*/}
-          
-                {braillePages.formatted && braillePages.formatted.map((pageChunk, index) => {
-                    return (<a key={index}>
-                            <PageTitle id={`braillepage_preview_${currentPageIndex}_${index}`}>Seite #{index + 1}</PageTitle>
-                            <Page {...braillePages} system={system}>
+  return (
+    <Wrapper>
+      {/*<h1>&emsp;Vorschau</h1>*/}
 
-                                {pageChunk.map((line) => <><div>{line}&ensp;</div></>)}
+      {braillePages.formatted &&
+        braillePages.formatted.map((pageChunk, index) => {
+          return (
+            <a key={index}>
+              <PageTitle
+                id={`braillepage_preview_${currentPageIndex}_${index}`}
+              >
+                Seite #{index + 1}
+              </PageTitle>
+              <Page {...braillePages} system={system}>
+                {pageChunk.map((line) => (
+                  <>
+                    <div>{line}&ensp;</div>
+                  </>
+                ))}
 
-                                {braillePages.pageNumbers > 0 &&
-                                <Pagenumber>{toBrailleNumbers(index + 1)}</Pagenumber>
-                                }
-                            </Page></a>
-                    )
-                })}
-        </Wrapper>
-
-    )
-
+                {braillePages.pageNumbers > 0 && (
+                  <Pagenumber>{toBrailleNumbers(index + 1)}</Pagenumber>
+                )}
+              </Page>
+            </a>
+          );
+        })}
+    </Wrapper>
+  );
 };
 
 export default BraillePage;
