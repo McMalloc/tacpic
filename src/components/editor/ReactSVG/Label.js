@@ -117,7 +117,9 @@ const Label = props => {
            data-selectable={true}
            data-editable={1}
            data-in_edit_mode={props.editMode}
-           transform={transform(props.x, props.y, props.angle)}>
+            transform={transform(props.x, props.y, props.angle)}>
+            <rect strokeWidth={'3mm'} stroke={'white'} x={0} y={0} width={props.width}
+                           height={props.height} />
             <foreignObject style={{overflow: "visible"}}
                            onDoubleClick={event => enterEditMode(dispatch, props.uuid)}
                            width={props.width}
