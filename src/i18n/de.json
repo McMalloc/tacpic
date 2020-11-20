@@ -2,7 +2,7 @@
   "gui": {
     "close": "Schließen",
     "or": "oder",
-    "none": "keines"
+    "none": "keine"
   },
   "tacpic": {
     "welcome": "Willkommen bei Tacpic!"
@@ -168,6 +168,8 @@
     "toggle_tools-SELECT": "Auswählen",
     "redo": "Wiederherstellen",
     "undo": "Rückgängig",
+    "texture": "Textur",
+    "texture_offset": "Abstand zwischen Textur und Rand",
 
     "tablist_shape-fill": "Füllung",
     "tablist_shape-contour": "Kontur",
@@ -229,8 +231,8 @@
     "illustration": "(beschriftete) Illustration"
   },
   "colour": {
-    "#000000": "Schwarz, wird ein Relief formen",
-    "#412B82": "violett, Indigo",
+    "#808080": "Grau",
+    "rgb(67,44,134)": "violett, Indigo",
     "#E4120D": "heißes Rot, Kamin",
     "#C2368C": "tiefes Pink, Magenta",
     "#018ECC": "sanftes Blau, Cyan",

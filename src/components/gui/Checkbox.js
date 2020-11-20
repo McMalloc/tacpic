@@ -40,6 +40,12 @@ const Input = styled.input`
       content: "\f14a";
   }  
 
+  &:disabled + label {
+      cursor: not-allowed;
+      text-shadow: 1px 1px 0 white;
+      color: ${props => props.theme.grey_2};
+  }
+
   &:focus + label {
     outline: 4px solid rgba(38, 132, 255, 0.7);
   }

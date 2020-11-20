@@ -145,7 +145,6 @@ const Objects = props => {
                     const selected = selectedUUID === object.uuid;
                     return <AccordeonPanelFlyoutButton
                         flownOut={object.type !== 'key' && selected}
-                        maxWidth={230}
                         hideFlyout={props.hideFlyout}
                         key={index}
                         genericButton={<ObjectEntry selected={selected} {...object} index={index}/>}>

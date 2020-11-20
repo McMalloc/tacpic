@@ -12,7 +12,10 @@ const customStyles = {
         ...provided,
         borderColor: standard.midlight,
         fontWeight: 'bold',
-        outline: state.isFocused ? '4px solid rgba(38, 132, 255, 0.7)' : 'none'
+        outline: state.isFocused ? '4px solid rgba(38, 132, 255, 0.7)' : 'none',
+        'hover': {
+            cursor: state.isDisabled ? 'not-allowed' : 'inherit',
+        }
     }),
     option: (provided, state) => ({
         ...provided,
@@ -42,7 +45,7 @@ const Select = props => {
 
     return (
         <div>
-            <Label data-tip={t(props.tip)} label={props.label} sublabel={props.sublabel}>
+            <Label disabled={props.disabled} data-tip={t(props.tip)} label={props.label} sublabel={props.sublabel}>
                 {/*TODO: hack beseitigen*/}
                 {props.label &&
                 <div style={{height: 2}}/>

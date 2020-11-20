@@ -11,6 +11,7 @@ import {useTranslation} from "react-i18next";
 import {Alert} from "../../../gui/Alert";
 import {borderStyles} from "../../ReactSVG/constants";
 import {COLOURS} from "../../../../config/constants";
+import {TEXTURES} from "../../../../config/constants";
 
 const changePattern = (dispatch, uuid, pattern, offset) => {
     dispatch({
@@ -48,27 +49,22 @@ const ShapeContext = props => {
 
     return (
         <>
-            <Row>
-                <div className={"col-md-12"}>
                     <Textinput value={selectedObject.moniker}
                                disabled={nothingSelected}
                                onChange={event => changeProp(dispatch, selectedObject.uuid, 'moniker', event.currentTarget.value)} label={"Bezeichner"}/>
-                </div>
-            </Row>
-
             <div>
                 <fieldset>
-                    <legend>Relief</legend>
+                    <legend>{t('editor:texture')}</legend>
 
                     <TexturePalette
                         disabled={nothingSelected}
-                        textures={[null, "diagonal_lines", "diagonal_lines_wide", "full", "vertical_lines", "horizontal_lines", "dashed_lines", "grid", "stair", "dotted"]}
+                        textures={TEXTURES}
                         selected={selectedObject.pattern.template}
                         onChange={pattern => changePattern(dispatch, selectedObject.uuid, pattern, selectedObject.pattern.offset)}/>
 
                     <Checkbox name={"padding"}
                               value={selectedObject.pattern.offset}
-                              disabled={!selectedObject.border || selectedObject.pattern.template == null}
+                              disabled={!selectedObject.border || selectedObject.pattern.template === null}
                               onChange={() => {
                                   changeProp(
                                       dispatch,
@@ -76,7 +72,7 @@ const ShapeContext = props => {
                                       'pattern',
                                       {...selectedObject.pattern, offset: !selectedObject.pattern.offset})
                               }}
-                              label={"Abstand zwischen Textur und Rand"}/>
+                              label={t("editor:texture_offset")}/>
                     {!selectedObject.border && false &&
                         <Alert info>Geben Sie der Form eine Kontur, um einen Abstand zwischen Relief und Kontur einzustellen.</Alert>
                     }
@@ -122,7 +118,8 @@ const ShapeContext = props => {
                             label: t("2,5 mm (dicke Linie)")
                         }]} />
                     <Checkbox name={"borderStyle"}
-                              value={selectedObject.borderStyle === borderStyles.default}
+                        value={selectedObject.borderStyle === borderStyles.default}
+                        disabled={!selectedObject.border}
                               onChange={() => {
                                   changeProp(
                                       dispatch,

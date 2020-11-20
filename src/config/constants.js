@@ -22,7 +22,7 @@ export const QUERIES = {
 }
 
 export const COLOURS = {
-    black:	'#000000',
+    grey:	'#808080',
     blue: 'rgb(67,44,134)',
     red: '#E4120D',
     magenta: '#C2368C',
@@ -30,8 +30,10 @@ export const COLOURS = {
     orange:	'#F08000',
     green: '#79BA4A',
     yellow:	'#FFEC01',
-    white: '#FFFFFF'
+    // white: '#FFFFFF'
 }
+
+export const TEXTURES = [null, "diagonal_lines", "diagonal_lines_wide", "full", "vertical_lines", "horizontal_lines", "dashed_lines", "grid", "stair", "dotted"]
 
 export const GERMAN_STATES = [
     {value: 'BW', label: 'Baden-Württemberg'},

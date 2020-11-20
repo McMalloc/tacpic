@@ -3,7 +3,7 @@ import i18n from 'i18next';
 
 export const editor = {
     ui: {
-        tool: 'RECT',
+        tool: 'SELECT',
         texture: 'diagonal_lines',
         fill: "#1f78b4",
         currentPage: 0,

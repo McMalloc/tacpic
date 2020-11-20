@@ -21,22 +21,15 @@ const Wrapper = styled.div`
         bottom: 40%;  
         border-radius: ${props => props.theme.border_radius};
         top: 40%;
-        background-color: rgba(0,0,0,${props => props.active ? 0.7 : 0});
+        background-color: rgba(0,0,0,${props => props.active && props.code !== null ?  0.7 : 0});
       }
-      
-      ${props => props.code === null &&
-        `
-        border: 1px solid lightgrey;
-        `
     }
-  }
   
   background-color: ${props => props.active ? props.code : "transparent"};
   transition: 0.1s;
   cursor: pointer;
-  border: 2px solid transparent;
+  border: 2px solid ${props => props.active && props.code === null ? props.theme.grey_3 : 'transparent'};
   border-radius: ${props => props.theme.border_radius};
-  
   padding: ${props => props.theme.spacing[1]};
   
   &:hover {
@@ -57,7 +50,7 @@ const Swatch = props => {
                  onClick={() => props.onClick(props.code)}
                  code={props.code}
                  aria-label={label}>
-            <div />
+        <div>{ props.code === null && t("gui:none") }</div>
         </Wrapper>
     )
 };

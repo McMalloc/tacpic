@@ -1,17 +1,17 @@
-import styled, {useTheme} from 'styled-components/macro';
-import React, {useContext} from "react";
+import styled from 'styled-components/macro';
+import React from "react";
 import {useTranslation} from 'react-i18next';
-import {Icon} from "./_Icon";
 
 const Main = styled.label`
   display: ${props => props.inline ? "inline" : "block"};
-  color: ${props => props.disabled ? props.theme.middark : "inherit"};
+  color: ${props => props.disabled ? props.theme.grey_2 : "inherit"};
+  cursor: ${props => props.disabled ? 'not-allowed' : "pointer"};
   margin-bottom: ${props => props.noMargin ? 0 : props.theme.spacing[3]};
   // color: ${props => props.required ? "blue" : "inherit"};
   
   &:hover:first-line {
     //border-color: ${props => props.theme.brand_secondary};
-    text-decoration: underline;
+    text-decoration: ${props => props.disabled ? 'none' : "underline"};
   }
 `;
 
@@ -25,10 +25,9 @@ export const Sub = styled.span`
 `;
 
 const Label = props => {
-    const theme = useTheme();
     const { t } = useTranslation();
     return (
-        <Main theme={theme} data-tip={t(props.tip)} required={props.required} {...props}>
+        <Main data-tip={t(props.tip)} {...props}>
             {t(props.label)}{props.required && <span aria-hidden={true}>&nbsp;*</span>}
             {props.sublabel &&
             <><br/><Sub>{t(props.sublabel)}</Sub></>

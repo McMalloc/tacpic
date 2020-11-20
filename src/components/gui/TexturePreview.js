@@ -13,13 +13,13 @@ const Wrapper = styled.div`
   border: 2px solid ${props => props.active ? props.theme.brand_secondary : "transparent"};
   height: ${props => props.height};
   transition: border-color 0.2s, background-color 0.1s;
-  background-color: ${props => props.active ? props.theme.background : 'transparent'};
+  background-color: ${props => props.active ? props.theme.brand_primary : 'transparent'};
   padding: 2px;
   border-radius: ${props => props.theme.border_radius};
   
   &:hover {
      //border-color: ${props => props.theme.brand_secondary};
-     background-color: ${props => props.theme.background};
+     background-color: ${props => props.theme.brand_primary_light};
   }
 `;
 
@@ -48,7 +48,7 @@ const TexturePreview = props => {
                             fill={"#e9f5f7"}
                             width={props.width || 42}
                             height={props.height || 42}
-                        /><text style={{fontSize: 15,}} x={0} y={25}>{label}</text>
+                        /><text x={0} y={25}>{label}</text>
                     </>
                 }
 
