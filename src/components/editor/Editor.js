@@ -287,6 +287,12 @@ const Editor = props => {
                                         icon={iconMap[tool]}
                                         toggled={uiSettings.tool === tool}
                                         onClick={() => {
+                                            if (uiSettings.tool === 'SELECT' && tool !== 'SELECT') {
+                                                dispatch({
+                                                    type: 'OBJECT_SELECTED',
+                                                    uuids: [null]
+                                                });
+                                            }
                                             switchCursorMode(dispatch, uiSettings.tool === tool ? "SELECT" : tool);
                                         }}
                                     />
