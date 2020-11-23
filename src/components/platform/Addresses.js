@@ -46,11 +46,13 @@ const Addresses = () => {
     const [addressToBeRemoved, setAddressToBeRemoved] = useState({});
     const [initial, setInitial] = useState({ is_invoice_addr: false });
 
+    const shouldGetNewAddresses = !!showForm;
+
     useEffect(() => {
         dispatch({
             type: ADDRESS.GET.REQUEST
         })
-    }, [addresses]);
+    }, [shouldGetNewAddresses]);
 
     return (
         <>
