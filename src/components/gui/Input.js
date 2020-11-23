@@ -21,6 +21,7 @@ const Numberwrapper = styled.div`
 const Input = styled.input`
   font-size: 1em;
   font-weight: 700;
+  margin: 0;
   color: ${props => props.disabled ? props.theme.middark : props.theme.brand_secondary};
  
   display: ${props => props.inline ? "inline" : "block"};
@@ -32,6 +33,10 @@ const Input = styled.input`
   padding: 4px ${props => props.theme.spacing[1]};
   cursor: ${props => props.disabled ? "not-allowed" : "text"};
   transition: outline 0.1s;
+
+  &.attached {
+    border-radius: ${props => props.theme.border_radius} 0 0 ${props => props.theme.border_radius};
+  }
   
   &.dirty:invalid {
     border-radius: ${props => props.theme.border_radius} ${props => props.theme.border_radius} 0 0;
@@ -135,7 +140,7 @@ const Textinput = props => {
                 disabled={props.disabled}
                 inline={props.inline}
                 autocomplete={props.autocomplete}
-                className={pristine ? "pristine" : "dirty"}
+                className={props.className + (pristine ? " pristine" : " dirty")}
                 required={props.required}
                 placeholder={t(props.placeholder) || ""}
                 onInput={event => {

@@ -43,6 +43,9 @@
   &:not(:last-child) {
     margin-bottom: 12px;
   }
+  &.single {
+    margin-bottom: 12px;
+  }
   &.double {
     margin-bottom: 24px;
   }

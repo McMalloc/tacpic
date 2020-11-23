@@ -11,11 +11,7 @@ const Bar = styled.form`
   width: 100%;
   align-items: flex-end;
   text-align: left;
-  //justify-content: center;
-`;
-
-const Label = styled.label`
-  display: flex;
+  justify-content: space-between;
 `;
 
 const searchChanged = (dispatch, value) => {
@@ -40,8 +36,10 @@ const Searchbar = () => {
     return (
             <Bar>
                 <Textinput value={searchTerm}
-                           name={"search-bar"}
-                           style={{margin: 0, width: '100%'}}
+                name={"search-bar"}
+                className={"attached"}
+                noMargin
+                           style={{width: '100%'}}
                            label={t("catalogue:searchterm")}
                            onChange={event => setSearchTerm(event.target.value)}
                            externalLabel={"search-bar-label"}
@@ -54,8 +52,10 @@ const Searchbar = () => {
                         if (location.pathname !== "/catalogue") {
                             navigate("catalogue");
                         }
-                    }}
-                    icon={"search"}
+                }}
+                className={"right-attached"}
+                icon={"search"}
+                collapsable={'sm'}
                     id={"catalogue-search-btn"}
                     // disabled={catalogue.filterTerms === searchTerm}
                     type={"submit"} primary>

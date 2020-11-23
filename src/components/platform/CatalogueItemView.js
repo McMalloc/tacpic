@@ -92,6 +92,8 @@ const Wrapper = styled.div`
   /* touch-action: pan-y; */
 `;
 
+const nrOfVisibleTags = 3;
+
 const VariantPreview = ({
   title,
   id,
@@ -117,8 +119,10 @@ const VariantPreview = ({
         {derivedTitle && <small>abgeleitet aus {derivedTitle}</small>}
         <div>
           {tags.length !== 0 &&
-            tags.map((t) => {
+            tags.map((t, index) => {
               let completeTag = allTags.find((_t) => _t.tag_id === t);
+              if (index > nrOfVisibleTags) return null;
+              if (index === nrOfVisibleTags) return <TagView>({tags.length - nrOfVisibleTags} weitere)</TagView>
               return (
                 <TagView title={"Schlagwort"} key={t}>
                   {completeTag && completeTag.name}

@@ -211,7 +211,7 @@ const Checkout = props => {
                 </div>
             </Row>
             <Row>
-                <div className={"col-sm-12 col-md-5"}>
+                <div className={"col-xs-12 col-md-5"}>
                     <div style={{position: 'sticky', top: 12}}>
 
                         <StepIndicator steps={steps} current={step}/>
@@ -255,7 +255,7 @@ const Checkout = props => {
                     </Alert><br/></>
                     }
                 </div>
-                <div className={"col-sm-12 col-md-6 col-md-offset-1"}>
+                <div className={"col-xs-12 col-md-6 col-md-offset-1"}>
                     <div style={{position: 'sticky', top: 12}}>
                         <h2>Warenkorb</h2>
                         <BasketListing/>

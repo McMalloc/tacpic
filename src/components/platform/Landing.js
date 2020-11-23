@@ -49,8 +49,9 @@ const BigLogo = styled.img`
 const IllustrationContainer = styled.div`
   min-height: 20vh;
   text-align: center;
-  padding-top: ${props => props.offset}px;
-  padding-bottom: ${props => 36 - props.offset}px;
+  padding-top: ${props => props.offsetY}px;
+  padding-right: ${props => props.offsetX}px;
+  padding-bottom: ${props => 36 - props.offsetY}px;
   img {
     max-height: 20vh;
     width: 60%;
@@ -142,7 +143,7 @@ const Landing = () => {
                                 Informationen zum Lizenzmodell erhalten sie hier.</p>
                         </>
                         :
-                        <Button label={"Weiter lesen"} onClick={() => setShowMore(true)}/>
+                        <Button className={'extra-margin single'} label={"Weiter lesen"} onClick={() => setShowMore(true)}/>
                     }
                 </div>
 
@@ -184,7 +185,7 @@ const Landing = () => {
                     <p>Entwerfen Sie Ihre Grafik im tacpic Online-Editor.</p>
                 </div>
                 <div className={"col-xs-12 col-sm-4"}>
-                    <IllustrationContainer offset={24}>
+                    <IllustrationContainer offsetY={24} offsetX={25}>
                         <img src={"/images/200902_Konzept-03.svg"}/>
                     </IllustrationContainer>
                     <h3>2. Produktion</h3>
@@ -207,7 +208,7 @@ const Landing = () => {
                 <h2 style={{textAlign: 'center', width: '100%'}}>tacpic bietet</h2>
             </div>
             <div className={"row extra-padding"}>
-                <div className={"col-xs-12 col-sm-4"}>
+                <div className={"col-xs-12 col-sm-4 extra-margin"}>
                     <IllustrationContainer><img src={"images/icon_community.svg"} alt="" role="presentation"/>
                     </IllustrationContainer>
                     <h3 id="nutzerfreundlich-effizient">Nutzerfreundlich &amp; effizient</h3>
@@ -218,7 +219,7 @@ const Landing = () => {
                         Hilfestellungen.</p>
 
                 </div>
-                <div className={"col-xs-12 col-sm-4"}>
+                <div className={"col-xs-12 col-sm-4 extra-margin"}>
                     <IllustrationContainer><img src={"images/icon_netzwerk.svg"} alt="" role="presentation"/>
                     </IllustrationContainer>
                     <h3 id="community">Community</h3>
@@ -227,7 +228,7 @@ const Landing = () => {
                         Verbesserungen nach dem Wiki-Prinzip einpflegen.</p>
 
                 </div>
-                <div className={"col-xs-12 col-sm-4"}>
+                <div className={"col-xs-12 col-sm-4 extra-margin"}>
                     <IllustrationContainer><img src={"images/icon_guenstig.svg"} alt="" role="presentation"/>
                     </IllustrationContainer>
                     <h3 id="individuell-preisg-nstig">Individuell &amp; preisgünstig</h3>
@@ -249,7 +250,7 @@ const Landing = () => {
                     {/*<p><a href="mailto:kontakt@tacpic.de?subject=Bitte eigenen Betreff einsetzen">Schreiben Sie*/}
                     {/*    uns!</a></p>*/}
                 </div>
-                <div className={"col-md-6"}>
+                <div className={"col-xs-12 col-md-6"}>
                     {allowPlayer ?
                         <iframe title="vimeo-player" src="https://www.youtube.com/embed/-HUqk2zYi54" width="100%"
                                 height="auto" style={{height: "15em"}} frameBorder={0} allowFullScreen={true}/>

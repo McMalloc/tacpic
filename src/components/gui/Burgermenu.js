@@ -40,12 +40,12 @@ const Burgermenu = props => {
 
     return (
         <>
-            <Button onClick={() => setCollapsed(!collapsed)} icon={"bars"} />
+            <Button large onClick={() => setCollapsed(!collapsed)} icon={"bars"} />
             {!collapsed &&
                 <>
                     <Backdrop onClick={() => setCollapsed(true)}/>
                     <Menu onClick={() => setCollapsed(!collapsed)}>
-                        <Button icon={"times"} />
+                        <Button large icon={"times"} />
                         <ul>
               {props.children.map((component, index) => {
                 if (Array.isArray(component)) {

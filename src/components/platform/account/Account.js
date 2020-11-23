@@ -51,7 +51,7 @@ const Account = props => {
         </Row>
         <Outlet/>
         <Row>
-            <div className={"col-sm-12"} style={{textAlign: "center"}}>
+            <div className={"col-xs-12"} style={{textAlign: "center"}}>
                 <Button icon={"sign-out-alt"} onClick={event => dispatch({type: USER.LOGOUT.REQUEST})} label={t("general:logoff")}/>
             </div>
         </Row>
