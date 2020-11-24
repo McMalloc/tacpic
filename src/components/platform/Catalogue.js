@@ -9,13 +9,11 @@ import {Checkbox} from "../gui/Checkbox";
 import Searchbar from "./Searchbar";
 import Modal from "../gui/Modal";
 import {CatalogueItemView} from "./CatalogueItemView";
-import {Route, useNavigate} from "react-router-dom";
-import {Routes, useParams} from "react-router";
-import {Button} from "../gui/Button";
+import {useNavigate} from "react-router-dom";
+import {useParams} from "react-router";
 import {FlyoutButton} from "../gui/FlyoutButton";
-import {Icon} from "../gui/_Icon";
 import {useBreakpoint} from "../../contexts/breakpoints";
-import { MD_SCREEN, SM_SCREEN } from '../../config/constants';
+import { MD_SCREEN } from '../../config/constants';
 
 const TagSidebar = styled.aside`
   position: sticky;

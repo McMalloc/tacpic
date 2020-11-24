@@ -26,14 +26,20 @@ const patterns = {
                   y2={"11.43mm"} stroke={"black"} strokeWidth={"0.8mm"}/>
         </>
     },
-    full: {
+    fill: {
+        width: "10mm", height: "10mm",
+        objects: <>
+            <rect x={0} y={0} width={"10mm"} height={"10mm"} fill={'black'}/>
+        </>
+    },
+    dotted_tight: {
         width: "2.5mm", height: "2.5mm",
         objects: <>
             <circle cx={"1.25mm"} cy={"1.25mm"}
                     r={"0.6mm"} fill={"black"} stroke={"none"}/>
         </>
     },
-    dotted: {
+    dotted_spacy: {
         width: "10mm", height: "10mm",
         objects: <>
             <circle cx={"1.25mm"} cy={"1.25mm"} r={"1mm"} fill={"black"} stroke={"none"}/>

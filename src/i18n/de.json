@@ -247,5 +247,17 @@
     "#FFEC01": "Goldgelb",
     "#FFFFFF": "Papierfarben (Unser Schwellpapier hat einen gelblichen Stich)",
     "null": "keine Farbe"
+  },
+  "textures": {
+    "diagonal_lines": "Weite diagonale Linien",
+    "diagonal_lines_wide": "Diagonale Linien",
+    "fill": "Vollflächig",
+    "vertical_lines": "Senkrechte Linien",
+    "horizontal_lines": "Waagerechte Linien",
+    "dashed_lines": "Gestrichelte Linien",
+    "grid": "Raster",
+    "stair": "Treppenstufen",
+    "dotted_tight": "Eng gepunktet",
+    "dotted_spacy": "Weit gepunktet"
   }
 }
