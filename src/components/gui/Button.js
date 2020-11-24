@@ -25,7 +25,7 @@ const ButtonBase = styled.button`
   background-color: ${(props) =>
     props.primary ? props.theme.brand_secondary : "white"};
   color: ${(props) => (props.primary ? props.theme.background : "inherit")};
-  border: 1px solid ${(props) => props.theme.brand_secondary};
+  border: 1px solid ${(props) => props.theme.brand_secondary_lighter};
   padding: ${(props) =>
     props.small
       ? 0

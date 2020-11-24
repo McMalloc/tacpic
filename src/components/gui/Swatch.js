@@ -1,6 +1,7 @@
 import styled from 'styled-components/macro';
 import React from "react";
 import {useTranslation} from "react-i18next";
+import { COLOURS } from '../../config/constants';
 
 const Wrapper = styled.div`
   div {
@@ -21,14 +22,14 @@ const Wrapper = styled.div`
         bottom: 40%;  
         border-radius: ${props => props.theme.border_radius};
         top: 40%;
-        background-color: rgba(0,0,0,${props => props.active && props.code !== null ?  0.7 : 0});
+        background-color: rgba(0,0,0,${props => props.active && props.code !== COLOURS.none ?  0.7 : 0});
       }
     }
   
   background-color: ${props => props.active ? props.code : "transparent"};
   transition: 0.1s;
   cursor: pointer;
-  border: 2px solid ${props => props.active && props.code === null ? props.theme.grey_3 : 'transparent'};
+  border: 2px solid ${props => props.active && props.code === COLOURS.none ? props.theme.grey_3 : 'transparent'};
   border-radius: ${props => props.theme.border_radius};
   padding: ${props => props.theme.spacing[1]};
   
@@ -50,7 +51,7 @@ const Swatch = props => {
                  onClick={() => props.onClick(props.code)}
                  code={props.code}
                  aria-label={label}>
-        <div>{ props.code === null && t("gui:none") }</div>
+        <div>{ props.code === COLOURS.none && t("gui:none") }</div>
         </Wrapper>
     )
 };

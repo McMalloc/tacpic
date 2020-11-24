@@ -84,7 +84,7 @@ const ShapeContext = props => {
 
                     <Palette selected={selectedObject.fill}
                              onChange={fill => changeProp(dispatch, selectedObject.uuid, 'fill', fill)}
-                             colours={[null].concat(Object.values(COLOURS))} extendedColours={null}/>
+                             colours={Object.values(COLOURS)} extendedColours={null}/>
                 </fieldset>
                 <fieldset>
                     <legend>Kontur</legend>
