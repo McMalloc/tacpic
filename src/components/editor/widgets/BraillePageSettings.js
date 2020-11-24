@@ -178,8 +178,8 @@ const BraillePageSettings = (props) => {
                   braillePages.pageNumbers === 0 ? PAGE_NUMBER_BOTTOM : 0
                 );
               }}
-              label={"Seitenzahlen"}
-              sublabel={"verringern die mögliche Anzahl an Zeilen auf 22"}
+              label={"editor:braille_pagenumbers"}
+              sublabel={"editor:braille_pagenumbers-hints"}
             />
           </div>
         </Row>
