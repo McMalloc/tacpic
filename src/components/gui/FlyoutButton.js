@@ -181,9 +181,9 @@ const FlyoutButton = (props) => {
         >
           
           {props.children}
-          <Button onClick={toggle}
+          {!!props.closeButton && <Button onClick={toggle}
             icon={'times'}
-            style={{ position: 'absolute', top: 6, right: 6 }} />
+            style={{ position: 'absolute', top: 6, right: 6 }} />}
         </FlyoutWrapper>
       )}
     </span>
@@ -196,6 +196,7 @@ FlyoutButton.propTypes = {
   rightAlign: PropTypes.bool,
   flyoutWidth: PropTypes.number,
   contrasted: PropTypes.bool,
+  closeButton: PropTypes.bool,
 };
 
 export { FlyoutButton };

@@ -153,7 +153,7 @@ const Catalogue = props => {
                         <SearchFilterBar className={"col-xs-12"}>
                             <Searchbar/>
                             &emsp;
-                            <FlyoutButton label={"Filter"}>
+                            <FlyoutButton closeButton={true} label={"Filter"}>
                                 {tagSidebar}
                             </FlyoutButton>
                         </SearchFilterBar>
