@@ -13,7 +13,7 @@ const Braille = styled.div`
   font-family: ${props => props.system === 'cb' ? "HBS8" : "tacpic swell braille"};
   position: absolute;
   width: 100%;
-  top: ${props => props.vOffset ? '5mm' : 0}; /*half font size*/
+  top: ${props => props.vOffset ? '3mm' : 0}; /*half font size*/
   white-space: pre-wrap;
   color: black;
   font-size: 10mm;
@@ -32,7 +32,7 @@ const Indicator = styled.div`
 const Black = styled.textarea`
   line-height: 14mm;
   font-size: 14pt;
-  margin-top: -4mm;
+  margin-top: -6mm;
   font-family: Arial, Helvetica, sans-serif;
   width: 100%;
   border: none;
