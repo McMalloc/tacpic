@@ -110,7 +110,13 @@
     "no_graphic_found": "Keine Grafiken gefunden.",
     "new_graphic": "Neue Grafik.",
     "load_more": "Mehr anzeigen",
-    "variant-new-hint": "Öffnet diese Variante als Grundlage für einen neuen, unabhängigen Entwurf."
+    "variant-new-hint": "Öffnet diese Variante als Grundlage für einen neuen, unabhängigen Entwurf.",
+    "catalogue:pdf": "",
+    "catalogue:pdf-hint": "",
+    "catalogue:rtf": "",
+    "catalogue:rtf-hint": "",
+    "catalogue:brf": "",
+    "catalogue:brf-hint": ""
   },
   "editor": {
     "not_available-screen": "Der Editor steht zur Zeit leider nicht auf mobilen Geräten bzw. kleinen Bildschirmen zur Verfügung.",
