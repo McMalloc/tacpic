@@ -15,7 +15,7 @@ import {Button} from "../gui/Button";
 import {FlyoutButton} from "../gui/FlyoutButton";
 import {Icon} from "../gui/_Icon";
 import {useBreakpoint} from "../../contexts/breakpoints";
-import { SM_SCREEN } from '../../config/constants';
+import { MD_SCREEN, SM_SCREEN } from '../../config/constants';
 
 const TagSidebar = styled.aside`
   position: sticky;
@@ -30,8 +30,11 @@ const TagSidebar = styled.aside`
   }
 
   .custom-tag-list {
-    max-height: 50vh;
     overflow-y: auto;
+
+    ${MD_SCREEN} {
+        max-height: 50vh;
+    }
   }
 `;
 

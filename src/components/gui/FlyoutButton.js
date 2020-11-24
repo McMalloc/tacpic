@@ -8,6 +8,7 @@ import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
 import Toggle from "./Toggle";
 import { useBreakpoint } from "../../contexts/breakpoints";
+import { Button } from "./Button";
 
 const Flyout = styled.div`
   background-color: ${(props) => props.theme.background};
@@ -16,6 +17,7 @@ const Flyout = styled.div`
   border: 1px solid ${(props) => props.theme.foreground};
   padding: ${(props) => props.theme.large_padding};
   box-sizing: border-box;
+  overflow: auto;
 
   .flyout-entry {
     min-width: ${(props) =>
@@ -113,10 +115,21 @@ const FlyoutButton = (props) => {
     flyoutRef.current.style.top = buttonBBox.top + buttonBBox.height + "px";
     const flyoutBBox = flyoutRef.current.getBoundingClientRect();
     if (vh < buttonBBox.top + flyoutBBox.height + buttonBBox.height) {
-      flyoutRef.current.style.top = `${vh - flyoutBBox.height}px`;
+      if (vh < flyoutBBox.height) {
+        flyoutRef.current.style.top = 0;
+        flyoutRef.current.style.bottom = 0;
+      } else {
+        flyoutRef.current.style.top = `${vh - flyoutBBox.height}px`;
+      }
     }
     if (vw < flyoutBBox.left + flyoutBBox.width) {
-      flyoutRef.current.style.left = `${vw - flyoutBBox.width}px`;
+      if (vw < flyoutBBox.width) {
+        flyoutRef.current.style.left = 0;
+        flyoutRef.current.style.right = 0;
+      } else {
+        flyoutRef.current.style.left = `${vw - flyoutBBox.width}px`;
+      }
+      
     }
   }, [out]);
 
@@ -166,7 +179,11 @@ const FlyoutButton = (props) => {
           rightAlign={props.rightAlign || false}
           _ref={flyoutRef}
         >
+          
           {props.children}
+          <Button onClick={toggle}
+            icon={'times'}
+            style={{ position: 'absolute', top: 6, right: 6 }} />
         </FlyoutWrapper>
       )}
     </span>
