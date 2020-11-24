@@ -46,6 +46,7 @@ const Addresses = () => {
     const [addressToBeRemoved, setAddressToBeRemoved] = useState({});
     const [initial, setInitial] = useState({ is_invoice_addr: false });
 
+    // neccessary for showing added addresses immediately
     const shouldGetNewAddresses = !!showForm;
 
     useEffect(() => {
