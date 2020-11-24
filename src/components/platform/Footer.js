@@ -69,7 +69,7 @@ const Footer = props => {
             <div className={"container"}><Row>
                 {props.small ?
                     <div className={"col-md-12 align-center"}>
-                        <NavLink target={"blank"} to={`/legal/${i18n.language}/Impressum`}>Impressum</NavLink>
+                        <NavLink target={"blank"} to={`/info/${i18n.language}/Impressum`}>Impressum</NavLink>
                     </div>
                     :
                     <>
@@ -78,7 +78,7 @@ const Footer = props => {
                                 <span className={"heading"}>Information</span>
                                 {legalTexts.map((text, index) => {
                                     return <span key={index}><NavLink
-                                        to={`/legal/${i18n.language}/${t(text.title)}`}>{text.title}</NavLink> <br/></span>
+                                        to={`/info/${i18n.language}/${t(text.title)}`}>{text.title}</NavLink> <br/></span>
                                 })}
                             </p>
 

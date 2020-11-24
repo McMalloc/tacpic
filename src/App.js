@@ -118,7 +118,7 @@ const App = () => {
             <Route path="/editor/:mode" element={<Editor />} />
             <Route path="/stats" element={<Stats />} />
             <Route
-              path="/legal/:lang/:textTitle"
+              path="/info/:lang/:textTitle"
               element={<LegalIndex />}
             ></Route>
             <Route exact path="/" element={<Landing />} />

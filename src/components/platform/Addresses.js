@@ -103,7 +103,7 @@ const Addresses = () => {
                 </div>
             </Row>
             <Row>
-                <div className={"col-sm-12"} style={{textAlign: "center"}}>
+                <div className={"col-xs-12"} style={{textAlign: "center"}}>
                     <br/>
                     <Button primary label={"account:add_address"} onClick={() => {
                         setInitial({is_invoice_addr: false});
