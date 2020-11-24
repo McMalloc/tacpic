@@ -345,32 +345,18 @@ const Editor = props => {
                                 :
                                 <Button fullWidth primary label={"Titel ändern"}/>
                             }
-
-                            {/* <pre style={{
-                                border: '2px solid green',
-                                textShadow: '1px 1px 0 black',
-                                color: 'lightgreen',
-                                fontSize: '11px',
-                                padding: '2px 3px'
-                            }}>
-                                    Derived from: {file.derivedFrom + ""}<br/>
-                                    Mode: {mode}<br/>
-                                    Graphic ID: {file.graphic_id + " (url: " + graphicId + ")"}<br/>
-                                    Variant ID: {file.variant_id + " (url: " + variantId + ")"}<br/>
-                                {openedPanel + ''}
-                                </pre> */}
                         </Draftinfo>
                         <AccordeonPanel
                             collapsed={!accordeonStates.draft}
                             onClick={() => toggleAccordeon('draft')}
                             title={"Entwurf"}>
-                            <AccordeonPanelFlyoutButton flownOut={openedPanel === 'document'}
+                            {/* <AccordeonPanelFlyoutButton flownOut={openedPanel === 'document'}
                                                         hideFlyout={dragging}
                                                         className={"padded"}
                                                         onClick={() => setOpenedPanel(openedPanel === 'document' ? null : 'document')}
-                                                        label={"Einrichten"} icon={"cog"}>
-                                <Document/>
-                            </AccordeonPanelFlyoutButton>
+                                                        label={"Einrichten"} icon={"cog"}> */}
+                            <Document className={ "padded" }/>
+                            {/* </AccordeonPanelFlyoutButton> */}
                             <AccordeonPanelFlyoutButton flownOut={openedPanel === 'publish'}
                                                         className={"padded"}
                                                         hideFlyout={dragging}
