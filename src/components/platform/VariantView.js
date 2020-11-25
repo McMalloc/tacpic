@@ -225,7 +225,7 @@ const VariantView = (props) => {
           )}
           <p>
             <small>
-              Erstellt am {moment(props.created_at).format("DD.MM.YYYY, HH:mm")}{" "}
+              Erstellt am {moment(props.created_at, "%YYYY-%MM-%DD %HH:%mm:%ss %z").format("DD.MM.YYYY, HH:mm")}{" "}
               Uhr
             </small>
           </p>
