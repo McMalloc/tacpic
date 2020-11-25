@@ -188,7 +188,7 @@
     "landscape": "Querformat",
     "select_medium": "Medium",
     "label_page-binding": "Schutzraum für Bindung",
-    "new_graphics_page": "Neue Gragik-Seite",
+    "new_graphics_page": "Neue Grafik-Seite",
     "braille_pagenumbers": "Seitenzahlen",
     "braille_pagenumbers-hints": "verringern die mögliche Anzahl an Zeilen auf 26",
 
@@ -234,7 +234,9 @@
     "publish_alert_failure": "Beim Veröffentlichen ist ein Fehler aufgetreten.",
     "publish_loader_message": "Das Veröffentlichen im Katalog kann einige Sekunden dauern.",
     "publish_button_continue-editing": "Weiter bearbeiten",
-    "publish_button_back": "Zurück zum Katalog"
+    "publish_button_back": "Zurück zum Katalog",
+
+    "unsaved_changes_prompt": "Es gibt ungespeicherte Änderungen. Wollen Sie den Editor wirklich verlassen?"
   },
   "categories": {
     "illustration": "(beschriftete) Illustration"

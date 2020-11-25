@@ -59,6 +59,7 @@ const Wrapper = styled.div`
   
   .loader {
     color: white;
+    grid-area: canvas;
   }
 `;
 
@@ -133,13 +134,12 @@ const Editor = props => {
     const navigate = useNavigate();
     const { lg } = useBreakpoint();
     const t = useTranslation().t;
-    const [rerender] = useRedraw();
     const [openedPanel, setOpenedPanel] = useState(null);
     const [accordeonStates, setAccordeonStates] = useState(JSON.parse(localStorage.getItem('accordeonStates')) || {});
     // todo zu Hook umwandeln, wenn InteractiveSVG eine function component ist
     const [dragging, setDragging] = useState(false);
     const [showBraillePanel, setShowBraillePanel] = useState(false);
-    const [handleBackup, setHandleBackup] = useState(false);
+    const [handleBackup, setHandleBackup] = useState(localStorage.getItem("HAS_EDITOR_CRASHED") === "true");
     const [showImportModal, setShowImportModal] = useState(false);
 
     let {variantId, graphicId, mode} = useParams();
@@ -195,8 +195,7 @@ const Editor = props => {
         </div>
     }
 
-    if (false) {
-    // if (!uiSettings.suppressBackup) {
+    if (handleBackup) {
         let backup = JSON.parse(localStorage.getItem("EDITOR_BACKUP"));
         const backup_date = moment(JSON.parse(localStorage.getItem("EDITOR_BACKUP_DATE")));
         if (!!backup) {
@@ -206,8 +205,7 @@ const Editor = props => {
                                   label: "Nein, Sicherung verwerfen",
                                   align: "left",
                                   action: () => {
-                                      localStorage.removeItem("EDITOR_BACKUP");
-                                      localStorage.removeItem("EDITOR_BACKUP_DATE");
+                                      setHandleBackup(false);
                                       dispatch({
                                           type: SUPPRESS_BACKUP, flag: true
                                       })
@@ -218,8 +216,7 @@ const Editor = props => {
                                   align: "right",
                                   template: 'primary',
                                   action: () => {
-                                      localStorage.removeItem("EDITOR_BACKUP");
-                                      localStorage.removeItem("EDITOR_BACKUP_DATE");
+                                      setHandleBackup(false);
                                       dispatch({
                                           type: FILE.OPEN.SUCCESS,
                                           data: backup,
@@ -450,6 +447,8 @@ const Editor = props => {
                     <Importer/>
                 </Modal>
                 }
+                <Prompt when={!uiSettings.suppressBackup}
+                    message={t('editor:unsaved_changes_prompt')} />
             </>
             :
             <Wrapper><Loader large message={<>Bitte warten, <br/>wir bereiten alles vor.</>}/></Wrapper>

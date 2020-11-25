@@ -1,5 +1,4 @@
-import {takeLatest} from "redux-saga/effects";
-import {put, select} from "redux-saga/dist/redux-saga-effects-npm-proxy.esm";
+import {takeLatest, put, select} from "redux-saga/effects";
 import {CHANGE_FILE_PROPERTY} from "../actions/action_constants";
 
 export function* titleEditWatch() {

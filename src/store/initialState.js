@@ -10,7 +10,7 @@ export const editor = {
         scalingFactor: 1,
         viewPortX: 0,
         viewPortY: 10,
-        suppressBackup: false,
+        suppressBackup: true,
         previewMode: false,
         selectedObjects: [],
         defaultTitle: true,
