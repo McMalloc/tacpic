@@ -136,14 +136,10 @@ const Navbar = props => {
 
     const loginSignupLinks = <>
         <NavLink className={"no-styled-link"} to={'/signup?redirect=' + location.pathname}>
-            <Button icon={"user-plus"} primary>
-                {t("general:signup")}
-            </Button>
+            <Button label={t("general:signup")} icon={"user-plus"} primary />
         </NavLink>&ensp;
         <NavLink className={"no-styled-link"} to={'/login'}>
-            <Button icon={"sign-in-alt"}>
-                {t("general:login")}
-            </Button>
+            <Button label={t("general:login")} icon={"sign-in-alt"} />
         </NavLink>
     </>
 
