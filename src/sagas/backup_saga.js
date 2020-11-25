@@ -8,11 +8,13 @@ import md5 from 'blueimp-md5';
 export function* backupWatcher() {
     yield throttle(BACKUP_INTERVAL, ['OBJECT_PROP_CHANGED', 'OBJECT_UPDATED', 'OBJECT_REMOVED', CHANGE_FILE_PROPERTY], function* (action) {
         try {
+            document.getElementById("save-indicator").style.visibility = 'visible';
             let file = yield select(state => state.editor.file.present);
             const stringifiedFile = JSON.stringify(file);
             localStorage.setItem("EDITOR_BACKUP", stringifiedFile);
             localStorage.setItem("EDITOR_BACKUP_DATE", JSON.stringify(new Date()));
-            yield put({ type: SUPPRESS_BACKUP, flag: false});
+            yield put({ type: SUPPRESS_BACKUP, flag: false });
+            setTimeout(() => document.getElementById("save-indicator").style.visibility = 'hidden', 1500);
         } catch (error) {
             console.log(error);
         }

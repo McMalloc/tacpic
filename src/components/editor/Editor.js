@@ -39,6 +39,7 @@ import ErrorBoundary from "../../ErrorBoundary";
 import {findObject} from "../../utility/findObject";
 import {Alert} from "../gui/Alert";
 import { useBreakpoint } from '../../contexts/breakpoints';
+import { Icon } from '../gui/_Icon';
 
 const Wrapper = styled.div`
   display: grid;
@@ -75,6 +76,13 @@ const CanvasWrapper = styled.div`
 
 const BraillePageWrapper = styled(BraillePage)`
   grid-area: braillepage;
+`;
+
+const SaveIndicator = styled.div`
+  visibility: hidden;
+  padding: 6px 0;
+  font-size: 0.9rem;
+  animation: pulsating 0.75s infinite;
 `;
 
 const Sidebar = styled.div`
@@ -342,6 +350,10 @@ const Editor = props => {
                                 :
                                 <Button fullWidth primary label={"Titel ändern"}/>
                             }
+                            <br />
+                            <SaveIndicator id={"save-indicator"}>
+                                <Icon icon={"save"} /> Wird gespeichert ...
+                            </SaveIndicator>
                         </Draftinfo>
                         <AccordeonPanel
                             collapsed={!accordeonStates.draft}
