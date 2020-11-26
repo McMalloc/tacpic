@@ -41,6 +41,8 @@
     "basket": "Warenkorb (<%=quantity%> Artikel)",
     "empty_basket": "",
     "catalogue": "Katalog",
+    "editor": "Editor",
+    "pricing": "Preise",
     "required": "Erforderliche Angabe",
     "display_name": "Anzeigename",
     "display_name-hint": "Sie können den Anzeigenamen später auch ändern. Er wird verwendet, um Ihre Urheberschaft an Grafiken zu kennzeichnen."
@@ -263,6 +265,6 @@
     "grid": "Raster",
     "stair": "Treppenstufen",
     "dotted_tight": "Eng gepunktet",
-    "dotted_spacy": "Weit gepunktet"
+    "dotted": "Weit gepunktet"
   }
 }

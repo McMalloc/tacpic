@@ -39,7 +39,7 @@ const patterns = {
                     r={"0.6mm"} fill={"black"} stroke={"none"}/>
         </>
     },
-    dotted_spacy: {
+    dotted: {
         width: "10mm", height: "10mm",
         objects: <>
             <circle cx={"1.25mm"} cy={"1.25mm"} r={"1mm"} fill={"black"} stroke={"none"}/>
@@ -100,7 +100,7 @@ const patterns = {
 };
 
 export const createPattern = (type, uuid, fill, angle) => {
-    if (!type) return null;
+    if (!type || !patterns[type]) return null;
     const {width, height, objects} = patterns[type];
     return (
         <pattern patternUnits={"userSpaceOnUse"} id={`pattern-${type}-${uuid}`}

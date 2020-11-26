@@ -45,7 +45,7 @@ export const TEXTURES = [
   "grid",
   "stair",
   "dotted_tight",
-  "dotted_spacy",
+  "dotted",
 ];
 
 export const GERMAN_STATES = [
