@@ -113,12 +113,12 @@
     "new_graphic": "Neue Grafik.",
     "load_more": "Mehr anzeigen",
     "variant-new-hint": "Öffnet diese Variante als Grundlage für einen neuen, unabhängigen Entwurf.",
-    "catalogue:pdf": "",
-    "catalogue:pdf-hint": "",
-    "catalogue:rtf": "",
-    "catalogue:rtf-hint": "",
-    "catalogue:brf": "",
-    "catalogue:brf-hint": ""
+    "catalogue:pdf": "pdf-Format",
+    "catalogue:pdf-hint": "Enthält nur Grafikseiten zum Ausdruck auf Schwellpapier",
+    "catalogue:rtf": "rtf-Format",
+    "catalogue:rtf-hint": "Enthält Bildbeschreibung als Schwarzschrift zum Öffnen in Word, Open Office oder anderen Texterarbeitungsprogrammen",
+    "catalogue:brf": "brf-Format",
+    "catalogue:brf-hint": "Enthält Braille-Code zum zum direkten Ausdruck mit einem Braille Drucker der Index Everest Serie"
   },
   "editor": {
     "not_available-screen": "Der Editor steht zur Zeit leider nicht auf mobilen Geräten bzw. kleinen Bildschirmen zur Verfügung.",
