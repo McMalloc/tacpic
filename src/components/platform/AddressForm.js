@@ -98,7 +98,7 @@ const AddressForm = props => {
                     changeAddress({...address, state: value})
                 }}
                         value={address.state} name={"state"} label={"Bundesland"}
-                        options={GERMAN_STATES}/>
+                    options={GERMAN_STATES} />
             </div>
             <div className={"col-xs-6"}>
                 <Select value={address.country} name={"country"} disabled={!address.is_invoice_addr}
@@ -108,6 +108,9 @@ const AddressForm = props => {
                 {/*{(!address.is_invoice_addr) &&*/}
                 {/*        <small>Zur Zeit unterstützen wir nur die Lieferung nach Deutschland.</small>*/}
                 {/*}*/}
+            </div>
+            <div>
+                *: erforderlich
             </div>
         </Row>
 
