@@ -149,14 +149,16 @@ const Label = (props) => {
       data-in_edit_mode={props.editMode}
       transform={transform(props.x, props.y, props.angle)}
     >
-      <rect
-        strokeWidth={"3mm"}
-        stroke={"white"}
-        x={0}
-        y={0}
-        width={props.width}
-        height={props.height}
-      />
+      {props.border &&
+        <rect
+          strokeWidth={"3mm"}
+          stroke={"white"}
+          x={0}
+          y={0}
+          width={props.width}
+          height={props.height}
+        />
+      }
       <foreignObject
         style={{ overflow: "visible" }}
         onDoubleClick={() => enterEditMode(dispatch, props)}
