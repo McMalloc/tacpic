@@ -37,6 +37,7 @@ import {basketChangeSaga} from "./basket_saga";
 import {orderCreateSaga, orderIndexSaga} from "./order_saga";
 import {titleEditWatch} from "./title_saga";
 import {backupNeededWatcher, backupWatcher} from "./backup_saga";
+import { errorWatcher } from "./error_saga";
 
 export const id = args => args;
 
@@ -122,6 +123,8 @@ export default function* root() {
         // call(systemToggledWatcher),
 
         call(renderWatcher),
+
+        call(errorWatcher),
     ])
 }
 

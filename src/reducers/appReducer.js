@@ -15,9 +15,9 @@ const appReducer = (state = {}, action) => {
         case APP.LEGAL.SUCCESS:
             return {
                 ...state,
-                legalTexts: Object.entries(action.data).map(([did, title]) => {
+                legalTexts: [...state.legalTexts, ...Object.entries(action.data).map(([did, title]) => {
                     return {did, title}
-                })
+                })]
             }
         case APP.FRONTEND.FAILURE:
             return {
@@ -27,7 +27,11 @@ const appReducer = (state = {}, action) => {
         case ERROR_THROWN:
             return {
                 ...state,
-                error: action.error
+                error: {
+                    name: action.error.name,
+                    message: action.error.message,
+                    stack: action.error.stack
+                }
             }
         default:
             return state;

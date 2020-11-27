@@ -70,7 +70,7 @@ const IndexWrapper = styled.div`
     padding-left: 0;
 
     li {
-      padding: ${(props) => props.theme.large_padding}
+      padding: 1rem
         ${(props) => props.theme.base_padding};
     }
   }

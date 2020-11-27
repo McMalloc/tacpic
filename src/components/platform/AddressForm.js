@@ -35,7 +35,7 @@ export const defaults = {
 
 const AddressForm = props => {
     const dispatch = useDispatch();
-    const [address, changeAddress] = useState({...defaults, ...props.initial});
+    const [address, changeAddress] = useState({ ...defaults, ...props.initial });
 
     const setState = event => {
         const updatedModel = {...address, [event.target.name]: event.target.value, id: null};

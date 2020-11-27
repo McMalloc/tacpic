@@ -18,14 +18,12 @@ import { OrderCompleted } from "./components/platform/OrderCompleted";
 import { APP_TITLE } from "./env";
 import Stats from "./components/platform/Stats";
 import AccountVerification from "./components/platform/account/AccountVerification";
-import { Outlet, useLocation } from "react-router";
+import { useLocation } from "react-router";
 import ResetPassword from "./components/platform/account/ResetPassword";
 import NotFound from "./components/NotFound";
 import ResetPasswordRequest from "./components/platform/account/ResetPasswordRequest";
-import Page from "./components/platform/pages/Page";
 import LegalIndex from "./components/platform/Legal";
-import { Alert } from "./components/gui/Alert";
-import { MD_SCREEN } from "./config/constants";
+import { Pricing } from "./components/platform/Pricing";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -74,7 +72,8 @@ const App = () => {
 
   const navbarItems = [
     { label: t("general:catalogue"), to: "/catalogue" },
-    { label: "Editor", to: "/editor/new" },
+    { label: t("general:editor"), to: "/editor/new" },
+    { label: t("general:pricing"), to: "/pricing" },
     // {label: 'Wissen', to: '/knowledge'},
     // {label: 'Häufige Fragen', to: '/faq'}
   ];
@@ -82,11 +81,6 @@ const App = () => {
   return (
     <Wrapper>
       <Navbar items={navbarItems} />
-      {appError !== null && (
-        <Alert danger>
-          Unser Service ist zur Zeit aus technischen Gründen nicht erreichbar.
-        </Alert>
-      )}
       <ScrollContent id={"scroll-content"}>
         <AppContainer
           id={"app-container"}
@@ -117,6 +111,7 @@ const App = () => {
             />
             <Route path="/editor/:mode" element={<Editor />} />
             <Route path="/stats" element={<Stats />} />
+            <Route path="/pricing" element={<Pricing />} />
             <Route
               path="/info/:lang/:textTitle"
               element={<LegalIndex />}

@@ -1,5 +1,7 @@
 import React from "react";
-import {Button} from "./components/gui/Button";
+import { Button } from "./components/gui/Button";
+import {connect} from "react-redux";
+import { ERROR_THROWN } from "./actions/action_constants";
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -12,9 +14,8 @@ class ErrorBoundary extends React.Component {
     }
 
     componentDidCatch(error, errorInfo) {
+        this.props.throwError(error);
         localStorage.setItem("HAS_EDITOR_CRASHED", "true");
-        // You can also log the error to an error reporting service
-        // logErrorToMyService(error, errorInfo);
     }
 
     render() {
@@ -47,7 +48,7 @@ class ErrorBoundary extends React.Component {
                     Der Fehlerbericht meldet Folgendes:
                 </p>
                 <pre style={{
-                    maxWidth: '80%',
+                    maxWidth: 800,
                     margin: 'auto',
                     borderRadius: 5,
                     fontSize:'70%',
@@ -63,4 +64,13 @@ class ErrorBoundary extends React.Component {
     }
 }
 
-export default ErrorBoundary
+const mapDispatchToProps = (dispatch) => {
+    return {
+        throwError: error => {
+            dispatch({
+                type: ERROR_THROWN, error
+            });
+        }
+    }
+}
+export default connect(null, mapDispatchToProps)(ErrorBoundary);

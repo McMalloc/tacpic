@@ -274,10 +274,6 @@ const Editor = props => {
     }
 
     return <ErrorBoundary>
-        {/*<Prompt*/}
-        {/*    when={false}*/}
-        {/*    message='Es gibt ungesicherte Änderungen. Wollen Sie den Editor wirklich verlassen?'*/}
-        {/*/>*/}
         {uiSettings.fileOpenSuccess ?
             <>
                 <Wrapper>

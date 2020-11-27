@@ -104,6 +104,8 @@ const Metadata = props => {
             </Alert>
     );
 
+    console.log(mode.will.crash);
+
     return (
         <>
             <Textinput

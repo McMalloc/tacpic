@@ -22,6 +22,10 @@ const Wrapper = styled.nav`
   box-sizing: border-box;
   border-bottom: 1px solid ${props => props.theme.grey_5};
   /* justify-content: space-between; */
+
+  a {
+      margin-left: 0.5rem;
+  }
   
   ${SM_SCREEN} {
     
@@ -38,7 +42,7 @@ const NavbarItem = styled(NavLink)`
     color: ${props => props.theme.brand_secondary};
     text-decoration: none;
     /* border-radius: ${props => props.theme.border_radius}; */
-    margin: 0 ${props => props.theme.base_padding};
+    margin: 0 ${props => props.theme.large_padding};
     position: relative;
     border-bottom: 3px solid transparent;
     border-top: 4px solid transparent!important;
@@ -137,7 +141,7 @@ const Navbar = props => {
     const loginSignupLinks = <>
         <NavLink className={"no-styled-link"} to={'/signup?redirect=' + location.pathname}>
             <Button label={t("general:signup")} icon={"user-plus"} primary />
-        </NavLink>&ensp;
+        </NavLink>
         <NavLink className={"no-styled-link"} to={'/login'}>
             <Button label={t("general:login")} icon={"sign-in-alt"} />
         </NavLink>

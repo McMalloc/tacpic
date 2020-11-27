@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react'
-import connect from "react-redux/es/connect/connect";
+import {connect} from "react-redux";
 import Manipulator from "./Manipulator";
 
 import {cloneDeep} from "lodash";
@@ -328,13 +328,13 @@ class InteractiveSVG extends Component {
                 }
             }
         } catch (error) {
-            console.error(error);
             this.props.throwError(error);
         }
     };
 
     mouseUpHandler = event => {
-        let target = event.nativeEvent.target;
+        try {
+let target = event.nativeEvent.target;
         this.setState({
             mouseIsDown: false,
             dragging: false,
@@ -419,6 +419,10 @@ class InteractiveSVG extends Component {
                 }
             }
         }
+        } catch (error) {
+            this.props.throwError(error);
+        }
+        
     };
 
     mouseMoveHandler = event => {
@@ -513,7 +517,7 @@ class InteractiveSVG extends Component {
             }
 
         } catch (error) {
-            throw(error);
+            this.props.throwError(error);
         }
     };
 
