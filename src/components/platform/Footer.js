@@ -80,6 +80,7 @@ const Footer = props => {
                                     return <span key={index}><NavLink
                                         to={`/info/${i18n.language}/${t(text.title)}`}>{text.title}</NavLink> <br/></span>
                                 })}
+                                <span><NavLink to={`/info/${i18n.language}/Lizenzen`}>Lizenzen</NavLink> <br/></span>
                             </p>
 
                             <p>
