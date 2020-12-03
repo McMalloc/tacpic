@@ -461,7 +461,7 @@ const Editor = props => {
                     message={t('editor:unsaved_changes_prompt')} />
             </>
             :
-            <Wrapper><Loader large message={<>Bitte warten, <br/>wir bereiten alles vor.</>}/></Wrapper>
+            <Wrapper><Loader large message={"Bitte warten, wir bereiten alles vor."}/></Wrapper>
         }
     </ErrorBoundary>
 };
