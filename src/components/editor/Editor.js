@@ -214,6 +214,7 @@ const Editor = props => {
                                   align: "left",
                                   action: () => {
                                       setHandleBackup(false);
+                                      localStorage.removeItem("HAS_EDITOR_CRASHED");
                                       dispatch({
                                           type: SUPPRESS_BACKUP, flag: true
                                       })
@@ -225,6 +226,7 @@ const Editor = props => {
                                   template: 'primary',
                                   action: () => {
                                       setHandleBackup(false);
+                                      localStorage.removeItem("HAS_EDITOR_CRASHED");
                                       dispatch({
                                           type: FILE.OPEN.SUCCESS,
                                           data: backup,
