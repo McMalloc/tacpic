@@ -80,13 +80,17 @@ export default function createSaga(
                 action.payload[appendedStatePath[appendedStatePath.length - 1]] =
                     yield select(state=>crawlState(state, appendedStatePath));
             }
+            const frontendVersion = yield select(state=>state.app.frontend.tag)
             try {
                 let statusCode = 1000;
                 let authHeader = "";
                 let contentType = "";
                 const response = yield call(action => {
                     const filePayload = action.payload && action.payload.toString() === '[object FormData]';
-                    let headers = {'Accept': 'application/json'};
+                    let headers = {
+                        'Accept': 'application/json',
+                        'Tacpic-Version': frontendVersion
+                    };
                     if (!filePayload) headers['Content-Type'] = 'application/json';
                     if (auth) {
                         const jwt = localStorage.getItem('jwt');
