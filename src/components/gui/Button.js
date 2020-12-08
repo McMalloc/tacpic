@@ -24,7 +24,7 @@ const Label = styled.span`
 const ButtonBase = styled.button`
   background-color: ${(props) =>
     props.primary ? props.theme.brand_secondary : "white"};
-  color: ${(props) => (props.primary ? props.theme.background : "inherit")};
+  color: ${(props) => (props.primary ? props.theme.background : props.theme.foreground)}!important;
   border: 1px solid ${(props) => props.theme.brand_secondary_lighter};
   padding: ${(props) =>
     props.small

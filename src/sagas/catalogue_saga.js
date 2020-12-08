@@ -18,7 +18,7 @@ const mapGraphics = graphics => {
                 return {
                     id: variant.variant_id,
                     title: variant.variant_title,
-                    file_name: variant.file_name,
+                    current_file_name: variant.current_file_name,
                     braille_format: variant.braille_format,
                     braille_no_of_pages: variant.braille_no_of_pages,
                     graphic_format: variant.graphic_format,

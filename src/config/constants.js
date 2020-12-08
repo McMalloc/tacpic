@@ -9,6 +9,7 @@ export const SVG_A4_PX_WIDTH = 793.7;
 export const TOOL_SENSIBILITY = 15;
 export const SAFE_BORDER = 10;
 export const BACKUP_INTERVAL = 3000;
+export const DB_DATE_FORMAT = "%YYYY-%MM-%DD %HH:%mm:%ss %z";
 
 export const XL_SCREEN = "@media only screen and (min-width: 1200px)";
 export const LG_SCREEN = "@media only screen and (min-width: 992px)";

@@ -129,7 +129,7 @@ const BasketListing = () => {
                         <div className={'upper'}>
                             <div className={'left'}>
                                 <img style={{height: '70px', width: 'auto'}}
-                                     src={`${API_URL}/thumbnails/${correspondingVariant.file_name}-THUMBNAIL-sm-p0.png`}/>
+                                     src={`${API_URL}/thumbnails/${correspondingVariant.current_file_name}-THUMBNAIL-sm-p0.png`}/>
                             </div>
                             <div className={'right'}>
                                 <Link

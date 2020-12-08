@@ -111,7 +111,7 @@ const Pricing = (props) => {
     {
       name: "Nutzung des Editors",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.",
+        "Nutzen Sie den tacpic Online-Editor dauerhaft kostenlos, um Ihre Vorlagen für Ihre Taktilen Grafiken zu entwerfen.",
       duration: "unbegrenzt",
       icon: "icon_guenstig.svg",
       price: "kostenlos",
@@ -136,7 +136,7 @@ const Pricing = (props) => {
     },
     {
       name: "Download-Lizenz",
-      description: "Lorem ipsum dolor sit amet, ",
+      description: "30 Tage nach Erwerb der Lizenz stehen Ihnen sämtliche Entwürfe aus dem tacpic Katalog in zahlreichen Formaten zum Download zur Verfügung.",
       duration: "1 Monat",
       icon: "icon_guenstig.svg",
       price: "aktuell kostenlos",
@@ -154,7 +154,7 @@ const Pricing = (props) => {
     {
       name: "Download-Lizenz",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.",
+        "365 Tage nach Erwerb der Lizenz stehen Ihnen sämtliche Entwürfe aus dem tacpic Katalog in zahlreichen Formaten zum Download zur Verfügung.",
       duration: "1 Jahr",
       icon: "icon_guenstig.svg",
       price: "aktuell kostenlos",
@@ -209,9 +209,9 @@ const Pricing = (props) => {
       </Row>
 
       <Row>
-        <div className={"col-xs-12 col-sm-12 col-lg-3"}>
-          <h2>Downloads</h2>
-          <p>kosten so und so viel</p>
+        <div className={"col-xs-12 col-sm-12 col-lg-12"}>
+          <h2>tacpic Online-Editor und Downloads aus dem tacpic Katalog</h2>
+          <p>Der tacpic Online-Editor steht Ihnen dauerhaft kostenlos zur Verfügung und wird fortlaufend verbessert. Wenn Sie Entwürfe aus dem sich stetig erweiternden tacpic Katalog für die eigene Produktion herunterladen wollen, wird es zukünftig notwendig sein eine der angebotenen Download Lizenzen zu erwerben. Da sich tacpic.de momentan noch in der Beta-Phase befindet, steht Ihnen die Möglichkeit zum Download aktuell kostenlos zur Verfügung.</p>
         </div>
       </Row>
       <Row style={{ padding: "2rem 0" }}>
@@ -234,17 +234,27 @@ const Pricing = (props) => {
         <div className={"col-xs-12 col-sm-4"}>
           <strong>Funktionen des tacpic Editors</strong>
           <ul>
-            <li>...</li>
-            <li>...</li>
-            <li>...</li>
+            
+            <li>Braillekonverter</li>
+            <li>Basis- Voll- und Kurzschrift</li>
+            <li>wissenschaftlich geprüfte Texturen</li>
+            <li>Unterstützte Erstellung von Legenden</li>
+            <li>Bildbeschreibungsassistent</li>
+            <li>Importieren und Nachzeichen Funktion</li>
+            <li>Automatische Texterkennung</li>
+
           </ul>
         </div>
-        <div className={"col-xs-12 col-sm-4"}>
+        <div className={"col-xs-12 col-sm-8"}>
           <strong>Zum Download verfügbare Formate</strong>
           <ul>
-            <li>...</li>
-            <li>...</li>
-            <li>...</li>
+            
+            <li>PDF (Grafik)</li>
+            <li>RTF (Klartext für Textverarbeitungsprogramme)</li>
+            <li>RTF (codiert nach jeweiligem Braillesystem) (falls wir das anbieten werden, vorsichtshalber mal weg lassen)</li>
+            <li>BRF (codiert für Brailledrucker Index Everest)</li>
+            <li>ZIP-Ordner (alle Formate in einem komprimierten Ordner)</li>
+
           </ul>
         </div>
       </Row>

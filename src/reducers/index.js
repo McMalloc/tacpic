@@ -5,7 +5,6 @@ import user from './userApi'
 import catalogue from './catalogueApi'
 import app from "./appReducer";
 import undoable from "./undoable";
-import { connectRouter } from 'connected-react-router'
 
 const editor = combineReducers({file: undoable(file), ui});
 

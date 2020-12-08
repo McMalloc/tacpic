@@ -56,7 +56,7 @@ const Info = styled.div`
 
 export default props => {
     const thumbnailURL =
-        `${API_URL}/thumbnails/${props.variants[0].file_name}-THUMBNAIL-sm-p0.png`
+        `${API_URL}/thumbnails/${props.variants[0].current_file_name}-THUMBNAIL-sm-p0.png`
     return (
         <Wrapper id={"catalogue-item-" + props.id}>
             <Link className={'no-styled-link'} to={props.id + "/variant/" + props.variants[0].id}>

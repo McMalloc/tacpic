@@ -89,6 +89,8 @@
     "searchterm": "Suchbegriff",
     "search-placeholder": "z.B. Biologie Herz",
     "grub": "Im Katalog stöbern",
+    "history_show": "Versionshistorie zeigen",
+    "history_hide": "Versionshistorie ausblenden",
     "create": "Grafik gestalten",
     "a3-portrait": "DIN A3 Hochformat",
     "a3-landscape": "DIN A3 Querformat",
@@ -158,6 +160,8 @@
     "input_catalogue-publish": "Veröffentlichen",
     "input_catalogue-update": "Korrigieren",
     "input_catalogue-save": "Änderungen speichern",
+    "input_change-message": "Korrekturbemerkung",
+    "input_change-message-hint": "Beschreiben Sie kurz, was geändert worden ist.",
     "catalogue-state-0": "Entwurf",
     "title_placeholder": "(doppelklicken, um Titel zu vergeben)",
 

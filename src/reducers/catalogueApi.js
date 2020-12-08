@@ -5,6 +5,7 @@ import {
     GRAPHIC,
     ORDER,
     VARIANTS,
+    VARIANT,
     ITEM_ADDED_TO_BASKET,
     ITEM_REMOVED_FROM_BASKET, ORDER_RESET, QUOTE, CLEAR_BASKET, LOAD_MORE, ITEM_UPDATED_IN_BASKET
 } from '../actions/action_constants';
@@ -66,6 +67,23 @@ const catalogueApi = (state = {}, action) => {
         case GRAPHIC.GET.FAILURE:
             return {
                 ...state,
+            };
+        
+        case VARIANT.HISTORY.REQUEST:
+            return {
+                ...state,
+                historyPending: true
+            };
+        case VARIANT.HISTORY.SUCCESS:
+            return {
+                ...state,
+                historyPending: false,
+                currentHistory: action.data
+            };
+        case VARIANT.HISTORY.FAILURE:
+            return {
+                ...state,
+                historyPending: false
             };
 
         case VERSION.GET.REQUEST:

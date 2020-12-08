@@ -16,6 +16,7 @@ import {
     TAGS,
     GRAPHIC,
     VARIANTS,
+    VARIANT,
     ADDRESS,
     APP, QUOTE, IMPORT, CMS_PAGE, STATIC_PAGE, USER
 } from "../actions/action_constants";
@@ -56,7 +57,7 @@ export default function* root() {
                     graphic_format: variant.graphic_format,
                     system: variant.system,
                     graphics_no_of_pages: variant.graphics_no_of_pages,
-                    file_name: variant.file_name,
+                    current_file_name: variant.current_file_name,
                     created_at: variant.created_at,
                     description: variant.variant_description,
                     derived_from: variant.derived_from
@@ -67,6 +68,7 @@ export default function* root() {
         call(createSaga(QUOTE.GET, 'post', 'quotes', takeLatest, false, id, id)),
 
         call(createSaga(GRAPHIC.GET, 'get', 'graphics/:id', takeLatest, false, id, id)),
+        call(createSaga(VARIANT.HISTORY, 'get', 'variants/:id/history', takeLatest, false, id, id)),
 
         call(createSaga(CMS_PAGE.GET, 'get', 'cms/pages/:id', takeLatest, false, id, id)),
         call(createSaga(CMS_PAGE.INDEX, 'get', 'cms/pages', takeLatest, false, id, id)),

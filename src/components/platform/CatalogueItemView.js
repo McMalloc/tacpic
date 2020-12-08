@@ -1,14 +1,17 @@
-import React, { useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { GRAPHIC } from "../../actions/action_constants";
+import React, { useEffect, useState } from "react";
+import { Link, useSearchParams, useParams } from "react-router-dom";
+import { GRAPHIC, VARIANT } from "../../actions/action_constants";
 import VariantView from "./VariantView";
 import styled, { useTheme } from "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
 import { TagView } from "./Tag";
 import { API_URL } from "../../env.json";
 import Loader from "../gui/Loader";
-import { useDrag } from "react-use-gesture";
 import { useBreakpoint } from "../../contexts/breakpoints";
+import { DB_DATE_FORMAT } from "../../config/constants";
+import * as moment from 'moment'
+import { Icon } from "../gui/_Icon";
+import { Button } from "../gui/Button";
 
 const VariantPreviewStyled = styled.div`
   display: flex;
@@ -16,7 +19,7 @@ const VariantPreviewStyled = styled.div`
   position: relative;
   text-decoration: ${(props) => (props.active ? "underline" : "none")};
   border: 2px solid
-    ${(props) => (props.active ? props.brand_secondary_light : "transparent")};
+    ${(props) => (props.active ? props.theme.brand_primary : "transparent")};
   padding: ${(props) => props.large_padding};
 
   background-color: ${(props) => (props.active ? props.grey_6 : "inherit")};
@@ -40,7 +43,7 @@ const VariantPreviewStyled = styled.div`
 
   &:focus {
     opacity: 1;
-    border: 2px solid ${(props) => props.grey_5};
+    border: 2px solid ${props => props.theme.brand_primary};
     outline: none;
   }
 
@@ -53,8 +56,8 @@ const VariantPreviewStyled = styled.div`
 
   .variant-info {
     flex: 1 1 100%;
-    padding: ${(props) => props.large_padding};
-    color: ${(props) => (props.active ? props.brand_secondary : "inherit")};
+    padding: ${props => props.theme.large_padding};
+    color: ${props => props.active ? props.brand_secondary : "inherit"};
   }
 `;
 
@@ -73,6 +76,10 @@ const VariantColumn = styled.div`
     padding: ${(props) => props.theme.large_padding};
     background-color: ${(props) => props.theme.brand_secondary};
     color: ${(props) => props.theme.background};
+
+    &.emphasised {
+      background-color: ${(props) => props.theme.danger};
+    }
   }
 `;
 
@@ -100,29 +107,29 @@ const VariantPreview = ({
   description,
   tags,
   document,
-  file_name,
+  current_file_name,
   derivedTitle,
 }) => {
   let selectedVariantId = useParams().variantId;
-  let graphicId = useParams().graphicId;
-  const theme = useTheme();
   const allTags = useSelector((state) => state.catalogue.tags);
   return (
-    <VariantPreviewStyled
-      {...theme}
-      active={id === parseInt(selectedVariantId)}>
-      <img src={`${API_URL}/thumbnails/${file_name}-THUMBNAIL-xl-p0.png`} />
-      {/*<VariantListingPreview bgUrl={`http://localhost:9292/static/thumbnails/thumbnail-${id}-sm.png`} />*/}
+    <VariantPreviewStyled active={id === parseInt(selectedVariantId)}>
+      <img
+        src={`${API_URL}/thumbnails/${current_file_name}-THUMBNAIL-xl-p0.png`}
+      />
       <div className={"variant-info"}>
         <strong>{title}</strong>
         <br />
-        {derivedTitle && <small>abgeleitet aus {derivedTitle}</small>}
+        {derivedTitle && <small>{derivedTitle}</small>}
         <div>
-          {tags.length !== 0 &&
+          {!!tags && tags.length !== 0 &&
             tags.map((t, index) => {
               let completeTag = allTags.find((_t) => _t.tag_id === t);
               if (index > nrOfVisibleTags) return null;
-              if (index === nrOfVisibleTags) return <TagView>({tags.length - nrOfVisibleTags} weitere)</TagView>
+              if (index === nrOfVisibleTags)
+                return (
+                  <TagView>({tags.length - nrOfVisibleTags} weitere)</TagView>
+                );
               return (
                 <TagView title={"Schlagwort"} key={t}>
                   {completeTag && completeTag.name}
@@ -135,17 +142,18 @@ const VariantPreview = ({
   );
 };
 
-const VariantCarousel = props => {
-  return {
-
-  }
-}
+const VariantCarousel = (props) => {
+  return {};
+};
 
 const CatalogueItemView = ({ variantsOverview }) => {
   let { graphicId, variantId } = useParams();
   const dispatch = useDispatch();
   const pending = useSelector((state) => state.catalogue.graphicGetPending);
+  const history = useSelector((state) => state.catalogue.currentHistory);
   const { md } = useBreakpoint();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const showHistory = searchParams.get("view") === "history";
 
   const viewedGraphic = useSelector((state) => state.catalogue.viewedGraphic);
   const viewedVariant =
@@ -158,6 +166,15 @@ const CatalogueItemView = ({ variantsOverview }) => {
       payload: { id: graphicId },
     });
   }, [graphicId]);
+
+  useEffect(() => {
+    if (showHistory) {
+      dispatch({
+        type: VARIANT.HISTORY.REQUEST,
+        payload: { id: variantId },
+      });
+    }
+  }, [variantId, searchParams.get("view")]);
 
   const variantColumn = (
     <VariantColumn className={"col-sm-2 col-md-3 col-lg-2"}>
@@ -176,7 +193,7 @@ const CatalogueItemView = ({ variantsOverview }) => {
               to={`/catalogue/${graphicId}/variant/${variant.id}`}
             >
               <VariantPreview
-                derivedTitle={derivedFrom && derivedFrom.title}
+                derivedTitle={derivedFrom && ("abgeleitet aus " + derivedFrom.title)}
                 {...variant}
               />
             </Link>
@@ -186,41 +203,69 @@ const CatalogueItemView = ({ variantsOverview }) => {
     </VariantColumn>
   );
 
+  const historyColumn = (
+    <VariantColumn className={"col-sm-2 col-md-3 col-lg-2"}>
+      <div className={"heading emphasised"}>
+        <Icon icon={'history'} /> <strong>Versionshistorie</strong>
+        <Button onClick={() => setSearchParams({ view: '' })} icon={'times'} style={{ float: 'right' }} />
+        <br />
+        Variante: {!!viewedVariant && viewedVariant.title}
+      </div>
+      <div>
+        {history.versions.map((version, index) => {
+          return (
+            <VariantPreview
+              title={moment(version.created_at, DB_DATE_FORMAT).format("DD.MM.YYYY, HH:mm") + ' Uhr'}
+              id={version.id}
+              key={ index }
+              derivedTitle={'von ' + history.contributors.find(contributor => contributor.id === version.user_id).display_name}
+              current_file_name={version.file_name}
+            />
+          );
+        })}
+      </div>
+    </VariantColumn>
+  );
+
   return (
     <Wrapper>
-    {/* <Wrapper {...gestureBind()}> */}
+      {/* <Wrapper {...gestureBind()}> */}
       {pending ? (
         <Loader
           timeout={1000}
           message={"Variante wird geladen, einen Moment noch."}
         />
-      ) : (
-        md ? <>
-          {variantColumn}
+      ) : md ? (
+        <>
+          {showHistory ? historyColumn : variantColumn}
           <DetailsColumn className={"col-sm-10 col-md-9 col-lg-10"}>
             <VariantView
               graphicTitle={viewedGraphic.title}
               {...viewedVariant}
             />
           </DetailsColumn>
-          </> :
-            <div style={{
-              width: 100 * (viewedGraphic.variants.length + 1) + "vw",
-              overflow: "auto visible",
-              display: 'flex',
-              scrollSnapType: 'x mandatory',
-              scrollBehavior: 'smooth',
-              touchAction: 'pan-x pan-y',
-              WebkitOverflowScrolling: 'touch'
-            }}>
-              {viewedGraphic.variants.map(variant => {
-                return <VariantView
-                  graphicTitle={viewedGraphic.title} {...variant} />
-              })}
-            </div>
-    )}
-    </Wrapper>)
-  
+        </>
+      ) : (
+        <div
+          style={{
+            width: 100 * (viewedGraphic.variants.length + 1) + "vw",
+            overflow: "auto visible",
+            display: "flex",
+            scrollSnapType: "x mandatory",
+            scrollBehavior: "smooth",
+            touchAction: "pan-x pan-y",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
+          {viewedGraphic.variants.map((variant) => {
+            return (
+              <VariantView graphicTitle={viewedGraphic.title} {...variant} />
+            );
+          })}
+        </div>
+      )}
+    </Wrapper>
+  );
 };
 
 export { CatalogueItemView };

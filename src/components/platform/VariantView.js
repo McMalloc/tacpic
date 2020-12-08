@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../gui/Button";
 import { FlyoutButton, FlyoutEntry } from "../gui/FlyoutButton";
 import { ITEM_ADDED_TO_BASKET } from "../../actions/action_constants";
-import { Row } from "../gui/Grid";
 import styled, { useTheme } from "styled-components/macro";
 import { useTranslation } from "react-i18next";
 import { Icon } from "../gui/_Icon";
@@ -21,7 +20,7 @@ import * as moment from "moment";
 import { APP_URL, API_URL } from "../../env.json";
 import Well from "../gui/Well";
 import More from "../gui/More";
-import { MD_SCREEN, SM_SCREEN } from "../../config/constants";
+import { MD_SCREEN, SM_SCREEN, DB_DATE_FORMAT } from "../../config/constants";
 import useIntersect from "../../contexts/intersections";
 import { useBreakpoint } from "../../contexts/breakpoints";
 
@@ -125,11 +124,11 @@ const BraillePageWrapper = styled.div`
 `;
 
 const BraillePagePreview = styled.div`
-    background-color: white; 
-    padding: 6px;
-    min-height: 200px;
-    /* position: absolute; */
-    /* top: 0; bottom: 0; left: 0; right: 0; */
+  background-color: white;
+  padding: 6px;
+  min-height: 200px;
+  /* position: absolute; */
+  /* top: 0; bottom: 0; left: 0; right: 0; */
 `;
 
 const OrderWidget = styled.div`
@@ -154,7 +153,7 @@ const VariantView = (props) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const theme = useTheme();
-  const { lg } = useBreakpoint();
+  const { lg, md } = useBreakpoint();
   let { graphicId, variantId } = useParams();
   const dispatch = useDispatch();
   const tags = useSelector((state) => state.catalogue.tags);
@@ -162,9 +161,12 @@ const VariantView = (props) => {
   const [product, setProduct] = useState("graphic");
   const [quantity, setQuantity] = useState(1);
   const [ref, entry] = useIntersect({ threshold: scrollThreshold });
+  const [searchParams, setSearchParams] = useSearchParams();
+  const showHistory = searchParams.get('view') === 'history';
   // TODO Suchbegriff aus Store holen und in Variantenbeschreibung hervorheben
 
-  if (entry.intersectionRatio > scrollThreshold) {
+  if (!md && entry.intersectionRatio > scrollThreshold) {
+    // TODO
     window.history.replaceState(
       null,
       null,
@@ -186,7 +188,7 @@ const VariantView = (props) => {
               return (
                 <img
                   key={index}
-                  src={`${API_URL}/thumbnails/${props.file_name}-THUMBNAIL-xl-p${index}.png`}
+                  src={`${API_URL}/thumbnails/${props.current_file_name}-THUMBNAIL-xl-p${index}.png`}
                 />
               );
             })
@@ -225,8 +227,16 @@ const VariantView = (props) => {
           )}
           <p>
             <small>
-              Erstellt am {moment(props.created_at, "%YYYY-%MM-%DD %HH:%mm:%ss %z").format("DD.MM.YYYY, HH:mm")}{" "}
+              Erstellt am{" "}
+              {moment(props.created_at, DB_DATE_FORMAT).format(
+                "DD.MM.YYYY, HH:mm"
+              )}{" "}
               Uhr
+              <br />
+              <Button
+                label={t('catalogue:history_' + (showHistory ? 'hide' : 'show'))}
+                icon={'history'}
+                onClick={() => setSearchParams({ view: showHistory ? '' : "history" })} />
             </small>
           </p>
         </div>
@@ -255,9 +265,15 @@ const VariantView = (props) => {
                 </td>
                 <td>Brailleseiten</td>
                 <td className={"important"}>
-                  {props.braille_no_of_pages}{" "}
-                  {props.braille_no_of_pages === 1 ? "Seite" : "Seiten"}{" "}
-                  {t(`catalogue:${props.braille_format}-portrait`)}
+                  {props.braille_no_of_pages === 0 ? (
+                    <>{t("gui:none")}</>
+                  ) : (
+                    <>
+                      {props.braille_no_of_pages}{" "}
+                      {props.braille_no_of_pages === 1 ? "Seite" : "Seiten"}{" "}
+                      {t(`catalogue:${props.braille_format}-portrait`)}
+                    </>
+                  )}
                 </td>
               </tr>
               <tr>

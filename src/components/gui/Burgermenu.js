@@ -40,7 +40,7 @@ const Burgermenu = props => {
 
     return (
         <>
-            <Button large onClick={() => setCollapsed(!collapsed)} icon={"bars"} />
+            <Button large onClick={() => setCollapsed(!collapsed)} icon={"bars"} label={""} />
             {!collapsed &&
                 <>
                     <Backdrop onClick={() => setCollapsed(true)}/>

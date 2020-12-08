@@ -186,3 +186,11 @@ h5, h6 {
 //    font-size: 1.4em;
 //  }
 //}
+
+ul {
+  padding-left: 1rem;
+
+  li:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+}

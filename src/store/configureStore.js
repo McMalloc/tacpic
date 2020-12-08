@@ -1,7 +1,6 @@
 // setting up redux and saga
 import createSagaMiddleware from "redux-saga";
 import {applyMiddleware, compose, createStore} from "redux";
-import {routerMiddleware} from 'connected-react-router'
 import createRootReducer from "../reducers";
 import rootSaga from "../sagas";
 import {createBrowserHistory} from "history";

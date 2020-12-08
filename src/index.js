@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import "./i18n/i18n";
 import { MatomoProvider, createInstance } from "@datapunt/matomo-tracker-react";
-import { ConnectedRouter } from "connected-react-router";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -31,13 +30,11 @@ ReactDOM.render(
     <ThemeProvider theme={standard}>
       {/*<MatomoProvider value={instance}>*/}
       <BrowserRouter history={history}>
-        {/*<ConnectedRouter history={history}>*/}
         <DndProvider backend={HTML5Backend}>
           <BreakpointProvider queries={QUERIES}>
-            <App />
+              <App />
           </BreakpointProvider>
         </DndProvider>
-        {/*</ConnectedRouter>*/}
       </BrowserRouter>
       {/*</MatomoProvider>*/}
     </ThemeProvider>

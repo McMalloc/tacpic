@@ -51,7 +51,7 @@ const Hint = styled.div`
   font-style: italic;
 `;
 
-const uploadVersion = (dispatch, file, mode) => {
+const uploadVersion = (dispatch, file, mode, changeMessage) => {
     if (file.graphic_id === null) {
         dispatch({
             type: GRAPHIC.CREATE.REQUEST,
@@ -65,12 +65,12 @@ const uploadVersion = (dispatch, file, mode) => {
     } else {
         dispatch({
             type: VARIANT.UPDATE.REQUEST,
-            payload: file
+            payload: {...file, changeMessage}
         })
     }
 };
 
-const Metadata = props => {
+const Metadata = () => {
     const file = useSelector(state => state.editor.file.present);
     const logged_in = useSelector(state => state.user.logged_in);
     const tags = useSelector(
@@ -91,6 +91,7 @@ const Metadata = props => {
     const [showFileModal, toggleFileModal] = useState(false);
     const [showHintModal, toggleHintModal] = useState(false);
     const [licenseAgreed, setLicenseAgreed] = useState(false);
+    const [changeMessage, setChangeMessage] = useState("");
 
     const handleInputChange = (e) => setInput({
         ...input,
@@ -179,6 +180,15 @@ const Metadata = props => {
                 })}
                 sublabel={"editor:input_catalogue-tags-sub"}/>
 
+            {(file.graphic_id !== null && file.variant_id !== null) &&
+                <Textinput
+                    value={changeMessage}
+                    onChange={event => setChangeMessage(event.currentTarget.value)}
+                    name={"change-message"}
+                    label={"editor:input_change-message"}
+                    sublabel={"editor:input_change-message-hint"}/>
+            }
+            
             <hr/>
             <Status>
                 <span>Status:</span>
@@ -198,7 +208,7 @@ const Metadata = props => {
             <br/>
             <Button onClick={() => {
                 toggleFileModal(true);
-                uploadVersion(dispatch, file, mode)
+                uploadVersion(dispatch, file, mode, changeMessage)
             }}
                     primary fullWidth
                     disabled={!licenseAgreed}

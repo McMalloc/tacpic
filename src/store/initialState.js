@@ -108,6 +108,11 @@ export const catalogue = {
     viewedGraphic: {},
     graphicGetPending: true,
     searchPending: false,
+    historyPending: false,
+    currentHistory: {
+        contributors: [],
+        versions: []
+    },
     loadMorePending: false,
     quotedVariants: [],
     order: {

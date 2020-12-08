@@ -185,7 +185,7 @@ const Landing = () => {
                     <p>Entwerfen Sie Ihre Grafik im tacpic Online-Editor.</p>
                 </div>
                 <div className={"col-xs-12 col-sm-4"}>
-                    <IllustrationContainer offsetY={24} offsetX={25}>
+                    <IllustrationContainer offsetX={25}>
                         <img src={"/images/200902_Konzept-03.svg"}/>
                     </IllustrationContainer>
                     <h3>2. Produktion</h3>
