@@ -236,6 +236,7 @@ const VariantView = (props) => {
               <Button
                 label={t('catalogue:history_' + (showHistory ? 'hide' : 'show'))}
                 icon={'history'}
+                small
                 onClick={() => setSearchParams({ view: showHistory ? '' : "history" })} />
             </small>
           </p>

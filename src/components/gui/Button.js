@@ -24,21 +24,21 @@ const Label = styled.span`
 const ButtonBase = styled.button`
   background-color: ${(props) =>
     props.primary ? props.theme.brand_secondary : "white"};
-  color: ${(props) => (props.primary ? props.theme.background : props.theme.foreground)}!important;
+  color: ${(props) => (props.primary ? props.theme.background : props.theme.foreground)};
   border: 1px solid ${(props) => props.theme.brand_secondary_lighter};
   padding: ${(props) =>
     props.small
-      ? 0
+      ? '2px 4px'
       : props.large
       ? "8px 18px"
       : `${props.theme.spacing[1]} ${props.theme.spacing[2]}`};
-  text-transform: ${(props) => (props.small ? "uppercase" : "none")};
+  /* text-transform: ${(props) => (props.small ? "uppercase" : "none")}; */
   border-radius: ${(props) => props.theme.border_radius};
   cursor: pointer;
   float: ${(props) => (props.rightAction ? "right" : "none")};
   margin: 0;
   position: relative;
-  font-size: ${(props) => (props.small ? "0.8rem" : "1rem")};
+  font-size: ${(props) => (props.small ? "0.9rem" : "1rem")};
   width: ${(props) => (props.fullWidth ? "100%" : "auto")};
   transition: box-shadow 0.15s cubic-bezier(0.19, 1, 0.22, 1),
     background-color 0.15s;
