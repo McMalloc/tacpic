@@ -201,7 +201,7 @@ const Metadata = () => {
                 <Checkbox onChange={event => setLicenseAgreed(!licenseAgreed)}
                           name={'cb-license-agreed'}
                           checked={licenseAgreed}
-                          label={"Ich stimme der Veröffentlichung unter der liberalen CC-BY-SA 3.0 Lizenz zu."}/>
+                          label={t("editor:license_agreed")}/>
                 <a className={"checkbox-additional"} target={"blank"}
                    href={"https://creativecommons.org/licenses/by-sa/4.0/deed.de"}>Lizenz einsehen.</a>
             </div>

@@ -40,6 +40,7 @@ const ProductCardWrapper = styled(Tile)`
 
   .product-card-icon img {
     border-radius: 100%;
+    min-height: 100px;
     transition: box-shadow 0.8s;
   }
 

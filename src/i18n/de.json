@@ -68,7 +68,8 @@
     "payment_options-description": "Lastschrift oder Paypal einrichten",
     "newsletter-active": "Zum Newsletter anmelden",
     "newsletter": "Newsletter",
-    "newsletter-description": "Newsletter-Abonnement verwalten, bisherige Newsletter einsehen"
+    "newsletter-description": "Newsletter-Abonnement verwalten, bisherige Newsletter einsehen",
+    "cb-newsletter": "Ich möchte per E-Mail über neue Funktionen, Inhalte und Produkte informiert werden"
   },
   "commerce": {
     "checkout": "Zahlungspflichtig bestellen",
@@ -130,6 +131,8 @@
     "Key": "Legende",
     "Category": "Einordnen",
     "category_hint": "Lassen Sie sich helfen, die Grafik in eine Kategorie einzuordnen. Dieser Editor kann Ihnen dann passgenaue Hilfestellungen geben.",
+
+    "license_agreed": "Ich stimme der Veröffentlichung unter der liberalen CC-BY-SA 4.0 Lizenz zu.",
 
     "Document": "Eigenschaften des Dokuments",
     "Importer": "Vorlage wählen",
