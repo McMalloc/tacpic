@@ -1,13 +1,9 @@
 import {put, takeLatest, select, call, debounce} from "redux-saga/effects";
 import axios from "axios";
 import {wrapAndChunk, wrapLines} from "../utility/wrapLines";
-import {chunk} from "lodash";
+import {sanitise} from "../utility/sanitise";
 import {API_URL} from "../env"
 import {CHANGE_IMAGE_DESCRIPTION, CHANGE_PAGE_CONTENT, OBJECT_BULK_ADD} from "../actions/action_constants";
-
-const sanitise = text => {
-    return text.replace("%", "%%").replace(/\u00AD/, "");
-}
 
 export function* labelWriteWatcher() {
     yield debounce(500, 'OBJECT_PROP_CHANGED', function* (action) {

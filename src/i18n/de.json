@@ -35,6 +35,7 @@
     "signup": "Konto anlegen",
     "signup-here": "Hier Konto anlegen",
     "signup-cta": "Haben Sie noch kein Konto?",
+    "zip-invalid": "Die Postleitzahl ist ungültig.",
     "login": "Anmelden",
     "logoff": "Abmelden",
     "my_account": "Persönlicher Bereich",

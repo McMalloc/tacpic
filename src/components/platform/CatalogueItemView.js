@@ -108,7 +108,7 @@ const VariantPreview = ({
   tags,
   document,
   current_file_name,
-  derivedTitle,
+  subtitle,
 }) => {
   let selectedVariantId = useParams().variantId;
   const allTags = useSelector((state) => state.catalogue.tags);
@@ -120,7 +120,7 @@ const VariantPreview = ({
       <div className={"variant-info"}>
         <strong>{title}</strong>
         <br />
-        {derivedTitle && <small>{derivedTitle}</small>}
+        {subtitle && <small>{subtitle}</small>}
         <div>
           {!!tags && tags.length !== 0 &&
             tags.map((t, index) => {
@@ -193,7 +193,7 @@ const CatalogueItemView = ({ variantsOverview }) => {
               to={`/catalogue/${graphicId}/variant/${variant.id}`}
             >
               <VariantPreview
-                derivedTitle={derivedFrom && ("abgeleitet aus " + derivedFrom.title)}
+                subtitle={derivedFrom && ("abgeleitet aus " + derivedFrom.title)}
                 {...variant}
               />
             </Link>
@@ -218,7 +218,7 @@ const CatalogueItemView = ({ variantsOverview }) => {
               title={moment(version.created_at, DB_DATE_FORMAT).format("DD.MM.YYYY, HH:mm") + ' Uhr'}
               id={version.id}
               key={ index }
-              derivedTitle={'von ' + history.contributors.find(contributor => contributor.id === version.user_id).display_name}
+              subtitle={`von ${history.contributors.find(contributor => contributor.id === version.user_id).display_name}: ${version.change_message}`}
               current_file_name={version.file_name}
             />
           );

@@ -43,7 +43,7 @@ export const variantUpdateSaga = createSaga(
     VARIANT.UPDATE, 'post', 'variants/:variant_id', takeLatest, true, file =>
         ({
             ...file,
-            variantDescription: `${file.braillePages.imageDescription.summary} (${file.braillePages.imageDescription.type})`,
+            variantDescription: `${file.braillePages.imageDescription.type}. ${file.braillePages.imageDescription.summary} ${file.braillePages.imageDescription.details}`,
             tags: replaceTagUuids(file.tags),
             // hash: md5(JSON.stringify(file.pages.map(page=>{
             //     delete page.rendering;
