@@ -252,7 +252,7 @@ const Metadata = () => {
                         <Alert danger>
                             {t('editor:publish_alert_failure')}
                         </Alert>
-                        <ServerError error={file.error} />
+                        {/* <ServerError error={file.error} /> */}
                     </>
 
                 }

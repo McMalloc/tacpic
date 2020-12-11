@@ -25,7 +25,6 @@ import ResetPasswordRequest from "./components/platform/account/ResetPasswordReq
 import LegalIndex from "./components/platform/Legal";
 import { Pricing } from "./components/platform/Pricing";
 
-
 const ScrollContent = styled.div`
   display: flex;
   flex-grow: 1;

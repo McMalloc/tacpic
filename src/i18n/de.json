@@ -241,7 +241,7 @@
 
     "publish_modal_filestate-title": "Veröffentlichen",
     "publish_alert_success": "Ihre Arbeit wurde im Katalog veröffentlicht.",
-    "publish_alert_failure": "Beim Veröffentlichen ist ein Fehler aufgetreten.",
+    "publish_alert_failure": "Beim Veröffentlichen ist ein Fehler aufgetreten. Dieser wurde an uns gemeldet.",
     "publish_loader_message": "Das Veröffentlichen im Katalog kann einige Sekunden dauern.",
     "publish_button_continue-editing": "Weiter bearbeiten",
     "publish_button_back": "Zurück zum Katalog",

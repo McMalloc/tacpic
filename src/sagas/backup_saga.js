@@ -14,7 +14,10 @@ export function* backupWatcher() {
             localStorage.setItem("EDITOR_BACKUP", stringifiedFile);
             localStorage.setItem("EDITOR_BACKUP_DATE", JSON.stringify(new Date()));
             yield put({ type: SUPPRESS_BACKUP, flag: false });
-            setTimeout(() => document.getElementById("save-indicator").style.visibility = 'hidden', 1500);
+            setTimeout(() => {
+                const elem = document.getElementById("save-indicator");
+                if (!!elem) document.getElementById("save-indicator").style.visibility = 'hidden'
+            }, 1500);
         } catch (error) {
             console.log(error);
         }
