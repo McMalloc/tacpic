@@ -41,7 +41,7 @@ const AccountVerification = props => {
                 pwdValid && pwdConfirmValid && requestVerification(dispatch, pwd, pwdConfirm, key)
             }}>
                 <h1>Noch ein Schritt</h1>
-                <p>Nachdem Sie Ihre E-Mail-Adresse bestätigt haben, müssen SIe sich nur noch ein Passwort ausdenken.</p>
+                <p>Nachdem Sie Ihre E-Mail-Adresse bestätigt haben, müssen Sie sich nur noch ein Passwort ausdenken.</p>
                 <Textinput
                     value={pwd}
                     label={t("general:password")}
