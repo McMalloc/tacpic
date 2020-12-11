@@ -23,7 +23,7 @@ export const QUERIES = {
 };
 
 export const COLOURS = {
-  none: "#FFFFFF",
+  none: "transparent",
   grey: "#808080",
   blue: "rgb(67,44,134)",
   red: "#E4120D",
