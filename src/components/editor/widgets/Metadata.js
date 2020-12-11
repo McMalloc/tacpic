@@ -190,13 +190,12 @@ const Metadata = () => {
             }
             
             <hr/>
-            <Status>
+            {/* <Status>
                 <span>Status:</span>
                 <Indicator state={file.graphic_id === null ? 0 : 1}>
-                    {/*editor:catalogue-state-{this.props.documentState}*/}
                     Entwurf
                 </Indicator>
-            </Status>
+            </Status> */}
             <div>
                 <Checkbox onChange={event => setLicenseAgreed(!licenseAgreed)}
                           name={'cb-license-agreed'}
