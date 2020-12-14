@@ -163,6 +163,7 @@
     "input_catalogue-desc-sub": "Kurze Beschreibung für den Katalog.",
     "input_catalogue-publish": "Veröffentlichen",
     "input_catalogue-update": "Korrigieren",
+    "input_catalogue-create": "Variante erstellen",
     "input_catalogue-save": "Änderungen speichern",
     "input_change-message": "Korrekturbemerkung",
     "input_change-message-hint": "Beschreiben Sie kurz, was geändert worden ist.",

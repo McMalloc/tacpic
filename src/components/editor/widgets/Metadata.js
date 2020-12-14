@@ -213,7 +213,7 @@ const Metadata = () => {
                     disabled={!licenseAgreed}
                     label={file.graphic_id === null ?
                         t("editor:input_catalogue-publish") :
-                        (file.isNew ? t("editor:input_catalogue-create") : t("editor:input_catalogue-update"))
+                        (file.variant_id === null || mode === 'copy' ? t("editor:input_catalogue-create") : t("editor:input_catalogue-update"))
                     }>
             </Button>
 
