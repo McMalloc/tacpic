@@ -95,7 +95,7 @@ const Manipulator = (props) => {
       />
       {selected.length === 1 && (
         <>
-          {selected[0].type !== "path" && (
+          {selected[0].type !== "path" && selected[0].type !== "label" && (
             <>
               <g
                 transform-origin={"inherit"}

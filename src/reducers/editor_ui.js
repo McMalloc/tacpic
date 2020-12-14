@@ -1,4 +1,4 @@
-import {FILE, IMPORT, SUPPRESS_BACKUP} from "../actions/action_constants";
+import {COPY, FILE, IMPORT, SUPPRESS_BACKUP} from "../actions/action_constants";
 
 let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so
 let lastObjectsProps = [];
@@ -36,7 +36,12 @@ const ui = (state = {}, action) => {
                 }
             };
         case IMPORT.TRACE.FAILURE:
-            return {...state, import: {pending: false, preview: null, ocr: '', error: action.message, previewName: ''}};
+            return { ...state, import: { pending: false, preview: null, ocr: '', error: action.message, previewName: '' } };
+        
+        case COPY:
+            return {
+                ...state, clipboard: action.objects
+            }
 
         case 'OCR_SELECT':
             return {...state,

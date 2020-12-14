@@ -55,3 +55,5 @@ export const OBJECT_UPDATED = 'OBJECT_UPDATED';
 export const OBJECT_BULK_ADD = 'OBJECT_BULK_ADD';
 export const ERROR_THROWN = 'ERROR_THROWN';
 export const SUPPRESS_BACKUP = 'SUPPRESS_BACKUP';
+export const COPY = 'COPY';
+export const PASTE = 'PASTE';

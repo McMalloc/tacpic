@@ -15,6 +15,7 @@ export const editor = {
         selectedObjects: [],
         defaultTitle: true,
         initialized: true,
+        clipboard: [],
         import: {
             preview: null,
             previewName: '',
