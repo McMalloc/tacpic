@@ -193,7 +193,7 @@ const Label = (props) => {
             >
               {props.fullCharPrefix && "%"}
               {props.isKey ? props.keyVal : props.braille}{" "}
-              {props.isTitle && !props.pristine
+              {props.isTitle && pageNumber > 1 && !props.pristine
                 ? ` ${currentPageNumber}/${pageNumber}`
                 : ""}
             </Braille>
@@ -240,7 +240,7 @@ const Label = (props) => {
                 id={"editable_" + props.uuid}
                 value={props.isKey ? props.keyVal : props.text}
               />
-              {props.isTitle && !props.pristine && (
+              {props.isTitle && pageNumber > 1 && !props.pristine && (
                 <Pagenumbers
                   className={"label-black page-numbers"}
                   style={{ left: titleWidth + 18 }}
@@ -254,5 +254,4 @@ const Label = (props) => {
   );
 };
 
-// + props.isTitle ? ` ${currentPageNumber}/${pageNumber}` : ''
 export default Label;
