@@ -34,7 +34,7 @@ export default function SVGEllipse(props) {
                 style={{
                     fill: template !== null ? 'url(#pattern-' + template + '-' + props.uuid + '' : props.fill || "transparent",
                     stroke: props.pattern.offset ? props.fill : "black",
-                    strokeWidth: props.border ? props.pattern.offset ? 20 : props.borderWidth : 0,
+                    strokeWidth: props.border ? props.pattern.offset ? 20 : props.borderWidth + 'mm' : 0,
                     strokeDasharray: props.pattern.offset ? null : props.borderStyle
                 }}
                 clipPath={props.pattern.offset ? "url(#clip-" + props.uuid + ")" : null}
