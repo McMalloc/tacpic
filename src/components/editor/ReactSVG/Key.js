@@ -1,8 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import transform from "./transform";
-import {createPattern} from "./Patterns";
 import {useDispatch, useSelector} from "react-redux";
-import {filter, flatten, map, uniq} from "lodash";
 import Rect from "./Rect";
 import styled from "styled-components/macro";
 import {keyedLabelsSelector, patternsInUseSelector} from "../../../reducers/selectors";
@@ -36,7 +33,6 @@ const Labelrow = styled.tr`
 `;
 
 export default props => {
-    const patternsInUse = useSelector(patternsInUseSelector);
     const keyedTextures = useSelector(state => state.editor.file.present.keyedTextures);
     const {scalingFactor, currentPage} = useSelector(state => state.editor.ui);
     const keyedLabels = useSelector(keyedLabelsSelector);
@@ -45,10 +41,6 @@ export default props => {
 
     const texturePreviewWidth = 15;
     const texturePreviewHeight = 10;
-    const padding = 3;
-    const boxPadding = 10;
-
-    const [height, setHeight] = useState(0);
 
     const [internalCoords, setInternalCoords] = useState({x: 0, y: 0});
     const keyElem = useRef();
@@ -91,18 +83,20 @@ export default props => {
                                 <td style={{padding: "2mm 6mm 0 2mm", verticalAlign: 'top',
                                     minWidth: texturePreviewWidth + 'mm',
                                     maxWidth: texturePreviewWidth + 'mm',
-                                    width: texturePreviewWidth + 'mm'}}>
+                                    width: texturePreviewWidth + 'mm'
+                                }}>
                                     <svg width={texturePreviewWidth + "mm"} height={texturePreviewHeight + "mm"}
                                          xmlns={"http://www.w3.org/2000/svg"}><Rect
-                                        inactive={true}
+                                            inactive={true}
+                                            data-selectable={true} data-uuid={props.uuid}
                                         pattern={{template: entry.pattern}}
                                         x={0} y={0}
                                         width={texturePreviewWidth + "mm"} height={texturePreviewHeight + "mm"}/>
                                     </svg>
                                 </td>
-                                <td style={{paddingBottom: '2mm', verticalAlign: 'top'}}>
-                                    <Black className={"key-label-black"}>{entry.label}</Black>
-                                    <Braille className={"key-label-braille"}>{entry.braille}</Braille>
+                                <td style={{padding: '0 2mm 2mm 0', verticalAlign: 'top'}}>
+                                    <Black className={"key-label-black"} data-selectable={true} data-uuid={props.uuid}>{entry.label}</Black>
+                                    <Braille className={"key-label-braille"} data-selectable={true} data-uuid={props.uuid}>{entry.braille}</Braille>
                                 </td>
                             </tr>
                         )
@@ -110,11 +104,11 @@ export default props => {
                     {keyedLabels.map((entry, index) => {
                         return (
                             <Labelrow key={index} onClick={() => dispatch({type: 'OBJECT_SELECTED', uuids: [entry.uuid]})}>
-                                <td style={{verticalAlign: 'top', padding: "2mm 6mm 0 2mm"}}>
+                                <td style={{verticalAlign: 'top', padding: "0 6mm 0 2mm"}}>
                                     <Black className={"key-label-black"}>{entry.keyVal}</Black>
                                     <Braille className={"key-label-braille"}>{entry.keyVal}</Braille>
                                 </td>
-                                <td style={{paddingBottom: '2mm'}}>
+                                <td style={{padding: '0 2mm 2mm 0'}}>
                                     <Black className={"key-label-black"}>{entry.text}</Black>
                                     <Braille className={"key-label-braille"}>{entry.braille}</Braille>
                                 </td>

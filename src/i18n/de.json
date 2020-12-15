@@ -203,7 +203,7 @@
     "label_page-binding": "Schutzraum für Bindung",
     "new_graphics_page": "Neue Grafik-Seite",
     "braille_pagenumbers": "Seitenzahlen",
-    "braille_pagenumbers-hints": "verringern die mögliche Anzahl an Zeilen auf 26",
+    "braille_pagenumbers-hints": "verringern die maximale Anzahl der Zeilen um eine Zeile.",
 
     "intro": "Einführung",
     "intro_tooltip": "Beginnen Sie hier.",

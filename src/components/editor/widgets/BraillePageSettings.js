@@ -47,7 +47,7 @@ const GridCell = styled.div`
   }
 `;
 
-const BraillePageSettings = (props) => {
+const BraillePageSettings = () => {
   const dispatch = useDispatch();
   const { braillePages, width, height } = useSelector(
     (state) => state.editor.file.present
@@ -55,9 +55,6 @@ const BraillePageSettings = (props) => {
 
   return (
     <>
-      <fieldset>
-        {/*<legend>Format</legend>*/}
-        <Row>
           {/* <div className={"col-sm-12"}>
                         <Select label={"editor:label_page-format"} default={"a4"} options={
                             [
@@ -67,7 +64,7 @@ const BraillePageSettings = (props) => {
                             ]}
                         />
                     </div> */}
-          <div className={"col-sm-12"}>
+          <div>
             <PageGrid>
               <GridCell>
                 {/*<Alert info>*/}
@@ -161,13 +158,7 @@ const BraillePageSettings = (props) => {
               <GridCell></GridCell>
             </PageGrid>
           </div>
-        </Row>
-        <Row>
-          <div className={"col-sm-6"}></div>
-          <div className={"col-sm-6"}></div>
-        </Row>
-        <Row>
-          <div className={"col-sm-6"}>
+          <div>
             <Checkbox
               name={"cb_pagenumbers"}
               value={braillePages.pageNumbers > 0}
@@ -182,8 +173,6 @@ const BraillePageSettings = (props) => {
               sublabel={"editor:braille_pagenumbers-hints"}
             />
           </div>
-        </Row>
-      </fieldset>
     </>
   );
 };

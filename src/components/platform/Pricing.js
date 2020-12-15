@@ -159,7 +159,7 @@ const Pricing = (props) => {
       duration: "1 Jahr",
       icon: "icon_guenstig.svg",
       price: "aktuell kostenlos",
-      priceHint: "nach Beta-Phase 19,99€ inkl. MwSt.",
+      priceHint: "nach Beta-Phase 199,-€ inkl. MwSt.",
       buttons: [
         <Button
           icon={"shopping-cart"}

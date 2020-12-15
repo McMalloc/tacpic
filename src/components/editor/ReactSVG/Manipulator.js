@@ -59,7 +59,6 @@ const Manipulator = (props) => {
   let width, height, transformProperty;
   if (selected.length === 1) {
     // single objects
-    console.log(selected[0]);
     const bbox = methods[selected[0].type].getBBox(selected[0]);
     width = bbox.width * scalingFactor;
     height = bbox.height * scalingFactor;
@@ -96,7 +95,7 @@ const Manipulator = (props) => {
       />
       {selected.length === 1 && (
         <>
-          {selected[0].type !== "path" && selected[0].type !== "label" && (
+          {selected[0].type !== "path" && selected[0].type !== "label"  && selected[0].type !== "key" && (
               <g
                 transform-origin={"inherit"}
                 transform={`scale(0.5) translate(${

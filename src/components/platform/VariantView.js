@@ -368,7 +368,7 @@ const VariantView = (props) => {
                 icon={"file-pdf"}
                 label={"catalogue:pdf"}
                 onClick={() =>
-                  (window.location = `${APP_URL}/variants/${variantId}/pdf_${props.graphicTitle}_${props.title}`)
+                  (window.location = `${APP_URL}/variants/${variantId}/pdf_${props.current_file_name}`)
                 }
                 sublabel={"catalogue:pdf-hint"}
               />
@@ -376,7 +376,7 @@ const VariantView = (props) => {
                 icon={"file-word"}
                 label={"catalogue:rtf"}
                 onClick={() =>
-                  (window.location = `${APP_URL}/variants/${variantId}/rtf_${props.graphicTitle}_${props.title}`)
+                  (window.location = `${APP_URL}/variants/${variantId}/rtf_${props.current_file_name}`)
                 }
                 sublabel={"catalogue:rtf-hint"}
               />
@@ -384,7 +384,7 @@ const VariantView = (props) => {
                 icon={"file"}
                 label={"catalogue:brf"}
                 onClick={() =>
-                  (window.location = `${APP_URL}/variants/${variantId}/brf_${props.graphicTitle}_${props.title}`)
+                  (window.location = `${APP_URL}/variants/${variantId}/brf_${props.current_file_name}`)
                 }
                 sublabel={"catalogue:brf-hint"}
               />

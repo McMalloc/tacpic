@@ -27,7 +27,6 @@ import { Radiobar, RadiobarSegment } from "../gui/Radiobar";
 import {
   AccordeonPanel,
   AccordeonPanelFlyoutButton,
-  useRedraw,
 } from "../gui/Accordeon";
 import GraphicPageSettings from "./widgets/GraphicPageSettings";
 import BraillePageSettings from "./widgets/BraillePageSettings";
@@ -173,7 +172,6 @@ const Editor = (props) => {
   let { variantId, graphicId, mode } = useParams();
 
   const onKeyDownHandler = (event) => {
-    console.log(event.which, event.ctrlKey);
     switch (event.which) {
       case 67:
         if (event.ctrlKey) {
@@ -192,10 +190,10 @@ const Editor = (props) => {
         }
         break;
       case 90:
-        dispatch({ type: "UNDO" });
+        if (event.ctrlKey && undoLength > 0) dispatch({ type: "UNDO" });
         break;
       case 89:
-        dispatch({ type: "REDO" });
+        if (event.ctrlKey && redoLength > 0) dispatch({ type: "REDO" });
         break;
     }
   };

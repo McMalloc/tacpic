@@ -146,6 +146,7 @@ const Label = (props) => {
       data-group={1}
       data-selectable={true}
       data-editable={1}
+      data-select-override={props.isTitle}
       data-in_edit_mode={props.editMode}
       transform={transform(props.x, props.y, props.angle)}
     >

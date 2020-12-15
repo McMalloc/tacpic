@@ -61,6 +61,7 @@ const iconMap = {
 }
 
 const keyDownHandler = (event, selectedUUID, dispatch) => {
+    console.log("keydown");
     switch (event.which) {// TODO use constants instead of magic numbers
         case 46: // DEL
             if (!!selectedUUID) return;

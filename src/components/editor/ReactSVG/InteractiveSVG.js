@@ -216,7 +216,6 @@ class InteractiveSVG extends Component {
             //  transform sollte auch bei einem klick auf den manipulator funktionieren, für gruppen
 
             if (this.state.modifierKey === 32) { // space pressed
-                console.log(this.state.panningRefX, event.pageX);
                 this.setState({
                     panning: true,
                     panningRefX: this.props.wrapperRef.current.scrollLeft + event.pageX,
@@ -235,7 +234,7 @@ class InteractiveSVG extends Component {
             }
 
             let selectedId = null;
-            if (this.props.ui.tool === 'SELECT') {
+            if (this.props.ui.tool === 'SELECT' || !!target.dataset.selectOverride) {
                 if (target.dataset.selectable) {
                     selectedId = target.dataset.uuid || target.id;
                     this.props.select([selectedId]);

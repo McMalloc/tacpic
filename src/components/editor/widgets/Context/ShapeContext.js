@@ -104,7 +104,7 @@ const ShapeContext = props => {
                             selectedObject.uuid,
                             'borderWidth',
                             option.value)
-                    }} value={selectedObject.borderWidth} disabled={!selectedObject.border} label={t("Linienstärke")} options={[
+                    }} value={selectedObject.borderWidth} menuPlacement={'top'} disabled={!selectedObject.border} label={t("Linienstärke")} options={[
                         {
                             value: 0.5,
                             label: t("0,5 mm (Hilfslinie)")
