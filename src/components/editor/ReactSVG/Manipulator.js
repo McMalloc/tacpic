@@ -59,6 +59,7 @@ const Manipulator = (props) => {
   let width, height, transformProperty;
   if (selected.length === 1) {
     // single objects
+    console.log(selected[0]);
     const bbox = methods[selected[0].type].getBBox(selected[0]);
     width = bbox.width * scalingFactor;
     height = bbox.height * scalingFactor;

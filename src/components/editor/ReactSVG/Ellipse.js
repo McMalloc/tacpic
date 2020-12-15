@@ -47,6 +47,7 @@ export default function SVGEllipse(props) {
             {props.pattern.offset && props.border &&
             <ellipse
                 id={"stroke-" + props.uuid}
+                data-uuid={props.uuid}
                 transform={transformProperty}
                 style={{fill: "none"}}
                 strokeWidth={props.borderWidth + 'mm'}

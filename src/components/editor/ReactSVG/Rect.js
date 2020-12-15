@@ -47,6 +47,7 @@ export default function SVGRect(props) {
             {props.pattern.offset && props.border &&
             <rect
                 id={"stroke-" + props.uuid}
+                data-uuid={props.uuid}
                 transform={transformProperty}
                 style={{fill: "none"}}
                 x={xVectorUnits ? null : props.x}
