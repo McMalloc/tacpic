@@ -184,7 +184,9 @@
     "button_tools-diagram": "Diagramm",
     "toggle_tools-SELECT": "Auswählen",
     "redo": "Wiederherstellen",
+    "redo-hint": "Zuletzt rückgängig gemachte Aktion wiederherstellen (Strg + Y)",
     "undo": "Rückgängig",
+    "undo-hint": "Letzte Aktion rückgängig machen (Strg + Z)",
     "texture": "Textur",
     "texture_offset": "Abstand zwischen Textur und Rand",
 

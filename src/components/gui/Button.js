@@ -93,7 +93,7 @@ const Button = React.forwardRef((props, ref) => {
   const collapsedLabel = props.collapsable && !breakpoints[props.collapsable];
 
   return (
-    <ButtonBase type={props.type || "button"} ref={ref} {...props}>
+    <ButtonBase type={props.type || "button"} ref={ref} title={t(props.title)} {...props}>
       {props.icon && <Icon icon={props.icon} primary={props.primary} />}
       {label && (
         <Label hasIcon={!!props.icon && !collapsedLabel}>

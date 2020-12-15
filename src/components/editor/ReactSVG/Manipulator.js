@@ -96,7 +96,6 @@ const Manipulator = (props) => {
       {selected.length === 1 && (
         <>
           {selected[0].type !== "path" && selected[0].type !== "label" && (
-            <>
               <g
                 transform-origin={"inherit"}
                 transform={`scale(0.5) translate(${
@@ -127,14 +126,15 @@ const Manipulator = (props) => {
                   }
                 />
               </g>
+          )}
 
+{selected[0].type !== "path" &&
               <path
                               data-role={"SCALE"}
                               style={{cursor: 'nwse-resize', fill: uiColor}}
                 d={`M${width+5},${height+5} h${-25} l${25}${-25} z`}
               />
-            </>
-          )}
+          }
         </>
       )}
     </g>

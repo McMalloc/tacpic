@@ -10,12 +10,12 @@ svg {
     background: none;
   }
 
+  // TODO outline für hover, aber nicht für die Rahmenelemente
   &.tool-SELECT {
     *[data-selectable=true] {
       //outline: 1px solid magenta;
       &:hover {
         cursor: pointer;
-        //outline: 1px solid magenta;
       }
     }
   }

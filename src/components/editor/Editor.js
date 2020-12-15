@@ -191,6 +191,12 @@ const Editor = (props) => {
           });
         }
         break;
+      case 90:
+        dispatch({ type: "UNDO" });
+        break;
+      case 89:
+        dispatch({ type: "REDO" });
+        break;
     }
   };
 
@@ -403,6 +409,7 @@ const Editor = (props) => {
                 <Button
                   label={"editor:undo"}
                   primary
+                  title={"editor:undo-hint"}
                   disabled={undoLength === 0}
                   icon={"undo"}
                   onClick={() => {
@@ -412,6 +419,7 @@ const Editor = (props) => {
                 <Button
                   label={"editor:redo"}
                   primary
+                  title={"editor:redo-hint"}
                   disabled={redoLength === 0}
                   icon={"redo"}
                   onClick={() => {
