@@ -70,7 +70,7 @@ export default props => {
                        data-internal-y={internalCoords.y}
                        data-uuid={props.uuid}
                        xmlns={"http://www.w3.org/1999/xhtml"}>
-                    <tbody>
+                    <tbody data-selectable={true} data-uuid={props.uuid}>
                     <tr>
                         <td style={{padding: "2mm 6mm 0 2mm"}} colSpan={2}>
                             <Black className={"key-label-black"} data-selectable={true} data-transformable={true} data-uuid={props.uuid}>Legende</Black>

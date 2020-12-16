@@ -57,3 +57,4 @@ export const ERROR_THROWN = 'ERROR_THROWN';
 export const SUPPRESS_BACKUP = 'SUPPRESS_BACKUP';
 export const COPY = 'COPY';
 export const PASTE = 'PASTE';
+export const OBJECT_PROP_CHANGED = 'OBJECT_PROP_CHANGED';

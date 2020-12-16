@@ -152,7 +152,7 @@ const file = (state = {}, action) => {
     case "OBJECT_PROP_CHANGED":
       // TODO nested Objects / andere ausgewählte Seite
       return produce(state, (draftState) => {
-        filter(draftState.pages[action.shared_currentPage].objects, {
+        filter([].concat.apply([], draftState.pages.map(page => page.objects)), {
           uuid: action.uuid,
         }).forEach((object) => {
           object[action.prop] = action.value;

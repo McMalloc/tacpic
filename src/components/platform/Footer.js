@@ -106,7 +106,7 @@ const Footer = props => {
                             <p>
                                 <span className={"heading"}>Gefördert durch</span>
                                 <FooterImageContainer>
-                                    <a href={"https://europa.sachsen-anhalt.de"}>
+                                    <a target={'blank'} href={"https://europa.sachsen-anhalt.de/esi-fonds-in-sachsen-anhalt/ueber-die-europaeischen-struktur-und-investitionsfonds/esf/"}>
                                         <img
                                             alt={"Das Projekt tacpic wird vom Land Sachsen-Anhalt unterstützt und aus Mittel des Europäischen Sozialfonds mitfinanziert."}
                                             src={"/images/esf-signetpaar.svg"}/>

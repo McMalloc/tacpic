@@ -38,6 +38,8 @@ const Black = styled.textarea`
   font-family: Arial, Helvetica, sans-serif;
   width: 100%;
   border: none;
+  /* font-weight: ${props => props.isTitle ? 'bold' : 'normal'}; */
+  /* text-decoration: ${props => props.isTitle ? 'underline' : 'none'}; */
   overflow: hidden;
   padding: 0;
   resize: none;
@@ -216,6 +218,7 @@ const Label = (props) => {
               }
               <Black
                 style={{ height: props.height }}
+                isTitle={props.isTitle}
                 preview={previewMode}
                 xmlns={"http://www.w3.org/1999/xhtml"}
                 disabled={!props.editMode}
@@ -225,6 +228,7 @@ const Label = (props) => {
                   props.braille.length === 0 &&
                   changeText(dispatch, "", props.uuid)
                 }
+                onKeyDown={event => event.stopPropagation()}
                 onChange={(event) =>
                   changeText(
                     dispatch,

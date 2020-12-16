@@ -1,5 +1,5 @@
-import React, {Fragment, useState} from 'react';
-import styled, {useTheme} from 'styled-components/macro';
+import React, {useState} from 'react';
+import styled from 'styled-components/macro';
 import {useTranslation} from "react-i18next";
 import {Radiobar, RadiobarSegment} from "./Radiobar";
 import Toggle from "./Toggle";
@@ -69,8 +69,10 @@ const View = styled.div`
 const Carousel = props => {
     const {t} = useTranslation();
     const [position, setPosition] = useState(0);
-    const theme = useTheme();
     const validChildren = props.children.filter(c => !!c);
+    
+    console.log(validChildren[position]);
+    console.log(validChildren, props.children);
     return (
         <Wrapper>
             <View>

@@ -162,7 +162,7 @@ const VariantView = (props) => {
   const [quantity, setQuantity] = useState(1);
   const [ref, entry] = useIntersect({ threshold: scrollThreshold });
   const [searchParams, setSearchParams] = useSearchParams();
-  const showHistory = searchParams.get('view') === 'history';
+  const showHistory = searchParams.get("view") === "history";
   // TODO Suchbegriff aus Store holen und in Variantenbeschreibung hervorheben
 
   if (!md && entry.intersectionRatio > scrollThreshold) {
@@ -174,6 +174,31 @@ const VariantView = (props) => {
     );
   }
 
+  const pagePreviews = props.document.pages
+    .map((page, index) => {
+      return (
+        <img
+          key={index}
+          src={`${API_URL}/thumbnails/${props.current_file_name}-THUMBNAIL-xl-p${index}.png`}
+        />
+      );
+    })
+    .concat(
+      props.braille_no_of_pages > 0 && (
+        // <BraillePageWrapper>
+        <BraillePagePreview>
+          {Object.keys(props.document.braillePages.imageDescription).reduce(
+            (accumulator, blockKey) =>
+              accumulator +
+              props.document.braillePages.imageDescription[blockKey] +
+              "\n\n",
+            ""
+          ) + props.document.braillePages.content}
+        </BraillePagePreview>
+        // </BraillePageWrapper>
+      )
+    );
+
   if (!props.id) return null;
   return (
     <Wrapper ref={ref}>
@@ -183,30 +208,7 @@ const VariantView = (props) => {
             <span className={"disabled"}>Insgesamt eine Grafikseite.</span>
           }
         >
-          {props.document.pages
-            .map((page, index) => {
-              return (
-                <img
-                  key={index}
-                  src={`${API_URL}/thumbnails/${props.current_file_name}-THUMBNAIL-xl-p${index}.png`}
-                />
-              );
-            })
-            .filter((item) => item !== null)}
-          {/*TODO formatierer existiert so auch in einer saga, kann refaktorisiert werden*/}
-          {props.braille_no_of_pages > 0 && (
-            // <BraillePageWrapper>
-            <BraillePagePreview>
-              {Object.keys(props.document.braillePages.imageDescription).reduce(
-                (accumulator, blockKey) =>
-                  accumulator +
-                  props.document.braillePages.imageDescription[blockKey] +
-                  "\n\n",
-                ""
-              ) + props.document.braillePages.content}
-            </BraillePagePreview>
-            // </BraillePageWrapper>
-          )}
+          {pagePreviews}
         </Carousel>
       </Preview>
       <Title>
@@ -234,10 +236,15 @@ const VariantView = (props) => {
               Uhr
               <br />
               <Button
-                label={t('catalogue:history_' + (showHistory ? 'hide' : 'show'))}
-                icon={'history'}
+                label={t(
+                  "catalogue:history_" + (showHistory ? "hide" : "show")
+                )}
+                icon={"history"}
                 small
-                onClick={() => setSearchParams({ view: showHistory ? '' : "history" })} />
+                onClick={() =>
+                  setSearchParams({ view: showHistory ? "" : "history" })
+                }
+              />
             </small>
           </p>
         </div>
