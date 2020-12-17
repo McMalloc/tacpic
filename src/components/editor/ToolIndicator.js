@@ -12,7 +12,7 @@ const ToolIndicator = props => {
     console.log("indicator rendered");
     if (!!props.hide || props.tool === 'SELECT') return null;
     return (
-            <Wrapper x={props.coords[0] + 20} y={props.coords[1] + 30} id={'tool-indicator'}>
+            <Wrapper x={props.coords[0] + 10} y={props.coords[1] + 25} id={'tool-indicator'}>
                 {TOOLS[props.tool].unicode}
             </Wrapper>
     );
