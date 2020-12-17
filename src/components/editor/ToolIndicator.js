@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import styled from 'styled-components/macro';
 import { TOOLS } from '../../config/constants';
 
@@ -9,7 +9,6 @@ const Wrapper = styled.text`
 `;
 
 const ToolIndicator = props => {
-    console.log("indicator rendered");
     if (!!props.hide || props.tool === 'SELECT') return null;
     return (
             <Wrapper x={props.coords[0] + 10} y={props.coords[1] + 25} id={'tool-indicator'}>

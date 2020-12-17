@@ -3,8 +3,10 @@ import {getMirrorPoint} from "../../../../utility/geometry";
 import fitCurve from "fit-curve";
 import {chunk} from "lodash";
 import {textureColourMapping} from "./methods";
+import { TEXTURES, COLOURS } from '../../../../config/constants';
 
-export const createPath = (x = 0, y = 0, template = "stair", fill, moniker = "Kurve") => {
+export const createPath = (x = 0, y = 0, template = null, fill = COLOURS.none, moniker = "Kurve") => {
+    console.log(template, fill, textureColourMapping[template]);
     return {
         uuid: uuidv4(),
         angle: 0,
@@ -18,7 +20,7 @@ export const createPath = (x = 0, y = 0, template = "stair", fill, moniker = "Ku
         startArrow: false,
         endArrow: false,
         closed: false,
-        fill: textureColourMapping[template],
+        fill: fill,
         pattern: {
             template,
             offset: true

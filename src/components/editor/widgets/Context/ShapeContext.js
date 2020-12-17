@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {Textinput} from "../../../gui/Input";
 import {Checkbox} from "../../../gui/Checkbox";
 import Select from "../../../gui/Select";
-import {Row} from "../../../gui/Grid";
 import Palette from "../../../gui/Palette";
 import TexturePalette from "../../../gui/TexturePalette";
 import {findObject} from "../../../../utility/findObject";
@@ -166,19 +165,6 @@ const ShapeContext = props => {
                 </fieldset>
 
             </div>
-
-            {/*<TabPane tabs={[*/}
-            {/*    {*/}
-            {/*        label: 'editor:tablist_shape-fill',*/}
-            {/*        icon: 'paint-roller',*/}
-            {/*        content: fill*/}
-            {/*    },*/}
-            {/*    {*/}
-            {/*        label: 'editor:tablist_shape-contour',*/}
-            {/*        icon: 'circle-notch',*/}
-            {/*        content: border*/}
-            {/*    }*/}
-            {/*]}/>*/}
         </>
     );
 

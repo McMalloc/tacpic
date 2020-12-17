@@ -25,7 +25,8 @@ export const textureColourMapping = {
     "dashed_lines": COLOURS.white,
     "grid": COLOURS.yellow,
     "stair": COLOURS.green,
-    "dotted": COLOURS.red
+    "dotted": COLOURS.red,
+    "none": COLOURS.none
 }
 
 const createEmbedded = (offsetX = 0, offsetY = 0, markup = '<svg/>', filename = 'Importierte Grafik') => {
