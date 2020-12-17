@@ -1,6 +1,7 @@
 import React, {Component, useState} from 'react'
 import {connect} from "react-redux";
 import Manipulator from "./Manipulator";
+import ToolIndicator from "../ToolIndicator";
 
 import {cloneDeep} from "lodash";
 import mapObject from "./index";
@@ -20,7 +21,11 @@ const SVG = styled.svg`
   height: ${props => props.scale * 1500}px;
   touch-action: none; 
   outline: none; 
-  cursor: ${({isPanning}) => isPanning ? 'move' : 'inherit'};
+  cursor: ${({ isPanning, tool }) => isPanning ? 'move' : tool === 'SELECT' ? 'inherit' : 'crosshair'};
+  
+  &:hover #tool-indicator {
+    visibility: visible;
+  }
 `;
 
 class InteractiveSVG extends Component {
@@ -537,6 +542,7 @@ let target = event.nativeEvent.target;
                 onKeyUp={this.keyUpHandler}
                 onMouseUp={this.mouseUpHandler}
                 isPanning={this.state.panning}
+                tool={this.props.ui.tool}
                 scale={this.props.ui.scalingFactor}
                 onMouseMove={this.mouseMoveHandler}
                 onMouseLeave={this.mouseUpHandler}
@@ -658,7 +664,7 @@ let target = event.nativeEvent.target;
                 {/*          x={this.state.t_mouseOffsetX - 20}>*/}
                 {/*        {parseInt(this.state.t_mouseOffsetY)}</text>*/}
                 {/*</g>*/}
-
+                <ToolIndicator hide={this.state.dragging} tool={this.props.ui.tool} coords={[this.state.t_mouseOffsetX, this.state.t_mouseOffsetY]} />
             </SVG>
             // </div>
         )

@@ -36,7 +36,7 @@ import * as moment from "moment";
 import { useNavigate } from "react-router";
 import methods from "./ReactSVG/methods/methods";
 import Loader from "../gui/Loader";
-import { SVG_A4_PX_WIDTH } from "../../config/constants";
+import { SVG_A4_PX_WIDTH, TOOLS } from "../../config/constants";
 import { editor } from "../../store/initialState";
 import Verbaliser from "./widgets/Verbaliser";
 import ErrorBoundary from "../../ErrorBoundary";
@@ -116,15 +116,6 @@ const Draftinfo = styled.div`
 
 // const Loading
 
-const iconMap = {
-  SELECT: "hand-pointer",
-  RECT: "vector-square",
-  ELLIPSE: "circle",
-  PATH: "bezier-curve",
-  QUADRATIC: "bezier-curve",
-  LABEL: "font",
-};
-
 const switchCursorMode = (dispatch, mode) => {
   dispatch({
     type: SWITCH_CURSOR_MODE,
@@ -158,6 +149,7 @@ const Editor = (props) => {
   const { lg } = useBreakpoint();
   const t = useTranslation().t;
   const [openedPanel, setOpenedPanel] = useState(null);
+  const [rerender, rerenderUnrulyComponents] = useState(0);
   const [accordeonStates, setAccordeonStates] = useState(
     JSON.parse(localStorage.getItem("accordeonStates")) || {}
   );
@@ -365,14 +357,14 @@ const Editor = (props) => {
           <Wrapper onKeyDown={onKeyDownHandler}>
             <Radiobar className={"editor-toolbar"}>
               <RadiobarSegment>
-                {["SELECT", "RECT", "ELLIPSE", "LABEL", "PATH"].map(
+                {Object.keys(TOOLS).map(
                   (tool, index) => {
                     return (
                       <Toggle
                         label={"editor:toggle_tools-" + tool}
                         primary
                         key={index}
-                        icon={iconMap[tool]}
+                        icon={TOOLS[tool].cssClass}
                         toggled={uiSettings.tool === tool}
                         onClick={() => {
                           if (
@@ -541,6 +533,7 @@ const Editor = (props) => {
                 </AccordeonPanelFlyoutButton>
                 <AccordeonPanelFlyoutButton
                   flownOut={openedPanel === "imagedescription"}
+                  forcedRerender={rerender}
                   className={"padded"}
                   hideFlyout={dragging}
                   onClick={() =>
@@ -553,9 +546,11 @@ const Editor = (props) => {
                   label={"Bildbeschreibung"}
                   icon={"image"}
                 >
-                  {/*<Writer/>*/}
                   <Verbaliser
                     style={{ maxHeight: "100%", height: "100%" }}
+                    redrawCallback={() => {
+                      rerenderUnrulyComponents(rerender + 1);
+                    }}
                     closeSelf={() => {
                       setOpenedPanel(null);
                       setShowBraillePanel(true);

@@ -22,6 +22,25 @@ export const QUERIES = {
   xl: XL_SCREEN.slice(7),
 };
 
+export const TOOLS =
+{
+  SELECT: {
+    cssClass: 'hand-pointer', unicode: '\uf25a'
+  },
+  RECT: {
+    cssClass: 'vector-square', unicode: '\uf5cb'
+  },
+  ELLIPSE: {
+    cssClass: 'circle', unicode: '\uf111'
+  },
+  LABEL: {
+    cssClass: 'font', unicode: '\uf031'
+  },
+  PATH: {
+    cssClass: 'bezier-curve', unicode: '\uf55b'
+  }
+}
+
 export const COLOURS = {
   none: "transparent",
   grey: "#808080",
