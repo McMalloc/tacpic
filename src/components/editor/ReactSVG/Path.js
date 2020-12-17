@@ -28,12 +28,11 @@ export default function SVGPath(props) {
             <path
                 style={{
                     stroke: props.pattern.offset ? props.fill : "black",
-                    strokeWidth: props.border ? props.pattern.offset ? 20 : props.borderWidth + "mm" : 0,
-                    // strokeDasharray: props.pattern.offset ? null : props.borderStyle
+                    strokeWidth: props.border ? props.pattern.offset ? ((props.borderWidth / 2) + 4) + 'mm' : props.borderWidth + "mm" : 0,
                 }}
                 fill={props.pattern.template !== null ? 'url(#pattern-' + props.pattern.template + '-' + props.uuid + '' : props.fill || "none"}
                 d={path}
-                className={"border"}
+                className={"border texture-offset"}
                 data-uuid={props.uuid}
                 id={props.uuid}
                 data-transformable={!props.inactive}
