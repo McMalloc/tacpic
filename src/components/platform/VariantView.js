@@ -174,6 +174,8 @@ const VariantView = (props) => {
     );
   }
 
+  if (!props.id) return null;
+
   const pagePreviews = props.document.pages
     .map((page, index) => {
       return (
@@ -199,7 +201,6 @@ const VariantView = (props) => {
       )
     );
 
-  if (!props.id) return null;
   return (
     <Wrapper ref={ref}>
       <Preview>

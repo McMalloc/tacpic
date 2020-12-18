@@ -25,7 +25,7 @@ const Verbaliser = props => {
     const dispatch = useDispatch();
     const imageDescription = useSelector(state => state.editor.file.present.braillePages.imageDescription);
     const {t} = useTranslation();
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(0);
     const buttonLabel = function() {
         if (step === 0) return "Weiter zur Zusammenfassung";
         if (step === 1) return "Weiter zu den Details";

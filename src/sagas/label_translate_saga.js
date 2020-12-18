@@ -3,7 +3,7 @@ import axios from "axios";
 import {wrapAndChunk, wrapLines} from "../utility/wrapLines";
 import {sanitise} from "../utility/sanitise";
 import {API_URL} from "../env"
-import {CHANGE_IMAGE_DESCRIPTION, CHANGE_PAGE_CONTENT, OBJECT_BULK_ADD} from "../actions/action_constants";
+import { CHANGE_IMAGE_DESCRIPTION, CHANGE_PAGE_CONTENT, OBJECT_BULK_ADD } from "../actions/action_constants";
 
 export function* labelWriteWatcher() {
     yield debounce(500, 'OBJECT_PROP_CHANGED', function* (action) {
