@@ -3,6 +3,9 @@
 # dependencies
 /node_modules
 
+# braille tables
+/public/scripts/tables
+
 # testing
 /coverage
 

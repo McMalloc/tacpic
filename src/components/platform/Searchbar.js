@@ -54,6 +54,7 @@ const Searchbar = () => {
                         }
                 }}
                 className={"right-attached"}
+                label={""}
                 icon={"search"}
                 collapsable={'sm'}
                     id={"catalogue-search-btn"}

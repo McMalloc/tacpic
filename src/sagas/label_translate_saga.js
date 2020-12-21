@@ -1,9 +1,19 @@
-import {put, takeLatest, select, call, debounce} from "redux-saga/effects";
+import { put, takeLatest, select, call, debounce } from "redux-saga/effects";
 import axios from "axios";
 import {wrapAndChunk, wrapLines} from "../utility/wrapLines";
 import {sanitise} from "../utility/sanitise";
 import {API_URL} from "../env"
 import { CHANGE_IMAGE_DESCRIPTION, CHANGE_PAGE_CONTENT, OBJECT_BULK_ADD } from "../actions/action_constants";
+/**
+ * Load the worker code as plaintext. Uses webpack loader syntax, so the javascript file doesn't get evaluated instantly. This needs to be enabled with an ESLint override.
+ */
+/* eslint import/no-webpack-loader-syntax: off */
+import Worker from "worker-loader!../workers/translateWorker"
+
+// const blob = new Blob([translateWorkerScript], {type: 'application/javascript'});
+
+const translateWorker = new Worker();
+console.dir(translateWorker);
 
 export function* labelWriteWatcher() {
     yield debounce(500, 'OBJECT_PROP_CHANGED', function* (action) {

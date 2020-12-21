@@ -15,9 +15,12 @@
       Javascript benötigt.
     </noscript>
 
+    <!-- container used to calculate text width -->
     <div aria-hidden=true id="dummy" style="position: absolute; opacity: 0;"></div>
 
     <div id="root">
+
+      <!-- loader -->
       <div style="
   margin-top: 20%;
   flex-direction: column;
@@ -36,6 +39,7 @@
 
     </div>
 
+    <!-- hidden reference object to convert mm to device specific px and vice versa -->
     <div style="position: absolute; opacity: 0; top:  0; left: 0">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml"
            width=1 height=1>
@@ -52,6 +56,5 @@
     <div id="flyout"></div>
     <div id="modal"></div>
     <div id="select-portal-target"></div>
-
   </body>
 </html>

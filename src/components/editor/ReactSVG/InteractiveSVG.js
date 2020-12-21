@@ -135,14 +135,10 @@ class InteractiveSVG extends Component {
                     this.props.ui.viewPortY);
                 break;
             case 187: // +
-                console.log(
-                    this.svgElement.current.scrollWidth,
-                    this.svgElement.current.scrollHeight
-                );
                 this.props.changeViewport(
                     this.props.ui.scalingFactor + 0.1,
-                    this.props.ui.viewPortX + this.state.mouseOffsetX * this.props.ui.scalingFactor,
-                    this.props.ui.viewPortY + this.state.mouseOffsetY * this.props.ui.scalingFactor);
+                    this.props.ui.viewPortX,
+                    this.props.ui.viewPortY);
                 break;
             case 189: // -
                 this.props.changeViewport(
