@@ -9,7 +9,7 @@ module.exports = function(app) {
     createProxyMiddleware({
       target: 'http://localhost:9292',
       logLevel: "debug",
-      pathRewrite: function (path, req) {
+      pathRewrite: function (path) {
         return path.replace('/api', '/')
       }
     })

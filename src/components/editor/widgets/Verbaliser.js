@@ -76,9 +76,7 @@ const Verbaliser = props => {
             }
 
             <ButtonWrapper>
-                <Button disabled={step <= 0} onClick={() => setStep(Math.max(0, step - 1))}>
-                    Zurück
-                </Button>
+                <Button label={'Zurück'} disabled={step <= 0} onClick={() => setStep(Math.max(0, step - 1))} />
 
                 <Button icon={"arrow-right"} onClick={() => {
                     if (step + 1 === steps.length) {

@@ -70,7 +70,6 @@ const BraillePage = (props) => {
   );
   // TODO in props stecken, der Editor weiß ohnehin Bescheid
 
-  console.log(braillePages);
   if (braillePages.braille.trim().length === 0) {
     return (
       <Wrapper>
