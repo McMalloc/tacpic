@@ -1,3 +1,5 @@
+
+/* eslint no-undef: off */
 importScripts('/scripts/liblouis-3-16-1-no-tables-utf32.js', '/scripts/easy-api.js');
 
 liblouis.enableOnDemandTableLoading("/scripts/tables/");

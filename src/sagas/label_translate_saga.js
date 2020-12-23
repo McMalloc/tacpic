@@ -14,14 +14,13 @@ import {
   OBJECT_PROP_CHANGED,
 } from "../actions/action_constants";
 /* eslint import/no-webpack-loader-syntax: off */
-import Worker from "worker-loader!../workers/translateWorker";
+import Worker from "worker-loader!../workers/translate.worker.js";
 
 const translateWorker = new Worker();
 
 function createWorkerChannel(worker) {
   return eventChannel((emit) => {
     worker.onmessage = (event) => {
-        console.log(event);
       emit(event.data);
     };
     return worker.terminate;
