@@ -22,24 +22,28 @@ export const QUERIES = {
   xl: XL_SCREEN.slice(7),
 };
 
-export const TOOLS =
-{
+export const TOOLS = {
   SELECT: {
-    cssClass: 'hand-pointer', unicode: '\uf25a'
+    cssClass: "hand-pointer",
+    unicode: "\uf25a",
   },
   RECT: {
-    cssClass: 'vector-square', unicode: '\uf5cb'
+    cssClass: "vector-square",
+    unicode: "\uf5cb",
   },
   ELLIPSE: {
-    cssClass: 'circle', unicode: '\uf111'
+    cssClass: "circle",
+    unicode: "\uf111",
   },
   LABEL: {
-    cssClass: 'font', unicode: '\uf031'
+    cssClass: "font",
+    unicode: "\uf031",
   },
   PATH: {
-    cssClass: 'bezier-curve', unicode: '\uf55b'
-  }
-}
+    cssClass: "bezier-curve",
+    unicode: "\uf55b",
+  },
+};
 
 export const COLOURS = {
   none: "transparent",
@@ -52,6 +56,15 @@ export const COLOURS = {
   green: "#79BA4A",
   yellow: "#FFEC01",
   // white: '#FFFFFF'
+};
+
+// Mapping to liblouis table names
+// Array index + 1 refers to the "grade" as it is called in English Braille.
+// DE[0] Basisschrift
+// DE[1] Vollschrift
+// DE[2] Kurzschrift
+export const BRAILLE_SYSTEMS = {
+  DE: { BASIS: "de-g0.utb", VOLL: "de-g1.ctb", KURZ: "de-g2.ctb" },
 };
 
 export const TEXTURES = [

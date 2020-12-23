@@ -1,4 +1,5 @@
 import methods from "../components/editor/ReactSVG/methods/methods";
+import { BRAILLE_SYSTEMS } from "../config/constants";
 
 export const editor = {
     ui: {
@@ -45,7 +46,7 @@ export const editor = {
             keyedStrokes: [],
             keyedTextures: [],
             medium: 'swell',
-            system: 'de-de-g2.ctb', // name of the liblouis translation table
+            system: 'DE:VOLL',
             width: 210,
             height: 297,
             verticalGridSpacing: 10, // TODO: Dateieigenschaften sollten in 'openedFile'

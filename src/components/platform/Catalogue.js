@@ -13,7 +13,7 @@ import {useNavigate} from "react-router-dom";
 import {useParams} from "react-router";
 import {FlyoutButton} from "../gui/FlyoutButton";
 import {useBreakpoint} from "../../contexts/breakpoints";
-import { MD_SCREEN } from '../../config/constants';
+import { BRAILLE_SYSTEMS, MD_SCREEN } from '../../config/constants';
 
 const TagSidebar = styled.aside`
   position: sticky;
@@ -110,7 +110,7 @@ const Catalogue = props => {
         <br/>
         <strong>Schriftsystem</strong>
         <div className={"tag-wrapper"}>
-            {['de-de-g0.utb', 'de-de-g1.ctb', 'de-de-g2.ctb'].map(system =>
+            {Object.keys(BRAILLE_SYSTEMS.DE).map(system =>
                 <Checkbox onChange={() => toggleSystem(dispatch, system)}
                           key={system}
                           name={'system-toggle-' + system}

@@ -15,6 +15,7 @@ import {
 } from "../actions/action_constants";
 /* eslint import/no-webpack-loader-syntax: off */
 import Worker from "worker-loader!../workers/translate.worker.js";
+import { BRAILLE_SYSTEMS } from "../config/constants";
 
 const translateWorker = new Worker();
 
@@ -29,11 +30,16 @@ function createWorkerChannel(worker) {
 
 const translateWorkerChannel = createWorkerChannel(translateWorker);
 
+const mapSystem = system =>{
+  const [lang, grade] = system.split(':');
+  return BRAILLE_SYSTEMS[lang][grade];
+}
+
 export function* labelWriteWatcher() {
   yield debounce(100, OBJECT_PROP_CHANGED, function* (action) {
     if (action.prop === "text") {
       try {
-        let system = yield select((state) => state.editor.file.present.system);
+        let system = yield select(state => mapSystem(state.editor.file.present.system));
         translateWorker.postMessage({ text: action.value, system });
         const response = yield take(translateWorkerChannel);
         yield put({
@@ -52,7 +58,7 @@ export function* labelWriteWatcher() {
 export function* textureKeyChangeWatcher() {
   yield debounce(100, "KEY_TEXTURE_CHANGED", function* (action) {
     try {
-      let system = yield select((state) => state.editor.file.present.system);
+      let system = yield select((state) => mapSystem(state.editor.file.present.system));
       translateWorker.postMessage({ text: action.label, system });
       const response = yield take(translateWorkerChannel);
       yield put({
@@ -72,7 +78,7 @@ export function* contentEditWatcher() {
     [CHANGE_PAGE_CONTENT, CHANGE_IMAGE_DESCRIPTION],
     function* (action) {
       try {
-        let system = yield select((state) => state.editor.file.present.system);
+        let system = yield select((state) => mapSystem(state.editor.file.present.system));
         let braillePages = yield select(
           (state) => state.editor.file.present.braillePages
         );
@@ -126,7 +132,7 @@ export function* systemChangeWatcher() {
     // TODO auch Brailleseiten neu übersetzen
     if (action.key === "system") {
       try {
-        let system = action.value;
+        let system = mapSystem(action.value);
         let braillePages = yield select(
           (state) => state.editor.file.present.braillePages
         );
@@ -189,7 +195,7 @@ export function* ocrImportWatcher() {
     ) {
       // all objects are labels
       try {
-        let system = yield select((state) => state.editor.file.present.system);
+        let system = yield select((state) => mapSystem(state.editor.file.present.system));
         for (var label of action.objects) {
           translateWorker.postMessage({ text: label.text, system });
           const response = yield take(translateWorkerChannel);

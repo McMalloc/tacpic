@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "../../gui/Select";
 import { useTranslation } from "react-i18next";
+import { BRAILLE_SYSTEMS } from "../../../config/constants";
 
 const Document = (props) => {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ const Document = (props) => {
       <div className={props.className}>
           <Select
       tip={"help:select_braille-system"}
-      default={"de-de-g0.utb"}
+      default={'DE:VOLL'}
       value={system}
           onChange={(selection) =>
             dispatch({
@@ -23,9 +24,9 @@ const Document = (props) => {
       }
       label={"editor:select_braille-system"}
       options={[
-        { label: t("catalogue:de-de-g2.ctb"), value: "de-de-g2.ctb" },
-        { label: t("catalogue:de-de-g1.ctb"), value: "de-de-g1.ctb" },
-        { label: t("catalogue:de-de-g0.utb"), value: "de-de-g0.utb" },
+        { label: t("catalogue:KURZ"), value: 'DE:KURZ' },
+        { label: t("catalogue:VOLL"), value: 'DE:VOLL' },
+        { label: t("catalogue:BASIS"), value: 'DE:BASIS' },
         // {label: "Computerbraille 8-Punkt DE Kurzschrift", value: "cb"}
       ]}
     />  
