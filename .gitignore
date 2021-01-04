@@ -23,6 +23,7 @@ src/env.json
 .env.production.local
 .idea
 .history
+.eslintcache
 .vscode
 
 /public/FRONTEND_VERSION.txt

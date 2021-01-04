@@ -40,7 +40,7 @@ import {titleEditWatch} from "./title_saga";
 import {backupNeededWatcher, backupWatcher} from "./backup_saga";
 import { errorWatcher } from "./error_saga";
 
-export const id = args => args;
+const id = args => args;
 
 export default function* root() {
     yield all([

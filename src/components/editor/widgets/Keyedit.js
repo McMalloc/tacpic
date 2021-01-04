@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
 import styled from 'styled-components/macro';
-import {Padding, p, px} from 'styled-components-spacing';
-import {connect, useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import TexturePreview from "../../gui/TexturePreview";
 import {Textinput} from "../../gui/Input";
-import {Row} from "../../gui/Grid";
-import {filter, map, flatten, isUndefined, uniq} from "lodash";
+import {map, flatten} from "lodash";
 import methods from "../ReactSVG";
-import {keyedLabelsSelector, patternsInUse, patternsInUseSelector} from "../../../reducers/selectors";
+import {keyedLabelsSelector, patternsInUseSelector} from "../../../reducers/selectors";
 import {Checkbox} from "../../gui/Checkbox";
 
 const Table = styled.table`

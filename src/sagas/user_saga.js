@@ -1,7 +1,8 @@
 import {takeLatest, call, put} from 'redux-saga/effects';
 import {USER} from "../actions/action_constants";
 import createSaga from "./saga_utilities";
-import {id} from "./index";
+
+const id = args => args;
 
 export const userValidateSaga = createSaga(USER.VALIDATE, 'get', 'users/validate', takeLatest, true);
 

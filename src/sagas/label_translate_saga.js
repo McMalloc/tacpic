@@ -13,6 +13,7 @@ import {
   OBJECT_BULK_ADD,
   OBJECT_PROP_CHANGED,
 } from "../actions/action_constants";
+
 /* eslint import/no-webpack-loader-syntax: off */
 import Worker from "worker-loader!../workers/translate.worker.js";
 import { BRAILLE_SYSTEMS } from "../config/constants";

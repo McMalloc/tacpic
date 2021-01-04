@@ -1,10 +1,9 @@
-import React, {Component, Fragment, useRef, useState} from 'react';
-import {connect, useDispatch, useSelector} from "react-redux";
+import React, {useRef, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import styled from 'styled-components/macro';
 import Divider from "../../gui/Divider";
 import {Button} from "../../gui/Button";
 import {Icon} from "../../gui/_Icon";
-import ReactTooltip from 'react-tooltip'
 import {IMPORT} from "../../../actions/action_constants";
 import {Row} from "../../gui/Grid";
 import {SVG_MIME} from "../../../config/constants";

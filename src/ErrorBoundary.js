@@ -13,7 +13,7 @@ class ErrorBoundary extends React.Component {
         return { hasError: true, error };
     }
 
-    componentDidCatch(error, errorInfo) {
+    componentDidCatch(error) {
         this.props.throwError(error);
         localStorage.setItem("HAS_EDITOR_CRASHED", "true");
     }

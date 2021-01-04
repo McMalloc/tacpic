@@ -3,7 +3,7 @@ import Well from "./gui/Well";
 import {Container, Row} from "./gui/Grid";
 import {Alert} from "./gui/Alert";
 
-export default props => {
+const NotFound = props => {
     return <Container>
         <Row>
             <div className={"col-md-6 col-md-offset-3"}>
@@ -19,3 +19,5 @@ export default props => {
         </Row>
     </Container>
 }
+
+export default NotFound;
