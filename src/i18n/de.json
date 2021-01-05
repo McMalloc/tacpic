@@ -4,6 +4,11 @@
     "or": "oder",
     "none": "keine"
   },
+    "DE": {
+      "VOLL": "Deutsche Vollschrift",
+      "KURZ": "Deutsche Kurzschrift",
+      "BASIS": "Deutsche Basisschrift"
+    },
   "tacpic": {
     "welcome": "Willkommen bei Tacpic!"
   },
@@ -102,6 +107,7 @@
     "graphics_only": "Nur Grafikseiten (<%=amount%> Seiten, ",
     "In den Warenkorb": "In den Warenkorb",
     "zzgl. Versand": "zzgl. Versand",
+    "braillesystem": "Braillesystem",
     "BASIS": "Deutsche Basisschrift",
     "VOLL": "Deutsche Vollschrift",
     "KURZ": "Deutsche Kurzschrift",

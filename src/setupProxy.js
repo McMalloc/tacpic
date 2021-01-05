@@ -14,4 +14,11 @@ module.exports = function(app) {
       }
     })
   );
+  app.use(
+    '/legal',
+    createProxyMiddleware({
+      target: 'http://localhost:9292',
+      logLevel: "debug"
+    })
+  );
 };

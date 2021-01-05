@@ -110,13 +110,16 @@ const Catalogue = props => {
         <br/>
         <strong>Schriftsystem</strong>
         <div className={"tag-wrapper"}>
-            {Object.keys(BRAILLE_SYSTEMS.DE).map(system =>
-                <Checkbox onChange={() => toggleSystem(dispatch, system)}
-                          key={system}
-                          name={'system-toggle-' + system}
-                          value={catalogue.filterSystem.includes(system)}
-                          label={'catalogue:' + system}/>
+            {Object.keys(BRAILLE_SYSTEMS).map(lang => 
+                <div>{Object.keys(BRAILLE_SYSTEMS[lang]).map(system =>
+                    <Checkbox onChange={() => toggleSystem(dispatch, lang + ':' + system)}
+                            key={system}
+                            name={'system-toggle-' + system}
+                            value={catalogue.filterSystem.includes(lang + ':' + system)}
+                            label={'catalogue:' + system}/>
+                )}</div>
             )}
+            
         </div>
         <br/>
 

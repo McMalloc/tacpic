@@ -287,9 +287,9 @@ const VariantView = (props) => {
               </tr>
               <tr>
                 <td className={"icon-cell"}>&ensp;</td>
-                <td>Braillesystem:</td>
+                <td>{t("catalogue:braillesystem")}:</td>
                 <td className={"important"}>
-                  {t("catalogue:" + props.system)}
+                  {t(props.system)}
                 </td>
               </tr>
               <tr>

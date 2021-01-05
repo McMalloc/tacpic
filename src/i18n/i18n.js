@@ -9,7 +9,7 @@ const resources = {
 };
 
 i18n
-    .use(initReactI18next) // passes i18n down to react-i18next
+    .use(initReactI18next) // passes react-i18next down to i18next
     .init({
         resources,
         lng: "de",
