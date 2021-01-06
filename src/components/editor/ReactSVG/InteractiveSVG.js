@@ -17,9 +17,13 @@ import {TOOL_SENSIBILITY} from "../../../config/constants";
 import styled from "styled-components/macro";
 
 const SVG = styled.svg`
-  width: ${props => props.scale * 1500}px;
-  height: ${props => props.scale * 1500}px;
-  touch-action: none; 
+  width: ${props => props.scale * props.canvasWidth}px;
+  /* width: 100%; */
+  min-width: 100%;
+  height: ${props => props.scale * props.canvasHeight}px;
+  /* height: 100%; */
+  min-height: 100%;
+  touch-action: none;
   outline: none; 
   cursor: ${({ isPanning, tool }) => isPanning ? 'move' : tool === 'SELECT' ? 'inherit' : 'crosshair'};
   
@@ -38,6 +42,8 @@ class InteractiveSVG extends Component {
         panningRefY: 0,
         modifierKey: null,
         mouseIsDown: false,
+        canvasWidth: 0,
+        canvasHeight: 0,
         // openPath: false,
         pathClosing: false,
         lastUuid: null,
@@ -59,18 +65,22 @@ class InteractiveSVG extends Component {
     };
 
     componentDidMount() {
-        init(this.svgElement.current);
+        init(this.svgElement.current); // creating reference point for later transformation
         const wrapperWidth = this.svgElement.current.getBoundingClientRect().width;
-        const canvasWidth = document.getElementById("VIEWBOX").getBoundingClientRect().width;
+        const viewboxWidth = document.getElementById("VIEWBOX").getBoundingClientRect().width;
+        const viewboxHeight = document.getElementById("VIEWBOX").getBoundingClientRect().height;
 
-        const centeredOffset = wrapperWidth/2 - canvasWidth/2;
+        const centeredOffset = wrapperWidth/2 - viewboxWidth/2;
         this.props.changeViewport(
             this.props.ui.scalingFactor,
-            canvasWidth > wrapperWidth ? 10 :
-                wrapperWidth/2 - canvasWidth/2 < 300 ?
-                    Math.max(centeredOffset, wrapperWidth-canvasWidth-10) :
-                    Math.min(centeredOffset, wrapperWidth-canvasWidth-10),
+            viewboxWidth > wrapperWidth ? 10 :
+                wrapperWidth/2 - viewboxWidth/2 < 300 ?
+                    Math.max(centeredOffset, wrapperWidth-viewboxWidth-10) :
+                    Math.min(centeredOffset, wrapperWidth-viewboxWidth-10),
             this.props.ui.viewPortY);
+
+
+            this.setState({ canvasWidth: 2 * viewboxWidth, canvasHeight: 2 * viewboxHeight })
     }
 
     currentX = x => x - this.svgElement.current.getBoundingClientRect().left;
@@ -532,6 +542,8 @@ let target = event.nativeEvent.target;
                 version={"1.2"}
                 data-role={"CANVAS"}
                 id={"MAIN-CANVAS"}
+                canvasWidth={this.state.canvasWidth}
+                canvasHeight={this.state.canvasHeight}
                 className={"tool-" + this.props.ui.tool}
                 onMouseDown={this.mouseDownHandler}
                 onKeyDown={this.keyDownHandler}

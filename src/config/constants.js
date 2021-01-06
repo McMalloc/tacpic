@@ -58,6 +58,21 @@ export const COLOURS = {
   // white: '#FFFFFF'
 };
 
+export const FORMATS = {
+  A4_PORTRAIT: {
+    format: 'a4', landscape: false, width: 210, height: 297
+  },
+  A4_LANDSCAPE: {
+    format: 'a4', landscape: true, width: 297, height: 210
+  },
+  A3_PORTRAIT: {
+    format: 'a3', landscape: false, width: 297, height: 420
+  },
+  A3_LANDSCAPE: {
+    format: 'a3', landscape: true, width: 420, height: 297
+  }
+}
+
 // Mapping to liblouis table names
 // Array index + 1 refers to the "grade" as it is called in English Braille.
 // DE[0] Basisschrift

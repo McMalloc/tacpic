@@ -7,6 +7,7 @@ export const SVGPage = ({page, excludes = []}) => {
     if (pages[page].text) return null;
     return (
         <g id={"page-" + page}>
+            
             <rect data-role={"CANVAS"} data-pageidx={page} x={0} y={0}
                   width={width + "mm"}
                   height={height + "mm"}

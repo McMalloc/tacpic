@@ -12,6 +12,7 @@ import {
   OBJECT_UPDATED,
   OBJECT_BULK_ADD,
   CHANGE_IMAGE_DESCRIPTION,
+  CHANGE_FILE_FORMAT,
 } from "../actions/action_constants";
 import methods from "../components/editor/ReactSVG/methods/methods";
 import uuidv4 from "../utility/uuid";
@@ -194,6 +195,12 @@ const file = (state = {}, action) => {
         ...state,
         [action.key]: action.value,
       };
+    case CHANGE_FILE_FORMAT: 
+      return {
+        ...state,
+        width: action.width,
+        height: action.height
+      }
     case "CHANGE_BRAILLE_PAGE_PROPERTY":
       let value = parseInt(action.value);
       const {

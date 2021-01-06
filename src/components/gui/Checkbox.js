@@ -7,6 +7,7 @@ const CheckboxLabel = styled.label`
   position: relative;
   align-self: center;
   margin-bottom: 0.5em;
+  padding-left: 1.4em;
   transition: font-weight 0.2s, color 0.2s;
   cursor: pointer;
   
@@ -15,8 +16,8 @@ const CheckboxLabel = styled.label`
   }
   
   &:before {
-      position: relative;
-      margin-right: 0.5em;
+      position: absolute;
+      /* margin-right: 0.5em; */
       left: 0;
       align-self: center;
       text-decoration: none;
