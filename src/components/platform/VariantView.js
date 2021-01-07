@@ -370,13 +370,13 @@ const VariantView = (props) => {
               disabled={!logged_in}
               rightAlign
               icon={"file-download"}
-              label={"Herunterladen als ..."}
+              label={"catalogue:download-as"}
             >
               <FlyoutEntry
                 icon={"file-pdf"}
                 label={"catalogue:pdf"}
                 onClick={() =>
-                  (window.location = `${APP_URL}/variants/${variantId}/pdf_${props.current_file_name}`)
+                  (window.location = `${APP_URL}/variants/${variantId}/pdf_${props.current_file_name}.pdf`)
                 }
                 sublabel={"catalogue:pdf-hint"}
               />
@@ -384,7 +384,7 @@ const VariantView = (props) => {
                 icon={"file-word"}
                 label={"catalogue:rtf"}
                 onClick={() =>
-                  (window.location = `${APP_URL}/variants/${variantId}/rtf_${props.current_file_name}`)
+                  (window.location = `${APP_URL}/variants/${variantId}/rtf_${props.current_file_name}.rtf`)
                 }
                 sublabel={"catalogue:rtf-hint"}
               />
@@ -392,9 +392,17 @@ const VariantView = (props) => {
                 icon={"file"}
                 label={"catalogue:brf"}
                 onClick={() =>
-                  (window.location = `${APP_URL}/variants/${variantId}/brf_${props.current_file_name}`)
+                  (window.location = `${APP_URL}/variants/${variantId}/brf_${props.current_file_name}.brf`)
                 }
                 sublabel={"catalogue:brf-hint"}
+              />
+              <FlyoutEntry
+                icon={"file-archive"}
+                label={"catalogue:zip"}
+                onClick={() =>
+                  (window.location = `${APP_URL}/variants/${variantId}/zip_${props.current_file_name}.zip`)
+                }
+                sublabel={"catalogue:zip-hint"}
               />
             </FlyoutButton>
           </Toolbar>
