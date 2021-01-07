@@ -5,7 +5,20 @@ importScripts('/scripts/liblouis-3-16-1-no-tables-utf32.js', '/scripts/easy-api.
 liblouis.enableOnDemandTableLoading("/scripts/tables/");
 console.log("Loaded liblouis version " + liblouis.version() + " in web worker.");
 
-onmessage = function (event) {
+onmessage = event => {
     const { text, system } = event.data;
-    postMessage(liblouis.translateString(system, text));
+
+    let result = "";
+    
+    try {
+        result = text
+                    .split("\n")
+                    .map(row => liblouis.translateString(system, row))
+                    .join("\n");
+    } catch (error) {
+        console.error(error);
+        postMessage(null)
+    } 
+
+    postMessage(result);
 }

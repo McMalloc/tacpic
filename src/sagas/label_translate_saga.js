@@ -22,9 +22,7 @@ const translateWorker = new Worker();
 
 function createWorkerChannel(worker) {
   return eventChannel((emit) => {
-    worker.onmessage = (event) => {
-      emit(event.data);
-    };
+    worker.onmessage = event => emit(event.data);
     return worker.terminate;
   });
 }
