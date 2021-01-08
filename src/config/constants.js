@@ -55,7 +55,7 @@ export const COLOURS = {
   orange: "#F08000",
   green: "#79BA4A",
   yellow: "#FFEC01",
-  // white: '#FFFFFF'
+  white: '#FFFFFF'
 };
 
 export const FORMATS = {

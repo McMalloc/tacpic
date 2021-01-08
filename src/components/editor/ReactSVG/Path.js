@@ -4,6 +4,7 @@ import {createPattern} from "./Patterns";
 import {getRotation} from "../../../utility/geometry";
 import methods from "./methods/methods";
 import {buildPath, cubicCommand, lineCommand, quadraticCommand} from "./PathGeneration";
+import { COLOURS } from '../../../config/constants';
 
 export default function SVGPath(props) {
     const path = buildPath(props.points, props.closed);
@@ -13,18 +14,22 @@ export default function SVGPath(props) {
     const [offsetX, offsetY] = methods.path.getOffset(props);
     const transformProperty = `translate(${props.x} ${props.y}) scale(${props.scaleX} ${props.scaleY}) rotate(${props.angle} ${offsetX} ${offsetY})`;
 
-    return (
-        <g data-selectable={1} id={props.uuid} transform={transformProperty}>
-            <path
+    const neutralBorder = <path
                 className={"neutral-border"}
                 style={
                     {
                         stroke: "white",
-                        fill: "transparent",
+                        fill: "none",
                         strokeWidth: 20
                     }}
                 d={path}
             />
+
+    return (
+        <g data-selectable={1} id={props.uuid} transform={transformProperty}>
+            
+            {!(props.fill === COLOURS.none) && neutralBorder}
+            
             <path
                 style={{
                     stroke: props.pattern.offset ? props.fill : "black",
@@ -39,6 +44,8 @@ export default function SVGPath(props) {
                 data-selectable={true}
                 clipPath={props.pattern.offset ? "url(#clip-" + props.uuid + ")" : null}
             />
+
+            {props.fill === COLOURS.none && neutralBorder}       
 
             {props.pattern.offset && props.border &&
             <path
@@ -87,7 +94,7 @@ export default function SVGPath(props) {
             }
 
             {props.pattern.template !== null &&
-            createPattern(props.pattern.template, props.uuid, props.fill)
+                createPattern(props.pattern.template, props.uuid, props.fill)
             }
         </g>
     )

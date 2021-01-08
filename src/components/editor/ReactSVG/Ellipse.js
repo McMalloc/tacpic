@@ -1,6 +1,7 @@
 import React from 'react'
 import transform from "./transform";
-import {createPattern} from "./Patterns";
+import { createPattern } from "./Patterns";
+import { COLOURS } from '../../../config/constants';
 
 export default function SVGEllipse(props) {
     const template = props.pattern.template;
@@ -12,21 +13,23 @@ export default function SVGEllipse(props) {
         yVectorUnits ? props.y : 0,
         props.angle, props.width, props.height);
 
+    const neutralBorder = <ellipse data-uuid={props.uuid}
+        className={"neutral-border"}
+        x={xVectorUnits ? null : props.x}
+        y={yVectorUnits ? null : props.y}
+        transform={transformProperty}
+        style={
+            {
+                stroke: "white",
+                fill: "transparent",
+                strokeWidth: 20
+            }}
+        rx={props.width}
+        ry={props.height} />
+
     return (
         <g>
-            <ellipse data-uuid={props.uuid}
-                     className={"neutral-border"}
-                  x={xVectorUnits ? null : props.x}
-                  y={yVectorUnits ? null : props.y}
-                  transform={transformProperty}
-                  style={
-                      {
-                          stroke: "white",
-                          fill: "transparent",
-                          strokeWidth: 20
-                      }}
-                  rx={props.width}
-                  ry={props.height}/>
+            {!(props.fill === COLOURS.none) && neutralBorder}
             <ellipse
                 id={props.uuid}
                 data-uuid={props.uuid}
@@ -43,30 +46,30 @@ export default function SVGEllipse(props) {
                 rx={props.width}
                 ry={props.height}
             />
-
+            {props.fill === COLOURS.none && neutralBorder}
             {props.pattern.offset && props.border &&
-            <ellipse
-                id={"stroke-" + props.uuid}
-                data-uuid={props.uuid}
-                transform={transformProperty}
-                style={{fill: "none"}}
-                strokeWidth={props.borderWidth + 'mm'}
-                strokeDasharray={props.borderStyle}
-                data-transformable={!props.inactive}
-                data-selectable={true}
-                stroke={"black"}
-                rx={props.width}
-                ry={props.height}
-            />
-            }
-
-            {props.pattern.offset &&
-            <clipPath id={"clip-" + props.uuid}>
                 <ellipse
+                    id={"stroke-" + props.uuid}
+                    data-uuid={props.uuid}
+                    transform={transformProperty}
+                    style={{ fill: "none" }}
+                    strokeWidth={props.borderWidth + 'mm'}
+                    strokeDasharray={props.borderStyle}
+                    data-transformable={!props.inactive}
+                    data-selectable={true}
+                    stroke={"black"}
                     rx={props.width}
                     ry={props.height}
                 />
-            </clipPath>
+            }
+
+            {props.pattern.offset &&
+                <clipPath id={"clip-" + props.uuid}>
+                    <ellipse
+                        rx={props.width}
+                        ry={props.height}
+                    />
+                </clipPath>
             }
             {template !== null && createPattern(props.pattern.template, props.uuid, props.fill, props.angle)}
         </g>
