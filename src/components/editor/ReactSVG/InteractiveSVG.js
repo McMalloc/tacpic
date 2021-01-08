@@ -586,6 +586,7 @@ let target = event.nativeEvent.target;
                         mapObject(this.state.preview, -1)
                     }
 
+                    {/* Path indicator */}
                     {this.state.preview !== null && this.state.preview.type === 'path' && !this.state.dragging &&
                         <path stroke={"black"} strokeWidth={1}
                               d={`M ${this.state.lastMouseUpX} ${this.state.lastMouseUpY} L ${this.state.mouseOffsetX} ${this.state.mouseOffsetY}`}/>

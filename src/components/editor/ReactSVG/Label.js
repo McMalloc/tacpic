@@ -124,8 +124,7 @@ const Label = (props) => {
   const system = useSelector((state) => state.editor.file.system);
 
   // if label is title
-  const currentPageNumber =
-    useSelector((state) => state.editor.ui.currentPage) + 1;
+  const currentPageNumber = props.pageIndex + 1;
   const previewMode = useSelector((state) => state.editor.ui.previewMode);
   const pageNumber = useSelector(
     (state) => state.editor.file.present.pages.length

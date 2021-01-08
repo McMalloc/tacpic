@@ -9,7 +9,7 @@ export function* renderWatcher() {
             let file = yield select(state => state.editor.file);
             yield put({
                 type: 'SET_PAGE_RENDERINGS',
-                renderings: file.present.pages.map((page, index) => page.text ? null : extractSVG(index))
+                renderings: file.present.pages.map((page, index) => extractSVG(index))
             });
         } catch (error) {
             console.log(error);
