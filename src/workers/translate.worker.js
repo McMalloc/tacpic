@@ -7,18 +7,20 @@ console.log("Loaded liblouis version " + liblouis.version() + " in web worker.")
 
 onmessage = event => {
     const { text, system } = event.data;
-
     let result = "";
-    
+
+    // TODO liblouis (js, nicht nativ) schmiert bei einer Zeichenkette wie "w w w" ab
+
     try {
         result = text
-                    .split("\n")
-                    .map(row => liblouis.translateString(system, row))
-                    .join("\n");
+            .trim()
+            .split("\n")
+            .map(row => liblouis.translateString(system, row))
+            .join("\n");
     } catch (error) {
         console.error(error);
-        postMessage(null)
-    } 
+        postMessage("")
+    }
 
     postMessage(result);
 }

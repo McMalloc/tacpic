@@ -29,7 +29,7 @@ function createWorkerChannel(worker) {
 
 const translateWorkerChannel = createWorkerChannel(translateWorker);
 
-const mapSystem = system =>{
+const mapSystem = system => {
   const [lang, grade] = system.split(':');
   return BRAILLE_SYSTEMS[lang][grade];
 }
@@ -133,7 +133,7 @@ export function* systemChangeWatcher() {
       try {
         let system = mapSystem(action.value);
         let braillePages = yield select(
-          (state) => state.editor.file.present.braillePages
+          state => state.editor.file.present.braillePages
         );
         const concatinated =
           Object.keys(braillePages.imageDescription).reduce(
@@ -141,17 +141,20 @@ export function* systemChangeWatcher() {
               accumulator + braillePages.imageDescription[blockKey] + "\n\n",
             ""
           ) + braillePages.content;
-        translateWorker.postMessage({ text: concatinated, system });
-        const response = yield take(translateWorkerChannel);
-        yield put({
-          type: "UPDATE_BRAILLE_CONTENT",
-          braille: response,
-          formatted: wrapAndChunk(
-            response,
-            braillePages.cellsPerRow,
-            braillePages.rowsPerPage
-          ),
-        });
+
+        if (concatinated.trim().length > 0) {
+          translateWorker.postMessage({ text: concatinated, system });
+          const response = yield take(translateWorkerChannel);
+          yield put({
+            type: "UPDATE_BRAILLE_CONTENT",
+            braille: response,
+            formatted: wrapAndChunk(
+              response,
+              braillePages.cellsPerRow,
+              braillePages.rowsPerPage
+            ),
+          });
+        }
 
         let labels = yield select((state) => {
           let labels = [];
@@ -169,15 +172,15 @@ export function* systemChangeWatcher() {
         });
 
         for (var label of labels) {
-            translateWorker.postMessage({ text: label.text, system });
-            const response = yield take(translateWorkerChannel);
-            yield put({
-              type: OBJECT_PROP_CHANGED,
-              prop: "braille",
-              value: response,
-              uuid: label.uuid,
-            });
-          }
+          translateWorker.postMessage({ text: label.text, system });
+          const response = yield take(translateWorkerChannel);
+          yield put({
+            type: OBJECT_PROP_CHANGED,
+            prop: "braille",
+            value: response,
+            uuid: label.uuid,
+          });
+        }
       } catch (error) {
         console.log(error);
         // yield put({type: event.FAILURE, error});

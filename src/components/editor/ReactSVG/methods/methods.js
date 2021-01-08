@@ -161,7 +161,7 @@ const defaultTranslate = (object, x, y) => {
 
 // TODO: funktioniert noch nciht für Pfade / falscher Origin
 const defaultRotate = (object, deltaX, deltaY, downX, downY, offsetX, offsetY) => {
-    object.angle = -Math.atan2(offsetX - downX, offsetY - downY) * (180 / Math.PI) + 90;
+    object.angle = -Math.atan2(offsetX - downX - object.width / 2, offsetY - downY - object.height / 2) * (180 / Math.PI) + 200;
     return object;
 };
 

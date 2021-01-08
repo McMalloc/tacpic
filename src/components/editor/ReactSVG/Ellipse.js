@@ -11,7 +11,7 @@ export default function SVGEllipse(props) {
     const transformProperty = transform(
         xVectorUnits ? props.x : 0,
         yVectorUnits ? props.y : 0,
-        props.angle, props.width, props.height);
+        props.angle, 0, 0);
 
     const neutralBorder = <ellipse data-uuid={props.uuid}
         className={"neutral-border"}

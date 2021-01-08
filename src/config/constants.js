@@ -74,12 +74,8 @@ export const FORMATS = {
 }
 
 // Mapping to liblouis table names
-// Array index + 1 refers to the "grade" as it is called in English Braille.
-// DE[0] Basisschrift
-// DE[1] Vollschrift
-// DE[2] Kurzschrift
 export const BRAILLE_SYSTEMS = {
-  DE: { BASIS: "de-g0.utb", VOLL: "de-g1.ctb", KURZ: "de-g2.ctb" },
+  DE: { BIDI: "de-g0-bidi.utb", BASIS: "de-g0.utb", VOLL: "de-g1.ctb", KURZ: "de-g2.ctb" },
 };
 
 export const TEXTURES = [
