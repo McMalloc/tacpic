@@ -7,6 +7,7 @@ import {Icon} from "../gui/_Icon";
 import {Alert} from "../gui/Alert";
 import {LOAD_MORE} from "../../actions/action_constants";
 import {Button} from "../gui/Button";
+import Loader from "../gui/Loader";
 import { useTranslation } from 'react-i18next';
 
 const FlexRow = styled.div`
@@ -14,6 +15,19 @@ const FlexRow = styled.div`
   flex-wrap: wrap;
   margin: -6px;
 `;
+
+const Wrapper = styled.div`
+  position: relative;
+  min-height: 100px;
+`;
+
+const LoaderOverlay = styled.div`
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background:url(
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAALUlEQVQYV2P8+vXrf25ubkYQzcDAwABiM4IYyAIgNooKmC6wIEw7jIZrRzYXAMFoK6DGvkYvAAAAAElFTkSuQmCC
+   ) repeat;
+`
 
 const AddButton = styled.div`
   display: flex;
@@ -60,6 +74,7 @@ const CatalogueItemList = props => {
             state.catalogue.filterSystem.length === 0
     );
     const exhausted = useSelector(state => state.catalogue.exhausted);
+    const searchPending = useSelector(state => state.catalogue.searchPending);
     const loadMorePending = useSelector(state => state.catalogue.loadMorePending);
 
     const newButton = <CatalogueItemWrapper>
@@ -72,7 +87,7 @@ const CatalogueItemList = props => {
         </CatalogueItemWrapper>
 
     return (
-        <>
+        <Wrapper>
             {props.graphics && props.graphics.length > 0 ? 
                 <FlexRow>
                     {props.graphics.map((graphic, index) => {
@@ -84,12 +99,17 @@ const CatalogueItemList = props => {
                 </FlexRow>
                 :
                 <>
-                    <FlexRow>
-                    <CatalogueItemWrapper>
+                    <div style={{textAlign: 'center', paddingTop: '20%'}}>
+                    {/* <CatalogueItemWrapper>
                         <Alert info>{t('catalogue:no_graphic_found')}</Alert>
-                    </CatalogueItemWrapper>
-                        {newButton}
-                    </FlexRow>
+                    </CatalogueItemWrapper> */}
+
+                        <p><Icon icon={"folder-open fa-2x"} /><br/>{t('catalogue:no_graphic_found')}</p>
+                        <br />
+                        <FlexRow style={{justifyContent: 'center'}}>
+                            {newButton}
+                        </FlexRow>
+                    </div>
                     
                 </>
                 }
@@ -106,7 +126,13 @@ const CatalogueItemList = props => {
                         }} />
                 }
             </div>
-        </>
+
+            {searchPending &&
+            <LoaderOverlay>
+                <Loader />
+            </LoaderOverlay>
+            }
+        </Wrapper>
 
     );
 };

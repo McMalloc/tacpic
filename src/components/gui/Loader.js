@@ -33,7 +33,7 @@ const Loader = props => {
     return (
         <Wrapper large={props.large} className={"loader"}>
             <Icon icon={`cog fa-3x fa-spin`} />
-            {showMessage ?
+            {!!props.message && showMessage ?
                 <Message>{t(props.message)}</Message>
                 : <p>&ensp;</p>
             }

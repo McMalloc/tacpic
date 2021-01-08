@@ -204,7 +204,7 @@ const Label = (props) => {
 
           {props.displayLetters && (
             <>
-              {props.pristine && !props.editMode && props.isTitle && 
+              {props.isTitle && props.text.length === 0 && !props.editMode && props.pristine && 
                 <Placeholder
                   style={{ height: props.height }}
                   preview={previewMode}
@@ -237,10 +237,7 @@ const Label = (props) => {
                     props.isTitle
                   )
                 }
-                onBlur={() => {
-                  console.log("blur");
-                  exitEditMode(dispatch, props.uuid);
-                }}
+                onBlur={() => exitEditMode(dispatch, props.uuid)}
                 tabIndex={1}
                 id={"editable_" + props.uuid}
                 value={props.isKey ? props.keyVal : props.text}
