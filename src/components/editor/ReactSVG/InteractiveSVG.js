@@ -80,7 +80,7 @@ class InteractiveSVG extends Component {
             this.props.ui.viewPortY);
 
 
-        this.setState({ canvasWidth: 2 * viewboxWidth, canvasHeight: 2 * viewboxHeight })
+        this.setState({ canvasWidth: 2.5 * viewboxWidth, canvasHeight: 2 * viewboxHeight })
     }
 
     currentX = x => x - this.svgElement.current.getBoundingClientRect().left;
