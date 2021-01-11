@@ -1,5 +1,4 @@
 import methods from "../components/editor/ReactSVG/methods/methods";
-import { BRAILLE_SYSTEMS } from "../config/constants";
 
 export const editor = {
     ui: {
@@ -12,6 +11,7 @@ export const editor = {
         viewPortY: 10,
         suppressBackup: true,
         previewMode: false,
+        preview: null,
         selectedObjects: [],
         defaultTitle: true,
         initialized: true,

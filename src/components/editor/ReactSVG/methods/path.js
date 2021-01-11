@@ -6,7 +6,6 @@ import {textureColourMapping} from "./methods";
 import { TEXTURES, COLOURS } from '../../../../config/constants';
 
 export const createPath = (x = 0, y = 0, template = null, fill = COLOURS.none, moniker = "Kurve") => {
-    console.log(template, fill, textureColourMapping[template]);
     return {
         uuid: uuidv4(),
         angle: 0,

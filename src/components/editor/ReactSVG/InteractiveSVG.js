@@ -1,19 +1,19 @@
-import React, {Component, useState} from 'react'
-import {connect} from "react-redux";
+import React, { Component, useState } from 'react'
+import { connect } from "react-redux";
 import Manipulator from "./Manipulator";
 import ToolIndicator from "../ToolIndicator";
 
-import {cloneDeep} from "lodash";
+import { cloneDeep } from "lodash";
 import mapObject from "./index";
 import PathManipulator from "./PathManipulator";
 
 import methods from "./methods/methods";
-import {init, transformCoords} from "./transform";
+import { init, transformCoords } from "./transform";
 import SVGGrid from "./Grid";
-import {findObject} from "../../../utility/findObject";
-import {SVGPage} from "./SVGPage";
-import {ERROR_THROWN, SWITCH_CURSOR_MODE} from "../../../actions/action_constants";
-import {TOOL_SENSIBILITY} from "../../../config/constants";
+import { findObject } from "../../../utility/findObject";
+import { SVGPage } from "./SVGPage";
+import { ERROR_THROWN } from "../../../actions/action_constants";
+import { TOOL_SENSIBILITY } from "../../../config/constants";
 import styled from "styled-components/macro";
 
 const SVG = styled.svg`
@@ -51,7 +51,7 @@ class InteractiveSVG extends Component {
         preview: null,
         transform: null, // transform mode while dragging the cursor
         edit: null, // internal edit modes of certain tools whose state doesn't need
-                    // to be communicated to the store (but the results will be of course)
+        // to be communicated to the store (but the results will be of course)
         editIndex: -1,
         editParam: -1,
         selectedPoint: null,
@@ -70,17 +70,17 @@ class InteractiveSVG extends Component {
         const viewboxWidth = document.getElementById("VIEWBOX").getBoundingClientRect().width;
         const viewboxHeight = document.getElementById("VIEWBOX").getBoundingClientRect().height;
 
-        const centeredOffset = wrapperWidth/2 - viewboxWidth/2;
+        const centeredOffset = wrapperWidth / 2 - viewboxWidth / 2;
         this.props.changeViewport(
             this.props.ui.scalingFactor,
             viewboxWidth > wrapperWidth ? 10 :
-                wrapperWidth/2 - viewboxWidth/2 < 300 ?
-                    Math.max(centeredOffset, wrapperWidth-viewboxWidth-10) :
-                    Math.min(centeredOffset, wrapperWidth-viewboxWidth-10),
+                wrapperWidth / 2 - viewboxWidth / 2 < 300 ?
+                    Math.max(centeredOffset, wrapperWidth - viewboxWidth - 10) :
+                    Math.min(centeredOffset, wrapperWidth - viewboxWidth - 10),
             this.props.ui.viewPortY);
 
 
-            this.setState({ canvasWidth: 2 * viewboxWidth, canvasHeight: 2 * viewboxHeight })
+        this.setState({ canvasWidth: 2 * viewboxWidth, canvasHeight: 2 * viewboxHeight })
     }
 
     currentX = x => x - this.svgElement.current.getBoundingClientRect().left;
@@ -162,7 +162,7 @@ class InteractiveSVG extends Component {
                     this.props.ui.selectedObjects[0]);
                 if (selectedObject.type === 'path' && this.state.editIndex >= 0) {
                     this.props.updateObject(methods.path.removePoint(cloneDeep(selectedObject), this.state.editIndex));
-                    this.setState({editIndex: -1});
+                    this.setState({ editIndex: -1 });
                 } else {
                     this.props.remove(this.props.ui.selectedObjects);
                 }
@@ -190,7 +190,7 @@ class InteractiveSVG extends Component {
 
     onModeChange = uuid => {
         this.setState({
-            edit: {uuid}
+            edit: { uuid }
         })
     };
 
@@ -250,16 +250,15 @@ class InteractiveSVG extends Component {
                     selectedId = target.dataset.uuid || target.id;
                     this.props.select([selectedId]);
                 }
-            } else {}
+            } else { }
 
-            if (target.dataset.role === 'ROTATE') this.setState({transform: 'rotate'});
-            if (target.dataset.role === 'SCALE') this.setState({transform: 'scale'});
-            if (target.dataset.start) this.setState({pathClosing: true});
+            if (target.dataset.role === 'ROTATE') this.setState({ transform: 'rotate' });
+            if (target.dataset.role === 'SCALE') this.setState({ transform: 'scale' });
+            if (target.dataset.start) this.setState({ pathClosing: true });
 
-            if (target.dataset.transformable === "true" && this.props.ui.tool === 'SELECT') this.setState({transform: 'translate'});
+            if (target.dataset.transformable === "true" && this.props.ui.tool === 'SELECT') this.setState({ transform: 'translate' });
 
             if (target.dataset.role === 'EDIT-PATH') {
-                console.log("edit path");
                 this.setState({
                     edit: target.dataset.associatedPath,
                     preview: {
@@ -272,7 +271,11 @@ class InteractiveSVG extends Component {
                 })
             }
 
-            if (this.state.preview === null) { // create a new object
+            if (this.state.preview === null || this.props.ui.tool !== 'PATH') { // create a new object and finalize started path
+                if (this.props.ui.tool !== 'PATH') {
+                    this.props.updateObject(this.state.preview);
+                    this.setState({preview: null});
+                }
                 switch (this.props.ui.tool) {
                     case 'ELLIPSE':
                     case 'RECT':
@@ -316,8 +319,8 @@ class InteractiveSVG extends Component {
             } else if (this.state.preview !== null) {
                 if (this.state.preview.type === 'path') { // add points to path that is not complete
                     if (target.dataset.endpoint) {
-                        let closingPath = {...this.state.preview};
-                        this.props.updateObject({...this.state.preview, closed: parseInt(target.dataset.index) === 0});
+                        let closingPath = { ...this.state.preview };
+                        this.props.updateObject({ ...this.state.preview, closed: parseInt(target.dataset.index) === 0 });
                         this.setState({
                             preview: null,
                             edit: null,
@@ -338,101 +341,106 @@ class InteractiveSVG extends Component {
                 }
             }
         } catch (error) {
+            console.error(error);
             this.props.throwError(error);
         }
     };
 
     mouseUpHandler = event => {
         try {
-let target = event.nativeEvent.target;
-        this.setState({
-            mouseIsDown: false,
-            dragging: false,
-            panning: false,
-            panningRefX: 0,
-            panningRefY: 0,
-            transform: null,
-            lastMouseUpX: this.state.mouseOffsetX,
-            lastMouseUpY: this.state.mouseOffsetY,
-            t_lastMouseUpX: this.currentX(this.state.mouseOffsetX),
-            t_lastMouseUpY: this.currentY(this.state.mouseOffsetY)
-        });
-        this.props.isDragging(false); // give info to editor component
+            let target = event.nativeEvent.target;
+            this.setState({
+                mouseIsDown: false,
+                dragging: false,
+                panning: false,
+                panningRefX: 0,
+                panningRefY: 0,
+                transform: null,
+                lastMouseUpX: this.state.mouseOffsetX,
+                lastMouseUpY: this.state.mouseOffsetY,
+                t_lastMouseUpX: this.currentX(this.state.mouseOffsetX),
+                t_lastMouseUpY: this.currentY(this.state.mouseOffsetY)
+            });
+            this.props.isDragging(false); // give info to editor component
 
-        const actuallyMoved = Math.abs(this.state.mouseDownX - this.state.mouseOffsetX) > TOOL_SENSIBILITY ||
-            Math.abs(this.state.mouseDownY - this.state.mouseOffsetY) > TOOL_SENSIBILITY;
+            const actuallyMoved = Math.abs(this.state.mouseDownX - this.state.mouseOffsetX) > TOOL_SENSIBILITY ||
+                Math.abs(this.state.mouseDownY - this.state.mouseOffsetY) > TOOL_SENSIBILITY;
 
-        if (this.state.preview !== null) { // set preview in stone (=store)
-            if (this.props.ui.tool === 'PATH') {
-                if (this.state.transform !== null) {
-                    this.props.updateObject(this.state.preview);
+            if (this.state.preview !== null) { // set preview in stone (=store)
+                if (this.props.ui.tool === 'PATH') {
+                    console.log("editing path");
+                    if (this.state.transform !== null) {
+                        console.log("  persist state");
+                        this.props.updateObject(this.state.preview);
+                        this.setState({
+                            preview: null
+                        });
+                    } else {
+                        // creating freeform path segment
+                        const path = methods.path.smoothSegment(this.state.preview, this.state.segmentStart, this.state.preview.points.length - 1, 10);
+                        this.props.setPreview(path);
+                        this.state.edit === null && this.setState({ preview: path });
+                    }
+                } else {
+                    // when dragged, create new object
+                    if (this.state.dragging && actuallyMoved) this.props.updateObject(this.state.preview);
                     this.setState({
                         preview: null
                     });
-                } else {
-                    // creating freeform path segment
-                    this.state.edit === null && this.setState({
-                        preview: methods.path.smoothSegment(this.state.preview, this.state.segmentStart, this.state.preview.points.length - 1, 10)
-                    });
+                }
+
+                // editing paths
+                if (this.state.edit !== null) {
+                    if (parseInt(target.dataset.index) === this.state.editIndex && target.dataset.endpoint === 'true' && !actuallyMoved) {
+                        const index = parseInt(target.dataset.index);
+                        let preview = index === 0 ? methods.path.reverse(cloneDeep(this.state.preview)) : cloneDeep(this.state.preview)
+                        this.setState({
+                            preview: {
+                                ...preview,
+                                editMode: true
+                            },
+                            editIndex: index === 0 ? this.state.preview.points.length - 1 : index,
+                            editParam: -1,
+                            edit: null,
+                        });
+                        
+                    } else {
+                        this.setState({
+                            preview: null,
+                            edit: null,
+                            editParam: -1,
+                            // editIndex: -1
+                        });
+                        this.props.updateObject(this.state.preview);
+                    }
                 }
             } else {
-                // when dragged, create new object
-                if (this.state.dragging && actuallyMoved) this.props.updateObject(this.state.preview);
-                this.setState({
-                    preview: null
-                });
-            }
+                if (this.state.transform === null) {
+                    switch (this.props.ui.tool) {
+                        case "RECT":
+                            break;
+                        case 'LABEL':
+                            if (!this.state.dragging) break;
+                            let label = methods.label.create(
+                                Math.min(this.state.mouseDownX, this.state.mouseOffsetX),
+                                Math.min(this.state.mouseDownY, this.state.mouseOffsetY),
+                                Math.abs(this.state.mouseOffsetX - this.state.mouseDownX),
+                                Math.abs(this.state.mouseOffsetY - this.state.mouseDownY)
+                            );
 
-            // editing paths
-            if (this.state.edit !== null) {
-                if (parseInt(target.dataset.index) === this.state.editIndex && target.dataset.endpoint === 'true' && !actuallyMoved) {
-                    const index = parseInt(target.dataset.index);
-                    let preview = index === 0 ? methods.path.reverse(cloneDeep(this.state.preview)) : cloneDeep(this.state.preview)
-                    this.setState({
-                        preview: {
-                            ...preview,
-                            editMode: true
-                        },
-                        editIndex: index === 0 ? this.state.preview.points.length - 1 : index,
-                        editParam: -1,
-                        edit: null,
-                    });
-                } else {
-                    this.setState({
-                        preview: null,
-                        edit: null,
-                        editParam: -1,
-                        // editIndex: -1
-                    });
-                    this.props.updateObject(this.state.preview);
+                            this.props.updateObject(label);
+                            setTimeout(() => {
+                                document.getElementById("editable_" + label.uuid) && document.getElementById("editable_" + label.uuid).focus();
+                            }, 200);
+                            break;
+                    }
                 }
             }
-        } else {
-            if (this.state.transform === null) {
-                switch (this.props.ui.tool) {
-                    case "RECT":
-                        break;
-                    case 'LABEL':
-                        if (!this.state.dragging) break;
-                        let label = methods.label.create(
-                            Math.min(this.state.mouseDownX, this.state.mouseOffsetX),
-                            Math.min(this.state.mouseDownY, this.state.mouseOffsetY),
-                            Math.abs(this.state.mouseOffsetX - this.state.mouseDownX),
-                            Math.abs(this.state.mouseOffsetY - this.state.mouseDownY)
-                        );
-
-                        this.props.updateObject(label);
-                        setTimeout(() => {
-                            document.getElementById("editable_" + label.uuid) && document.getElementById("editable_" + label.uuid).focus();
-                        }, 200);
-                        break;
-                }
-            }
-        }
         } catch (error) {
+            console.error(error);
             this.props.throwError(error);
         }
-        
+
     };
 
     mouseMoveHandler = event => {
@@ -487,7 +495,7 @@ let target = event.nativeEvent.target;
                 // update previews of objects
                 this.setState({
                     preview: methods[preview.type][this.state.transform](
-                        {...preview},
+                        { ...preview },
                         mouseOffsetX - this.state.mouseOffsetX,
                         mouseOffsetY - this.state.mouseOffsetY,
                         this.state.mouseDownX, this.state.mouseDownY,
@@ -523,7 +531,7 @@ let target = event.nativeEvent.target;
                     [mouseOffsetX, mouseOffsetY],
                     'LF');
 
-                this.setState({preview});
+                this.setState({ preview });
             }
 
         } catch (error) {
@@ -553,7 +561,7 @@ let target = event.nativeEvent.target;
                 tool={this.props.ui.tool}
                 scale={this.props.ui.scalingFactor}
                 onMouseMove={this.mouseMoveHandler}
-                onMouseLeave={this.mouseUpHandler}
+                // onMouseLeave={this.mouseUpHandler}
                 onWheel={this.wheelHandler}
                 onInput={this.keyDownHandler}
                 ref={this.svgElement}
@@ -575,21 +583,21 @@ let target = event.nativeEvent.target;
                     {this.props.file.present.pages.map((page, index) => {
                         if (index === this.props.ui.currentPage) return null;
                         return (
-                                <SVGPage page={index} key={index} excludes={[]}/>
+                            <SVGPage page={index} key={index} excludes={[]} />
                         )
                     })}
 
                     <SVGPage page={this.props.ui.currentPage}
-                             excludes={this.state.preview ? [this.state.preview.uuid] : []}/>
+                        excludes={this.state.preview ? [this.state.preview.uuid] : []} />
 
                     {this.state.preview !== null &&
                         mapObject(this.state.preview, -1)
                     }
 
                     {/* Path indicator */}
-                    {this.state.preview !== null && this.state.preview.type === 'path' && !this.state.dragging &&
+                    {this.props.ui.tool === 'PATH' && this.state.preview !== null && this.state.preview.type === 'path' && !this.state.dragging &&
                         <path stroke={"black"} strokeWidth={1}
-                              d={`M ${this.state.lastMouseUpX} ${this.state.lastMouseUpY} L ${this.state.mouseOffsetX} ${this.state.mouseOffsetY}`}/>
+                            d={`M ${this.state.lastMouseUpX} ${this.state.lastMouseUpY} L ${this.state.mouseOffsetX} ${this.state.mouseOffsetY}`} />
                     }
                 </g>
 
@@ -610,27 +618,27 @@ let target = event.nativeEvent.target;
                 {/*}*/}
 
                 {this.state.dragging && this.state.transform === null && this.state.edit === null &&
-                ((this.props.ui.tool === 'SELECT' || this.props.ui.tool === 'LABEL') && !this.state.panning) &&
-                <g>
-                    <rect
-                        x={Math.min(this.state.t_mouseDownX, this.state.t_mouseOffsetX)}
-                        y={Math.min(this.state.t_mouseDownY, this.state.t_mouseOffsetY)}
-                        fill={'rgba(0,0,255,0.02)'}
-                        id={"SELECTION-BOX"}
-                        stroke={'rgba(0,50,255,0.3)'}
-                        strokeWidth={'1px'}
-                        width={Math.abs(this.state.t_mouseOffsetX - this.state.t_mouseDownX)}
-                        height={Math.abs(this.state.t_mouseOffsetY - this.state.t_mouseDownY)}/>
-                </g>
+                    ((this.props.ui.tool === 'SELECT' || this.props.ui.tool === 'LABEL') && !this.state.panning) &&
+                    <g>
+                        <rect
+                            x={Math.min(this.state.t_mouseDownX, this.state.t_mouseOffsetX)}
+                            y={Math.min(this.state.t_mouseDownY, this.state.t_mouseOffsetY)}
+                            fill={'rgba(0,0,255,0.02)'}
+                            id={"SELECTION-BOX"}
+                            stroke={'rgba(0,50,255,0.3)'}
+                            strokeWidth={'1px'}
+                            width={Math.abs(this.state.t_mouseOffsetX - this.state.t_mouseDownX)}
+                            height={Math.abs(this.state.t_mouseOffsetY - this.state.t_mouseDownY)} />
+                    </g>
                 }
 
                 {this.svgElement.current !== null &&
-                <SVGGrid canvasWidth={this.svgElement.current.scrollWidth}
-                         canvasHeight={this.svgElement.current.scrollHeight}
-                         offsetX={this.props.ui.viewPortX % (this.props.file.present.verticalGridSpacing * this.props.ui.scalingFactor)}
-                         offsetY={this.props.ui.viewPortY % (this.props.file.present.horizontalGridSpacing * this.props.ui.scalingFactor)}
-                         verticalGridSpacing={this.props.file.present.verticalGridSpacing * this.props.ui.scalingFactor}
-                         horizontalGridSpacing={this.props.file.present.horizontalGridSpacing * this.props.ui.scalingFactor}/>
+                    <SVGGrid canvasWidth={this.svgElement.current.scrollWidth}
+                        canvasHeight={this.svgElement.current.scrollHeight}
+                        offsetX={this.props.ui.viewPortX % (this.props.file.present.verticalGridSpacing * this.props.ui.scalingFactor)}
+                        offsetY={this.props.ui.viewPortY % (this.props.file.present.horizontalGridSpacing * this.props.ui.scalingFactor)}
+                        verticalGridSpacing={this.props.file.present.verticalGridSpacing * this.props.ui.scalingFactor}
+                        horizontalGridSpacing={this.props.file.present.horizontalGridSpacing * this.props.ui.scalingFactor} />
                 }
 
                 {/*<rect id={"REFERENCE"} width={1} height={1} x={-1} y={-1} />*/}
@@ -688,11 +696,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        switchCursorMode: mode => {
-            dispatch({
-                type: SWITCH_CURSOR_MODE, mode
-            });
-        },
         changeViewport: (scalingFactor, viewPortX, viewPortY) => {
             dispatch({
                 type: 'CHANGE_VIEWPORT',
@@ -703,6 +706,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch({
                 type: 'OBJECT_ADDED',
                 object
+            });
+        },
+        setPreview: preview => {
+            dispatch({
+                type: 'SET_PREVIEW',
+                preview
             });
         },
         rotate: (coords, selectedObjects) => {
