@@ -45,7 +45,6 @@ class InteractiveSVG extends Component {
         canvasWidth: 0,
         canvasHeight: 0,
         // openPath: false,
-        pathClosing: false,
         lastUuid: null,
         actuallyMoved: false,
         preview: null,
@@ -73,7 +72,7 @@ class InteractiveSVG extends Component {
         const centeredOffset = wrapperWidth / 2 - viewboxWidth / 2;
         this.props.changeViewport(
             this.props.ui.scalingFactor,
-            viewboxWidth > wrapperWidth ? 10 :          
+            viewboxWidth > wrapperWidth ? 10 :
                 wrapperWidth / 2 - viewboxWidth / 2 < 300 ?
                     Math.max(centeredOffset, wrapperWidth - viewboxWidth - 10) :
                     Math.min(centeredOffset, wrapperWidth - viewboxWidth - 10),
@@ -250,11 +249,10 @@ class InteractiveSVG extends Component {
                     selectedId = target.dataset.uuid || target.id;
                     this.props.select([selectedId]);
                 }
-            } else { }
+            }
 
             if (target.dataset.role === 'ROTATE') this.setState({ transform: 'rotate' });
             if (target.dataset.role === 'SCALE') this.setState({ transform: 'scale' });
-            if (target.dataset.start) this.setState({ pathClosing: true });
 
             if (target.dataset.transformable === "true" && this.props.ui.tool === 'SELECT') this.setState({ transform: 'translate' });
 
@@ -271,11 +269,7 @@ class InteractiveSVG extends Component {
                 })
             }
 
-            if (this.state.preview === null || this.props.ui.tool !== 'PATH') { // create a new object and finalize started path
-                if (this.props.ui.tool !== 'PATH') {
-                    this.props.updateObject(this.state.preview);
-                    this.setState({preview: null});
-                }
+            if (this.state.preview === null || this.props.ui.tool !== 'PATH') {// || this.props.ui.tool !== 'PATH') { // create a new object and finalize started path
                 switch (this.props.ui.tool) {
                     case 'ELLIPSE':
                     case 'RECT':
@@ -300,12 +294,14 @@ class InteractiveSVG extends Component {
                         break;
                     case 'PATH':
                         if (!target.dataset.transformable && target.dataset.role !== "SCALE" && target.dataset.role !== "ROTATE" && target.dataset.role !== "EDIT-PATH") {
+                            const newPath = methods.path.create(
+                                Math.min(mouseDownX, this.state.mouseOffsetX),
+                                Math.min(mouseDownY, this.state.mouseOffsetY)
+                            );
+
                             this.setState({
                                 segmentStart: 0,
-                                preview: methods.path.create(
-                                    Math.min(mouseDownX, this.state.mouseOffsetX),
-                                    Math.min(mouseDownY, this.state.mouseOffsetY)
-                                )
+                                preview: cloneDeep(newPath)
                             });
                         }
 
@@ -317,9 +313,8 @@ class InteractiveSVG extends Component {
                         break;
                 }
             } else if (this.state.preview !== null) {
-                if (this.state.preview.type === 'path') { // add points to path that is not complete
+                if (this.state.preview.type === 'path' && this.props.ui.tool === 'PATH') { // add points to path that is not complete
                     if (target.dataset.endpoint) {
-                        let closingPath = { ...this.state.preview };
                         this.props.updateObject({ ...this.state.preview, closed: parseInt(target.dataset.index) === 0 });
                         this.setState({
                             preview: null,
@@ -328,13 +323,17 @@ class InteractiveSVG extends Component {
                             editIndex: -1
                         });
                     } else {
+                        const modifiedPath = methods.path.addPoint(
+                            this.state.preview,
+                            [this.state.mouseOffsetX, this.state.mouseOffsetY],
+                            'L'
+                        );
+
+                        this.props.updateObject(modifiedPath)
+                        
                         this.setState({
                             segmentStart: this.state.preview.points.length,
-                            preview: methods.path.addPoint(
-                                this.state.preview,
-                                [this.state.mouseOffsetX, this.state.mouseOffsetY],
-                                'L'
-                            )
+                            preview: cloneDeep(modifiedPath)
                         });
                     }
 
@@ -377,9 +376,9 @@ class InteractiveSVG extends Component {
                         });
                     } else {
                         // creating freeform path segment
-                        const path = methods.path.smoothSegment(this.state.preview, this.state.segmentStart, this.state.preview.points.length - 1, 10);
-                        this.props.setPreview(path);
-                        this.state.edit === null && this.setState({ preview: path });
+                        const smoothedPath = methods.path.smoothSegment(this.state.preview, this.state.segmentStart, this.state.preview.points.length - 1, 10);
+                        this.props.updateObject(smoothedPath);
+                        this.state.edit === null && this.setState({ preview: cloneDeep(smoothedPath) });
                     }
                 } else {
                     // when dragged, create new object
@@ -403,7 +402,7 @@ class InteractiveSVG extends Component {
                             editParam: -1,
                             edit: null,
                         });
-                        
+
                     } else {
                         this.setState({
                             preview: null,
