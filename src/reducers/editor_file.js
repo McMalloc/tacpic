@@ -106,6 +106,7 @@ const file = (state = {}, action) => {
 
       return oldState;
     case OBJECT_UPDATED:
+      if (action.preview === null) return state;
       return produce(state, (draftState) => {
         index = draftState.pages[action.shared_currentPage].objects.findIndex(
           (obj) => obj.uuid === action.preview.uuid

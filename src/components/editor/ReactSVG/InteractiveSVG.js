@@ -73,7 +73,7 @@ class InteractiveSVG extends Component {
         const centeredOffset = wrapperWidth / 2 - viewboxWidth / 2;
         this.props.changeViewport(
             this.props.ui.scalingFactor,
-            viewboxWidth > wrapperWidth ? 10 :
+            viewboxWidth > wrapperWidth ? 10 :          
                 wrapperWidth / 2 - viewboxWidth / 2 < 300 ?
                     Math.max(centeredOffset, wrapperWidth - viewboxWidth - 10) :
                     Math.min(centeredOffset, wrapperWidth - viewboxWidth - 10),
