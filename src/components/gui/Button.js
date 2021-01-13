@@ -111,7 +111,7 @@ const Button = React.forwardRef((props, ref) => {
 });
 
 Button.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   collapsable: PropTypes.oneOf(["sm", "md", "lg", "xl"]), // label can collapse under provided breakpoint
   isDropdown: PropTypes.bool, // if caret will be displayed
   icon: PropTypes.string, // fontawesome icon id

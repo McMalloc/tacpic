@@ -70,9 +70,6 @@ const Carousel = props => {
     const {t} = useTranslation();
     const [position, setPosition] = useState(0);
     const validChildren = props.children.filter(c => !!c);
-    
-    console.log(validChildren[position]);
-    console.log(validChildren, props.children);
     return (
         <Wrapper>
             <View>

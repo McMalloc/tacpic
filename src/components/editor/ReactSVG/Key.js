@@ -61,7 +61,7 @@ export default props => {
     return (
         <g>
             <foreignObject x={props.anchored ? internalCoords.x : props.x} y={props.anchored ? internalCoords.y : props.y} style={{overflow: 'visible'}}
-                           width={1} height={1}>
+                           width={1} height={1} id={props.uuid}>
                 {/*width={props.width} height={props.height}>*/}
                 <table className={'initial'} style={{backgroundColor: 'white', border: '1mm solid black', width: props.width}}
                        ref={keyElem}

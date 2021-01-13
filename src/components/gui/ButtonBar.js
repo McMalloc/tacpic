@@ -1,7 +1,5 @@
-import styled, {useTheme} from 'styled-components/macro';
-import React, {Component} from "react";
-import {fadeIn, slideFromAbove} from "./Animations";
-import {useTranslation} from 'react-i18next';
+import styled from 'styled-components/macro';
+import React from "react";
 
 const Wrapper = styled.div`
     display: flex;

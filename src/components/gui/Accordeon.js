@@ -84,9 +84,17 @@ const AccordeonMenuEntry = styled.div`
   opacity: ${(props) => (props.isDragging ? 0.5 : 1)};
   transition: background-color 0.1s, border-color 0.1s;
 
+  button.hover-button {
+      opacity: 0.3;
+    }
+
   &:hover {
     text-decoration: underline;
     background-color: ${(props) => props.theme.background};
+
+    button.hover-button {
+      opacity: 1;
+    }
   }
 `;
 

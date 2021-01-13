@@ -258,6 +258,11 @@
     "publish_button_continue-editing": "Weiter bearbeiten",
     "publish_button_back": "Zurück zum Katalog",
 
+    "delete_page_confirm_heading": "Löschen bestätigen",
+    "delete_page_confirm_copy": "Wollen Sie Seite {{pageNumber}} und alle darauf enthaltenden Objekte wirklich löschen?",
+    "delete_page_confirm_ok": "Ja, Seite löschen",
+    "delete_page_confirm_cancel": "Nein, abbrechen",
+
     "unsaved_changes_prompt": "Es gibt ungespeicherte Änderungen. Wollen Sie den Editor wirklich verlassen?"
   },
   "categories": {

@@ -77,7 +77,6 @@ const ShapeContext = props => {
                     }
                     {/*<Numberinput unit={"mm"}/>*/}
                 </fieldset>
-                <br/>
                 <fieldset>
                     <legend>Farbe</legend>
 

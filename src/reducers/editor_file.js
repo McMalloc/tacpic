@@ -73,11 +73,13 @@ const file = (state = {}, action) => {
       return { ...state, state: "success", variant_id: action.data.variant_id };
     case GRAPHIC.CREATE.FAILURE:
     case VARIANT.CREATE.FAILURE:
-      return { ...state, state: "failure", error: {
-        backtrace: action.message.backtrace,
-        message: action.message.message,
-        type: action.message.type,
-      } };
+      return {
+        ...state, state: "failure", error: {
+          backtrace: action.message.backtrace,
+          message: action.message.message,
+          type: action.message.type,
+        }
+      };
 
     case OBJECTS_SWAPPED:
       return produce(state, (draftState) => {
@@ -105,6 +107,7 @@ const file = (state = {}, action) => {
       }
 
       return oldState;
+
     case OBJECT_UPDATED:
       if (action.preview === null) return state;
       return produce(state, (draftState) => {
@@ -121,6 +124,7 @@ const file = (state = {}, action) => {
             action.preview;
         }
       });
+
     case OBJECT_BULK_ADD:
       return produce(state, (draftState) => {
         draftState.pages[action.shared_currentPage].objects.push(
@@ -196,7 +200,7 @@ const file = (state = {}, action) => {
         ...state,
         [action.key]: action.value,
       };
-    case CHANGE_FILE_FORMAT: 
+    case CHANGE_FILE_FORMAT:
       return {
         ...state,
         width: action.width,
@@ -271,33 +275,31 @@ const file = (state = {}, action) => {
     case FILE.OPEN.SUCCESS:
       return { ...state, ...action.data };
     case "OBJECT_REMOVED":
-      oldState = cloneDeep(state);
-
-      // TODO make possible for objects in groups
-      action.uuids.forEach((uuid) => {
-        let index = oldState.pages[action.shared_currentPage].objects.findIndex(
-          (object) => {
-            return object.uuid === uuid;
-          }
-        );
-        oldState.pages[action.shared_currentPage].objects.splice(index, 1);
+      return produce(state, (draftState) => {
+        action.uuids.forEach((uuid) => {
+          let objectIndex = -1;
+          let pageIndex = -1;
+          state.pages.forEach((page, index) => {
+            objectIndex = Math.max(page.objects.findIndex(object => object.uuid === uuid), objectIndex);
+            if (objectIndex >= 0) pageIndex = index;
+          })
+          
+          draftState.pages[pageIndex].objects.splice(objectIndex, 1);
       });
-
-      return oldState;
+    })
     case "PAGE_ADD":
       let title,
         braille = "";
-      state.pages.forEach((page, index) => {
-        page.objects.forEach((object) => {
-          if (object.type === "label" && object.isTitle) {
-            title = object.text;
-            braille = object.braille;
-          }
-        });
+      state.pages[0].objects.forEach((object) => {
+        if (object.type === "label" && object.isTitle) {
+          title = object.text;
+          braille = object.braille;
+        }
       });
+      console.log(title, braille)
       return produce(state, (draftState) => {
         draftState.pages.push({
-          name: "Seite " + (state.pages.length + 1),
+          name: null,//"Seite " + (state.pages.length + 1),
           objects: [
             methods.label.create(10, 10, 350, 75, title, braille, {
               isTitle: true,
@@ -376,6 +378,7 @@ const file = (state = {}, action) => {
       });
       objects.splice(groupIndex, 1);
       return oldState;
+
     case SET_PAGE_RENDERINGS:
       return produce(state, (draftState) => {
         draftState.pages.map((page, index) => {

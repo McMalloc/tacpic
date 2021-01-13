@@ -1,11 +1,13 @@
-import React, {useRef, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import styled from 'styled-components/macro';
-import {Icon} from "../../gui/_Icon";
-import {AccordeonMenuEntry, AccordeonPanelFlyoutButton} from "../../gui/Accordeon";
+import { Icon } from "../../gui/_Icon";
+import { AccordeonMenuEntry, AccordeonPanelFlyoutButton } from "../../gui/Accordeon";
+import { Button } from "../../gui/Button";
 import Context from "./Context/Context";
-import {useDrag, useDrop} from "react-dnd";
-import {OBJECT_ENTRY, OBJECTS_SWAPPED} from "../../../actions/action_constants";
+import { useDrag, useDrop } from "react-dnd";
+import { OBJECT_ENTRY, OBJECTS_SWAPPED } from "../../../actions/action_constants";
+import methods from '../ReactSVG/methods/methods';
 
 const select = (dispatch, uuid) => {
     dispatch({
@@ -42,26 +44,20 @@ const remove = (dispatch, uuid) => {
     });
 };
 
-const ObjectPreview = styled.svg`
-  height: 35px;
-  max-width: 35px;
-`;
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column-reverse;
 `;
 
 const iconMap = {
-    rect: 'vector-square',
-    ellipse: 'circle',
+    // rect: 'vector-square',
+    // ellipse: 'circle',
     label: 'braille',
     key: 'key',
-    path: 'bezier-curve'
+    // path: 'bezier-curve'
 }
 
 const keyDownHandler = (event, selectedUUID, dispatch) => {
-    console.log("keydown");
     switch (event.which) {// TODO use constants instead of magic numbers
         case 46: // DEL
             if (!!selectedUUID) return;
@@ -80,13 +76,28 @@ const keyDownHandler = (event, selectedUUID, dispatch) => {
     return false;
 };
 
+const ObjectPreview = props => {
+    if (props.type === 'key') return <Icon style={{width: 45}} icon={'key'} />
+    if (props.type === 'label') return <Icon style={{width: 45}} icon={'braille'} />
+    const object = document.getElementById(props.uuid);
+    if (object === null) return null;
+    const {width, height, x, y} = methods[props.type].getBBox(props);
+    return <svg viewBox={`0 0 ${width} ${height}`} style={{height: '35px', width: '35px', marginRight: '10px'}}>
+        <use transform={`translate(${-x} ${-y})`} href={"#" + props.uuid} />
+    </svg>
+}
+
+const detransform = (x, y, width, height, targetWidth, targetHeight) => {
+
+}
+
 const ObjectEntry = props => {
     const ref = useRef(null);
     const dispatch = useDispatch();
     const [hovered, setHovered] = useState(false);
 
-    const [{isDragging}, drag] = useDrag({
-        item: {type: OBJECT_ENTRY, index: props.index},
+    const [{ isDragging }, drag] = useDrag({
+        item: { type: OBJECT_ENTRY, index: props.index },
         // beginDrag: () => ({...props}),
         collect: (monitor) => {
             return {
@@ -99,9 +110,7 @@ const ObjectEntry = props => {
         accept: OBJECT_ENTRY,
         drop: (item, monitor) => {
             const from = item.index,
-                  to = props.index;
-
-            console.log(`from: ${from}, to:${to}, corrected: ${(from > to || Math.abs(from - to) <= 1) ? to : to - 1}`);
+                to = props.index;
             dispatch({
                 type: OBJECTS_SWAPPED,
                 from, to: (from < to || Math.abs(from - to) <= 1) ? to : to + 1
@@ -115,15 +124,26 @@ const ObjectEntry = props => {
     drag(drop(ref));
     if (props.index === -1) return <AccordeonMenuEntry hovered={isOver} ref={ref} />
     return <AccordeonMenuEntry selected={props.selected}
-                               hovered={isOver}
-                               ref={ref}
-                               onClick={() => select(dispatch, props.selected ? null : props.uuid)}>
-        <Icon icon={iconMap[props.type]}/>
-        <Icon icon={"grip-lines"} style={{cursor: 'move!important', marginLeft: '8px', color: '#cccccc'}}/>
-        <ObjectPreview>
-            <use href={"#" + props.uuid}/>
-        </ObjectPreview>
-        {props.type === "label" ? `Beschriftung: "${props.text}"` : props.moniker}
+        hovered={isOver}
+        style={{ justifyContent: "space-between" }}
+        ref={ref}
+        onClick={() => select(dispatch, props.selected ? null : props.uuid)}>
+
+        <div style={{ display: 'flex', alignItems: 'center', height: 35 }}>
+            <ObjectPreview {...props} />
+            {props.type === "label" ? `Beschriftung: "${props.text}"` : props.moniker}</div>
+        <Button onClick={event => {
+            event.stopPropagation();
+            !!props.selected && dispatch({
+                type: 'OBJECT_SELECTED',
+                uuids: [null]
+            });
+            dispatch({
+                type: 'OBJECT_REMOVED',
+                uuids: [props.uuid]
+            });
+         }}
+            className={'hover-button'} small icon={"trash-alt"} />
     </AccordeonMenuEntry>
 }
 
@@ -148,13 +168,13 @@ const Objects = props => {
                         flownOut={object.type !== 'key' && selected}
                         hideFlyout={props.hideFlyout}
                         key={index}
-                        genericButton={<ObjectEntry selected={selected} {...object} index={index}/>}>
-                        <Context/>
+                        genericButton={<ObjectEntry selected={selected} {...object} index={index} />}>
+                        <Context />
                     </AccordeonPanelFlyoutButton>
                 })}
             </Wrapper>
             {/*Dummy Object, makes drag-and-dropping easier*/}
-            <ObjectEntry selected={false}  index={-1}/>
+            <ObjectEntry selected={false} index={-1} />
         </>
     );
 };

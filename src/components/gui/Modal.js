@@ -69,6 +69,10 @@ const ModalFooter = styled.div`
   flex: 0 0 auto;
   //background-color: ${props => props.theme.grey_5};
   background-color: ${props => props.theme.background};
+
+  .modal-footer-button-container:not(:first-child) {
+      margin-left: 1em;
+  }
 `;
 
 class Modal extends Component {
@@ -98,7 +102,9 @@ class Modal extends Component {
             <Backdrop id={"modal-backdrop"} onClick={this.props.dismiss}>
                 <Window fitted={this.props.fitted} onClick={event=>event.stopPropagation()}>
                     <ModalHeader>
-                        <ModalTitle>{this.props.t(this.props.title)}</ModalTitle>
+                        <ModalTitle>
+                            {Array.isArray(this.props.title) ? this.props.t(this.props.title[0], this.props.title[1]) : this.props.t(this.props.title)}
+                            </ModalTitle>
                         {typeof this.props.dismiss === "function" && <Button onClick={this.props.dismiss} id={"close-modal-button"} icon={"times"}></Button>}
                         {/*<ModalClose>{typeof this.props.dismiss === "function" && <Icon onClick={this.props.dismiss} icon={"times"} />}</ModalClose>*/}
                     </ModalHeader>
@@ -111,10 +117,10 @@ class Modal extends Component {
                             };
                             // TODO: kein float fürs Layout nutzen
                             return (
-                                <span key={index} style={{float: action.align}}>
+                                <span key={index} className={'modal-footer-button-container'} style={{float: action.align}}>
                                     <Button disabled={action.disabled} {...buttonProps}
                                             name={action.name}
-                                            form={action.submitFor || false}
+                                            form={action.submitFor || undefined}
                                             onClick={action.action}>
                                         {action.label}
                                     </Button>
