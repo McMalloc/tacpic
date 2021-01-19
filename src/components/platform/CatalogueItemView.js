@@ -179,7 +179,7 @@ const CatalogueItemView = ({ variantsOverview }) => {
   const variantColumn = (
     <VariantColumn className={"col-sm-2 col-md-3 col-lg-2"}>
       <div className={"heading"}>
-        <strong>Verfügbare Varianten</strong> ({variantsOverview.length} gesamt)
+        <strong>Verfügbare Varianten</strong><br /><small>({variantsOverview.length} gesamt)</small>
       </div>
       <div>
         {variantsOverview.map((variant, index) => {

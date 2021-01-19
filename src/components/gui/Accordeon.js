@@ -167,6 +167,7 @@ const AccordeonPanelFlyoutButton = (props) => {
         <Toggle
           ref={buttonRef}
           leftAlign
+          primary={props.primary}
           toggled={props.flownOut}
           onClick={props.onClick}
           fullWidth

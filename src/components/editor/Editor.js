@@ -463,6 +463,7 @@ const Editor = (props) => {
                 <AccordeonPanelFlyoutButton
                   flownOut={openedPanel === "publish"}
                   className={"padded"}
+                  primary
                   hideFlyout={dragging}
                   onClick={() =>
                     setOpenedPanel(openedPanel === "publish" ? null : "publish")

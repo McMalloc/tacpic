@@ -34,7 +34,7 @@ export const variantGetSaga = createSaga(
 // newly added tags need a temporary identifier (uuid) to avoid duplicates
 // the uuid are replaced with null before they are send to the server.
 // the server will then create new tags if the id is null
-const isUuid = string => /[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/.test(string)
+const isUuid = string => /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/.test(string)
 const replaceTagUuids = tags => tags.map(tag =>
     ({
         name: tag.name,

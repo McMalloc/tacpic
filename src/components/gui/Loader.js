@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   justify-content: center;
   width: 100%;
   display: flex;
+  padding: 0.5rem; 
   text-align: center;
   animation: pulsating 0.8s infinite;
   font-size: ${props => props.large ? "120%" : "100%"};

@@ -102,8 +102,8 @@ const SignupForm = props => {
                                       name={'cb-privacy-accept'}
                                       checked={privacyAccepted}
                                       label={"account:accept-privacy-policy"}/>
-                            <NavLink target={"blank"}
-                               to={"/legal/de/Datenschutzerklärung"} className={"checkbox-additional"}>Datenschutzerklärung einsehen.</NavLink><br /><br />
+                            <NavLink target={"_blank"}
+                               to={"/info/de/Datenschutzerklärung"} className={"checkbox-additional"}>Datenschutzerklärung einsehen.</NavLink><br /><br />
 
                             <div style={{textAlign: "center"}}>
                                 <Button disabled={!(emailValid) || user.verification_state === 0 || !privacyAccepted}

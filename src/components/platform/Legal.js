@@ -31,11 +31,11 @@ const LocalContent = (props) => {
       <section className={"legal-text"}>
           <h2>Lizenzen</h2>
           <p>Die Texte der angegeben Lizenzen sind unter folgenden Links einzusehen:&nbsp;
-              <a target={'blank'} href={"/documents/mit.txt"}>MIT</a>,&nbsp;
-              <a target={'blank'} href={"/documents/sil.txt"}>SIL</a>, &nbsp;
-              <a target={'blank'} href={"/documents/bds.txt"}>BDS</a>, &nbsp;
-              <a target={'blank'} href={"/documents/mpl.html"}>MPL</a> und &nbsp;
-              <a target={'blank'} href={"/documents/cc-by.html"}>CC-BY</a>.
+              <a target={'_blank'} href={"/documents/mit.txt"}>MIT</a>,&nbsp;
+              <a target={'_blank'} href={"/documents/sil.txt"}>SIL</a>, &nbsp;
+              <a target={'_blank'} href={"/documents/bds.txt"}>BDS</a>, &nbsp;
+              <a target={'_blank'} href={"/documents/mpl.html"}>MPL</a> und &nbsp;
+              <a target={'_blank'} href={"/documents/cc-by.html"}>CC-BY</a>.
           </p>
           <table className={"full-width" }>
         <thead>
