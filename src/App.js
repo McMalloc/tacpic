@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Navbar } from "./components/platform/Navbar";
 import Catalogue from "./components/platform/Catalogue";
 import { useDispatch, useSelector } from "react-redux";
-import { USER, APP } from "./actions/action_constants";
+import { USER, APP, LOCALFILES } from "./actions/action_constants";
 import styled from "styled-components/macro";
 import SignupForm from "./components/SignupForm";
 import { Footer } from "./components/platform/Footer";
@@ -24,6 +24,7 @@ import NotFound from "./components/NotFound";
 import ResetPasswordRequest from "./components/platform/account/ResetPasswordRequest";
 import LegalIndex from "./components/platform/Legal";
 import { Pricing } from "./components/platform/Pricing";
+import EditorSplash from "./components/editor/EditorSplash";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -41,7 +42,7 @@ const Wrapper = styled.div`
 `;
 
 const AppContainer = styled.div`
-  flex: 1 ${(props) => (props.inEditor ? 1 : 0)} 100%;
+  flex: 1 ${(props) => (props.inEditor || props.inEditorSplash ? 1 : 0)} 100%;
   overflow-y: ${(props) => (props.inEditor ? "hidden" : "visible")};
 
   display: flex;
@@ -54,25 +55,25 @@ const App = () => {
   const t = useTranslation().t;
   const dispatch = useDispatch();
   const location = useLocation();
-  const inEditor = /editor/.test(location.pathname);
+  const inEditor = /editor\/app/.test(location.pathname);
+  const inEditorSplash = /splash/.test(location.pathname);
   const appError = useSelector((state) => state.app.error);
 
   useEffect(() => {
     dispatch({ type: APP.FRONTEND.REQUEST });
     dispatch({ type: APP.BACKEND.REQUEST });
-         dispatch({ type: APP.LEGAL.REQUEST });
-         
-         
-
+    dispatch({ type: APP.LEGAL.REQUEST });
+    dispatch({ type: LOCALFILES.INDEX.REQUEST });
+          
     document.title = APP_TITLE;
 
     if (localStorage.getItem("jwt") === null) return;
-    dispatch({ type: USER.VALIDATE.REQUEST });
-  }, [APP_TITLE]);
+      dispatch({ type: USER.VALIDATE.REQUEST });
+    }, [APP_TITLE]);
 
   const navbarItems = [
     { label: t("general:catalogue"), to: "/catalogue" },
-    { label: t("general:editor"), to: "/editor/new" },
+    { label: t("general:editor"), to: "/editor/splash" },
     { label: t("general:pricing"), to: "/pricing" },
     // {label: 'Wissen', to: '/knowledge'},
     // {label: 'Häufige Fragen', to: '/faq'}
@@ -85,6 +86,7 @@ const App = () => {
         <AppContainer
           id={"app-container"}
           inEditor={inEditor}
+          inEditorSplash={inEditorSplash}
           className={!inEditor ? " container" : ""}
         >
           <Routes>
@@ -108,6 +110,10 @@ const App = () => {
             <Route
               path="/editor/:graphicId/variant/:variantId/:mode"
               element={<Editor />}
+            />
+            <Route
+              path="/editor/splash"
+              element={<EditorSplash />}
             />
             <Route path="/editor/:mode" element={<Editor />} />
             <Route path="/stats" element={<Stats />} />

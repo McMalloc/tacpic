@@ -10,15 +10,9 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   flex: 0 1 50%;
 
-  ${SM_SCREEN} {
-    flex: 0 1 33%;
-  }  
-  ${MD_SCREEN} {
-    flex: 0 1 33%;
-  }  
-  ${LG_SCREEN} {
-    flex: 0 1 20%;
-  }
+  ${SM_SCREEN} { flex: 0 1 33%; }  
+  ${MD_SCREEN} { flex: 0 1 33%; }  
+  ${LG_SCREEN} { flex: 0 1 20%; }
   
   &:before {
     content:'';

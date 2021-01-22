@@ -270,10 +270,13 @@ const file = (state = {}, action) => {
         draftState.braillePages.braille = action.braille;
         draftState.braillePages.formatted = action.formatted;
       });
+      
     case FILE.OPEN.REQUEST:
       return { ...initialEditor.file.present };
     case FILE.OPEN.SUCCESS:
-      return { ...state, ...action.data };
+      if (!action.data) return { ...state, uuid: uuidv4() };
+      return { ...state, ...action.data, uuid: action.data.uuid || uuidv4() };
+
     case "OBJECT_REMOVED":
       return produce(state, (draftState) => {
         action.uuids.forEach((uuid) => {
@@ -283,10 +286,10 @@ const file = (state = {}, action) => {
             objectIndex = Math.max(page.objects.findIndex(object => object.uuid === uuid), objectIndex);
             if (objectIndex >= 0) pageIndex = index;
           })
-          
+
           draftState.pages[pageIndex].objects.splice(objectIndex, 1);
-      });
-    })
+        });
+      })
     case "PAGE_ADD":
       let title,
         braille = "";

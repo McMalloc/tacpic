@@ -10,23 +10,24 @@ const action_constants = (domain, methods) => {
 }
 
 
-export const APP        = action_constants('APP',     ['FRONTEND', 'BACKEND', 'VERSION', 'LEGAL']);
-export const USER       = action_constants('USER',     ['LOGIN', 'LOGOUT', 'CREATE', 'SAVE_LAYOUT', 'VALIDATE', 'VERIFY', 'RESET_REQUEST','RESET','UPDATE']);
-export const SEARCH     = action_constants('SEARCH',   ['QUERY']);
-export const PRODUCT    = action_constants('PRODUCT',  ['FETCH', 'GET']);
-export const FILE       = action_constants('FILE',     ['OPEN']);
+export const APP        = action_constants('APP',       ['FRONTEND', 'BACKEND', 'VERSION', 'LEGAL', 'IDB_INIT']);
+export const USER       = action_constants('USER',      ['LOGIN', 'LOGOUT', 'CREATE', 'SAVE_LAYOUT', 'VALIDATE', 'VERIFY', 'RESET_REQUEST','RESET','UPDATE']);
+export const SEARCH     = action_constants('SEARCH',    ['QUERY']);
+export const PRODUCT    = action_constants('PRODUCT',   ['FETCH', 'GET']);
+export const FILE       = action_constants('FILE',      ['OPEN']);
 export const RESSOURCES = action_constants('RESSOURCES',['GET']);
 export const VERSION    = action_constants('VERSION',   ['GET', 'CREATE']);
 export const GRAPHIC    = action_constants('GRAPHIC',   ['GET', 'CREATE']);
 export const VARIANT    = action_constants('VARIANT',   ['GET', 'CREATE', 'UPDATE', 'HISTORY']);
-export const VARIANTS   = action_constants('VARIANTS',   ['GET']); // get multiple variants and info about their parent graphics without versions
-export const CATALOGUE  = action_constants('CATALOGUE',   ['SEARCH', 'MORE']);
-export const TAGS       = action_constants('TAGS',     ['GET', 'SEARCH', 'CREATE']);
+export const VARIANTS   = action_constants('VARIANTS',  ['GET']); // get multiple variants and info about their parent graphics without versions
+export const CATALOGUE  = action_constants('CATALOGUE', ['SEARCH', 'MORE']);
+export const TAGS       = action_constants('TAGS',      ['GET', 'SEARCH', 'CREATE']);
 export const BRAILLE    = action_constants('BRAILLE',   ['TRANSLATE']);
-export const ORDER      = action_constants('ORDER',   ['CREATE', 'GET', 'INDEX']);
-export const QUOTE      = action_constants('QUOTE',   ['REQUEST', 'GET']);
+export const ORDER      = action_constants('ORDER',     ['CREATE', 'GET', 'INDEX']);
+export const QUOTE      = action_constants('QUOTE',     ['REQUEST', 'GET']);
 export const ADDRESS    = action_constants('ADDRESS',   ['GET', 'CREATE', 'UPDATE', 'REMOVE']); // TODO rename GET to ADDRESS.INDEX
-export const IMPORT    = action_constants('IMPORT',   ['TRACE', 'OCR']);
+export const IMPORT     = action_constants('IMPORT',    ['TRACE', 'OCR']);
+export const LOCALFILES  = action_constants('LOCALFILE', ['INDEX', 'GET', 'REMOVE']);
 
 export const CMS_PAGE    = action_constants('CMS_PAGE',   ['INDEX', 'GET']);
 export const CMS_CATEGORY    = action_constants('CMS_CATEGORY',   ['INDEX', 'GET']);

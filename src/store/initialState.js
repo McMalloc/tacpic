@@ -26,6 +26,9 @@ export const editor = {
         },
         fileState: null
     },
+    localfiles: {
+        index: []
+    },
     file: {
         past: [],
         present: {
@@ -35,6 +38,7 @@ export const editor = {
             variantTitle: "Basis",
             transcribersNotes: "",
             tags: [],
+            uuid: null,
             category: null,
             variant_id: null,
             graphic_id: null,
@@ -93,7 +97,8 @@ export const app = {
     error: null,
     legalTexts: [],
     backend: {},
-    frontend: {}
+    frontend: {},
+    idb: false
 };
 
 export const catalogue = {

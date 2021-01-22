@@ -12,16 +12,11 @@ import {useBreakpoint} from "../../contexts/breakpoints";
 import {Burgermenu} from "../gui/Burgermenu";
 
 const Wrapper = styled.nav`
-  /* display: flex; */
   background-color: white;
   padding: 6px;
   font-size: 1.1rem;
-  /* flex: 0 1 auto; */
-  /* flex-wrap: wrap; */
-  /* width: 100%; */
   box-sizing: border-box;
   border-bottom: 1px solid ${props => props.theme.grey_5};
-  /* justify-content: space-between; */
 
   a {
       margin-left: 0.5rem;
@@ -41,14 +36,11 @@ const Wrapper = styled.nav`
 const NavbarItem = styled(NavLink)`
     color: ${props => props.theme.brand_secondary};
     text-decoration: none;
-    /* border-radius: ${props => props.theme.border_radius}; */
     margin: 0 ${props => props.theme.large_padding};
     position: relative;
     border-bottom: 3px solid transparent;
     border-top: 4px solid transparent!important;
-    /* font-family: "Quicksand", sans-serif; */
     white-space: nowrap;
-    /* flex: 0 1 0; */
 
     &.active:before {
         background-color: ${props => props.theme.brand_primary};

@@ -18,6 +18,7 @@ export const variantGetSaga = createSaga(
             variantDescription: variant.description,
             graphicTitle: variant.parent_graphic.title,
             derivedFrom: variant.derived_from,
+            currentFileName: variant.current_file_name,
             graphicDescription: variant.parent_graphic.description,
             tags: variant.tags,
             system: variant.braille_system,

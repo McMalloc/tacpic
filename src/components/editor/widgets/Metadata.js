@@ -23,27 +23,6 @@ const Status = styled.div`
   margin: ${props => props.theme.spacing[3]} 0;
 `;
 
-const Indicator = styled.span`
-  display: inline-block;
-  text-transform: uppercase;
-  color: ${props => props.theme.background};
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  border-radius: ${props => props.theme.border_radius};
-  padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[2]};
-  background-color: ${props => {
-    switch (props.state) {
-        case 0:
-            return props.theme.info;
-        case 1:
-            return props.theme.success;
-        case 2:
-            return props.theme.warning;
-        default:
-            return props.theme.midlight;
-    }
-}};
-`;
 
 const Hint = styled.div`
   text-align: right;

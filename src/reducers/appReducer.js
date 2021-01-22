@@ -24,6 +24,11 @@ const appReducer = (state = {}, action) => {
                 ...state,
                 error: action.statusCode === 500 ? {type: "not available", message: "backend service not available"} : null
             }
+        case APP.IDB_INIT.SUCCESS:
+            return {
+                ...state,
+                idb: true
+            }
         case ERROR_THROWN:
             return {
                 ...state,

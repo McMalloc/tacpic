@@ -1,10 +1,25 @@
-import {put, takeLatest, take, race} from "redux-saga/effects";
+import {put, takeLatest, take, race, select} from "redux-saga/effects";
 import { FILE, VARIANT } from "../actions/action_constants";
 import md5 from 'blueimp-md5';
 
 export function* openFileWatcher() {
     yield takeLatest(FILE.OPEN.REQUEST, function* (action) {
         let mode = action.mode;
+
+        if (!action.id) {
+            yield put({
+                type: FILE.OPEN.SUCCESS,
+                data: {...action.data}
+            });
+            return;
+        }
+        const localfiles = yield select(state=>state.editor.localfiles.index);
+
+
+        // TODO: abstrahieren
+        let localBackup = localfiles.find(file => file.variant_id === action.id);
+
+        console.log(localBackup);
 
         yield put({
             type: VARIANT.GET.REQUEST,

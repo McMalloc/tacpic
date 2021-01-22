@@ -21,6 +21,7 @@ import { APP_URL, API_URL } from "../../env.json";
 import Well from "../gui/Well";
 import More from "../gui/More";
 import { MD_SCREEN, SM_SCREEN, DB_DATE_FORMAT } from "../../config/constants";
+import { FILE } from "../../actions/action_constants";
 import useIntersect from "../../contexts/intersections";
 import { useBreakpoint } from "../../contexts/breakpoints";
 
@@ -48,7 +49,6 @@ const Details = styled.div`
   flex-direction: column;
   padding-bottom: 12px;
   grid-area: details;
-  //justify-content: space-between;
 `;
 
 const Title = styled.h2`
@@ -223,11 +223,11 @@ const VariantView = (props) => {
                 <p>{props.description}</p>
               </More>
             ) : (
-              <p>{props.description}</p>
-            )
+                <p>{props.description}</p>
+              )
           ) : (
-            <em>(Keine Beschreibung)</em>
-          )}
+              <em>(Keine Beschreibung)</em>
+            )}
           <p>
             <small>
               Erstellt am{" "}
@@ -262,8 +262,7 @@ const VariantView = (props) => {
                   {props.graphic_no_of_pages}{" "}
                   {props.graphic_no_of_pages === 1 ? "Seite" : "Seiten"}{" "}
                   {t(
-                    `catalogue:${props.graphic_format}-${
-                      props.graphic_landscape ? "landscape" : "portrait"
+                    `catalogue:${props.graphic_format}-${props.graphic_landscape ? "landscape" : "portrait"
                     }`
                   )}
                 </td>
@@ -277,12 +276,12 @@ const VariantView = (props) => {
                   {props.braille_no_of_pages === 0 ? (
                     <>{t("gui:none")}</>
                   ) : (
-                    <>
-                      {props.braille_no_of_pages}{" "}
-                      {props.braille_no_of_pages === 1 ? "Seite" : "Seiten"}{" "}
-                      {t(`catalogue:${props.braille_format}-portrait`)}
-                    </>
-                  )}
+                      <>
+                        {props.braille_no_of_pages}{" "}
+                        {props.braille_no_of_pages === 1 ? "Seite" : "Seiten"}{" "}
+                        {t(`catalogue:${props.braille_format}-portrait`)}
+                      </>
+                    )}
                 </td>
               </tr>
               <tr>
@@ -314,10 +313,10 @@ const VariantView = (props) => {
                     </td>
                   </>
                 ) : (
-                  <td className={"disabled"} colSpan={2}>
-                    Keine Schlagworte für diese Variante.
-                  </td>
-                )}
+                    <td className={"disabled"} colSpan={2}>
+                      Keine Schlagworte für diese Variante.
+                    </td>
+                  )}
               </tr>
             </tbody>
           </table>
@@ -343,25 +342,40 @@ const VariantView = (props) => {
               <FlyoutEntry
                 icon={"file-medical"}
                 label={"catalogue:variant-copy"}
-                onClick={() =>
-                  navigate(`/editor/${graphicId}/variant/${variantId}/copy`)
-                }
+                onClick={() => {
+                  dispatch({
+                    type: FILE.OPEN.REQUEST,
+                    id: variantId,
+                    mode: 'copy',
+                  });
+                  navigate('/editor/app');
+                }}
                 sublabel={"catalogue:variant-copy-hint"}
               />
               <FlyoutEntry
                 icon={"glasses"}
                 label={"catalogue:variant-edit"}
-                onClick={() =>
-                  navigate(`/editor/${graphicId}/variant/${variantId}/edit`)
-                }
+                onClick={() => { 
+                  dispatch({
+                    type: FILE.OPEN.REQUEST,
+                    id: variantId,
+                    mode: 'edit',
+                  });
+                  navigate('/editor/app');
+                }}
                 sublabel={"catalogue:variant-edit-hint"}
               />
               <FlyoutEntry
                 icon={"file-export"}
                 label={"catalogue:variant-new"}
-                onClick={() =>
-                  navigate(`/editor/${graphicId}/variant/${variantId}/new`)
-                }
+                onClick={() => {
+                  dispatch({
+                    type: FILE.OPEN.REQUEST,
+                    id: variantId,
+                    mode: 'new',
+                  });
+                  navigate('/editor/app');
+                }}
                 sublabel={"catalogue:variant-new-hint"}
               />
             </FlyoutButton>
@@ -372,38 +386,17 @@ const VariantView = (props) => {
               icon={"file-download"}
               label={"catalogue:download-as"}
             >
-              <FlyoutEntry
-                icon={"file-pdf"}
-                label={"catalogue:pdf"}
+              {['pdf', 'rtf', 'brf', 'zip'].map(format => {
+                return <FlyoutEntry
+                icon={format === 'pdf' ? 'file-pdf' : format === 'zip' ? 'file-archive' : format === 'rtf' ? 'file-word' : 'braille'}
+                key={format}
+                label={"catalogue:" + format}
                 onClick={() =>
-                  (window.location = `${APP_URL}/variants/${variantId}/pdf_${props.current_file_name}.pdf`)
+                  (window.location = `${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`)
                 }
-                sublabel={"catalogue:pdf-hint"}
+                sublabel={`catalogue:${format}-hint`}
               />
-              <FlyoutEntry
-                icon={"file-word"}
-                label={"catalogue:rtf"}
-                onClick={() =>
-                  (window.location = `${APP_URL}/variants/${variantId}/rtf_${props.current_file_name}.rtf`)
-                }
-                sublabel={"catalogue:rtf-hint"}
-              />
-              <FlyoutEntry
-                icon={"file"}
-                label={"catalogue:brf"}
-                onClick={() =>
-                  (window.location = `${APP_URL}/variants/${variantId}/brf_${props.current_file_name}.brf`)
-                }
-                sublabel={"catalogue:brf-hint"}
-              />
-              <FlyoutEntry
-                icon={"file-archive"}
-                label={"catalogue:zip"}
-                onClick={() =>
-                  (window.location = `${APP_URL}/variants/${variantId}/zip_${props.current_file_name}.zip`)
-                }
-                sublabel={"catalogue:zip-hint"}
-              />
+              })}
             </FlyoutButton>
           </Toolbar>
         </div>
@@ -435,8 +428,8 @@ const VariantView = (props) => {
             ]}
           ></Radio>
         ) : (
-          <p>{props.graphic_no_of_pages} Grafikseite(n)</p>
-        )}
+            <p>{props.graphic_no_of_pages} Grafikseite(n)</p>
+          )}
 
         <br />
 

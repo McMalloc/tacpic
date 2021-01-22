@@ -116,7 +116,11 @@ legend {
 }
 
 small {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1px;
+  font-weight: bold;
+  text-transform: uppercase;
+  opacity: 0.8;
 }
 
 .monospace {

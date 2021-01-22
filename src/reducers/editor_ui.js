@@ -1,13 +1,11 @@
 import {COPY, FILE, IMPORT, SUPPRESS_BACKUP} from "../actions/action_constants";
 
 let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so
-let lastObjectsProps = [];
 const roundingAccuracy = 10;
 
 // TODO Monster-Reducer refaktorisieren
 
 const ui = (state = {}, action) => {
-    let oldState, mouseCoords;
     switch (action.type) {
         case FILE.OPEN.REQUEST:
             return {...state, fileOpenPending: true, fileOpenSuccess: false};

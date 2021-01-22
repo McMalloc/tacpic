@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../../gui/Button";
-import Modal from "../../gui/Modal";
 import { GraphicPagePreview } from "../../gui/PagePreview";
 import styled from "styled-components/macro";
 import { useTranslation } from "react-i18next";
@@ -9,6 +8,7 @@ import {
   AccordeonMenuEntry
 } from "../../gui/Accordeon";
 import { Alert } from "../../gui/Alert";
+import Modal from "../../gui/Modal";
 
 const changePage = (dispatch, nr) => {
   dispatch({

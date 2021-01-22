@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styled from "styled-components/macro";
 
 const Tile = styled.div`
@@ -9,7 +9,9 @@ const Tile = styled.div`
   display: flex;
   background-color: ${props => props.theme.background};
   flex-direction: column;
-  height: 100%;
+
+  height: ${props => props.frugal ? 'auto' : '100%'};
+  padding: ${props => props.padded ? props.theme.large_padding : 0};
   
   &:hover {
     box-shadow: ${props => props.theme.distant_shadow};

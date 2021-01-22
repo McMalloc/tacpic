@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   padding: 0.5rem; 
+  box-sizing: border-box;
   text-align: center;
   animation: pulsating 0.8s infinite;
   font-size: ${props => props.large ? "120%" : "100%"};

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import md5 from "blueimp-md5";
 
 import styled from "styled-components/macro";
 import { useTranslation } from "react-i18next";
@@ -127,11 +126,8 @@ const Editor = (props) => {
   const uiSettings = useSelector((state) => state.editor.ui);
   const file = useSelector((state) => state.editor.file.present);
   const page = file.pages;
-  const fileHash = file.lastVersionHash;
-  const error = useSelector((state) => state.app.error);
   const undoLength = useSelector((state) => state.editor.file.past.length);
   const redoLength = useSelector((state) => state.editor.file.future.length);
-  const user = useSelector((state) => state.user);
   const traceImport = useSelector((state) => state.editor.ui.import);
   const ocr = useSelector((state) => state.editor.ui.import.ocr);
   const ocrSelection = useSelector(
@@ -191,48 +187,48 @@ const Editor = (props) => {
   };
 
   useEffect(() => {
-    if (!!variantId) {
-      let overrides = {};
-      switch (mode) {
-        case "edit": // edit an variant, e.g. keep variant_id and graphic_id, assign new version_id
-          overrides = { variant_id: variantId };
-          break;
-        case "copy": // create a new variant, e.g. keep graphic_id, assign new variant_id
-          overrides = {
-            derivedFrom: variantId,
-            variantTitle: "",
-            variant_id: null,
-          };
-          break;
-        case "new": // create a new graphic, e.g.assign new variant_id and graphic_id
-          overrides = {
-            derivedFrom: null,
-            variantTitle: "",
-            variant_id: null,
-            graphic_id: null,
-          };
-          break;
-        default:
-          break;
-      }
-      dispatch({
-        type: FILE.OPEN.REQUEST,
-        id: variantId,
-        mode,
-        data: overrides,
-      });
-    } else {
-      dispatch({
-        type: FILE.OPEN.SUCCESS,
-        data: editor.file.present,
-      });
-    }
-    return () => {
-      dispatch({
-        type: SUPPRESS_BACKUP,
-        flag: false,
-      });
-    };
+    // if (!!variantId) {
+    //   let overrides = {};
+    //   switch (mode) {
+    //     case "edit": // edit an variant, e.g. keep variant_id and graphic_id, assign new version_id
+    //       overrides = { variant_id: variantId };
+    //       break;
+    //     case "copy": // create a new variant, e.g. keep graphic_id, assign new variant_id
+    //       overrides = {
+    //         derivedFrom: variantId,
+    //         variantTitle: "",
+    //         variant_id: null,
+    //       };
+    //       break;
+    //     case "new": // create a new graphic, e.g.assign new variant_id and graphic_id
+    //       overrides = {
+    //         derivedFrom: null,
+    //         variantTitle: "",
+    //         variant_id: null,
+    //         graphic_id: null,
+    //       };
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    //   dispatch({
+    //     type: FILE.OPEN.REQUEST,
+    //     id: variantId,
+    //     mode,
+    //     data: overrides,
+    //   });
+    // } else {
+    //   dispatch({
+    //     type: FILE.OPEN.SUCCESS,
+    //     data: editor.file.present,
+    //   });
+    // }
+    // return () => {
+    //   dispatch({
+    //     type: SUPPRESS_BACKUP,
+    //     flag: false,
+    //   });
+    // };
   }, [graphicId, variantId, mode]);
 
   if (!lg) {
@@ -249,88 +245,88 @@ const Editor = (props) => {
     );
   }
 
-  if (handleBackup) {
-    let backup = JSON.parse(localStorage.getItem("EDITOR_BACKUP"));
-    const backup_date = moment(
-      JSON.parse(localStorage.getItem("EDITOR_BACKUP_DATE"))
-    );
-    if (!!backup) {
-      return (
-        <Modal
-          fitted
-          title={"Sitzung wiederherstellen"}
-          dismiss={() => setHandleBackup(false)}
-          actions={[
-            {
-              label: "Nein, Sicherung verwerfen",
-              align: "left",
-              action: () => {
-                setHandleBackup(false);
-                localStorage.removeItem("HAS_EDITOR_CRASHED");
-                dispatch({
-                  type: SUPPRESS_BACKUP,
-                  flag: true,
-                });
-              },
-            },
-            {
-              label: "Ja, Sicherung öffnen",
-              align: "right",
-              template: "primary",
-              action: () => {
-                setHandleBackup(false);
-                localStorage.removeItem("HAS_EDITOR_CRASHED");
-                dispatch({
-                  type: FILE.OPEN.SUCCESS,
-                  data: backup,
-                  mode: "edit",
-                });
-                dispatch({
-                  type: SUPPRESS_BACKUP,
-                  flag: true,
-                });
-              },
-            },
-          ]}
-        >
-          <Alert info>Es liegt die Sicherung einer früheren Sitzung vor.</Alert>
-          <div className={"some-extra-padding"}>
-            <table>
-              <tbody>
-                <tr>
-                  <td style={{ textAlign: "right", paddingRight: "1em" }}>
-                    Datum der Sicherung:
-                  </td>
-                  <td>
-                    <strong>
-                      {backup_date.format("DD. MMM YYYY, HH:mm")} Uhr
-                    </strong>
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ textAlign: "right", paddingRight: "1em" }}>
-                    Entwurfstitel:
-                  </td>
-                  <td>
-                    <strong>{backup.graphicTitle}</strong>
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ textAlign: "right", paddingRight: "1em" }}>
-                    Variantentitel:
-                  </td>
-                  <td>
-                    <strong>{backup.variantTitle}</strong>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p>Möchten Sie das Backup laden?</p>
-        </Modal>
-      );
-    }
-  }
+  // if (handleBackup) {
+  //   let backup = JSON.parse(localStorage.getItem("EDITOR_BACKUP"));
+  //   const backup_date = moment(
+  //     JSON.parse(localStorage.getItem("EDITOR_BACKUP_DATE"))
+  //   );
+  //   if (!!backup) {
+  //     return (
+  //       <Modal
+  //         fitted
+  //         title={"Sitzung wiederherstellen"}
+  //         dismiss={() => setHandleBackup(false)}
+  //         actions={[
+  //           {
+  //             label: "Nein, Sicherung verwerfen",
+  //             align: "left",
+  //             action: () => {
+  //               setHandleBackup(false);
+  //               localStorage.removeItem("HAS_EDITOR_CRASHED");
+  //               dispatch({
+  //                 type: SUPPRESS_BACKUP,
+  //                 flag: true,
+  //               });
+  //             },
+  //           },
+  //           {
+  //             label: "Ja, Sicherung öffnen",
+  //             align: "right",
+  //             template: "primary",
+  //             action: () => {
+  //               setHandleBackup(false);
+  //               localStorage.removeItem("HAS_EDITOR_CRASHED");
+  //               dispatch({
+  //                 type: FILE.OPEN.SUCCESS,
+  //                 data: backup,
+  //                 mode: "edit",
+  //               });
+  //               dispatch({
+  //                 type: SUPPRESS_BACKUP,
+  //                 flag: true,
+  //               });
+  //             },
+  //           },
+  //         ]}
+  //       >
+  //         <Alert info>Es liegt die Sicherung einer früheren Sitzung vor.</Alert>
+  //         <div className={"some-extra-padding"}>
+  //           <table>
+  //             <tbody>
+  //               <tr>
+  //                 <td style={{ textAlign: "right", paddingRight: "1em" }}>
+  //                   Datum der Sicherung:
+  //                 </td>
+  //                 <td>
+  //                   <strong>
+  //                     {backup_date.format("DD. MMM YYYY, HH:mm")} Uhr
+  //                   </strong>
+  //                 </td>
+  //               </tr>
+  //               <tr>
+  //                 <td style={{ textAlign: "right", paddingRight: "1em" }}>
+  //                   Entwurfstitel:
+  //                 </td>
+  //                 <td>
+  //                   <strong>{backup.graphicTitle}</strong>
+  //                 </td>
+  //               </tr>
+  //               <tr>
+  //                 <td style={{ textAlign: "right", paddingRight: "1em" }}>
+  //                   Variantentitel:
+  //                 </td>
+  //                 <td>
+  //                   <strong>{backup.variantTitle}</strong>
+  //                 </td>
+  //               </tr>
+  //             </tbody>
+  //           </table>
+  //         </div>
+  //         <p>Möchten Sie das Backup laden?</p>
+  //       </Modal>
+  //     );
+  //   }
+  // }
 
   // LOGIC REGARDING ACCORDEON PANEL
   const toggleAccordeon = (title, override) => {
@@ -444,6 +440,7 @@ const Editor = (props) => {
                   <Button fullWidth primary label={"Titel ändern"} />
                 )}
                 <br />
+                <pre style={{fontSize: 12}}>{file.uuid}</pre>
                 <SaveIndicator id={"save-indicator"}>
                   <Icon icon={"save"} /> Wird gespeichert ...
                 </SaveIndicator>
@@ -625,10 +622,10 @@ const Editor = (props) => {
               <Importer />
             </Modal>
           )}
-          <Prompt
+          {/* <Prompt
             when={!uiSettings.suppressBackup}
             message={t("editor:unsaved_changes_prompt")}
-          />
+          /> */}
         </>
       ) : (
         <Wrapper>

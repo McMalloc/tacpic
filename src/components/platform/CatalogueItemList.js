@@ -5,7 +5,7 @@ import styled from "styled-components/macro";
 import {useDispatch, useSelector} from "react-redux";
 import {Icon} from "../gui/_Icon";
 import {Alert} from "../gui/Alert";
-import {LOAD_MORE} from "../../actions/action_constants";
+import {FILE, LOAD_MORE} from "../../actions/action_constants";
 import {Button} from "../gui/Button";
 import Loader from "../gui/Loader";
 import { useTranslation } from 'react-i18next';
@@ -79,7 +79,8 @@ const CatalogueItemList = props => {
 
     const newButton = <CatalogueItemWrapper>
             <AddButton id={'btn-new-graphic'} onClick={() => {
-                navigate("/editor/new");
+                dispatch({type: FILE.OPEN.REQUEST})
+                navigate("/editor/app");
             }}>
                 <span><Icon icon={'plus'}/></span>
                 <span>{t('catalogue:new_graphic') }</span>
