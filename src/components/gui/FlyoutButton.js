@@ -83,7 +83,7 @@ export const FlyoutEntry = (props) => {
       {props.sublabel && (
         <>
           <br />
-          <small>{t(props.sublabel)}</small>
+          <span className={'sub-label'}>{t(props.sublabel)}</span>
         </>
       )}
     </FlyoutEntryWrapper>

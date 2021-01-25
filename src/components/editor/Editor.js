@@ -440,7 +440,13 @@ const Editor = (props) => {
                   <Button fullWidth primary label={"Titel ändern"} />
                 )}
                 <br />
-                <pre style={{fontSize: 12}}>{file.uuid}</pre>
+                {/* <pre style={{fontSize: 12}}>
+                  {file.uuid}<br />
+                  version ID: {file.version_id + ""}<br />
+                  variant ID: {file.variant_id + ""}<br />
+                  graphic ID: {file.graphic_id + ""}<br />
+                  derived from: {file.derivedFrom + ""}
+                  </pre> */}
                 <SaveIndicator id={"save-indicator"}>
                   <Icon icon={"save"} /> Wird gespeichert ...
                 </SaveIndicator>

@@ -49,12 +49,9 @@ const BigLogo = styled.img`
 const IllustrationContainer = styled.div`
   min-height: 20vh;
   text-align: center;
-  padding-top: ${props => props.offsetY}px;
-  padding-right: ${props => props.offsetX}px;
-  padding-bottom: ${props => 36 - props.offsetY}px;
   img {
-    max-height: 20vh;
-    width: 60%;
+    /* max-height: 20vh; */
+    width: 80%;
   }
 `
 
@@ -177,16 +174,16 @@ const Landing = () => {
 
             <div className={"row extra-padding"}>
                 <div className={"col-xs-12 col-sm-4"}>
-                    <IllustrationContainer offset={0}>
-                        <img src={"/images/200902_Konzept-02.svg"}/>
+                    <IllustrationContainer>
+                        <img alt={"dekorative Ilustration Entwurf gestalten"} src={"/images/200902_Konzept-02.svg"}/>
                     </IllustrationContainer>
 
                     <h3>1. Grafik gestalten</h3>
-                    <p>Entwerfen Sie Ihre Grafik im tacpic Online-Editor.</p>
+                    <p id={'copy-edit_draft'}>Entwerfen Sie Ihre Grafik im tacpic Online-Editor.</p>
                 </div>
                 <div className={"col-xs-12 col-sm-4"}>
-                    <IllustrationContainer offsetX={25}>
-                        <img src={"/images/200902_Konzept-03.svg"}/>
+                    <IllustrationContainer>
+                        <img alt={"dekorative Ilustration Grafik produzieren"} src={"/images/200902_Konzept-03.svg"}/>
                     </IllustrationContainer>
                     <h3>2. Produktion</h3>
                     <p>Auf Bestellung produzieren wir Ihren Entwurf als Tastgrafik auf Schwellpapier.</p>
@@ -194,8 +191,8 @@ const Landing = () => {
                     <p>Sie laden Ihren Entwurf herunter und nutzen ihn für die eigene Produktion.</p>
                 </div>
                 <div className={"col-xs-12 col-sm-4"}>
-                    <IllustrationContainer offset={36}>
-                        <img src={"/images/200902_Konzept-04.svg"}/>
+                    <IllustrationContainer>
+                        <img alt={"dekorative Ilustration Grafik versenden"} src={"/images/200902_Konzept-04.svg"}/>
                     </IllustrationContainer>
                     <h3>3. Lieferung</h3>
                     <p>Ihre Bestellung wird per Post an Sie versendet.</p>

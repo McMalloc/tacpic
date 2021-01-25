@@ -1,4 +1,4 @@
-import { select, debounce, call } from "redux-saga/effects";
+import { select, throttle, call } from "redux-saga/effects";
 import { BACKUP_INTERVAL } from "../config/constants";
 import { CHANGE_FILE_PROPERTY } from "../actions/action_constants";
 import { openDB, deleteDB, wrap, unwrap } from 'idb';
@@ -8,10 +8,9 @@ import { openDB, deleteDB, wrap, unwrap } from 'idb';
 
 
 export function* backupWatcher() {
-    yield debounce(BACKUP_INTERVAL, ['OBJECT_PROP_CHANGED', 'OBJECT_UPDATED', 'OBJECT_REMOVED', CHANGE_FILE_PROPERTY], function* (action) {
+    yield throttle(BACKUP_INTERVAL, ['OBJECT_PROP_CHANGED', 'OBJECT_UPDATED', 'OBJECT_REMOVED', CHANGE_FILE_PROPERTY], function* (action) {
         try {
             document.getElementById("save-indicator").style.visibility = 'visible';
-            
             let file = yield select(state => state.editor.file.present);
             const db = yield call(openDB, 'db');
 

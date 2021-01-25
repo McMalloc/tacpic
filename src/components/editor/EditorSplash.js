@@ -66,13 +66,14 @@ const EditorSplash = () => {
             <Row>
                 <div className={"col-xs-12 col-md-10 col-md-offset-1"}>
                     <h1>Editor</h1>
-                    <div style={{textAlign: 'center'}}>
-                        <Button onClick={() => {openLocalFile(dispatch); navigate('/editor/app')}} primary large icon={"plus"}>Neuer Entwurf</Button>
+                    <div style={{ textAlign: 'center' }}>
+                        <Button onClick={() => {
+                            dispatch({ type: FILE.OPEN.REQUEST });
+                            navigate('/editor/app');
+                        }} primary large icon={"plus"}>Neuer Entwurf</Button>
                     </div>
                     <br />
                     <br />
-                    
-
                 </div>
             </Row>
             {localIndex.length > 0 &&
@@ -82,11 +83,12 @@ const EditorSplash = () => {
                         <hr />
                         <p>Es liegen unveröffentlichte Bearbeitungen vor. Diese sind lokal, also nur von diesem Gerät und Browser abrufbar. <Link to={"/"}>Hinweise zu lokalen Dateien.</Link></p>
                         {localIndex.map(file => {
-                            return <Link key={file.uuid} className={'no-styled-link'} to={'/editor/app'} onClick={() => {
-                                openLocalFile(dispatch, file)
-                            }}> <TileWrapper frugal padded className={'extra-margin double'}>
-                                    {/* <img style={{width: 200}} src={`${API_URL}/thumbnails/${file.currentFileName}-THUMBNAIL-sm-p0.png`}></img> */}
-
+                            return <Link
+                                key={file.uuid}
+                                className={'no-styled-link'}
+                                to={'/editor/app'}
+                                onClick={() => dispatch({ type: FILE.OPEN.SUCCESS, data: file })}>
+                                <TileWrapper frugal padded className={'extra-margin double'}>
                                     <Section>
                                         <small>Titel</small>
                                         <div className={'hover-sensitive'}>
@@ -108,7 +110,8 @@ const EditorSplash = () => {
                                             :
                                             <Button onClick={event => {
                                                 event.preventDefault();
-                                                navigate(`/catalogue/${file.graphic_id}/variant/${file.variant_id}`)}
+                                                navigate(`/catalogue/${file.graphic_id}/variant/${file.variant_id}`)
+                                            }
                                             } icon={"arrow-right"}>Im Katalog anzeigen</Button>
                                         }</Section>
 

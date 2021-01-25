@@ -30,13 +30,13 @@ const Hint = styled.div`
   font-style: italic;
 `;
 
-const uploadVersion = (dispatch, file, mode, changeMessage) => {
+const uploadVersion = (dispatch, file, changeMessage) => {
     if (file.graphic_id === null) {
         dispatch({
             type: GRAPHIC.CREATE.REQUEST,
             payload: file
         })
-    } else if (file.variant_id === null || mode === 'copy') {
+    } else if (file.variant_id === null) {
         dispatch({
             type: VARIANT.CREATE.REQUEST,
             payload: file
@@ -65,7 +65,6 @@ const Metadata = () => {
     const {t} = useTranslation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {mode} = useParams();
     const [input, setInput] = useState({});
     const [showFileModal, toggleFileModal] = useState(false);
     const [showHintModal, toggleHintModal] = useState(false);
@@ -97,13 +96,13 @@ const Metadata = () => {
                 }}
                 tip={"help:input_graphic-title"}
                 name={"graphic-title"}
-                disabled={file.derivedFrom !== null && mode !== 'new'}
+                disabled={file.derivedFrom !== null}
                 label={"editor:input_catalogue-title"}
                 sublabel={"editor:input_catalogue-title-sub"}/>
             {file.derivedFrom !== null &&
             <Hint>
-                <a onClick={() => toggleHintModal(!showHintModal)} href={'#'}>Wieso kann ich den Titel nicht
-                    ändern?</a>
+                <a onClick={() => toggleHintModal(!showHintModal)} href={'#'}>
+                    Wieso kann ich den Titel nicht ändern?</a>
                 <br/><br/>
             </Hint>
             }
@@ -186,13 +185,13 @@ const Metadata = () => {
             <br/>
             <Button onClick={() => {
                 toggleFileModal(true);
-                uploadVersion(dispatch, file, mode, changeMessage)
+                uploadVersion(dispatch, file, changeMessage)
             }}
                     primary fullWidth
                     disabled={!licenseAgreed}
                     label={file.graphic_id === null ?
                         t("editor:input_catalogue-publish") :
-                        (file.variant_id === null || mode === 'copy' ? t("editor:input_catalogue-create") : t("editor:input_catalogue-update"))
+                        (file.variant_id === null ? t("editor:input_catalogue-create") : t("editor:input_catalogue-update"))
                     }>
             </Button>
 

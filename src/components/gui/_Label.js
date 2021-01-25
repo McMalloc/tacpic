@@ -16,12 +16,9 @@ const Main = styled.label`
 `;
 
 export const Sub = styled.span`
-  font-size: 0.9em;
+  display: block;
   margin: ${props => props.theme.spacing[1]} 0;
   color: ${props => props.theme.brand_secondary};
-  display: block;
-  font-style: italic;
-  line-height: 1.1em;
 `;
 
 const Label = props => {
@@ -30,7 +27,7 @@ const Label = props => {
         <Main data-tip={t(props.tip)} {...props}>
             {t(props.label)}{props.required && <span aria-hidden={true}>&nbsp;*</span>}
             {props.sublabel &&
-            <><br/><Sub>{t(props.sublabel)}</Sub></>
+            <><br/><Sub className={'sub-label'}>{t(props.sublabel)}</Sub></>
             }
             {props.children}
         </Main>

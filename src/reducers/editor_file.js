@@ -274,8 +274,11 @@ const file = (state = {}, action) => {
     case FILE.OPEN.REQUEST:
       return { ...initialEditor.file.present };
     case FILE.OPEN.SUCCESS:
-      if (!action.data) return { ...state, uuid: uuidv4() };
-      return { ...state, ...action.data, uuid: action.data.uuid || uuidv4() };
+      // new file that will result in new graphic
+      // if (!action.data) return { ...state};
+
+      // file based on existing variant
+      return { ...state, ...action.data };
 
     case "OBJECT_REMOVED":
       return produce(state, (draftState) => {
