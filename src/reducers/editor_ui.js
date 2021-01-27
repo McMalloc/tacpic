@@ -1,4 +1,4 @@
-import {COPY, FILE, IMPORT, SUPPRESS_BACKUP} from "../actions/action_constants";
+import { COPY, FILE, IMPORT, SUPPRESS_BACKUP } from "../actions/action_constants";
 
 let lastMode = 'label'; //TODO vereinheitlichen zu lastStateBeforeTransform oder so
 const roundingAccuracy = 10;
@@ -8,11 +8,11 @@ const roundingAccuracy = 10;
 const ui = (state = {}, action) => {
     switch (action.type) {
         case FILE.OPEN.REQUEST:
-            return {...state, fileOpenPending: true, fileOpenSuccess: false};
+            return { ...state, fileOpenPending: true, fileOpenSuccess: false };
         case FILE.OPEN.SUCCESS:
-            return {...state, currentPage: 0, fileOpenPending: false, fileOpenSuccess: true};
+            return { ...state, currentPage: 0, fileOpenPending: false, fileOpenSuccess: true };
         case FILE.OPEN.FAILURE:
-            return {...state, fileOpenPending: false, fileOpenSuccess: false};
+            return { ...state, fileOpenPending: false, fileOpenSuccess: false };
 
         case IMPORT.TRACE.REQUEST:
             return {
@@ -24,7 +24,8 @@ const ui = (state = {}, action) => {
                 }
             };
         case IMPORT.TRACE.SUCCESS:
-            return {...state,
+            return {
+                ...state,
                 import: {
                     ...state.import,
                     pending: false,
@@ -35,19 +36,20 @@ const ui = (state = {}, action) => {
             };
         case IMPORT.TRACE.FAILURE:
             return { ...state, import: { pending: false, preview: null, ocr: '', error: action.message, previewName: '' } };
-        
+
         case COPY:
             return {
                 ...state, clipboard: action.objects
             }
-
         case 'OCR_SELECT':
-            return {...state,
-                import: {...state.import, ocrSelection: action.selection}};
+            return {
+                ...state,
+                import: { ...state.import, ocrSelection: action.selection }
+            };
 
         case 'TRANSFORM_START':
             lastMode = state.mode;
-            return {...state, mode: action.transform};
+            return { ...state, mode: action.transform };
         case 'OBJECT_SELECTED':
             let uuids;
             if (!(action.uuids instanceof Array)) { // selected single object
@@ -56,9 +58,9 @@ const ui = (state = {}, action) => {
                 uuids = action.uuids
             }
             let selectedObjects = uuids[0] === null ? [] : uuids;
-            return {...state, selectedObjects};
+            return { ...state, selectedObjects };
         case 'TRANSFORM_END':
-            return {...state, mode: lastMode};
+            return { ...state, mode: lastMode };
         case 'CHANGE_VIEWPORT':
             let scalingFactor = action.scalingFactor < 0.5 ? 0.5 :
                 Math.round(action.scalingFactor * roundingAccuracy) / roundingAccuracy; // regain accuracy from wonky javascript rounding
@@ -71,15 +73,15 @@ const ui = (state = {}, action) => {
                 // viewPortY: Math.max(Math.min(50, action.viewPortY), -1400)
             };
         case 'VERTICAL_SPACING_SET':
-            return {...state, verticalGridSpacing: action.spacing};
+            return { ...state, verticalGridSpacing: action.spacing };
         case 'HORIZONTAL_SPACING_SET':
-            return {...state, horizontalGridSpacing: action.spacing};
+            return { ...state, horizontalGridSpacing: action.spacing };
         case 'VERTICAL_SPACING_TOGGLE':
-            return {...state, showVerticalGrid: action.payload};
+            return { ...state, showVerticalGrid: action.payload };
         case 'HORIZONTAL_SPACING_TOGGLE':
-            return {...state, showHorizontalGrid: action.state};
+            return { ...state, showHorizontalGrid: action.state };
         case 'DEFAULT_TITLE_TOGGLE':
-            return {...state, defaultTitle: action.state};
+            return { ...state, defaultTitle: action.state };
         case 'ADD_BACKGROUND':
             return {
                 ...state, openedFile: {
@@ -88,17 +90,17 @@ const ui = (state = {}, action) => {
                 }
             };
         case 'SWITCH_CURSOR_MODE':
-            return {...state, tool: action.mode.toUpperCase()};
+            return { ...state, tool: action.mode.toUpperCase() };
         case 'SWITCH_TEXTURE_MODE':
-            return {...state, texture: action.mode};
+            return { ...state, texture: action.mode };
         case 'SWITCH_FILL_MODE':
-            return {...state, fill: action.colour};
+            return { ...state, fill: action.colour };
         case 'PATTERNS_INIT_DONE':
-            return {...state, initialized: true};
+            return { ...state, initialized: true };
         case 'PAGE_CHANGE':
-            return {...state, selectedObjects: [], currentPage: action.number};
+            return { ...state, selectedObjects: [], currentPage: action.number };
         case SUPPRESS_BACKUP:
-            return {...state, suppressBackup: action.flag || false};
+            return { ...state, suppressBackup: action.flag || false };
         default:
             return state;
     }

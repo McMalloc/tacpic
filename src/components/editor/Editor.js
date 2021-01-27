@@ -134,6 +134,8 @@ const Editor = (props) => {
     (state) => state.editor.ui.import.ocrSelection
   );
   const selectedObject = useSelector((state) => {
+    if (!state.editor.file.present.pages[state.editor.ui.currentPage]) return null;
+    console.log(state.editor.file.present.pages[state.editor.ui.currentPage]);
     return findObject(
       state.editor.file.present.pages[state.editor.ui.currentPage].objects,
       state.editor.ui.selectedObjects[0]

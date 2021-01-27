@@ -26,10 +26,16 @@ const addPage = (dispatch, isTextPage, pageLength) => {
     number: pageLength,
   });
 };
-const removePage = (dispatch, index, currentPage) => {
+const removePage = (dispatch, index, currentPage, pageTotal) => {
+  // page to be removed is the current page
   currentPage === index && dispatch({
     type: "PAGE_CHANGE",
     number: Math.max(index - 1, 0),
+  });
+  // removing the page will push the current page index out of bounds
+  pageTotal - 1 <= currentPage && dispatch({
+    type: "PAGE_CHANGE",
+    number: Math.max(pageTotal - 2, 0),
   });
   dispatch({
     type: "PAGE_REMOVE",
@@ -121,7 +127,7 @@ const Pages = (props) => {
             template: 'primary',
             disabled: false,
             action: () => {
-              removePage(dispatch, pageToBeRemoved, currentPage);
+              removePage(dispatch, pageToBeRemoved, currentPage, pages.length);
               setPageToBeRemoved(null);
             }
           }
