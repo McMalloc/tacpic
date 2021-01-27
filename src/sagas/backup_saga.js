@@ -1,10 +1,9 @@
-import { select, throttle, call } from "redux-saga/effects";
+import { select, throttle, call, put, takeLatest } from "redux-saga/effects";
 import { BACKUP_INTERVAL } from "../config/constants";
-import { CHANGE_FILE_PROPERTY } from "../actions/action_constants";
-import { openDB, deleteDB, wrap, unwrap } from 'idb';
+import { CHANGE_FILE_PROPERTY, LOCALFILES, VARIANT, GRAPHIC } from "../actions/action_constants";
+import { idbWrite, idbRemove, idbIndex } from "./idb_saga";
 
 // TODO pauschal auch Durchführen vor dem Speichern
-
 
 
 export function* backupWatcher() {
@@ -12,23 +11,52 @@ export function* backupWatcher() {
         try {
             document.getElementById("save-indicator").style.visibility = 'visible';
             let file = yield select(state => state.editor.file.present);
-            const db = yield call(openDB, 'db');
-
-            const transaction = db.transaction(['files'], 'readwrite');
-            const store = transaction.objectStore('files');
-
+        
             if (file.hasOwnProperty('uuid') && file.uuid !== null) {
-                store.put({ ...file, lastSaved: new Date() });
+                yield idbWrite('files', { ...file, lastSaved: new Date() })
             }
 
             setTimeout(() => {
                     const elem = document.getElementById("save-indicator");
                     if (!!elem) document.getElementById("save-indicator").style.visibility = 'hidden'
-                }, 1500);
+                }, 750);
 
-            yield transaction.complete;
         } catch (error) {
             console.error(error);
         }
     })
+}
+
+export function* backupAutoRemoveWatcher() {
+    yield takeLatest([VARIANT.CREATE.SUCCESS, VARIANT.UPDATE.SUCCESS, GRAPHIC.CREATE.SUCCESS], function* (action) {
+        yield put({
+            type: LOCALFILES.REMOVE.REQUEST,
+            uuid: action.originalPayload.uuid
+        })
+    });
+}
+
+export function* backupIndexWatcher() {
+    yield takeLatest(LOCALFILES.INDEX.REQUEST, function* () {
+        const index = yield idbIndex('files');
+        yield put({
+            type: LOCALFILES.INDEX.SUCCESS,
+            index
+        })
+    });
+}
+
+export function* backupRemoveWatcher() {
+    yield takeLatest(LOCALFILES.REMOVE.REQUEST, function* (action) {
+        try {
+            yield idbRemove('files', action.uuid);
+            yield put({ type: LOCALFILES.REMOVE.SUCCESS })
+            yield put({ type: LOCALFILES.INDEX.REQUEST })
+        } catch (error) {
+            yield put({
+                type: LOCALFILES.REMOVE.FAILURE,
+                error
+            })
+        }
+    });
 }

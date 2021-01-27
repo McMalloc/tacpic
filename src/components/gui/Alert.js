@@ -21,6 +21,7 @@ const IconContainer = styled.div`
 
 const Message = styled.div`
   flex: 1 0 0;
+  line-height: 1.4;
 `;
 
 const Alert = props => {

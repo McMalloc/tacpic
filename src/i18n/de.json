@@ -263,7 +263,12 @@
     "delete_page_confirm_ok": "Ja, Seite löschen",
     "delete_page_confirm_cancel": "Nein, abbrechen",
 
-    "unsaved_changes_prompt": "Es gibt ungespeicherte Änderungen. Wollen Sie den Editor wirklich verlassen?"
+    "unsaved_changes_prompt": "Es gibt ungespeicherte Änderungen. Wollen Sie den Editor wirklich verlassen?",
+
+    "delete_file_confirm_cancel": "Abbrechen",
+    "delete_file_confirm_ok": "Ja, löschen",
+    "delete_file_confirm_heading": "Löschen bestätigen",
+    "delete_file_confirm_copy": "Möchten Sie die lokalen, d.h. nur auf diesem Gerät gespeicherten Änderungen vom {{date}} an {{title}} unwiderruflich löschen?"
   },
   "categories": {
     "illustration": "(beschriftete) Illustration"

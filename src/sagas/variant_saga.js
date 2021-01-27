@@ -49,10 +49,6 @@ export const variantUpdateSaga = createSaga(
             ...file,
             variantDescription: `${file.braillePages.imageDescription.type}. ${file.braillePages.imageDescription.summary} ${file.braillePages.imageDescription.details}`,
             tags: replaceTagUuids(file.tags),
-            // hash: md5(JSON.stringify(file.pages.map(page=>{
-            //     delete page.rendering;
-            //     return page;
-            // }))),
             pages: file.pages.map((page, index) => ({...page, rendering: extractSVG(index)}))
         })
     );

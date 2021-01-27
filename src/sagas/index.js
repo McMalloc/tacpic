@@ -18,7 +18,7 @@ import {
     VARIANTS,
     VARIANT,
     ADDRESS,
-    APP, QUOTE, IMPORT, CMS_PAGE, STATIC_PAGE, USER
+    APP, QUOTE, IMPORT, CMS_PAGE
 } from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {
@@ -37,9 +37,8 @@ import {addressRemoveSaga} from "./address_saga";
 import {basketChangeSaga} from "./basket_saga";
 import {orderCreateSaga, orderIndexSaga} from "./order_saga";
 import {titleEditWatch} from "./title_saga";
-import { backupWatcher} from "./backup_saga";
+import { backupRemoveWatcher, backupWatcher, backupAutoRemoveWatcher, backupIndexWatcher } from "./backup_saga";
 import { errorWatcher } from "./error_saga";
-import { idbIndexWatcher, idbRemoveWatcher } from "./idb_saga";
 
 const id = args => args;
 
@@ -101,7 +100,7 @@ export default function* root() {
         call(variantUpdateSaga),
         call(variantCreateSaga),
         call(graphicCreateSaga),
-        call(backupWatcher),
+        
 
         call(logoutWatcher),
         call(userLoginSaga),
@@ -126,9 +125,10 @@ export default function* root() {
 
         call(renderWatcher),
 
-        // call (idbInitWatcher),
-        call(idbIndexWatcher),
-        call(idbRemoveWatcher),
+        call(backupWatcher),
+        call(backupIndexWatcher),
+        call(backupRemoveWatcher),
+        call(backupAutoRemoveWatcher),
 
         call(errorWatcher),
     ])

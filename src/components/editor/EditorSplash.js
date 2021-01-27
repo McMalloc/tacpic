@@ -119,7 +119,7 @@ const EditorSplash = () => {
                                         <Button title={'Entwurf löschen'} icon={'trash-alt'} onClick={event => {
                                             event.preventDefault();
                                             event.stopPropagation();
-                                            setFileToBeRemoved(file.uuid)
+                                            setFileToBeRemoved(file);
                                         }} />
                                     </Section>
                                 </TileWrapper></Link>
@@ -129,7 +129,7 @@ const EditorSplash = () => {
             }
 
             {fileToBeRemoved !== null &&
-                <Modal fitted actions={[
+                <Modal actions={[
                     {
                         label: "editor:delete_file_confirm_cancel",
                         name: "delete_file_confirm_cancel",
@@ -140,15 +140,18 @@ const EditorSplash = () => {
                         label: "editor:delete_file_confirm_ok",
                         name: "delete_file_confirm_ok",
                         align: "right",
-                        template: 'primary',
+                        icon: "trash-alt",
                         disabled: false,
                         action: () => {
-                            dispatch({ type: LOCALFILES.REMOVE.REQUEST, uuid: fileToBeRemoved })
+                            dispatch({ type: LOCALFILES.REMOVE.REQUEST, uuid: fileToBeRemoved.uuid })
                             setFileToBeRemoved(null);
                         }
                     }
                 ]} title={"editor:delete_file_confirm_heading"}>
-                    <Alert danger>{t("editor:delete_file_confirm_copy", {})}</Alert>
+                    <Alert danger>{t("editor:delete_file_confirm_copy", {
+                        title: fileToBeRemoved.graphicTitle + ": " + fileToBeRemoved.variantTitle,
+                        date: moment(fileToBeRemoved.lastSaved).format("DD.MM.YYYY HH:mm")
+                        })}</Alert>
                 </Modal>}
 
         </>

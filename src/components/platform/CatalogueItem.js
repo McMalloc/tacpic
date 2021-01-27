@@ -10,9 +10,9 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   flex: 0 1 50%;
 
-  ${SM_SCREEN} { flex: 0 1 33%; }  
+  ${SM_SCREEN} { flex: 0 1 50%; }  
   ${MD_SCREEN} { flex: 0 1 33%; }  
-  ${LG_SCREEN} { flex: 0 1 20%; }
+  ${LG_SCREEN} { flex: 0 1 33%; }
   
   &:before {
     content:'';
@@ -44,6 +44,7 @@ const Title = styled.div`
 const Info = styled.div`
   background-color: ${props => props.theme.background};
   padding: 8px;
+  word-break: break-all;
   color: ${props => props.theme.foreground};
   border-radius: 0 0 ${props => props.theme.border_radius} ${props => props.theme.border_radius};
 `;

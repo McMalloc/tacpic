@@ -126,9 +126,9 @@ export default function createSaga(
 
                 let data = transformResponse(parsedResponse, statusCode, authHeader);
                 if (statusCode > 204) {
-                    yield put({type: event.FAILURE, message: parsedResponse, statusCode});
+                    yield put({type: event.FAILURE, message: parsedResponse, originalPayload: action.payload, statusCode});
                 } else {
-                    yield put({type: event.SUCCESS, data, statusCode});
+                    yield put({type: event.SUCCESS, data, originalPayload: action.payload, statusCode});
                 }
             } catch (error) {
                 console.log(error);

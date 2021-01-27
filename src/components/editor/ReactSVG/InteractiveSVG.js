@@ -13,7 +13,7 @@ import SVGGrid from "./Grid";
 import { findObject } from "../../../utility/findObject";
 import { SVGPage } from "./SVGPage";
 import { ERROR_THROWN } from "../../../actions/action_constants";
-import { TOOL_SENSIBILITY } from "../../../config/constants";
+import { TOOL_SENSIBILITY, KEYCODES } from "../../../config/constants";
 import styled from "styled-components/macro";
 
 const SVG = styled.svg`
@@ -40,7 +40,11 @@ class InteractiveSVG extends Component {
         panning: false,
         panningRefX: 0,
         panningRefY: 0,
-        modifierKey: null,
+        modifierKeys: {
+            space: false,
+            shift: false,
+            ctrl: false
+        },
         mouseIsDown: false,
         canvasWidth: 0,
         canvasHeight: 0,
@@ -86,7 +90,7 @@ class InteractiveSVG extends Component {
     currentY = y => y - this.svgElement.current.getBoundingClientRect().top;
 
     wheelHandler = event => {
-        if (this.state.modifierKey !== 32) return;
+        if (!this.state.modifierKeys.space) return;
         let factor = event.nativeEvent.deltaY <= 0 ? 0.95 : 1.05;
         this.props.changeViewport(
             this.props.ui.scalingFactor + (event.nativeEvent.deltaY > 0 ? -0.1 : 0.1),
@@ -95,6 +99,9 @@ class InteractiveSVG extends Component {
     };
 
     keyDownHandler = event => {
+        let selectedObject = findObject(
+            this.props.file.present.pages[this.props.ui.currentPage].objects,
+            this.props.ui.selectedObjects[0]);
         switch (event.which) {// TODO use constants instead of magic numbers
             case 13: // ENTER
                 if (this.state.preview === null) break;
@@ -103,45 +110,33 @@ class InteractiveSVG extends Component {
                     preview: null
                 });
                 break;
-            case 32: // space
-                if (this.state.modifierKey === 32) break;
-                // event.stopPropagation();
-                // event.preventDefault();
-                this.setState({
-                    modifierKey: 32
-                })
+            case KEYCODES.SHIFT:
+                if (this.state.modifierKeys.shift) break;
+                this.setState({ modifierKeys: { ...this.state.modifierKeys, shift: true } })
+                break;
+            case KEYCODES.SPACE:
+                if (this.state.modifierKeys.space) break;
+                this.setState({ modifierKeys: { ...this.state.modifierKeys, space: true } })
                 break;
             case 38: // up
-                event.stopPropagation();
-                event.preventDefault();
-                this.props.changeViewport(
-                    this.props.ui.scalingFactor,
-                    this.props.ui.viewPortX,
-                    this.props.ui.viewPortY - 10);
+                this.props.updateObject(
+                    methods[selectedObject.type].translate({ ...selectedObject }, 0, this.state.modifierKeys.shift ? -10 : -1)
+                );
                 break;
             case 39: // right
-                event.stopPropagation();
-                event.preventDefault();
-                this.props.changeViewport(
-                    this.props.ui.scalingFactor,
-                    this.props.ui.viewPortX + 10,
-                    this.props.ui.viewPortY);
+                this.props.updateObject(
+                    methods[selectedObject.type].translate({ ...selectedObject }, this.state.modifierKeys.shift ? 10 : 1, 0)
+                );
                 break;
             case 40: // down
-                event.stopPropagation();
-                event.preventDefault();
-                this.props.changeViewport(
-                    this.props.ui.scalingFactor,
-                    this.props.ui.viewPortX,
-                    this.props.ui.viewPortY + 10);
+                this.props.updateObject(
+                    methods[selectedObject.type].translate({ ...selectedObject }, 0, this.state.modifierKeys.shift ? 10 : 1)
+                );
                 break;
             case 37: // left
-                event.stopPropagation();
-                event.preventDefault();
-                this.props.changeViewport(
-                    this.props.ui.scalingFactor,
-                    this.props.ui.viewPortX - 10,
-                    this.props.ui.viewPortY);
+                this.props.updateObject(
+                    methods[selectedObject.type].translate({ ...selectedObject }, this.state.modifierKeys.shift ? -10 : -1, 0)
+                );
                 break;
             case 187: // +
                 this.props.changeViewport(
@@ -156,9 +151,6 @@ class InteractiveSVG extends Component {
                     this.props.ui.viewPortY);
                 break;
             case 46: // DEL
-                let selectedObject = findObject(
-                    this.props.file.present.pages[this.props.ui.currentPage].objects,
-                    this.props.ui.selectedObjects[0]);
                 if (selectedObject.type === 'path' && this.state.editIndex >= 0) {
                     this.props.updateObject(methods.path.removePoint(cloneDeep(selectedObject), this.state.editIndex));
                     this.setState({ editIndex: -1 });
@@ -176,10 +168,11 @@ class InteractiveSVG extends Component {
         event.stopPropagation();
         event.preventDefault();
         switch (event.which) {// TODO use constants instead of magic numbers
-            case 32: // space
-                this.setState({
-                    modifierKey: null
-                })
+            case KEYCODES.SHIFT:
+                this.setState({ modifierKeys: { ...this.state.modifierKeys, shift: false } })
+                break;
+            case KEYCODES.SPACE:
+                this.setState({ modifierKeys: { ...this.state.modifierKeys, space: false } })
                 break;
             default:
                 break;
@@ -225,7 +218,7 @@ class InteractiveSVG extends Component {
             // TODO: transparenten Manipulator abfangen
             //  transform sollte auch bei einem klick auf den manipulator funktionieren, für gruppen
 
-            if (this.state.modifierKey === 32) { // space pressed
+            if (this.state.modifierKeys.space) { // space pressed
                 this.setState({
                     panning: true,
                     panningRefX: this.props.wrapperRef.current.scrollLeft + event.pageX,
@@ -330,7 +323,7 @@ class InteractiveSVG extends Component {
                         );
 
                         this.props.updateObject(modifiedPath)
-                        
+
                         this.setState({
                             segmentStart: this.state.preview.points.length,
                             preview: cloneDeep(modifiedPath)

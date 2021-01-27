@@ -6,7 +6,7 @@ export const PAGE_NUMBER_BOTTOM = 4;
 export const MAX_VALUE_FOR_ORDER = 20000;
 export const SVG_MIME = "image/svg+xml";
 export const SVG_A4_PX_WIDTH = 793.7;
-export const TOOL_SENSIBILITY = 15;
+export const TOOL_SENSIBILITY = 1;
 export const SAFE_BORDER = 10;
 export const BACKUP_INTERVAL = 3000;
 export const DB_DATE_FORMAT = "%YYYY-%MM-%DD %HH:%mm:%ss %z";
@@ -56,6 +56,11 @@ export const COLOURS = {
   green: "#79BA4A",
   yellow: "#FFEC01",
   white: '#FFFFFF'
+};
+
+export const KEYCODES = {
+  SHIFT: 16,
+  SPACE: 32
 };
 
 export const FORMATS = {
