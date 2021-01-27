@@ -58,7 +58,6 @@ const EditorSplash = () => {
         dispatch({ type: LOCALFILES.INDEX.REQUEST });
     }, [])
 
-    console.log(localIndex);
     const [fileToBeRemoved, setFileToBeRemoved] = useState(null);
 
     return (
@@ -105,15 +104,8 @@ const EditorSplash = () => {
                                         {file.lastSaved && moment(file.lastSaved).format("HH:mm") + ' Uhr'}
                                     </Section>
                                     <Section>
-                                        {file.version_id === null ?
                                             <Indicator state={2}> Nicht veröffentlicht</Indicator>
-                                            :
-                                            <Button onClick={event => {
-                                                event.preventDefault();
-                                                navigate(`/catalogue/${file.graphic_id}/variant/${file.variant_id}`)
-                                            }
-                                            } icon={"arrow-right"}>Im Katalog anzeigen</Button>
-                                        }</Section>
+                                    </Section>
 
                                     <Section style={{ textAlign: 'right', width: 'auto' }}>
                                         <Button title={'Entwurf löschen'} icon={'trash-alt'} onClick={event => {

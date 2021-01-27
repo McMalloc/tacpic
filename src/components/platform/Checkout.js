@@ -17,6 +17,7 @@ import LoginForm from "../LoginForm";
 import StepIndicator from "../gui/StepIndicator";
 import uuidv4 from "../../utility/uuid";
 import {useNavigate} from "react-router-dom";
+import { Sub } from "../gui/_Label";
 
 // TODO Kommentar anfügen
 
@@ -145,13 +146,13 @@ const Checkout = props => {
         <Radio padded value={paymentMethod} name={'payment-method'} onChange={setPaymentMethod} options={[
             {
                 label: <div>{t('commerce:invoice')}<br />
-                    <small>{t('commerce:invoice_payment_hint')}</small>
+                    <span className={'sub-label'}>{t('commerce:invoice_payment_hint')}</span>
                 </div>,
                 value: "invoice"
             },
             {
                 label: <div>{t('commerce:paypal')}<br />
-                <small>{t('commerce:paypal_payment_hint')}</small>
+                <span className={'sub-label'}>{t('commerce:paypal_payment_hint')}</span>
             </div>,
                 value: "paypal",
                 disabled: true
