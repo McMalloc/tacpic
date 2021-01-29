@@ -188,7 +188,7 @@ const BasketListing = () => {
                 </MetaItemRow>
                 <MetaItemRow>
 
-                    <td>{t('inkl. 5% Mehrwertsteuer')}</td>
+                    <td>{t('inkl. 7% Mehrwertsteuer')}</td>
                     <PriceCell><Currency amount={quote.gross_total - quote.net_total}/></PriceCell>
                 </MetaItemRow>
                 <MetaItemRow>

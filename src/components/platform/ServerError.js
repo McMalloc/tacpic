@@ -10,8 +10,6 @@ export default ({error}) => {
         {error['field-error'] && t("auth:" + error['field-error'][1])}
     </Alert>
 
-    debugger;
-
     return <Alert warning>
         {t("error:" + error.type)}:<br/>
         {error.message && t("error:" + error.message)}
