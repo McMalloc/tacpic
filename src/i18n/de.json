@@ -245,7 +245,7 @@
     "preview_texture-striped": "Schmale Streifen",
 
     "verbalise_type-of-graphic": "Art der Grafik",
-    "verbalise_type-of-graphic-hint": "Definieren Sie zuerst um welche Art von Grafik es sich handelt, z.B. Querschnitt, Liniendiagramm, Lageplan, etc.",
+    "verbalise_type-of-graphic-hint": "Definieren Sie zuerst um welche Art von Grafik es sich handelt, z.B. Querschnitt, Liniendiagramm, Lageplan, etc. Falls Sie nach einer visuellen Vorlage arbeiten, geben Sie unbedingt Titel und Seitenzahl der Quelle sowie ggf. weitere Informationen zur Quelle an.",
     "verbalise_summary": "Zusammenfassung",
     "verbalise_summary-hint": "Geben sie eine eine kurze Zusammenfassung, was auf der Grafik abgebildet ist, z.B.: \"Der Querschnitt durch den menschlichen Körper zeigt dessen inneren Orgeane. Lunge, Herz, Leber...\". Bei Diagrammen sollte hier auch die Achsenbeschriftung angegeben werden.",
     "verbalise_details": "Detailbeschreibung",
