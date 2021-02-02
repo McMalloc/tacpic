@@ -27,7 +27,7 @@ const Input = styled.input`
   display: ${props => props.inline ? "inline" : "block"};
   width: ${props => props.inline ? "inherit" : "100%"};
   box-sizing: border-box;
-  border: 1px solid ${props => props.theme.midlight};
+  border: ${props => props.theme.elementBorder};
   border-radius: ${props => props.theme.border_radius};
   background-color: ${props => props.disabled ? "transparent" : props.theme.background};
   padding: 4px ${props => props.theme.spacing[1]};
@@ -64,7 +64,7 @@ const Textarea = styled.textarea`
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  border: 1px solid ${props => props.theme.midlight};
+  border: 1px solid ${props => props.theme.grey_4};
   border-radius: ${props => props.theme.border_radius};
   background-color: ${props => props.disabled ? "transparent" : props.theme.background};
   cursor: ${props => props.disabled ? "not-allowed" : "text"};

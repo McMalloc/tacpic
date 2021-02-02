@@ -13,8 +13,9 @@ const FooterStyled = styled.footer`
    color: ${props => props.theme.background};
    font-size: 0.8rem;
    line-height: 120%;
+   position: relative;
    padding: 6px 0;
-   margin-top: ${props => props.small ? 0 : '2rem'};
+   /* margin-top: ${props => props.small ? 0 : '2rem'}; */
 
    ${MD_SCREEN} {
        font-size: 0.9rem;

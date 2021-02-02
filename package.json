@@ -33,7 +33,7 @@
     "styled-components": "^5.1.1"
   },
   "scripts": {
-    "start": "react-scripts start --host 0.0.0.0",
+    "start": "HOST=0.0.0.0 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

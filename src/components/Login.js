@@ -1,15 +1,8 @@
-import React, {useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {Button} from "./gui/Button";
-import {VARIANT, FILE, USER} from "../actions/action_constants";
-import {Row} from "./gui/Grid";
-import styled, {useTheme} from "styled-components/macro";
+import React from "react";
+import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
-import {Icon} from "./gui/_Icon";
-import {TagView} from "./platform/Tag";
-import {Textinput} from "./gui/Input";
-import {NavLink, Navigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import LoginForm from "./LoginForm";
 import {Alert} from "./gui/Alert";
 

@@ -39,6 +39,10 @@ const Input = styled.input`
       font-weight: bold;
       text-decoration: none!important;
       content: "\f14a";
+  } 
+
+  &:checked + label {
+      text-decoration: underline;
   }  
 
   &:disabled + label {

@@ -86,7 +86,7 @@ const Addresses = () => {
                         return <AddressWrapper key={address.id}>
                             <AddressView editable {...address} />
 
-                            <ButtonBar>
+                            <ButtonBar align={'right'}>
                                 <Button onClick={() => {
                                     setInitial(address);
                                     setShowForm(true);

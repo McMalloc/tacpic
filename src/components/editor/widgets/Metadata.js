@@ -203,7 +203,7 @@ const Metadata = () => {
                            align: "left",
                            disabled: file.state === 'updating',
                            action: () => {
-                               navigate(`/editor/${file.graphic_id}/variant/${file.variant_id}/edit`)
+                            //    navigate(`/editor/${file.graphic_id}/variant/${file.variant_id}/edit`)
                                toggleFileModal(false);
                            }
                        },

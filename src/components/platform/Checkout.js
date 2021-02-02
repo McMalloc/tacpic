@@ -73,21 +73,8 @@ const Checkout = props => {
 
     const addressSection =
         <section>
-            {showShippingAddressForm && <form
-                onChange={() => {
-                    shippingAddress.id !== null && setShippingAddress({...shippingAddress, id: null});
-                    setValidShippingAddress(document.getElementById("shipping-address-form").checkValidity())
-                }}
-                id={"shipping-address-form"}>
-                <AddressForm modelCallback={model => setShippingAddress(model)} initial={shippingAddress}/>
-            </form>}
-
-            {!showShippingAddressForm &&
-            <Button label={"Neue Addresse"} onClick={() => setEnterShippingAddress(true)}/>}
-
             {addresses.length > 0 && <>
-                <h3>Hinterlegte Adressen</h3>
-                <Radio name={"checkout-shipping-address-radio"} onChange={value => {
+                <Radio name={"checkout-shipping-address-radio"} legend={'Hinterlegte Adressen'} onChange={value => {
                     setEnterShippingAddress(false);
                     setShippingAddress({...shippingAddress, id: parseInt(value)})
                 }}
@@ -99,25 +86,27 @@ const Checkout = props => {
                            }
                        })}/>
             </>}
+            {showShippingAddressForm && <form
+                onChange={() => {
+                    shippingAddress.id !== null && setShippingAddress({...shippingAddress, id: null});
+                    setValidShippingAddress(document.getElementById("shipping-address-form").checkValidity())
+                }}
+                id={"shipping-address-form"}>
+                <AddressForm modelCallback={model => setShippingAddress(model)} initial={shippingAddress}/>
+            </form>}
 
-            <hr/>
+            <br />
 
+            {!showShippingAddressForm &&
+            <Button icon={'plus'} label={"Neue Addresse"} onClick={() => setEnterShippingAddress(true)}/>}
+<br />
+<br />
             <Checkbox label={"Separate Rechnungsadresse"} name={"checkout-use-invoice-address"}
                       value={useInvoiceAddress}
                       onChange={event => setUseInvoiceAddress(event.target.checked)}/>
 
             {useInvoiceAddress && <>
-                {showInvoiceAddressForm && <form
-                    onChange={() => {
-                        invoiceAddress.id !== null && setInvoiceAddress({...invoiceAddress, id: null});
-                        setValidInvoiceAddress(document.getElementById("invoice-address-form").checkValidity())
-                    }}
-                    id={"invoice-address-form"}>
-                    <AddressForm modelCallback={model => setInvoiceAddress(model)} initial={invoiceAddress}/>
-                </form>}
-                {!showInvoiceAddressForm &&
-                <Button label={"Neue Rechnungsaddresse"} onClick={() => setEnterInvoiceAddress(true)}/>}
-
+    
                 {addresses.length > 0 && <>
                     <Radio name={"checkout-invoice-address-radio"}
                            onChange={value => {
@@ -132,8 +121,20 @@ const Checkout = props => {
                                }
                            })}/>
                 </>}
+                <br />
+                {showInvoiceAddressForm && <form
+                    onChange={() => {
+                        invoiceAddress.id !== null && setInvoiceAddress({...invoiceAddress, id: null});
+                        setValidInvoiceAddress(document.getElementById("invoice-address-form").checkValidity())
+                    }}
+                    id={"invoice-address-form"}>
+                    <AddressForm modelCallback={model => setInvoiceAddress(model)} initial={invoiceAddress}/>
+                </form>}
+                {!showInvoiceAddressForm &&
+                <Button icon={'plus'} label={"Neue Rechnungsaddresse"} onClick={() => setEnterInvoiceAddress(true)}/>}
 
             </>}
+            <br/>
             <br/>
             {back}
             <Button label={"Weiter zur Bezahlmethode"} onClick={() => changeStep(2)} primary rightAction
@@ -203,15 +204,6 @@ const Checkout = props => {
     return (
         <>
             <Row>
-                <div className={"col-xs-12 col-lg-6 col-lg-offset-3"}>
-                    <Alert danger>
-                        Die Plattform befindet sich in der Alpha-Phase, d.h. sie wird noch getestet. 
-                        <strong>Getätigte Bestellungen werden entgegen der Beschriftung nicht ausgelöst und es fallen
-                            keine Kosten an.</strong>
-                    </Alert>
-                </div>
-            </Row>
-            <Row>
                 <div className={"col-xs-12 col-md-5"}>
                     <div style={{position: 'sticky', top: 12}}>
 
@@ -237,7 +229,6 @@ const Checkout = props => {
                                 :
                                 <>
                                     <LoginForm/>
-                                    {/*<Button label={"Als Gast fortfahren"} onClick={() => changeStep(1)}/>*/}
                                 </>
                             }
                         </div>
@@ -247,6 +238,13 @@ const Checkout = props => {
                         {step === 2 && paymentSection}
                         {step === 3 && checkSection}
                     </div>
+
+                    <br />
+                    <Alert danger>
+                        Die Plattform befindet sich in der Alpha-Phase, d.h. sie wird noch getestet.<br />
+                        <strong>Getätigte Bestellungen werden entgegen der Beschriftung nicht ausgelöst und es fallen
+                            keine Kosten an.</strong>
+                    </Alert>
 
                     <br/>
                     {orderState.error !== null &&

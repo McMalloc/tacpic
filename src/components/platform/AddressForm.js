@@ -1,13 +1,10 @@
 import React, {useState} from "react";
 import PropTypes from 'prop-types';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {ADDRESS} from "../../actions/action_constants";
 import {Textinput} from "../gui/Input";
 import Select from "../gui/Select";
-import {Checkbox} from "../gui/Checkbox";
-import {Container, Row} from "../gui/Grid";
-import {Alert} from "../gui/Alert";
-import {Button} from "../gui/Button";
+import {Row} from "../gui/Grid";
 import Modal from "../gui/Modal";
 import {EWR, GERMAN_STATES} from "../../config/constants";
 

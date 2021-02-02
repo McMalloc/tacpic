@@ -55,7 +55,7 @@ const App = () => {
   const t = useTranslation().t;
   const dispatch = useDispatch();
   const location = useLocation();
-  const inEditor = /editor\/app/.test(location.pathname);
+  const inEditor = /editor\/app/.test(location.pathname) || location.pathname === '/';
   const inEditorSplash = /splash/.test(location.pathname);
   const appError = useSelector((state) => state.app.error);
 
@@ -82,6 +82,7 @@ const App = () => {
   return (
     <Wrapper>
       <Navbar items={navbarItems} />
+
       <ScrollContent id={"scroll-content"}>
         <AppContainer
           id={"app-container"}
@@ -107,28 +108,35 @@ const App = () => {
               element={<Catalogue />}
             />
             <Route path="/signup" element={<SignupForm />} />
-            <Route
+            {/* <Route
               path="/editor/:graphicId/variant/:variantId/:mode"
               element={<Editor />}
-            />
+            /> */}
             <Route
               path="/editor/splash"
               element={<EditorSplash />}
             />
-            <Route path="/editor/:mode" element={<Editor />} />
+            <Route path="/editor/app" element={<Editor />} />
             <Route path="/stats" element={<Stats />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route
               path="/info/:lang/:textTitle"
               element={<LegalIndex />}
             ></Route>
-            <Route exact path="/" element={<Landing />} />
+            {/* <Route exact path="/" element={<Landing />} /> */}
+            <Route exact path="/" element={null} />
             <Route path={"*"} element={<NotFound />} />
           </Routes>
+
         </AppContainer>
+        <Routes>
+          <Route exact path="/" element={<Landing />} />
+        </Routes>
         <Footer small={inEditor} />
       </ScrollContent>
+      
       <div id={"dropdown-portal-target"} />
+      
     </Wrapper>
   );
 };

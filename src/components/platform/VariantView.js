@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../gui/Button";
+import Toggle from "../gui/Toggle";
 import { FlyoutButton, FlyoutEntry } from "../gui/FlyoutButton";
 import { ITEM_ADDED_TO_BASKET } from "../../actions/action_constants";
 import styled, { useTheme } from "styled-components/macro";
@@ -11,28 +12,17 @@ import { TagView } from "./Tag";
 import { Alert } from "../gui/Alert";
 import { NavLink } from "react-router-dom";
 import Carousel from "../gui/Carousel";
-import Toolbar from "../gui/Toolbar";
+import ButtonBar from "../gui/ButtonBar";
 import { Radio } from "../gui/Radio";
 import { Numberinput } from "../gui/Input";
 import { Currency } from "../gui/Currency";
-import { template } from "lodash";
 import * as moment from "moment";
 import { APP_URL, API_URL } from "../../env.json";
 import Well from "../gui/Well";
-import More from "../gui/More";
 import { MD_SCREEN, SM_SCREEN, DB_DATE_FORMAT } from "../../config/constants";
 import { FILE } from "../../actions/action_constants";
 import useIntersect from "../../contexts/intersections";
 import { useBreakpoint } from "../../contexts/breakpoints";
-
-const mapFormat = (width, height) => {
-  width = parseInt(width);
-  height = parseInt(height);
-  if (width === 210 && height === 297) return "a4-portrait";
-  if (width === 297 && height === 210) return "a4-landscape";
-  if (width === 297 && height === 420) return "a3-portrait";
-  if (width === 420 && height === 297) return "a3-landscape";
-};
 
 const addToBasket = (dispatch, variantId, quantity, product, index = null) => {
   dispatch({
@@ -45,9 +35,9 @@ const addToBasket = (dispatch, variantId, quantity, product, index = null) => {
 };
 
 const Details = styled.div`
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  padding-bottom: 12px;
+  padding-bottom: 12px; */
   grid-area: details;
 `;
 
@@ -63,15 +53,22 @@ const Wrapper = styled.div`
   max-height: 100%;
   grid-template-columns: 1fr;
   column-gap: 0.5rem;
-  grid-template-rows: auto auto auto auto;
+  grid-template-rows: auto;
   grid-template-areas:
     "title"
     "preview"
-    "details"
-    "order";
+    "description"
+    "details";
 
-  .order {
-    grid-area: order;
+  .description {
+    grid-area: description;
+    overflow: auto;
+    background: linear-gradient(0deg, rgba(0,0,0,0.2439477744222689) 0%, rgba(0,0,0,0) 10px, rgba(0,0,0,0) 100%);
+  }
+
+  .details {
+    grid-area: details;
+    margin-top: 0.5rem;
   }
 
   flex: 0 1 auto;
@@ -90,13 +87,13 @@ const Wrapper = styled.div`
   ${MD_SCREEN} {
     min-width: auto;
     padding: 0;
-    height: auto;
+    height: 100%;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto 2fr 1fr;
+    grid-template-rows: auto 1fr 1fr;
     grid-template-areas:
       "preview  title"
-      "preview  details"
-      "preview  order";
+      "preview  description"
+      "preview  details";
   }
 `;
 
@@ -176,257 +173,249 @@ const VariantView = (props) => {
 
   if (!props.id) return null;
 
-  const pagePreviews = props.document.pages
-    .map((page, index) => {
-      return (
-        <img
-          key={index}
-          src={`${API_URL}/thumbnails/${props.current_file_name}-THUMBNAIL-xl-p${index}.png`}
-        />
-      );
-    })
-    .concat(
-      props.braille_no_of_pages > 0 && (
-        // <BraillePageWrapper>
-        <BraillePagePreview>
-          {Object.keys(props.document.braillePages.imageDescription).reduce(
-            (accumulator, blockKey) =>
-              accumulator +
-              props.document.braillePages.imageDescription[blockKey] +
-              "\n\n",
-            ""
-          ) + props.document.braillePages.content}
-        </BraillePagePreview>
-        // </BraillePageWrapper>
-      )
-    );
+  const pagePreviews = <Preview>
+    <Carousel
+      single={
+        <span className={"disabled"}>Insgesamt eine Grafikseite.</span>
+      }
+    >
+      {props.document.pages
+        .map((page, index) => {
+          return (
+            <img
+              key={index}
+              src={`${API_URL}/thumbnails/${props.current_file_name}-THUMBNAIL-xl-p${index}.png`}
+            />
+          );
+        })
+        .concat(
+          props.braille_no_of_pages > 0 && (
+            // <BraillePageWrapper>
+            <BraillePagePreview>
+              {Object.keys(props.document.braillePages.imageDescription).reduce(
+                (accumulator, blockKey) =>
+                  accumulator +
+                  props.document.braillePages.imageDescription[blockKey] +
+                  "\n\n",
+                ""
+              ) + props.document.braillePages.content}
+            </BraillePagePreview>
+            // </BraillePageWrapper>
+          )
+        )}
+    </Carousel>
+  </Preview>
 
-  return (
-    <Wrapper ref={ref}>
-      <Preview>
-        <Carousel
-          single={
-            <span className={"disabled"}>Insgesamt eine Grafikseite.</span>
-          }
-        >
-          {pagePreviews}
-        </Carousel>
-      </Preview>
-      <Title>
-        {props.graphicTitle}: {props.title}
-      </Title>
-      <Details>
-        <div>
-          {props.description.trim() !== "()" ? (
-            props.description.length > 200 ? (
-              <More>
-                <p>{props.description}</p>
-              </More>
-            ) : (
-                <p>{props.description}</p>
-              )
-          ) : (
-              <em>(Keine Beschreibung)</em>
-            )}
-          <p>
-            <small>
-              Erstellt am{" "}
-              {moment(props.created_at, DB_DATE_FORMAT).format(
-                "DD.MM.YYYY, HH:mm"
-              )}{" "}
-              Uhr
-              <br />
-              <Button
-                label={t(
-                  "catalogue:history_" + (showHistory ? "hide" : "show")
-                )}
-                icon={"history"}
-                small
-                onClick={() =>
-                  setSearchParams({ view: showHistory ? "" : "history" })
-                }
-              />
-            </small>
-          </p>
-        </div>
-        <div>
-          <br />
-          <table>
-            <tbody>
-              <tr>
-                <td className={"icon-cell"}>
-                  <Icon title={"Format der Grafikseiten"} icon={"file-image"} />
-                </td>
-                <td>Grafikseiten</td>
-                <td className={"important"}>
-                  {props.graphic_no_of_pages}{" "}
-                  {props.graphic_no_of_pages === 1 ? "Seite" : "Seiten"}{" "}
-                  {t(
-                    `catalogue:${props.graphic_format}-${props.graphic_landscape ? "landscape" : "portrait"
-                    }`
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td className={"icon-cell"}>
-                  <Icon title={"Format der Brailleseiten"} icon={"braille"} />
-                </td>
-                <td>Brailleseiten</td>
-                <td className={"important"}>
-                  {props.braille_no_of_pages === 0 ? (
-                    <>{t("gui:none")}</>
-                  ) : (
-                      <>
-                        {props.braille_no_of_pages}{" "}
-                        {props.braille_no_of_pages === 1 ? "Seite" : "Seiten"}{" "}
-                        {t(`catalogue:${props.braille_format}-portrait`)}
-                      </>
-                    )}
-                </td>
-              </tr>
-              <tr>
-                <td className={"icon-cell"}>&ensp;</td>
-                <td>{t("catalogue:braillesystem")}:</td>
-                <td className={"important"}>
-                  {t(props.system)}
-                </td>
-              </tr>
-              <tr>
-                <td></td>
-                {props.tags.length && props.tags.length > 0 ? (
-                  <>
-                    <td>Schlagworte:</td>
-                    <td>
-                      {tags.map((tag) => {
-                        if (props.tags.includes(tag.tag_id)) {
-                          return (
-                            <TagView
-                              style={{ fontSize: "100%" }}
-                              theme={theme}
-                              key={tag.tag_id}
-                            >
-                              {tag.name}
-                            </TagView>
-                          );
-                        } else return null;
-                      })}
-                    </td>
-                  </>
-                ) : (
-                    <td className={"disabled"} colSpan={2}>
-                      Keine Schlagworte für diese Variante.
-                    </td>
-                  )}
-              </tr>
-            </tbody>
-          </table>
-          <br />
+  const description = <div className={"description"}>
+    {props.description.trim() !== "()" ?
+      <p>{props.description}</p>
+      :
+      <em>(Keine Beschreibung)</em>
+    }
+  </div>
 
-          {!logged_in && (
-            <Alert info>
-              Bitte <NavLink to={"/login"}>logge dich ein</NavLink> oder{" "}
-              <NavLink to={"/signup"}>erstelle ein Konto</NavLink>, um Grafiken
-              zu bearbeiten.
-            </Alert>
+  const detailTable = <table className={'extra-margin'}>
+    <tbody>
+      <tr>
+        <td className={"icon-cell"}>
+          <Icon title={"Format der Grafikseiten"} icon={"file-image"} />
+        </td>
+        <td><small>Grafikseiten</small></td>
+        <td className={""}>
+          {props.graphic_no_of_pages}{" "}
+          {props.graphic_no_of_pages === 1 ? "Seite" : "Seiten"}{" "}
+          {t(
+            `catalogue:${props.graphic_format}-${props.graphic_landscape ? "landscape" : "portrait"
+            }`
           )}
+        </td>
+      </tr>
+      <tr>
+        <td className={"icon-cell"}>
+          <Icon title={"Format der Brailleseiten"} icon={"file-alt"} />
+        </td>
+        <td><small>Brailleseiten</small></td>
 
-          {!lg && <Alert warning>{t("editor:not_available-screen")}</Alert>}
-          <Toolbar columns={2}>
-            <FlyoutButton
-              flyoutWidth={300}
-              disabled={!logged_in || !lg}
-              rightAlign
-              icon={"pen"}
-              label={"Im Editor öffnen, um ..."}
-            >
-              <FlyoutEntry
-                icon={"file-medical"}
-                label={"catalogue:variant-copy"}
-                onClick={() => {
-                  dispatch({
-                    type: FILE.OPEN.REQUEST,
-                    id: variantId,
-                    mode: 'copy',
-                  });
-                  navigate('/editor/app');
-                }}
-                sublabel={"catalogue:variant-copy-hint"}
-              />
-              <FlyoutEntry
-                icon={"glasses"}
-                label={"catalogue:variant-edit"}
-                onClick={() => { 
-                  dispatch({
-                    type: FILE.OPEN.REQUEST,
-                    id: variantId,
-                    mode: 'edit',
-                  });
-                  navigate('/editor/app');
-                }}
-                sublabel={"catalogue:variant-edit-hint"}
-              />
-              <FlyoutEntry
-                icon={"file-export"}
-                label={"catalogue:variant-new"}
-                onClick={() => {
-                  dispatch({
-                    type: FILE.OPEN.REQUEST,
-                    id: variantId,
-                    mode: 'new',
-                  });
-                  navigate('/editor/app');
-                }}
-                sublabel={"catalogue:variant-new-hint"}
-              />
-            </FlyoutButton>
+        {props.braille_no_of_pages === 0 ? (
+          <td className={"disabled"}>{t("gui:none")}</td>
+        ) : 
+            <td>
+              {props.braille_no_of_pages}{" "}
+              {props.braille_no_of_pages === 1 ? "Seite" : "Seiten"}{" "}
+              {t(`catalogue:${props.braille_format}-portrait`)}
+            </td>
+          }
+      </tr>
+    <tr>
+      <td className={"icon-cell"}>
+        <Icon title={"Braillesystem"} icon={"braille"} />
+      </td>
+      <td><small>{t("catalogue:braillesystem")}</small></td>
+      <td className={""}>
+        {t(props.system)}
+      </td>
+    </tr>
+    <tr>
+      <td className={"icon-cell"}>
+        <Icon title={"Schlagworte"} icon={"tags"} />
+      </td>
+      <td><small>Schlagworte</small></td>
+      {props.tags.length && props.tags.length > 0 ? (
+        <>
+          <td>
+            {tags.map((tag) => {
+              if (props.tags.includes(tag.tag_id)) {
+                return (
+                  <TagView
+                    style={{ fontSize: "100%" }}
+                    theme={theme}
+                    key={tag.tag_id}
+                  >
+                    {tag.name}
+                  </TagView>
+                );
+              } else return null;
+            })}
+          </td>
+        </>
+      ) : (
+          <td className={"disabled"} colSpan={2}>
+            {t("gui:none")}
+          </td>
+        )}
+    </tr>
+    <tr>
+      <td className={"icon-cell"}>
+        <Icon title={"Erstellt am"} icon={"calendar-alt"} />
+      </td>
+      <td><small>Erstellt am</small></td>
+      <td>
+        {moment(props.created_at, DB_DATE_FORMAT).format(
+          "DD.MM.YYYY, HH:mm"
+        )}{" "}
+              Uhr
+        </td>
+    </tr>
+    </tbody>
+  </table >
 
-            <FlyoutButton
-              disabled={!logged_in}
-              rightAlign
-              icon={"file-download"}
-              label={"catalogue:download-as"}
-            >
-              {['pdf', 'rtf', 'brf', 'zip'].map(format => {
-                return <FlyoutEntry
-                icon={format === 'pdf' ? 'file-pdf' : format === 'zip' ? 'file-archive' : format === 'rtf' ? 'file-word' : 'braille'}
-                key={format}
-                label={"catalogue:" + format}
-                onClick={() =>
-                  (window.location = `${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`)
-                }
-                sublabel={`catalogue:${format}-hint`}
-              />
-              })}
-            </FlyoutButton>
-          </Toolbar>
-        </div>
-      </Details>
-      <Well className={"order"}>
-        <h3>Bestellen</h3>
+  const buttonBar = <ButtonBar align={'left'}>
+  <FlyoutButton
+    flyoutWidth={300}
+    disabled={!logged_in || !lg}
+    icon={"pen"}
+    label={"Im Editor öffnen, um ..."}
+  >
+    <FlyoutEntry
+      icon={"file-medical"}
+      label={"catalogue:variant-copy"}
+      onClick={() => {
+        dispatch({
+          type: FILE.OPEN.REQUEST,
+          id: variantId,
+          mode: 'copy',
+        });
+        navigate('/editor/app');
+      }}
+      sublabel={"catalogue:variant-copy-hint"}
+    />
+    <FlyoutEntry
+      icon={"glasses"}
+      label={"catalogue:variant-edit"}
+      onClick={() => {
+        dispatch({
+          type: FILE.OPEN.REQUEST,
+          id: variantId,
+          mode: 'edit',
+        });
+        navigate('/editor/app');
+      }}
+      sublabel={"catalogue:variant-edit-hint"}
+    />
+    <FlyoutEntry
+      icon={"file-export"}
+      label={"catalogue:variant-new"}
+      onClick={() => {
+        dispatch({
+          type: FILE.OPEN.REQUEST,
+          id: variantId,
+          mode: 'new',
+        });
+        navigate('/editor/app');
+      }}
+      sublabel={"catalogue:variant-new-hint"}
+    />
+  </FlyoutButton>
+
+  <FlyoutButton
+    disabled={!logged_in}
+    rightAlign
+    icon={"file-download"}
+    label={"catalogue:download-as"}
+  >
+    {['pdf', 'rtf', 'brf', 'zip'].map(format => {
+      return <FlyoutEntry
+        icon={format === 'pdf' ? 'file-pdf' : format === 'zip' ? 'file-archive' : format === 'rtf' ? 'file-word' : 'braille'}
+        key={format}
+        label={"catalogue:" + format}
+        onClick={() =>
+          (window.location = `${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`)
+        }
+        sublabel={`catalogue:${format}-hint`}
+      />
+    })}
+  </FlyoutButton>
+  <Toggle
+    label={"catalogue:history_" + (showHistory ? "hide" : "show")}
+    toggled={showHistory}
+    icon={"history"}
+    onClick={() =>
+      setSearchParams({ view: showHistory ? "" : "history" })
+    }
+  />
+</ButtonBar>
+
+return (
+  <Wrapper ref={ref}>
+    {pagePreviews}
+
+    <Title>
+      {props.graphicTitle}: {props.title}
+    </Title>
+    {description}
+
+    <div className={'details'}>
+      {detailTable}
+
+      {!logged_in && (
+        <Alert info>
+          Bitte <NavLink to={"/login"}>logge dich ein</NavLink> oder{" "}
+          <NavLink to={"/signup"}>erstelle ein Konto</NavLink>, um Grafiken
+              zu bearbeiten.
+        </Alert>
+      )}
+
+      {!lg && <Alert warning>{t("editor:not_available-screen")}</Alert>}
+
+      {buttonBar}
+
+      <Well>
         {props.braille_no_of_pages > 0 ? (
           <Radio
             onChange={setProduct}
-            value={product}
+            legend={'Grafik auf Schwellpapier bestellen und Bildbeschreibung erhalten als'}
             name={"graphic_only_or_both_" + props.id}
-            options={[
+            value={product} options={[
               {
-                label: template(t(`catalogue:graphics_and_braille`))({
-                  amount: props.braille_no_of_pages + props.graphic_no_of_pages,
-                }),
-                value: "graphic",
+                label: `${props.braille_no_of_pages} Seite/n DIN A4, Brailleprägung`,
+                value: "graphic"
               },
               {
-                label:
-                  template(t(`catalogue:graphics_only`))({
-                    amount: props.graphic_no_of_pages,
-                  }) +
-                  ` ${((props.quote - props.quote_graphics_only) / 100)
-                    .toFixed(2)
-                    .replace(".", ",")}€ günstiger)`,
-                value: "graphic_nobraille",
-              },
-            ]}
-          ></Radio>
+                label: "E-Mail" + ` ${((props.quote - props.quote_graphics_only) / 100)
+                  .toFixed(2)
+                  .replace(".", ",")}€ günstiger)`, value: "graphic_nobraille"
+              }
+            ]} />
         ) : (
             <p>{props.graphic_no_of_pages} Grafikseite(n)</p>
           )}
@@ -485,8 +474,10 @@ const VariantView = (props) => {
           />
         </OrderWidget>
       </Well>
-    </Wrapper>
-  );
+    </div>
+
+  </Wrapper>
+);
 };
 
 export default VariantView;

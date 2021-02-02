@@ -19,7 +19,7 @@ onmessage = event => {
             .join("\n");
     } catch (error) {
         console.error(error);
-        postMessage("")
+        postMessage("");
     }
 
     postMessage(result);

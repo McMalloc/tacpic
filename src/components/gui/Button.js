@@ -24,9 +24,9 @@ const Label = styled.span`
 const ButtonBase = styled.button`
   background-color: ${(props) =>
     props.primary ? props.theme.brand_secondary : "white"};
-  color: ${(props) => (props.primary ? props.theme.background : props.theme.foreground)};
-  border: 1px solid ${(props) => props.theme.brand_secondary_lighter};
-  padding: ${(props) =>
+  color: ${props => (props.primary ? props.theme.background : props.theme.foreground)};
+  border: ${props => props.theme.elementBorder};
+  padding: ${props =>
     props.small
       ? '2px 4px'
       : props.large
@@ -93,7 +93,7 @@ const Button = React.forwardRef((props, ref) => {
   const collapsedLabel = props.collapsable && !breakpoints[props.collapsable];
 
   return (
-    <ButtonBase type={props.type || "button"} ref={ref} title={t(props.title)} {...props}>
+    <ButtonBase type={props.type || "button"} ref={ref} {...props} title={t(props.title)} >
       {props.icon && <Icon icon={props.icon} primary={props.primary} />}
       {label && (
         <Label hasIcon={!!props.icon && !collapsedLabel}>

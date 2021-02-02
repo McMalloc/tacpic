@@ -1,9 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
-import AddressForm from "./AddressForm";
 import {useTranslation} from "react-i18next";
 import styled from 'styled-components/macro';
-import Card from "../gui/Card";
 
 const Wrapper = styled.div`
 `;

@@ -158,17 +158,14 @@ const FlyoutButton = (props) => {
 
   return (
     // <span className={props.className} style={{position: "relative"}}>
-    <span className={props.className}>
+    <>
       <Toggle
         isDropdown={true}
-        icon={props.icon}
         toggled={out}
-        noPad={props.noPad}
-        disabled={props.disabled}
         onBlur={onBlurHandler}
         onFocus={onFocusHandler}
+        {...props}
         ref={buttonRef}
-        label={props.label}
         onClick={toggle}
       />
       {out && (
@@ -186,7 +183,7 @@ const FlyoutButton = (props) => {
             style={{ position: 'absolute', top: 6, right: 6 }} />}
         </FlyoutWrapper>
       )}
-    </span>
+    </>
   );
 };
 

@@ -22,7 +22,7 @@ const mapGraphics = graphics => {
                     braille_format: variant.braille_format,
                     braille_no_of_pages: variant.braille_no_of_pages,
                     graphic_format: variant.graphic_format,
-                    graphics_no_of_pages: variant.graphics_no_of_pages,
+                    graphic_no_of_pages: variant.graphic_no_of_pages,
                     created_at: variant.created_at,
                     description: variant.variant_description,
                     tags: variant.tags === "{NULL}" ?

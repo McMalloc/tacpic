@@ -172,7 +172,7 @@ const Navbar = props => {
                             {sections}
                             <hr/>
                             {user.logged_in ? accountLink : loginSignupLinks}
-                            <NavbarItem className={"no-styled-link"} to={'/legal/de/Impressum'}>
+                            <NavbarItem className={"no-styled-link"} to={'/info/de/Impressum'}>
                                 Impressum
                             </NavbarItem>
                         </Burgermenu>

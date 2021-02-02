@@ -58,3 +58,5 @@ export const standard = {
         5: '2em'
     }
 };
+
+standard.elementBorder = '2px solid ' + standard.grey_4

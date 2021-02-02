@@ -4,6 +4,7 @@ import {useTranslation} from 'react-i18next';
 
 const Main = styled.label`
   display: ${props => props.inline ? "inline" : "block"};
+  /* font-size: 0.9rem; */
   color: ${props => props.disabled ? props.theme.grey_2 : "inherit"};
   cursor: ${props => props.disabled ? 'not-allowed' : "pointer"};
   margin-bottom: ${props => props.noMargin ? 0 : props.theme.spacing[3]};

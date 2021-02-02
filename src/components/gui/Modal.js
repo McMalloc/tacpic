@@ -25,6 +25,7 @@ const Window = styled.div`
   box-shadow: -1px 1px 11px 0px rgba(0, 0, 0, 0.87); //${props => props.theme.distant_shadow};
   background-color: ${props => props.theme.background};
   animation: ${slideFromAbove} 0.1s ease-in;
+  transition: width 0.5s;
 
   margin: 0;
   ${SM_SCREEN} {

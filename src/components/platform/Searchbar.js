@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {useDispatch, useSelector} from "react-redux";
-import {Textinput} from "../gui/Input";
-import {Button} from "../gui/Button";
-import {useNavigate, useLocation} from "react-router-dom";
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from "react-redux";
+import { Textinput } from "../gui/Input";
+import { Button } from "../gui/Button";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from 'styled-components/macro';
 
 const Bar = styled.form`
@@ -34,35 +34,35 @@ const Searchbar = () => {
     const [searchTerm, setSearchTerm] = useState(catalogue.filterTerms);
 
     return (
-            <Bar>
-                <Textinput value={searchTerm}
+        <Bar>
+            <Textinput value={searchTerm}
                 name={"search-bar"}
                 className={"attached"}
                 noMargin
-                           style={{width: '100%'}}
-                           label={t("catalogue:searchterm")}
-                           onChange={event => setSearchTerm(event.target.value)}
-                           externalLabel={"search-bar-label"}
-                           placeholder={t("catalogue:search-placeholder")}
-                />
-                <Button
-                    onClick={event => {
-                        event.preventDefault();
-                        searchChanged(dispatch, searchTerm);
-                        if (location.pathname !== "/catalogue") {
-                            navigate("catalogue");
-                        }
+                style={{ width: '100%' }}
+                label={''}
+                onChange={event => setSearchTerm(event.target.value)}
+                externalLabel={"search-bar-label"}
+                placeholder={t("catalogue:search-placeholder")}
+            />
+            <Button
+                onClick={event => {
+                    event.preventDefault();
+                    searchChanged(dispatch, searchTerm);
+                    if (location.pathname !== "/catalogue") {
+                        navigate("catalogue");
+                    }
                 }}
                 className={"right-attached"}
                 label={""}
                 icon={"search"}
                 collapsable={'sm'}
-                    id={"catalogue-search-btn"}
-                    // disabled={catalogue.filterTerms === searchTerm}
-                    type={"submit"} primary>
-                    {t("catalogue:search")}
-                </Button>
-            </Bar>
+                id={"catalogue-search-btn"}
+                // disabled={catalogue.filterTerms === searchTerm}
+                type={"submit"} primary>
+                {t("catalogue:search")}
+            </Button>
+        </Bar>
     );
 };
 

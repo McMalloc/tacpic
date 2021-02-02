@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-import React, {Component, Fragment} from "react";
+import React from "react";
 
 const Label = styled.label`
   //font-size: 0.9em;
@@ -29,8 +29,9 @@ const Label = styled.label`
   }
 `;
 
-const BigLabel = styled(Label)`
-
+const Grouphead = styled.div`
+  padding-bottom: 0.5rem;
+  font-weight: bold;
 `;
 
 const Input = styled.input`
@@ -38,13 +39,13 @@ const Input = styled.input`
   width: 0;
   margin: 0;
   
-  &:checked + label {
-    color: ${props => props.theme.brand_secondary};
-  } 
+  /* &:checked + label {
+    text-decoration: underline;
+  }  */
 
   &:checked + label:before {
     font-weight: bold;
-    text-decoration: none;
+    text-decoration: none!important;
     content: "\f192";
   } 
 
@@ -76,7 +77,10 @@ const Wrapper = styled.div`
 // TODO: wie checkbox neu machen
 const Radio = props => {
     return (
-        <>
+        <div role={'group'} aria-labelledby={props.name + "_head"}>
+            <Grouphead id={props.name + "_head"}>
+              {props.legend}
+            </Grouphead>
             {props.options && props.options.map((option, index) => {
                 return (
                     <Wrapper className={option.disabled ? 'disabled-option' : ''} data-active={option.value === props.value} padded={props.padded} key={index}>
@@ -95,7 +99,7 @@ const Radio = props => {
                     </Wrapper>
                 )
             })}
-        </>
+        </div>
     )
 }
 
