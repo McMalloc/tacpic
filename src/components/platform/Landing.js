@@ -214,15 +214,15 @@ const Landing = () => {
                     <div className={"row extra-padding"}>
                         <div className={"col-xs-12 col-sm-4"}>
                             <IllustrationContainer>
-                                <img alt={"dekorative Ilustration Entwurf gestalten"} src={"/images/200902_Konzept-02.svg"} />
+                                <img alt={"dekorative Ilustration Entwurf gestalten"} src={"/images/gestalten.svg"} />
                             </IllustrationContainer>
 
-                            <h3>1. Grafik gestalten</h3>
+                            <h3 className={''}>1. Grafik gestalten</h3>
                             <p id={'copy-edit_draft'}>Entwerfen Sie Ihre Grafik im tacpic Online-Editor.</p>
                         </div>
                         <div className={"col-xs-12 col-sm-4"}>
                             <IllustrationContainer>
-                                <img alt={"dekorative Ilustration Grafik produzieren"} src={"/images/200902_Konzept-03.svg"} />
+                                <img alt={"dekorative Ilustration Grafik produzieren"} src={"/images/produktion.svg"} />
                             </IllustrationContainer>
                             <h3>2. Produktion</h3>
                             <p>Auf Bestellung produzieren wir Ihren Entwurf als Tastgrafik auf Schwellpapier.</p>
@@ -231,7 +231,7 @@ const Landing = () => {
                         </div>
                         <div className={"col-xs-12 col-sm-4"}>
                             <IllustrationContainer>
-                                <img alt={"dekorative Ilustration Grafik versenden"} src={"/images/200902_Konzept-04.svg"} />
+                                <img alt={"dekorative Ilustration Grafik versenden"} src={"/images/liefern.svg"} />
                             </IllustrationContainer>
                             <h3>3. Lieferung</h3>
                             <p>Ihre Bestellung wird per Post an Sie versendet.</p>
@@ -247,7 +247,7 @@ const Landing = () => {
                         <div className={"col-xs-12 col-sm-4 extra-margin"}>
                             <IllustrationContainer><img src={"images/icon_community.svg"} alt="" role="presentation" />
                             </IllustrationContainer>
-                            <h3 id="nutzerfreundlich-effizient">Nutzerfreundlich &amp; effizient</h3>
+                            <h3 className={'align-center'} id="nutzerfreundlich-effizient">Nutzerfreundlich &amp; effizient</h3>
                             <p>Kernstück ist ein nutzerfreundliches Programm, das eine Alternative zu komplexer
                             Grafiksoftware darstellt. Die Bearbeitungsfunktionen nehmen Rücksicht auf die Möglichkeiten
                             und Grenzen des Tastsinns. Die
@@ -258,7 +258,7 @@ const Landing = () => {
                         <div className={"col-xs-12 col-sm-4 extra-margin"}>
                             <IllustrationContainer><img src={"images/icon_netzwerk.svg"} alt="" role="presentation" />
                             </IllustrationContainer>
-                            <h3 id="community">Community</h3>
+                            <h3 className={'align-center'} id="community">Community</h3>
                             <p>Nach der Gestaltung können die Grafikvorlagen in einem öffentlichen Katalog zugänglich
                             gemacht werden. Andere Nutzende können
                         Verbesserungen nach dem Wiki-Prinzip einpflegen.</p>
@@ -267,7 +267,7 @@ const Landing = () => {
                         <div className={"col-xs-12 col-sm-4 extra-margin"}>
                             <IllustrationContainer><img src={"images/icon_guenstig.svg"} alt="" role="presentation" />
                             </IllustrationContainer>
-                            <h3 id="individuell-preisg-nstig">Individuell &amp; preisgünstig</h3>
+                            <h3 className={'align-center'} id="individuell-preisg-nstig">Individuell &amp; preisgünstig</h3>
                             <p>Tacpic macht es möglich, individuelle Grafiken für Privatpersonen auf kostengünstige Weise
                             umzusetzen. Profitieren können vor allem sehbehinderte Schülerinnen und Schüler in
                             Inklusionsklassen, deren Unterrichtsmaterial speziell auf ihre Bedürfnisse angepasst werden

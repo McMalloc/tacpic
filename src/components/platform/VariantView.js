@@ -411,7 +411,7 @@ return (
                 value: "graphic"
               },
               {
-                label: "E-Mail" + ` ${((props.quote - props.quote_graphics_only) / 100)
+                label: "E-Mail" + ` (${((props.quote - props.quote_graphics_only) / 100)
                   .toFixed(2)
                   .replace(".", ",")}€ günstiger)`, value: "graphic_nobraille"
               }
