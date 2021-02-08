@@ -49,7 +49,9 @@ const ItemPanel = styled(Well)`
     
     .left {
       flex: 1 1 30%;
-      height: 100px;
+      height: 120px;
+      padding-right: 0.5rem;
+      padding-bottom: 0.5rem;
        img {
             box-shadow: 1px 1px 4px rgba(0,0,0,0.5);
           }
@@ -129,7 +131,7 @@ const BasketListing = () => {
                     <ItemPanel key={index}>
                         <div className={'upper'}>
                             <div className={'left'}>
-                                <img style={{ height: '70px', width: 'auto' }}
+                                <img style={{ height: 'auto', maxHeight: '100%', width: 'auto' }}
                                     src={`${API_URL}/thumbnails/${correspondingVariant.current_file_name}-THUMBNAIL-sm-p0.png`} />
                             </div>
                             <div className={'right'}>
@@ -138,6 +140,7 @@ const BasketListing = () => {
                                     <strong>{correspondingVariant.graphic_title} ({correspondingVariant.title})</strong>
                                 </Link>
                                 <p>
+                                    Schwellpapier <br />
                                     {correspondingVariant.graphic_no_of_pages} &times; {t('catalogue:' + correspondingVariant.graphic_format + '-' + (correspondingVariant.graphic_landscape ? 'landscape' : 'portrait'))} 
                                     <br />
                                     {t(correspondingVariant.system)}

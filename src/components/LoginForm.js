@@ -9,7 +9,6 @@ import {Alert} from "./gui/Alert";
 import {Link} from "react-router-dom";
 
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4";
 
 const Login = props => {
     const {t} = useTranslation();
@@ -25,7 +24,7 @@ const Login = props => {
     const [passwordValid, setPasswordValid] = useState(false);
 
     return (
-        <form className={layout} onSubmit={(event) => {
+        <form onSubmit={(event) => {
             event.preventDefault();
             dispatch({
                 // emailValid && passwordValid && dispatch({

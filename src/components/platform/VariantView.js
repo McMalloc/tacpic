@@ -222,12 +222,10 @@ const VariantView = (props) => {
         </td>
         <td><small>Grafikseiten</small></td>
         <td className={""}>
-          {props.graphic_no_of_pages}{" "}
-          {props.graphic_no_of_pages === 1 ? "Seite" : "Seiten"}{" "}
-          {t(
+          {`${props.graphic_no_of_pages} × ${t(
             `catalogue:${props.graphic_format}-${props.graphic_landscape ? "landscape" : "portrait"
             }`
-          )}
+          )}`}
         </td>
       </tr>
       <tr>
@@ -240,9 +238,7 @@ const VariantView = (props) => {
           <td className={"disabled"}>{t("gui:none")}</td>
         ) : 
             <td>
-              {props.braille_no_of_pages}{" "}
-              {props.braille_no_of_pages === 1 ? "Seite" : "Seiten"}{" "}
-              {t(`catalogue:${props.braille_format}-portrait`)}
+              {`${props.braille_no_of_pages} × ${t("catalogue:a4-portrait")}`}
             </td>
           }
       </tr>
@@ -407,7 +403,7 @@ return (
             name={"graphic_only_or_both_" + props.id}
             value={product} options={[
               {
-                label: `${props.braille_no_of_pages} Seite/n DIN A4, Brailleprägung`,
+                label: `${props.braille_no_of_pages} × DIN A4, Brailleprägung`,
                 value: "graphic"
               },
               {
@@ -417,11 +413,10 @@ return (
               }
             ]} />
         ) : (
-            <p>{props.graphic_no_of_pages} Grafikseite(n)</p>
+            <p><strong>Grafik auf {props.graphic_no_of_pages} Seite/n Schwellpapier bestellen</strong></p>
           )}
 
-        <br />
-
+      <br />
         <OrderWidget>
           {/*<div style={{display: 'flex'}}>*/}
           <Numberinput

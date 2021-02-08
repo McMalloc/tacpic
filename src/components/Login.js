@@ -29,7 +29,9 @@ const Login = props => {
             </div>
 
             <div className={"row"}>
-                <LoginForm />
+                <div className={layout}>
+                    <LoginForm />
+                </div>
                 <>
 
                     <div className={'full-width align-center'}>
