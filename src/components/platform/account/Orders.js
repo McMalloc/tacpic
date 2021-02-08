@@ -7,6 +7,7 @@ import {Currency} from "../../gui/Currency";
 import {Button} from "../../gui/Button";
 import {useTranslation} from "react-i18next";
 import {Alert} from "../../gui/Alert";
+import { DB_DATE_FORMAT } from "../../../config/constants";
 
 
 const Orders = () => {
@@ -35,7 +36,7 @@ const Orders = () => {
                 {orders.map(order => {
                     return <tr>
                         <td>
-                            {moment(order.created_at).format("DD.MM.yyyy")}
+                            {moment(order.created_at, DB_DATE_FORMAT).format("DD.MM.yyyy")}
                         </td>
                         <td>
                             <Currency normal amount={order.total_gross} />

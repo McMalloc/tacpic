@@ -68,7 +68,7 @@
     "orders-description": "Bestellstatus und nachverfolgen, Bestellverlauf und Rechnungen",
     "order-status-0": "Offen",
     "order-status-1": "An Produktionspartner übergeben",
-    "order-status-2": "Abgeschlossen",
+    "order-status-2": "Abgeschlossen und versendet",
     "order-status-3": "Warte auf Bezahlung",
     "payment_options": "Bezahlmöglichkeiten",
     "payment_options-description": "Lastschrift oder Paypal einrichten",

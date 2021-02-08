@@ -237,14 +237,16 @@ const Checkout = props => {
                         {step === 1 && addressSection}
                         {step === 2 && paymentSection}
                         {step === 3 && checkSection}
-                    </div>
 
-                    <br />
+                        <br />
                     <Alert danger>
                         Die Plattform befindet sich in der Alpha-Phase, d.h. sie wird noch getestet.<br />
                         <strong>Getätigte Bestellungen werden entgegen der Beschriftung nicht ausgelöst und es fallen
                             keine Kosten an.</strong>
                     </Alert>
+                    </div>
+
+                    
 
                     <br/>
                     {orderState.error !== null &&
