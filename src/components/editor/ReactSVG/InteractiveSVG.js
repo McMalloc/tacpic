@@ -151,6 +151,7 @@ class InteractiveSVG extends Component {
                     this.props.ui.viewPortY);
                 break;
             case 46: // DEL
+                if (!selectedObject) return;
                 if (selectedObject.type === 'path' && this.state.editIndex >= 0) {
                     this.props.updateObject(methods.path.removePoint(cloneDeep(selectedObject), this.state.editIndex));
                     this.setState({ editIndex: -1 });

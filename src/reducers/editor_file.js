@@ -286,7 +286,7 @@ const file = (state = {}, action) => {
           let objectIndex = -1;
           let pageIndex = -1;
           state.pages.forEach((page, index) => {
-            objectIndex = Math.max(page.objects.findIndex(object => object.uuid === uuid), objectIndex);
+            objectIndex = page.objects.findIndex(object => object.uuid === uuid);
             if (objectIndex >= 0) pageIndex = index;
           })
 
