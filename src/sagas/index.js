@@ -18,7 +18,7 @@ import {
     VARIANTS,
     VARIANT,
     ADDRESS,
-    APP, QUOTE, IMPORT, CMS_PAGE
+    APP, QUOTE, IMPORT, CMS_PAGE, CMS_CATEGORY, CMS_LEGAL
 } from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {
@@ -39,6 +39,7 @@ import {orderCreateSaga, orderIndexSaga} from "./order_saga";
 import {titleEditWatch} from "./title_saga";
 import { backupRemoveWatcher, backupWatcher, backupAutoRemoveWatcher, backupIndexWatcher } from "./backup_saga";
 import { errorWatcher } from "./error_saga";
+import replaceEntity from "../utility/replaceEntity";
 
 const id = args => args;
 
@@ -71,8 +72,18 @@ export default function* root() {
         call(createSaga(GRAPHIC.GET, 'get', 'graphics/:id', takeLatest, false, id, id)),
         call(createSaga(VARIANT.HISTORY, 'get', 'variants/:id/history', takeLatest, false, id, id)),
 
-        call(createSaga(CMS_PAGE.GET, 'get', 'cms/pages/:id', takeLatest, false, id, id)),
-        call(createSaga(CMS_PAGE.INDEX, 'get', 'cms/pages', takeLatest, false, id, id)),
+        // call(createSaga(CMS_PAGE.GET, 'get', 'cms/pages/:id', takeLatest, false, id, id)),
+        call(createSaga(CMS_PAGE.INDEX, 'get', 'cms/posts?categories=:filterCategory', takeLatest, false, id, response => {
+            return response.map(post => ({
+                    ...post,
+                    title: {
+                        rendered: replaceEntity(post.title.rendered)
+                    }
+                }))
+        })),
+        call(createSaga(CMS_CATEGORY.INDEX, 'get', 'cms/categories', takeLatest, false, id, id)),
+        call(createSaga(CMS_LEGAL.INDEX, 'get', 'cms/menu', takeLatest, false, id, id)),
+        call(createSaga(CMS_LEGAL.GET, 'get', 'cms/pages/:id', takeLatest, false, id, id)),
 
         call(createSaga(ADDRESS.GET, 'get', 'users/addresses', takeLatest, true, id, id)),
         call(createSaga(ADDRESS.CREATE, 'post', 'users/addresses', takeLatest, true, id, id)),
@@ -87,7 +98,6 @@ export default function* root() {
         call(orderIndexSaga),
 
         call(createSaga(APP.FRONTEND, 'get', 'FRONTEND.json', takeLatest, false, id, id)),
-        call(createSaga(APP.LEGAL, 'get', 'legal/index', takeLatest, false, id, id)),
         call(createSaga(APP.BACKEND, 'get', 'BACKEND.json', takeLatest, false, id, id)),
 
         call(basketChangeSaga),
@@ -132,6 +142,11 @@ export default function* root() {
         call(backupAutoRemoveWatcher),
 
         call(errorWatcher),
+        call(function* () {
+            yield takeLatest('GDPR_OKAY', function* () {
+                localStorage.setItem('gdpr', true);
+            })
+        }),
     ])
 }
 

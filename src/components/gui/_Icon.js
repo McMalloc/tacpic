@@ -6,6 +6,7 @@ const Wrapper = styled.span`
   
   &>i {
     transform: ${props => props.rotation ? "rotate(" + props.rotation + "deg)" : "none"};
+    font-weight: ${props => props.slim ? 400 : 900};
   }
 `;
 
@@ -16,7 +17,7 @@ const Wrapper = styled.span`
 const Icon = props => {
     return (
         typeof props.icon !== 'undefined' && props.icon !== null ?
-                <Wrapper style={props.style} className={"icon"} title={props.title} rotation={props.rotation}><i className={"fas fa-" + props.icon}/></Wrapper> : null
+                <Wrapper {...props} className={"icon"}><i className={"fas fa-" + props.icon}/></Wrapper> : null
     )
 
 };

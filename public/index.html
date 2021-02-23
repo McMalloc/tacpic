@@ -1,60 +1,71 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <title>tacpic</title>
-  </head>
-  <body>
-    <noscript>
-      Javascript benötigt.
-    </noscript>
 
-    <!-- container used to calculate text width -->
-    <div aria-hidden=true id="dummy" style="position: absolute; opacity: 0;"></div>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <title>tacpic</title>
+</head>
 
-    <div id="root">
+<body>
+  
 
-      <!-- loader -->
-      <div style="
-  margin-top: 20%;
-  flex-direction: column;
-  justify-content: center;
+  <!-- container used to calculate text width -->
+  <div aria-hidden=true id="dummy" style="position: absolute; opacity: 0;"></div>
+
+  <div id="root">
+
+    <!-- loader -->
+    <div style="
+    display: grid;
+    place-items: center;
   font-size: 120%;
   font-family: sans-serif;
-  width: 100%;
-  align-items: center;
-  display: flex;
-  text-align: center;
   animation: pulsating 0.8s infinite;">
-        <img style="width: 200px" alt="Tacpic Logo" src="/images/logo.svg"><br />
-        Einen Moment bitte /<br/>
-        One Moment please<br/>
-      </div>
 
+<noscript>
+  <div style="width: 100%; margin: 20% 0;">
+    <p style="width: 400px;">Die Entwicklung von Webanwendungen beansprucht viele Ressourcen. 
+  Wir können dieses Angebot leider nur mit aktiviertem Javascript anbieten. 
+  Falls Sie aus Datenschutzgründen Javascript deaktiviert haben, können zumindest wir Sie beruhigen: 
+  Wir schalten keine Werbung und speichern keine persönlichen Informationen.
+<br /><br />
+
+    <a target='_blank' href="https://www.enable-javascript.com/de/">So aktivieren Sie Javascript.</a>
+  </p>
+  </div>
+  
+
+</noscript>
+      <img style="width: 200px" alt="Tacpic Logo" src="/images/logo.svg"><br />
+      Einen Moment bitte /<br />
+      One Moment please<br />
     </div>
 
-    <!-- hidden reference object to convert mm to device specific px and vice versa -->
-    <div style="position: absolute; opacity: 0; top:  0; left: 0">
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml"
-           width=1 height=1>
-        <rect x="0" y="0" width="1" height="1" id="reference-rect"></rect>
-        <foreignObject x="0" y="0" width="1" height="1">
-          <xhtml:div style="width: 1px; height: 1px; display:inline-block" id="reference-div-px">&nbsp;</xhtml:div>
-          <xhtml:div style="width: 1mm; height: 1mm; display:inline-block" id="reference-div-mm">&nbsp;</xhtml:div>
-        </foreignObject>
-      </svg>
-    </div>
+  </div>
+
+  <!-- hidden reference object to convert mm to device specific px and vice versa -->
+  <div style="position: absolute; opacity: 0; top:  0; left: 0">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" width=1 height=1>
+      <rect x="0" y="0" width="1" height="1" id="reference-rect"></rect>
+      <foreignObject x="0" y="0" width="1" height="1">
+        <xhtml:div style="width: 1px; height: 1px; display:inline-block" id="reference-div-px">&nbsp;</xhtml:div>
+        <xhtml:div style="width: 1mm; height: 1mm; display:inline-block" id="reference-div-mm">&nbsp;</xhtml:div>
+      </foreignObject>
+    </svg>
+  </div>
 
 
-    <div id="popup"></div>
-    <div id="flyout"></div>
-    <div id="modal"></div>
-    <div id="select-portal-target"></div>
-  </body>
+  
+  <div id="flyout"></div>
+  <div id="modal"></div>
+  <div id="popup"></div>
+  <div id="select-portal-target"></div>
+</body>
+
 </html>

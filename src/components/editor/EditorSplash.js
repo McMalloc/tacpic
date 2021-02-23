@@ -10,6 +10,7 @@ import Tile from '../gui/_Tile';
 import { Alert } from '../gui/Alert';
 import Modal from '../gui/Modal';
 import { useTranslation } from 'react-i18next';
+import { useBreakpoint } from '../../contexts/breakpoints';
 
 
 const TileWrapper = styled(Tile)`
@@ -52,6 +53,7 @@ const EditorSplash = () => {
     const dispatch = useDispatch();
     const t = useTranslation().t;
     const navigate = useNavigate();
+    const {lg} = useBreakpoint();
     const localIndex = useSelector(state => state.editor.localfiles.index);
 
     useEffect(() => {
@@ -59,6 +61,20 @@ const EditorSplash = () => {
     }, [])
 
     const [fileToBeRemoved, setFileToBeRemoved] = useState(null);
+
+    if (!lg) {
+        return (
+          <div className={"row"}>
+            <div
+              className={
+                "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3"
+              }
+            >
+              <Alert warning>{t("editor:not_available-screen")}</Alert>
+            </div>
+          </div>
+        );
+      }
 
     return (
         <>

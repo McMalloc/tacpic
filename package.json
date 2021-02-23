@@ -3,6 +3,7 @@
   "version": "0.2.1",
   "private": true,
   "dependencies": {
+    "@datapunt/matomo-tracker-js": "^0.3.1",
     "@datapunt/matomo-tracker-react": "^0.3.1",
     "@fortawesome/fontawesome-free": "^5.15.1",
     "axios": "^0.21.1",
@@ -36,7 +37,8 @@
     "start": "HOST=0.0.0.0 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "license": "license-report --output=html --config '{\"fields\": [\"name\",\"licenseType\",\"link\",\"author\"]}'"
   },
   "browserslist": [
     ">0.2%",

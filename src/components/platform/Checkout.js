@@ -237,6 +237,14 @@ const Checkout = props => {
                         {step === 3 && checkSection}
 
                         <br />
+                        {orderState.error !== null &&
+                            <><Alert danger>
+                                Bestellung fehlgeschlagen<br />
+                                {orderState.error.type}: {orderState.error.message}
+                            </Alert><br /></>
+                        }
+
+                        <br />
                         <Alert danger>
                             Die Plattform befindet sich in der Alpha-Phase, d.h. sie wird noch getestet.<br />
                             <strong>Getätigte Bestellungen werden entgegen der Beschriftung nicht ausgelöst und es fallen
@@ -246,13 +254,7 @@ const Checkout = props => {
 
 
 
-                    <br />
-                    {orderState.error !== null &&
-                        <><Alert danger>
-                            Bestellung fehlgeschlagen<br />
-                            {orderState.error.type}: {orderState.error.message}
-                        </Alert><br /></>
-                    }
+
                 </div>
                 <div className={"col-xs-12 col-md-6 col-md-offset-1"}>
                     <div style={{ position: 'sticky', top: 12 }}>

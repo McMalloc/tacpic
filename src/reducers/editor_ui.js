@@ -8,11 +8,11 @@ const roundingAccuracy = 10;
 const ui = (state = {}, action) => {
     switch (action.type) {
         case FILE.OPEN.REQUEST:
-            return { ...state, fileOpenPending: true, fileOpenSuccess: false };
+            return { ...state, fileOpen: 1 };
         case FILE.OPEN.SUCCESS:
-            return { ...state, currentPage: 0, fileOpenPending: false, fileOpenSuccess: true };
+            return { ...state, currentPage: 0, fileOpen: 2 };
         case FILE.OPEN.FAILURE:
-            return { ...state, fileOpenPending: false, fileOpenSuccess: false };
+            return { ...state, fileOpen: 3 };
 
         case IMPORT.TRACE.REQUEST:
             return {

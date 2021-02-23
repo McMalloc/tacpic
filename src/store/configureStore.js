@@ -4,7 +4,7 @@ import {applyMiddleware, compose, createStore} from "redux";
 import createRootReducer from "../reducers";
 import rootSaga from "../sagas";
 import {createBrowserHistory} from "history";
-import {app, catalogue, editor, user} from "./initialState";
+import {app, catalogue, editor, user, cms} from "./initialState";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -20,6 +20,7 @@ const composeEnhancers =
 // to easily filter all objects in a document without structuring reducers
 // unintuitively, e.g. the currently visible page, a detail of ui state, is
 // of no concern for the objects of a document
+// TODO: will be deprecated int he future when all pages are displayed next to each other
 const shareCurrentPage = store => next => action => {
     if (action.type.includes('OBJECT')) {
         action.shared_currentPage = store.getState().editor.ui.currentPage;
@@ -27,13 +28,22 @@ const shareCurrentPage = store => next => action => {
     return next(action);
 };
 
+const trackEvent = store => next => action => {
+    window.matomoTracker.trackEvent({
+        category: 'redux',
+        action: action.type
+    });
+    return next(action);
+};
+
 export default createStore(
     createRootReducer(history), // root reducer with router state
-    {editor, catalogue, user, app},
+    {editor, catalogue, user, app, cms},
     composeEnhancers(
         applyMiddleware(
             // routerMiddleware(history), // for dispatching history actions
             sagaMiddleware,
+            // trackEvent,
             shareCurrentPage
         ),
     )

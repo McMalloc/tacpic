@@ -44,8 +44,6 @@
     "login": "Anmelden",
     "logoff": "Abmelden",
     "my_account": "Persönlicher Bereich",
-    "basket": "Warenkorb (<%=quantity%> Artikel)",
-    "empty_basket": "",
     "catalogue": "Katalog",
     "editor": "Editor",
     "pricing": "Preise",
@@ -79,6 +77,9 @@
   },
   "commerce": {
     "checkout": "Zahlungspflichtig bestellen",
+    "basket": "Warenkorb ({{quantity}} Artikel)",
+    "basket_short": "({{quantity}})",
+    "empty_basket": "",
     "request-quote": "Angebot anfordern",
     "remove": "Entfernen",
     "add-to-list": "Auf die Liste",
@@ -296,5 +297,20 @@
     "stair": "Treppenstufen",
     "dotted_tight": "Eng gepunktet",
     "dotted": "Weit gepunktet"
+  },
+  "region": {
+    "/login": "Anmelden",
+    "/account": "Persönlicher Bereich",
+    "/account/orders": "Meine bestellungen",
+    "/account/newsletter": "Datenschutzeinstellungen",
+    "/account/addresses": "Meine Adressen",
+    "/account/my_account": "Kontoinformationen",
+    "/basket": "Warenkorb",
+    "/checkout": "Bestellen",
+    "/editor/splash": "Editor",
+    "/editor/app": "Editor",
+    "/pricing": "Produkte und Preise",
+    "/knowledge": "Wissen",
+    "/": "Start"
   }
 }

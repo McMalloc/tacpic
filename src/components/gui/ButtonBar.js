@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 `;
 
 const ButtonBar = props => {
-    return <Wrapper rightAlign={props.align === 'right'} leftAlign={props.align === 'left'} centerAlign={props.align === 'center'}>
+    return <Wrapper className={'button-bar'} rightAlign={props.align === 'right'} leftAlign={props.align === 'left'} centerAlign={props.align === 'center'}>
         {props.children}
     </Wrapper>
 }

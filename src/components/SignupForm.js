@@ -5,10 +5,8 @@ import {USER, RESET_USER_ERRORS} from "../actions/action_constants";
 import {useTranslation} from "react-i18next";
 import {Icon} from "./gui/_Icon";
 import {Textinput} from "./gui/Input";
-import {NavLink, Navigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {Alert} from "./gui/Alert";
-import CenterWrapper from "./gui/_CenterWrapper";
-import {useMatomo} from '@datapunt/matomo-tracker-react'
 import ServerError from "./platform/ServerError";
 import {Checkbox} from "./gui/Checkbox";
 
@@ -19,7 +17,6 @@ const SignupForm = props => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
-    const {trackPageView, trackEvent} = useMatomo()
 
     // input states
     const [uname, setUname] = useState('');
@@ -30,7 +27,6 @@ const SignupForm = props => {
     const [newsletterActive, setNewsletterActive] = useState(false);
 
     useEffect(() => {
-        trackPageView()
         return () => dispatch({type: RESET_USER_ERRORS})
     }, []);
 

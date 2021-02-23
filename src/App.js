@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Navbar } from "./components/platform/Navbar";
 import Catalogue from "./components/platform/Catalogue";
 import { useDispatch, useSelector } from "react-redux";
-import { USER, APP, LOCALFILES } from "./actions/action_constants";
+import { USER, APP, LOCALFILES, CMS_LEGAL } from "./actions/action_constants";
 import styled from "styled-components/macro";
 import SignupForm from "./components/SignupForm";
 import { Footer } from "./components/platform/Footer";
@@ -15,7 +15,6 @@ import Account from "./components/platform/account/Account";
 import Basket from "./components/platform/Basket";
 import Checkout from "./components/platform/Checkout";
 import { OrderCompleted } from "./components/platform/OrderCompleted";
-import { APP_TITLE } from "./env";
 import Stats from "./components/platform/Stats";
 import AccountVerification from "./components/platform/account/AccountVerification";
 import { useLocation } from "react-router";
@@ -25,6 +24,11 @@ import ResetPasswordRequest from "./components/platform/account/ResetPasswordReq
 import LegalIndex from "./components/platform/Legal";
 import { Pricing } from "./components/platform/Pricing";
 import EditorSplash from "./components/editor/EditorSplash";
+import { useMatomo } from '@datapunt/matomo-tracker-react'
+import Popup from "./components/gui/Popup";
+import ButtonBar from "./components/gui/ButtonBar";
+import Consent from "./components/platform/Consent";
+import Knowledge from "./components/platform/Knowledge";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -37,7 +41,7 @@ const Wrapper = styled.div`
   display: flex;
   height: 100%;
   //flex: 1 1 100%;
-  background-color: ${(props) => props.theme.grey_6};
+  background-color: ${(props) => props.theme.grey_7};
   flex-direction: column;
 `;
 
@@ -55,34 +59,44 @@ const App = () => {
   const t = useTranslation().t;
   const dispatch = useDispatch();
   const location = useLocation();
-  const inEditor = /editor\/app/.test(location.pathname) || location.pathname === '/';
+  const inEditor = /editor\/app/.test(location.pathname) || location.pathname === '/'; // TODO in footer packen, nervt hier
   const inEditorSplash = /splash/.test(location.pathname);
-  const appError = useSelector((state) => state.app.error);
+  const { trackPageView, trackEvent } = useMatomo()
+  const gdpr = useSelector(state => state.app.gdpr);
 
   useEffect(() => {
     dispatch({ type: APP.FRONTEND.REQUEST });
     dispatch({ type: APP.BACKEND.REQUEST });
-    dispatch({ type: APP.LEGAL.REQUEST });
+    dispatch({ type: CMS_LEGAL.INDEX.REQUEST });
     dispatch({ type: LOCALFILES.INDEX.REQUEST });
-          
-    document.title = APP_TITLE;
 
     if (localStorage.getItem("jwt") === null) return;
-      dispatch({ type: USER.VALIDATE.REQUEST });
-    }, [APP_TITLE]);
+    dispatch({ type: USER.VALIDATE.REQUEST });
+  }, []);
+
+  useEffect(() => {
+    if (!(/catalogue/.test(location.pathname) || /info/.test(location.pathname) || /knowledge\/.+/.test(location.pathname))) {
+      document.title = t('region:' + location.pathname) + ' | tacpic';
+    }
+    document.getElementById("scroll-content").scrollTo(0,0);
+    trackPageView();
+    // trackEvent({category: 'page change', action: location.pathname});
+  }, [location.pathname]);
 
   const navbarItems = [
     { label: t("general:catalogue"), to: "/catalogue" },
     { label: t("general:editor"), to: "/editor/splash" },
     { label: t("general:pricing"), to: "/pricing" },
-    // {label: 'Wissen', to: '/knowledge'},
-    // {label: 'Häufige Fragen', to: '/faq'}
+    {label: 'Wissen', to: '/knowledge'},
   ];
 
   return (
     <Wrapper>
-      <Navbar items={navbarItems} />
+      {!gdpr &&
+        <Consent />
+      }
 
+      <Navbar items={navbarItems} />
       <ScrollContent id={"scroll-content"}>
         <AppContainer
           id={"app-container"}
@@ -108,10 +122,6 @@ const App = () => {
               element={<Catalogue />}
             />
             <Route path="/signup" element={<SignupForm />} />
-            {/* <Route
-              path="/editor/:graphicId/variant/:variantId/:mode"
-              element={<Editor />}
-            /> */}
             <Route
               path="/editor/splash"
               element={<EditorSplash />}
@@ -119,11 +129,13 @@ const App = () => {
             <Route path="/editor/app" element={<Editor />} />
             <Route path="/stats" element={<Stats />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/knowledge" element={<Knowledge />} />
+            <Route path="/knowledge/:category" element={<Knowledge />} />
+            <Route path="/knowledge/:category/:postSlug" element={<Knowledge />} />
             <Route
-              path="/info/:lang/:textTitle"
+              path="/info/:lang/:textId"
               element={<LegalIndex />}
             ></Route>
-            {/* <Route exact path="/" element={<Landing />} /> */}
             <Route exact path="/" element={null} />
             <Route path={"*"} element={<NotFound />} />
           </Routes>
@@ -132,11 +144,11 @@ const App = () => {
         <Routes>
           <Route exact path="/" element={<Landing />} />
         </Routes>
-        <Footer small={inEditor} />
+        <Footer small={inEditor && !(location.pathname === '/')} />
       </ScrollContent>
-      
+
       <div id={"dropdown-portal-target"} />
-      
+
     </Wrapper>
   );
 };

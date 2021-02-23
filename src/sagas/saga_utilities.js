@@ -1,6 +1,7 @@
-import {call, put, select} from "redux-saga/effects";
-import {API_URL} from '../env';
-import {SVG_MIME} from "../config/constants";
+import { call, put, select } from "redux-saga/effects";
+import { API_URL } from '../env';
+import { SVG_MIME } from "../config/constants";
+import { getCache, setCache } from "./cache";
 
 const buildParams = (paramObj) => {
     let paramString = '';
@@ -16,8 +17,8 @@ const buildParams = (paramObj) => {
 };
 
 const replaceParam = (path, paramObj) => {
-    let matches = path.match(/:[a-z_]+/g);
-    let params = {...paramObj};
+    let matches = path.match(/:[a-zA-Z_\[\]]+/g);
+    let params = { ...paramObj };
     if (matches !== null) {
         matches.forEach(match => {
             let param = match.slice(1); // get rid of the ":"
@@ -78,37 +79,45 @@ export default function createSaga(
         yield effect(event.REQUEST, function* (action) {
             if (appendedStatePath && appendedStatePath.length > 0) {
                 action.payload[appendedStatePath[appendedStatePath.length - 1]] =
-                    yield select(state=>crawlState(state, appendedStatePath));
+                    yield select(state => crawlState(state, appendedStatePath));
             }
-            const frontendVersion = yield select(state=>state.app.frontend.tag)
+            const frontendVersion = yield select(state => state.app.frontend.tag)
             try {
                 let statusCode = 1000;
                 let authHeader = "";
                 let contentType = "";
-                const response = yield call(action => {
-                    const filePayload = action.payload && action.payload.toString() === '[object FormData]';
-                    let headers = {
-                        'Accept': 'application/json',
-                        'Tacpic-Version': frontendVersion
-                    };
-                    if (!filePayload) headers['Content-Type'] = 'application/json';
-                    if (auth) {
-                        const jwt = localStorage.getItem('jwt');
-                        if (jwt!== null) headers.Authorization = 'Bearer ' + jwt;
-                    }
+                let endpointWithParams = replaceParam(endpoint, action.payload);
+                let response;
 
-                    return fetch(API_URL + '/' + replaceParam(endpoint, action.payload), {
-                        method,
-                        headers,
-                        body: method === 'post' ?
-                            filePayload ? action.payload : JSON.stringify(transformRequest(action.payload)) : null // body data type must match "Content-Type" header
-                    }).then(response => {
-                        statusCode = response.status;
-                        authHeader = response.headers.get("authorization");
-                        contentType = response.headers.get("Content-Type");
-                        return response.text();
-                    });
-                }, action);
+                let cached = getCache(endpointWithParams);
+                if (cached === null) {
+                    response = yield call(action => {
+                        const filePayload = action.payload && action.payload.toString() === '[object FormData]';
+                        let headers = {
+                            'Accept': 'application/json',
+                            'Tacpic-Version': frontendVersion
+                        };
+                        if (!filePayload) headers['Content-Type'] = 'application/json';
+                        if (auth) {
+                            const jwt = localStorage.getItem('jwt');
+                            if (jwt !== null) headers.Authorization = 'Bearer ' + jwt;
+                        }
+                        return fetch(API_URL + '/' + endpointWithParams, {
+                            method,
+                            headers,
+                            body: method === 'post' ?
+                                filePayload ? action.payload : JSON.stringify(transformRequest(action.payload)) : null // body data type must match "Content-Type" header
+                        }).then(response => {
+                            statusCode = response.status;
+                            authHeader = response.headers.get("authorization");
+                            contentType = response.headers.get("Content-Type");
+                            return response.text();
+                        });
+                    }, action);
+                    setCache(endpointWithParams, response);
+                } else {
+                    response = yield call(getCache, endpointWithParams)
+                }
 
                 let parsedResponse;
                 try {
@@ -126,13 +135,13 @@ export default function createSaga(
 
                 let data = transformResponse(parsedResponse, statusCode, authHeader);
                 if (statusCode > 204) {
-                    yield put({type: event.FAILURE, message: parsedResponse, originalPayload: action.payload, statusCode});
+                    yield put({ type: event.FAILURE, message: parsedResponse, originalPayload: action.payload, statusCode });
                 } else {
-                    yield put({type: event.SUCCESS, data, originalPayload: action.payload, statusCode});
+                    yield put({ type: event.SUCCESS, data, originalPayload: action.payload, statusCode });
                 }
             } catch (error) {
                 console.log(error);
-                yield put({type: event.FAILURE, error});
+                yield put({ type: event.FAILURE, error });
             }
         });
     }

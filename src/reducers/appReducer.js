@@ -29,6 +29,11 @@ const appReducer = (state = {}, action) => {
                 ...state,
                 idb: true
             }
+        case 'GDPR_OKAY':
+            return {
+                ...state,
+                gdpr: true
+            }
         case ERROR_THROWN:
             return {
                 ...state,

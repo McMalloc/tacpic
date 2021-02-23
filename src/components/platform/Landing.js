@@ -19,7 +19,7 @@ const Form = styled.div`
   margin-top: 4rem;
   background-color: ${props => props.theme.grey_6};
   
-  z-index: 1;
+  /* z-index: 1; */
       position: relative;
   border-radius: ${props => props.theme.border_radius};
   box-shadow: ${props => props.theme.distant_shadow};
@@ -102,6 +102,11 @@ const Landing = () => {
 
     const [showMore, setShowMore] = useState(false);
     const [allowPlayer, setAllowPlayer] = useState(false);
+
+    useEffect(() => {
+        document.title = 'tacpic | Start';
+        // trackEvent({category: 'page change', action: location.pathname});
+        }, []);
 
     return (
         <Wrapper>
@@ -300,10 +305,6 @@ const Landing = () => {
                 </div>
 
             </div>
-
-
-
-            <Footer />
         </Wrapper>
     );
 };

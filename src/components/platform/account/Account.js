@@ -1,19 +1,17 @@
-import React, {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {Link, Navigate, Route, Routes} from "react-router-dom";
-import {USER} from "../../../actions/action_constants";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Route, Routes } from "react-router-dom";
+import { USER } from "../../../actions/action_constants";
 import Card from "../../gui/Card";
-import {Button} from "../../gui/Button";
+import { Button } from "../../gui/Button";
 import Addresses from "../Addresses";
-import {Footer} from "../Footer";
-import {useLocation} from "react-router-dom";
-import {Container, Row} from "../../gui/Grid";
+import { useLocation } from "react-router-dom";
 import Orders from "./Orders";
 import AccountInfo from "./AccountInfo";
-import {Outlet} from "react-router";
-import {Alert} from "../../gui/Alert";
-import {Icon} from "../../gui/_Icon";
-import {useTranslation} from "react-i18next";
+import { Outlet } from "react-router";
+import { Alert } from "../../gui/Alert";
+import { Icon } from "../../gui/_Icon";
+import { useTranslation } from "react-i18next";
 import Privacy from "./Privacy";
 
 const Account = props => {
@@ -22,21 +20,19 @@ const Account = props => {
     const dispatch = useDispatch();
     let location = useLocation();
 
-    // if (!user.logged_in) {
-    //     return <Navigate push to="/login"/>;
-    // }
+    useEffect(() => {
+        document.title = `${t('region:' + location.pathname)} | tacpic`;
+    }, [location.pathname])
+
     const menues = [
-        // {key: "my_lists", icon: "list"},
-        // {key: "my_sub", icon: "retweet"},
-        {key: "addresses", icon: "map-marked"},
-        {key: "my_account", icon: "user"},
-        {key: "orders", icon: "shopping-basket"},
-        {key: "newsletter", icon: "info"},
-        // {key: "my_payment_options", icon: "credit-card"}
+        { key: "addresses", icon: "map-marked" },
+        { key: "my_account", icon: "user" },
+        { key: "orders", icon: "shopping-basket" },
+        { key: "newsletter", icon: "info" },
     ];
 
     const home = <>
-        <Row>
+        <div className={'row'}>
             {menues.map(menu => {
                 return (
                     <div key={menu.key} className={"col-md-4 col-lg-3 col-sm-6 col-xs-12 extra-margin double"}>
@@ -48,13 +44,13 @@ const Account = props => {
 
                 )
             })}
-        </Row>
-        <Outlet/>
-        <Row>
-            <div className={"col-xs-12"} style={{textAlign: "center"}}>
-                <Button icon={"sign-out-alt"} onClick={event => dispatch({type: USER.LOGOUT.REQUEST})} label={t("general:logoff")}/>
+        </div>
+        <Outlet />
+        <div className={'row'}>
+            <div className={"col-xs-12"} style={{ textAlign: "center" }}>
+                <Button icon={"sign-out-alt"} onClick={event => dispatch({ type: USER.LOGOUT.REQUEST })} label={t("general:logoff")} />
             </div>
-        </Row>
+        </div>
     </>;
     return (
         <>
@@ -63,7 +59,7 @@ const Account = props => {
                 // null
                 :
                 <>
-                    <Row>
+                    <div className={'row'}>
                         <div className={"col-xs-12 extra-margin"}>
                             <h4>
                                 {location.pathname === '/account' ?
@@ -80,17 +76,15 @@ const Account = props => {
                             </h4>
 
                         </div>
-                    </Row>
+                    </div>
 
-                    {/*<Row>*/}
                     <Routes>
-                        <Route path="" element={home}/>
-                        <Route path="orders" element={<Orders/>}/>
-                        <Route path="my_account" element={<AccountInfo/>}/>
-                        <Route path="addresses" element={<Addresses/>}/>
-                        <Route path="newsletter" element={<Privacy/>}/>
+                        <Route path="" element={home} />
+                        <Route path="orders" element={<Orders />} />
+                        <Route path="my_account" element={<AccountInfo />} />
+                        <Route path="addresses" element={<Addresses />} />
+                        <Route path="newsletter" element={<Privacy />} />
                     </Routes>
-                    {/*</Row>*/}
                 </>
             }
         </>

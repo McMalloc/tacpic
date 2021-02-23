@@ -5,16 +5,17 @@ import localfiles from './localfilesReducer'
 import user from './userApi'
 import catalogue from './catalogueApi'
 import app from "./appReducer";
+import cms from "./cmsReducer";
 import undoable from "./undoable";
 
 const editor = combineReducers({file: undoable(file), ui, localfiles: localfiles});
 
 // router state für COnnectedRouter, derzeit inkompatibel zu React-Router
-const createRootReducer = (history) => combineReducers({
-    // router: connectRouter(history),
+const createRootReducer = () => combineReducers({
     editor,
     catalogue,
     user,
+    cms,
     app
 })
 export default createRootReducer;

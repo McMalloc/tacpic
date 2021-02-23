@@ -8,6 +8,7 @@ export const SVG_MIME = "image/svg+xml";
 export const SVG_A4_PX_WIDTH = 793.7;
 export const TOOL_SENSIBILITY = 1;
 export const SAFE_BORDER = 10;
+export const CACHE_TIMEOUT = 0;
 export const BACKUP_INTERVAL = 3000;
 export const DB_DATE_FORMAT = "%YYYY-%MM-%DD %HH:%mm:%ss %z";
 

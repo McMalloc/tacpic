@@ -129,7 +129,7 @@ const Pricing = (props) => {
           />
         ),
         <Button
-          onClick={() => navigate("/editor/new")}
+          onClick={() => navigate("/editor/app")}
           icon={"pen"}
           label={"Editor testen"}
         />,

@@ -18,6 +18,7 @@ export const standard = {
     grey_4: "#D9D9D9",
     grey_5: "#ECECEC",
     grey_6: "#F5F5F5",
+    grey_7: "#f9f9f7",
 
     manipulator: "rgba(255, 20, 147, 0.8)",
 

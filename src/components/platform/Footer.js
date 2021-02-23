@@ -14,8 +14,7 @@ const FooterStyled = styled.footer`
    font-size: 0.8rem;
    line-height: 120%;
    position: relative;
-   padding: 6px 0;
-   /* margin-top: ${props => props.small ? 0 : '2rem'}; */
+   padding: ${props => props.small ? "0.5rem 0" : '1rem 0 1.5rem 0'};
 
    ${MD_SCREEN} {
        font-size: 0.9rem;
@@ -59,7 +58,7 @@ const Footer = props => {
         state => state.user
     );
     const legalTexts = useSelector(
-        state => state.app.legalTexts
+        state => state.cms.legal.menu
     );
     const {backend, frontend} = useSelector(
         state => state.app
@@ -70,7 +69,7 @@ const Footer = props => {
             <div className={"container"}><Row>
                 {props.small ?
                     <div className={"col-md-12 align-center"}>
-                        <NavLink target={"blank"} to={`/info/${i18n.language}/Impressum`}>Impressum</NavLink>
+                        <NavLink target={"blank"} to={`/info/${i18n.language}/66?Impressum`}>Impressum</NavLink>
                     </div>
                     :
                     <>
@@ -79,9 +78,8 @@ const Footer = props => {
                                 <span className={"heading"}>Information</span>
                                 {legalTexts.map((text, index) => {
                                     return <span key={index}><NavLink
-                                        to={`/info/${i18n.language}/${t(text.title)}`}>{text.title}</NavLink> <br/></span>
+                                        to={`/info/${i18n.language}/${text.id}?${text.title}`}>{text.title}</NavLink> <br/></span>
                                 })}
-                                <span><NavLink to={`/info/${i18n.language}/Lizenzen`}>Lizenzen</NavLink> <br/></span>
                             </p>
 
                             <p>

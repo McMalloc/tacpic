@@ -1,6 +1,11 @@
 import methods from "../components/editor/ReactSVG/methods/methods";
 import { FILE_VERSION } from "../env.json";
 
+// states
+// 0 - false
+// 1 - pending
+// 2 - success
+// 3 - failure
 export const editor = {
     ui: {
         tool: 'SELECT',
@@ -17,6 +22,7 @@ export const editor = {
         defaultTitle: true,
         initialized: true,
         clipboard: [],
+        fileOpen: 0,
         import: {
             preview: null,
             previewName: '',
@@ -68,9 +74,9 @@ export const editor = {
                 rowsPerPage: 27,
                 pageNumbers: 0,
                 imageDescription: {
-                  type: "",
-                  summary: "",
-                  details: ""
+                    type: "",
+                    summary: "",
+                    details: ""
                 },
                 content: '',
                 concatinated: '',
@@ -83,7 +89,7 @@ export const editor = {
                     text: false,
                     rendering: '',
                     objects: [
-                        methods.label.create(10, 10, 350, 75, '', '', {isTitle: true, editMode: false, pristine: true}),
+                        methods.label.create(10, 10, 350, 75, '', '', { isTitle: true, editMode: false, pristine: true }),
                         methods.key.create(100, 100)
                     ]
                 }
@@ -99,7 +105,8 @@ export const app = {
     legalTexts: [],
     backend: {},
     frontend: {},
-    idb: false
+    idb: false,
+    gdpr: !!localStorage.getItem('gdpr')
 };
 
 export const catalogue = {
@@ -154,3 +161,28 @@ export const user = {
     addresses: [],
     error: null
 };
+
+export const cms = {
+    categories: {
+        index: [],
+        hierarchy: [],
+        pending: false,
+        successful: false,
+        error: null
+    },
+    loadedPages: {
+        pages: [],
+        pending: false,
+        successful: false,
+        error: null
+    },
+    legal: {
+        menu: [],
+        pages: {
+            index: [],
+            pending: false,
+            successful: false,
+            error: null
+        }
+    }
+}

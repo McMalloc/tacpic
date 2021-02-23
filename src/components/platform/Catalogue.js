@@ -1,18 +1,18 @@
-import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {CATALOGUE, GRAPHIC, LOAD_MORE, TAGS} from "../../actions/action_constants";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { CATALOGUE, GRAPHIC, LOAD_MORE, TAGS } from "../../actions/action_constants";
 import CatalogueItemList from "./CatalogueItemList";
 import TagList from "./TagList";
 import styled from "styled-components/macro";
-import {Row} from "../gui/Grid";
-import {Checkbox} from "../gui/Checkbox";
+import { Row } from "../gui/Grid";
+import { Checkbox } from "../gui/Checkbox";
 import Searchbar from "./Searchbar";
 import Modal from "../gui/Modal";
-import {CatalogueItemView} from "./CatalogueItemView";
-import {useNavigate} from "react-router-dom";
-import {useParams} from "react-router";
-import {FlyoutButton} from "../gui/FlyoutButton";
-import {useBreakpoint} from "../../contexts/breakpoints";
+import { CatalogueItemView } from "./CatalogueItemView";
+import { useNavigate } from "react-router-dom";
+import { useLocation, useParams } from "react-router";
+import { FlyoutButton } from "../gui/FlyoutButton";
+import { useBreakpoint } from "../../contexts/breakpoints";
 import { BRAILLE_SYSTEMS, MD_SCREEN } from '../../config/constants';
 
 const TagSidebar = styled.aside`
@@ -80,7 +80,10 @@ const Catalogue = props => {
     const breakpoints = useBreakpoint();
 
     const navigate = useNavigate();
-    const {graphicId} = useParams();
+    const { graphicId } = useParams();
+
+    const location = useLocation();
+
 
     // const graphicOverview = catalogue.graphics.find(graphic => graphic.id == graphicId);
     const graphicOverview = catalogue.viewedGraphic;
@@ -90,40 +93,51 @@ const Catalogue = props => {
         !catalogue.searchPending && queryGraphics(dispatch);
         dispatch({
             type: TAGS.GET.REQUEST,
-            payload: {limit: 30}
+            payload: { limit: 30 }
         })
     }, []);
+
+    useEffect(() => {
+        const view = new URLSearchParams(location.search).get('view');
+        if (!graphicOverview.title || !graphicId) {
+            document.title = `Katalog \u23D0 tacpic`
+        } else if (view === 'history') {
+            document.title = `Katalog: ${graphicOverview.title} (Versionshistorie) \u23D0 tacpic`
+        } else {
+            document.title = `Katalog: ${graphicOverview.title} \u23D0 tacpic`
+        }
+    }, [graphicOverview.id, location.pathname, location.search]);
 
     const tagSidebar = <TagSidebar>
         <strong>Format</strong>
         <div className={"tag-wrapper"}>
 
             <Checkbox onChange={event => toggleFormat(dispatch, 'a4')}
-                      name={'format-toggle-a4'}
-                      value={catalogue.filterFormat.includes('a4')}
-                      label={'DIN A4'}/>
+                name={'format-toggle-a4'}
+                value={catalogue.filterFormat.includes('a4')}
+                label={'DIN A4'} />
             <Checkbox onChange={event => toggleFormat(dispatch, 'a3')}
-                      name={'format-toggle-a3'}
-                      value={catalogue.filterFormat.includes('a3')}
-                      label={'DIN A3'}/>
+                name={'format-toggle-a3'}
+                value={catalogue.filterFormat.includes('a3')}
+                label={'DIN A3'} />
         </div>
-        <br/>
+        <br />
         <strong>Schriftsystem</strong>
         <div className={"tag-wrapper"}>
-            {Object.keys(BRAILLE_SYSTEMS).map(lang => 
+            {Object.keys(BRAILLE_SYSTEMS).map(lang =>
                 <div key={lang}>{Object.keys(BRAILLE_SYSTEMS[lang]).map(system =>
                     <Checkbox onChange={() => toggleSystem(dispatch, lang + ':' + system)}
-                            key={system}
-                            name={'system-toggle-' + system}
-                            value={catalogue.filterSystem.includes(lang + ':' + system)}
-                            label={'catalogue:' + system}/>
+                        key={system}
+                        name={'system-toggle-' + system}
+                        value={catalogue.filterSystem.includes(lang + ':' + system)}
+                        label={'catalogue:' + system} />
                 )}</div>
             )}
-            
-        </div>
-        <br/>
 
-        <TagList/>
+        </div>
+        <br />
+
+        <TagList />
     </TagSidebar>
 
     return (
@@ -138,7 +152,7 @@ const Catalogue = props => {
                 <>
                     <Row>
                         <div className={"col-md-6 col-md-offset-2 extra-margin double"}>
-                            <Searchbar/>
+                            <Searchbar />
                         </div>
                     </Row>
                     <Row>
@@ -146,7 +160,7 @@ const Catalogue = props => {
                             {tagSidebar}
                         </div>
                         <div className={"col-md-10"}>
-                            <CatalogueItemList graphics={catalogue.graphics}/>
+                            <CatalogueItemList graphics={catalogue.graphics} />
                         </div>
                     </Row>
                 </>
@@ -154,7 +168,7 @@ const Catalogue = props => {
                 : <>
                     <Row>
                         <SearchFilterBar className={"col-xs-12"}>
-                            <Searchbar/>
+                            <Searchbar />
                             &emsp;
                             <FlyoutButton closeButton={true} label={"Filter"}>
                                 {tagSidebar}
@@ -163,19 +177,19 @@ const Catalogue = props => {
                     </Row>
                     <Row>
                         <div className={"col-xs-12"}>
-                            <CatalogueItemList graphics={catalogue.graphics}/>
+                            <CatalogueItemList graphics={catalogue.graphics} />
                         </div>
                     </Row>
                 </>
             }
 
             {!!graphicId &&
-            <Modal title={graphicOverview && graphicOverview.title} noPadding={true} fitted
-                   dismiss={() => navigate("/catalogue")}>
+                <Modal title={graphicOverview && graphicOverview.title} noPadding={true} fitted
+                    dismiss={() => navigate("/catalogue")}>
 
-                <CatalogueItemView variantsOverview={graphicOverview.variants || []}/>
+                    <CatalogueItemView variantsOverview={graphicOverview.variants || []} />
 
-            </Modal>}
+                </Modal>}
         </>
     )
 };
