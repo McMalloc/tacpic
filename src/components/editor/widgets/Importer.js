@@ -101,13 +101,13 @@ const setOCRSelection = (dispatch, selection) => {
     })
 }
 
-const Importer = props => {
+const Importer = () => {
     const fileRef = useRef();
     const dispatch = useDispatch();
     const [upload, setUpload] = useState(null);
     const [hoverWithFile, setHoverWithFile] = useState(false);
     const {preview, pending, error, previewName, ocr, ocrSelection} = useSelector(state => state.editor.ui.import);
-    const t = useTranslation().t;
+    const {t} = useTranslation();
 
     const onDropHandler = event => {
         event.preventDefault();
@@ -136,30 +136,30 @@ const Importer = props => {
                     <Fileinput onChange={event => requestTrace(dispatch, event.currentTarget.files[0], setUpload)}
                                ref={fileRef}
                                type={"file"}/>
-                    <Icon icon={"arrow-down"}/> Vorlage hierher ziehen
-                    <Divider label={"gui:or"}/>
+                    <Icon icon={"arrow-down"}/> {t('editor:importer.dropzoneCTA')}
+                    <Divider label={"or"}/>
                     {preview === null ?
-                        <Button primary icon={"upload"} onClick={openDialog}>Datei wählen</Button>
+                        <Button primary icon={"upload"} onClick={openDialog} label={'editor:importer.selectFile'}/>
                         :
-                        <Button primary icon={"upload"} onClick={openDialog}>Neu wählen</Button>
+                        <Button primary icon={"upload"} onClick={openDialog} label={'editor:importer.selectNew'}/>
                     }
                 </Dropzone>
-                <small>Mögliche Dateiformate: JPEG und PNG</small>
+                <small>{t("editor:importer.validFormats")}</small>
             </Wrapper>
             <Row>
                 <div className={"col-md-6"}>
                     {upload &&
                     <>
-                        <ImageContainer alt={t("editor:Hochgeladene Bilddatei")} src={upload}/>
-                        <div>Titel: <strong>{previewName}</strong></div>
+                        <ImageContainer alt={t("editor:importer.uploadedImage")} src={upload}/>
+                        <div>{t("editor:importer.filename")}: <strong>{previewName}</strong></div>
                     </>
                     }
                 </div>
                 <div className={"col-md-6"}>
-                    {error && <Alert danger>Es ist ein Fehler aufgetreten: <br/>{error.message}</Alert>}
-                    <SVGImageContainer alt={t("editor:Nachgezeichnete Vorschau")} src={preview}/>
+                    {error && <Alert danger>{t('errorOccured')}: <br/>{error.message}</Alert>}
+                    <SVGImageContainer alt={t("editor:importer.tracedPreview")} src={preview}/>
                     {pending &&
-                    <Loader message={"Bild wird nachgezeichnet..."}/>
+                    <Loader message={"editor:importer.tracedPreview"}/>
                     }
                 </div>
             </Row>
@@ -167,9 +167,9 @@ const Importer = props => {
             <Row>
                 <hr />
                 <div className={"col-md-12"}>
-                    Zudem wurden folgende Beschriftungen gefunden:
+                {t('editor:importer.labelsFound')}:
                     <OCRWrapper>
-                        <Button primary label={ocr.length === ocrSelection.length ? "Alle abwählen" : "Alle auswählen"}
+                        <Button primary label={'editor:importer.' + (ocr.length === ocrSelection.length ? "delectAll" : "selectAll")}
                                 toggled={ocr.length === ocrSelection.length}
                                 onClick={() => {
                                     ocr.length === ocrSelection.length ?

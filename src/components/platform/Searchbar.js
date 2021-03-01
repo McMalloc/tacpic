@@ -12,6 +12,10 @@ const Bar = styled.form`
   align-items: flex-end;
   text-align: left;
   justify-content: space-between;
+
+  button {
+      border-left: none;
+  }
 `;
 
 const searchChanged = (dispatch, value) => {

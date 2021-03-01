@@ -7,6 +7,7 @@ import {useSelector} from "react-redux";
 import {Row} from "../gui/Grid";
 import {Icon} from "../gui/_Icon";
 import { MD_SCREEN } from '../../config/constants';
+import { Button } from '../gui/Button';
 
 const FooterStyled = styled.footer`
    background-color: ${props => props.theme.brand_secondary};
@@ -54,9 +55,6 @@ const Version = styled.div`
 
 const Footer = props => {
     const {t} = useTranslation();
-    const user = useSelector(
-        state => state.user
-    );
     const legalTexts = useSelector(
         state => state.cms.legal.menu
     );
@@ -66,16 +64,22 @@ const Footer = props => {
 
     return (
         <FooterStyled small={props.small}>
-            <div className={"container"}><Row>
+            <div className={"container"}>
+                {/* <Row>
+                    <Button icon={'language'} onClick={() => i18n.changeLanguage('en')} primary label={'toEnglish'} />
+                </Row> */}
+                <Row>
                 {props.small ?
                     <div className={"col-md-12 align-center"}>
-                        <NavLink target={"blank"} to={`/info/${i18n.language}/66?Impressum`}>Impressum</NavLink>
+                        <NavLink target={"blank"} to={`/info/${i18n.language}/66?Impressum`}>
+                            {t('footer:imprint')}
+                        </NavLink>
                     </div>
                     :
                     <>
                         <div className={"col-md-4 col-xs-12"}>
                             <p>
-                                <span className={"heading"}>Information</span>
+                                <span className={"heading"}>{t('footer:informationHeading')}</span>
                                 {legalTexts.map((text, index) => {
                                     return <span key={index}><NavLink
                                         to={`/info/${i18n.language}/${text.id}?${text.title}`}>{text.title}</NavLink> <br/></span>
@@ -88,14 +92,14 @@ const Footer = props => {
                         </div>
                         <div className={"col-md-4 col-xs-12"}>
                             <p>
-                                <span className={"heading"}>Kontakt</span>
+                                <span className={"heading"}>{t('footer:contactHeading')}</span>
                                 tacpic UG (haftungsbeschränkt) <br/>
                                 FEZ Raum 3.13 <br/>
                                 Breitscheidstraße 51 <br/>
                                 39114 Magdeburg
                             </p>
                             <p>
-                                <Icon icon={"phone-alt"}/>&emsp;<a href={"tel://0176 43486710"}>0176 43486710</a><br/>
+                                <Icon icon={"phone-alt"}/>&emsp;<a href={"tel://+4917643486710"}>+49 176 43486710</a><br/>
                                 <Icon icon={"envelope"}/>&emsp;<a
                                 href={"mailto://kontakt@tacpic.de"}>kontakt@tacpic.de</a>
                             </p>
@@ -103,11 +107,13 @@ const Footer = props => {
                         <div className={"col-md-4 col-xs-12"}>
                             {/*<img src={"/images/logo_dark.svg"} />*/}
                             <p>
-                                <span className={"heading"}>Gefördert durch</span>
+                                <span className={"heading"}>
+                                    {t('footer:fundingHeading')}
+                                    </span>
                                 <FooterImageContainer>
                                     <a target={'blank'} href={"https://europa.sachsen-anhalt.de/esi-fonds-in-sachsen-anhalt/ueber-die-europaeischen-struktur-und-investitionsfonds/esf/"}>
                                         <img
-                                            alt={"Das Projekt tacpic wird vom Land Sachsen-Anhalt unterstützt und aus Mittel des Europäischen Sozialfonds mitfinanziert."}
+                                            alt={t('footer:fundingAltCopy')}
                                             src={"/images/esf-signetpaar.svg"}/>
                                     </a>
                                 </FooterImageContainer>

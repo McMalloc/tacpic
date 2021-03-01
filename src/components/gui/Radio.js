@@ -1,5 +1,6 @@
 import styled from 'styled-components/macro';
 import React from "react";
+import { useTranslation } from 'react-i18next';
 
 const Label = styled.label`
   //font-size: 0.9em;
@@ -76,10 +77,11 @@ const Wrapper = styled.div`
 
 // TODO: wie checkbox neu machen
 const Radio = props => {
+  const {t} = useTranslation();
     return (
         <div role={'group'} aria-labelledby={props.name + "_head"}>
             <Grouphead id={props.name + "_head"}>
-              {props.legend}
+              {t(...props.legend)}
             </Grouphead>
             {props.options && props.options.map((option, index) => {
                 return (

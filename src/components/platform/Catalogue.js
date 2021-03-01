@@ -14,6 +14,7 @@ import { useLocation, useParams } from "react-router";
 import { FlyoutButton } from "../gui/FlyoutButton";
 import { useBreakpoint } from "../../contexts/breakpoints";
 import { BRAILLE_SYSTEMS, MD_SCREEN } from '../../config/constants';
+import { useTranslation } from 'react-i18next';
 
 const TagSidebar = styled.aside`
   position: sticky;
@@ -72,7 +73,7 @@ const toggleSystem = (dispatch, system) => {
     })
 };
 
-const Catalogue = props => {
+const Catalogue = () => {
     const catalogue = useSelector(
         state => state.catalogue
     );
@@ -83,6 +84,7 @@ const Catalogue = props => {
     const { graphicId } = useParams();
 
     const location = useLocation();
+    const {t} = useTranslation();
 
 
     // const graphicOverview = catalogue.graphics.find(graphic => graphic.id == graphicId);
@@ -100,29 +102,33 @@ const Catalogue = props => {
     useEffect(() => {
         const view = new URLSearchParams(location.search).get('view');
         if (!graphicOverview.title || !graphicId) {
-            document.title = `Katalog \u23D0 tacpic`
+            document.title = `${t('glossary:catalogue')} \u23D0 ${t('glossary:brand')}`
         } else if (view === 'history') {
-            document.title = `Katalog: ${graphicOverview.title} (Versionshistorie) \u23D0 tacpic`
+            document.title = 
+                `${t('glossary:catalogue')}: 
+                ${graphicOverview.title} 
+                (${t('glossary:history')}) 
+                \u23D0 ${t('glossary:brand')}`
         } else {
-            document.title = `Katalog: ${graphicOverview.title} \u23D0 tacpic`
+            document.title = `${t('glossary:catalogue')}: ${graphicOverview.title} \u23D0 ${t('glossary:brand')}`
         }
     }, [graphicOverview.id, location.pathname, location.search]);
 
     const tagSidebar = <TagSidebar>
-        <strong>Format</strong>
+        <strong>{t('catalogue:formatHeading')}</strong>
         <div className={"tag-wrapper"}>
 
-            <Checkbox onChange={event => toggleFormat(dispatch, 'a4')}
+            <Checkbox onChange={() => toggleFormat(dispatch, 'a4')}
                 name={'format-toggle-a4'}
                 value={catalogue.filterFormat.includes('a4')}
-                label={'DIN A4'} />
-            <Checkbox onChange={event => toggleFormat(dispatch, 'a3')}
+                label={'catalogue:a4'} />
+            <Checkbox onChange={() => toggleFormat(dispatch, 'a3')}
                 name={'format-toggle-a3'}
                 value={catalogue.filterFormat.includes('a3')}
-                label={'DIN A3'} />
+                label={'catalogue:a3'} />
         </div>
         <br />
-        <strong>Schriftsystem</strong>
+        <strong>{t('catalogue:systemHeading')}</strong>
         <div className={"tag-wrapper"}>
             {Object.keys(BRAILLE_SYSTEMS).map(lang =>
                 <div key={lang}>{Object.keys(BRAILLE_SYSTEMS[lang]).map(system =>
@@ -144,7 +150,7 @@ const Catalogue = props => {
         <>
             <Row>
                 <div className={"col-xs-12 col-md-8 col-md-offset-2"}>
-                    <h1>Katalog</h1>
+                    <h1>{t('catalogue:heading')}</h1>
                 </div>
             </Row>
 
@@ -170,7 +176,7 @@ const Catalogue = props => {
                         <SearchFilterBar className={"col-xs-12"}>
                             <Searchbar />
                             &emsp;
-                            <FlyoutButton closeButton={true} label={"Filter"}>
+                            <FlyoutButton closeButton={true} label={"catalogue:filter"}>
                                 {tagSidebar}
                             </FlyoutButton>
                         </SearchFilterBar>

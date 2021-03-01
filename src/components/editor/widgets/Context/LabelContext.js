@@ -38,7 +38,7 @@ const LabelContext = props => {
         state => find(state.editor.file.present.pages[state.editor.ui.currentPage].objects, {uuid: state.editor.ui.selectedObjects[0]}) || {}
     );
     const dispatch = useDispatch();
-    const t = useTranslation().t;
+    const {t} = useTranslation();
 
     const onChangeHandler = event => {
         changeProp(dispatch, selectedObject.uuid, "text", event.currentTarget.value);
@@ -47,20 +47,20 @@ const LabelContext = props => {
     return (
         <>
             <Multiline onChange={onChangeHandler} style={{margin: 0}} value={selectedObject.text}
-                       label={"Text"}/>
+                       label={"editor:objectPanel.labelText"}/>
             <div>
                 <Expander>
-                    <span>Vorschau</span>
+                    <span>{t('editor:objectPanel.preview')}</span>
                     <div>
                         <BraillePreview>{selectedObject.braille}</BraillePreview>
-                        <span>Braillecode in Schwarzschrift:</span>
+                        <span>{t('editor:objectPanel.previewBlack')}:</span>
                         <CodePreview>{selectedObject.braille}</CodePreview>
                     </div>
                 </Expander>
             </div>
 
             <fieldset>
-                <legend>Legende</legend>
+                <legend>{t('editor:objectPanel.keyHeading')}</legend>
                 <Checkbox name={"is-key"}
                           value={selectedObject.isKey}
                           onChange={() => changeProp(
@@ -69,7 +69,7 @@ const LabelContext = props => {
                               "isKey",
                               !selectedObject.isKey)
                           }
-                          label={"Abkürzen und Legendeneintrag erzeugen"}/>
+                          label={'editor:objectPanel.makeKey'}/>
 
                 <Textinput disabled={!selectedObject.isKey}
                            onChange={event => changeProp(
@@ -79,33 +79,32 @@ const LabelContext = props => {
                                event.currentTarget.value)}
                            value={selectedObject.keyVal}
                            aria-labelledby={"is-key"}/>
-                {/*<p>{t("editor:cb_braille-key-explanation")}</p>*/}
             </fieldset>
 
             <fieldset>
-                <legend>Punktschrift</legend>
+            <legend>{t('editor:objectPanel.brailleHeading')}</legend>
                 <Checkbox name={"display-dots"}
                           value={selectedObject.displayDots}
                           onChange={() => changeProp(dispatch, selectedObject.uuid, "displayDots", !selectedObject.displayDots)}
-                          label={"Beschriftung in Punktschrift"}/>
+                          label={'editor:objectPanel.showBraille'}/>
 
                 <Checkbox name={"full-character"}
                           value={selectedObject.fullCharPrefix}
                           onChange={() => changeProp(dispatch, selectedObject.uuid, "fullCharPrefix", !selectedObject.fullCharPrefix)}
-                          label={"editor:cb_braille-full-character"}/>
+                          label={"editor:objectPanel.cb_braille-full-character"}/>
 
                 <Checkbox name={"show-border"}
                           value={selectedObject.border}
                           onChange={() => changeProp(dispatch, selectedObject.uuid, "border", !selectedObject.border)}
-                          label={"editor:cb_braille-show-border"}/>
+                          label={"editor:objectPanel.cb_braille-show-border"}/>
             </fieldset>
 
             <fieldset>
-                <legend>Schwarzschrift</legend>
+                <legend>{t('editor:objectPanel.blackHeading')}</legend>
                 <Checkbox name={"black-letter"}
                           value={selectedObject.displayLetters}
                           onChange={() => changeProp(dispatch, selectedObject.uuid, "displayLetters", !selectedObject.displayLetters)}
-                          label={"Beschriftung in Schwarzschrift"}/>
+                          label={'editor:objectPanel.showBlack'}/>
 
             </fieldset>
         </>

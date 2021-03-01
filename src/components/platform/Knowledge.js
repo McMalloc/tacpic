@@ -34,7 +34,7 @@ const Knowledge = props => {
 
   // TODO Dokumententitel
 
-  const page = relevantPages.find(page => page.slug === postSlug)
+  const page = relevantPages.find(page => page.slug === postSlug);
   return <div className='row'>
     <div className={'col-md-3 col-xs-12'}>
       <div style={{position: 'sticky', top: 0}}>

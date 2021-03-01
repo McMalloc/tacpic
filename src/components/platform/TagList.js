@@ -15,10 +15,10 @@ const TagList = props => {
     const [input, setInput] = useState({});
 
     if (!tags) {
-        return <p>{t('Schlagworte werden geladen.')}</p>;
+        return <p>{t('catalogue:tagsLoading')}</p>;
     }
 
-    if (tags.length === 0) return <em>Keine Schlagworte vorhanden.</em>;
+    if (tags.length === 0) return <em>{t('catalogue:noTagsAvailable')}</em>;
 
     let groupedTags = groupBy(tags, 'taxonomy_id');
 
@@ -46,7 +46,7 @@ const TagList = props => {
                     </div>
                 )
             })}
-            <strong>Schlagworte</strong>
+            <strong>{t('catalogue:tagsHeading')}</strong>
             <div className={'tag-wrapper custom-tag-list'}>
                 {misc.map(tag => {
                         return <Tag key={tag.tag_id} {...tag}/>

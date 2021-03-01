@@ -131,13 +131,10 @@ const checkActiveChildren = (children, active) => {
 
 const renderNodes = (node, pages, active, pending) => {
     const activeParent = node.slug === active || checkActiveChildren(node.children, active);
-    console.log(node);
     return (
         <li className={'wiki-categories'}>
             <IndexLink expanded={activeParent} className={'no-styled-link'} to={'/knowledge/' + node.slug}>
                 {node.name}
-                {/* <span className={'wiki-article-count'}>({node.count})</span>  */}
-                {node.slug === active && pending && <Icon icon={'cog fa-spin'} />}
             </IndexLink>
             {node.slug === active && !pending &&
                 <ul className={'wiki-articles'}>
@@ -149,9 +146,10 @@ const renderNodes = (node, pages, active, pending) => {
                         </li>)}
                 </ul>
             }
+            {(node.slug === active && pending) && <Loader frugal />}
             {node.children && node.children.length > 0 && activeParent &&
                 <ul>
-                    {node.children.map(cat => renderNodes(cat, pages, active))}
+                    {node.children.map(cat => renderNodes(cat, pages, active, pending))}
                 </ul>
             }
 

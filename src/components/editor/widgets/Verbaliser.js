@@ -27,9 +27,9 @@ const Verbaliser = props => {
     const {t} = useTranslation();
     const [step, setStep] = useState(0);
     const buttonLabel = function() {
-        if (step === 0) return "Weiter zur Zusammenfassung";
-        if (step === 1) return "Weiter zu den Details";
-        if (step === 2) return "Fertig";
+        if (step === 0) return t("editor:braillePanel.verbaliseToSummaryButtonLabel");
+        if (step === 1) return t("editor:braillePanel.verbaliseToDetailsButtonLabel");
+        if (step === 2) return t("done");
     }();
 
     const [type, setType] = useState(imageDescription.type);
@@ -76,7 +76,7 @@ const Verbaliser = props => {
             }
 
             <ButtonWrapper>
-                <Button label={'Zurück'} disabled={step <= 0} onClick={() => setStep(Math.max(0, step - 1))} />
+                <Button label={'back'} disabled={step <= 0} onClick={() => setStep(Math.max(0, step - 1))} />
 
                 <Button icon={"arrow-right"} onClick={() => {
                     if (step + 1 === steps.length) {

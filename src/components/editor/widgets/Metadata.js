@@ -102,7 +102,7 @@ const Metadata = () => {
             {file.derivedFrom !== null &&
             <Hint>
                 <a onClick={() => toggleHintModal(!showHintModal)} href={'#'}>
-                    Wieso kann ich den Titel nicht ändern?</a>
+                    {t('editor:draftPanel.editTitleWhyCant')}</a>
                 <br/><br/>
             </Hint>
             }
@@ -180,7 +180,7 @@ const Metadata = () => {
                           checked={licenseAgreed}
                           label={t("editor:license_agreed")}/>
                 <a className={"checkbox-additional"} target={"blank"}
-                   href={"https://creativecommons.org/licenses/by-sa/4.0/deed.de"}>Lizenz einsehen.</a>
+                   href={"https://creativecommons.org/licenses/by-sa/4.0/deed.de"}>{t('editor.draftPanel.viewLicense')}</a>
             </div>
             <br/>
             <Button onClick={() => {

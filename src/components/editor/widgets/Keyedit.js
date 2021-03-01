@@ -7,6 +7,7 @@ import {map, flatten} from "lodash";
 import methods from "../ReactSVG";
 import {keyedLabelsSelector, patternsInUseSelector} from "../../../reducers/selectors";
 import {Checkbox} from "../../gui/Checkbox";
+import { useTranslation } from 'react-i18next';
 
 const Table = styled.table`
   width: 100%;
@@ -64,6 +65,7 @@ const addKey = (dispatch) => {
 
 const Keyedit = props => {
     const dispatch = useDispatch();
+    const {t} = useTranslation();
     const labelKeys = useSelector(keyedLabelsSelector);
     const patternsInUse = useSelector(patternsInUseSelector);
     const keyedTextures = useSelector(state => state.editor.file.present.keyedTextures);
@@ -81,7 +83,7 @@ const Keyedit = props => {
                               prop: 'active',
                               value: !keyObject.active
                           })}
-                          label={"Zeige Legende"}/>
+                          label={"editor:keyPanel.showKey"}/>
                 <Checkbox name={"anchor-key"}
                           value={keyObject.anchored}
                           onChange={() => dispatch({
@@ -90,20 +92,19 @@ const Keyedit = props => {
                               prop: 'anchored',
                               value: !keyObject.anchored
                           })}
-                          label={"Legende fixieren"}/>
+                          label={"editor:keyPanel.fixateKey"}/>
             </>
             }
 
 
             {labelKeys.length === 0 && patternsInUse.length === 0 ?
-                <p className={"disabled"}>Keine Einträge vorhanden. Erzeugen Sie eine abgekürzte Beschriftung oder
-                    ein texturisiertes Objekt, um hier ihre Bedeutungen zu vermerken.</p>
+                <p className={"disabled"}>{t('editor:keyPanel.noEntriesHint')}</p>
                 :
                 <Table>
                     <thead>
                     <tr>
-                        <td id={"label-column-head"}>Beschriftung</td>
-                        <td>Schlüssel</td>
+                        <td id={"label-column-head"}>{t('editor:keyPanel.label')}</td>
+                        <td>{t('editor:keyPanel.singleKey')}</td>
                     </tr>
                     </thead>
                     <tbody>

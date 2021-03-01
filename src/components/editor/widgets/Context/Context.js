@@ -5,6 +5,7 @@ import LabelContext from "./LabelContext";
 import {find} from 'lodash';
 import Keyedit from "../Keyedit";
 import styled from 'styled-components/macro';
+import { useTranslation } from 'react-i18next';
 
 const Wrapper = styled.div`
     width: 230px;
@@ -12,6 +13,7 @@ const Wrapper = styled.div`
 
 // to refactor to function component
 const Context = () => {
+    const {t} = useTranslation();
     const type = useSelector(state => find(state.editor.file.present.pages[state.editor.ui.currentPage].objects, { uuid: state.editor.ui.selectedObjects[0] }) || {}).type
     let content = null;
     switch (type) {
@@ -29,7 +31,7 @@ const Context = () => {
     }
 
     return <Wrapper>
-        <p><strong>Eigenschaften</strong></p>
+        <h4>{t('editor:objectPanel.properties')}</h4>
         {content}
     </Wrapper>
 }

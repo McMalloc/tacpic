@@ -1,0 +1,19 @@
+{
+    "checkout": "Zahlungspflichtig bestellen",
+    "basket": "Warenkorb ({{quantity}} Artikel)",
+    "basketShort": "({{quantity}})",
+    "emptyBasket": "",
+    "request-quote": "Angebot anfordern",
+    "remove": "Entfernen",
+    "add-to-list": "Auf die Liste",
+    "transform-to-list": "In Liste umwandeln",
+    "invoice": "Rechnung",
+    "invoice_payment_hint": "Sie erhalten zusammen mit der Ware eine Rechnung, die Sie innerhalb von 20 Tagen begleichen.",
+    "paypal": "PayPal (zur Zeit noch nicht verfügbar)",
+    "paypal_payment_hint": "Sie werden nach Abschluss des Bestellvorgangs zu PayPal weitergeleitet. Sie benötigen ein PayPal-Benutzerkonto.",
+    "shipping": "zzgl. Versand",
+    "postage_reduced": "Verpackung und Versand",
+    "productSelectWithBraille_plural": "{{count}} Seiten DIN A4, $t(glossary:brailleEmboss)",
+    "productSelectWithBraille": "{{count}} Seite DIN A4, $t(glossary:brailleEmboss)",
+    "betaHint": "Die Plattform befindet sich in der Alpha-Phase, d.h. sie wird noch getestet.<br /><2>Getätigte Bestellungen werden entgegen der Beschriftung nicht ausgelöst und es fallen keine Kosten an.</2>"
+}

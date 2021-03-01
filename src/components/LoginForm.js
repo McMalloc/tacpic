@@ -34,19 +34,19 @@ const Login = props => {
         }}>
             <Textinput
                 value={uname}
-                label={t("general:email")}
+                label={t("account:email")}
                 autocomplete={"username"}
                 validations={[
-                    {fn: val => emailRegex.test(val), message: "general:email-invalid", callback: setEmailValid}
+                    {fn: val => emailRegex.test(val), message: "account:email-invalid", callback: setEmailValid}
                 ]}
                 onChange={event => setUname(event.target.value)}
                 name={'uname'}/>
             <Textinput
                 value={pwd}
-                label={t("general:password")}
+                label={t("account:password")}
                 autocomplete={"password"}
                 validations={[
-                    {fn: val => val.length >= 8, message: "general:password-invalid", callback: setPasswordValid}
+                    {fn: val => val.length >= 8, message: "account:password-invalid", callback: setPasswordValid}
                 ]}
                 type={"password"}
                 onChange={event => setPwd(event.target.value)}
@@ -59,13 +59,14 @@ const Login = props => {
             </Alert><br/></>
             }
             <p className={"align-right"}>
-                <Link to={"/reset-password-request"}>Passwort vergessen?</Link>
+                <Link to={"/reset-password-request"}> {t('account:forgotPassword')}</Link>
             </p>
 
             <div className={'align-center'}>
                 <Button icon={user.login_pending ? "cog fa-spin" : "sign-in-alt"} primary
+                        label={"account:login"}
                         disabled={!(emailValid && passwordValid) || user.login_pending}
-                        type={'submit'}>{t("general:login")}</Button>
+                        type={'submit'} />
             </div>
         </form>
     );

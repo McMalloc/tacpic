@@ -9,7 +9,7 @@ const Wrapper = styled.div`
         border: 1px solid lightgrey;
         border-radius: 3px;
         padding: 0.5rem 1rem;
-        box-shadow: ${props => props.theme.distant_shadow};
+        /* box-shadow: ${props => props.theme.distant_shadow}; */
 
         video, iframe {
             width: 100%;

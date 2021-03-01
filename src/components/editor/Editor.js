@@ -116,7 +116,7 @@ const switchCursorMode = (dispatch, mode) => {
   });
 };
 
-const Editor = (props) => {
+const Editor = () => {
   const uiSettings = useSelector((state) => state.editor.ui);
   const file = useSelector((state) => state.editor.file.present);
   const page = file.pages;
@@ -289,7 +289,7 @@ const Editor = (props) => {
               >
                 <strong>
                   {file.graphicTitle.length === 0 ? (
-                    <span className={"disabled"}>Noch kein Titel</span>
+                    <span className={"disabled"}>{t('editor:noTitle')}</span>
                   ) : (
                     file.graphicTitle
                   )}
@@ -298,17 +298,17 @@ const Editor = (props) => {
                 {file.graphicTitle.length !== 0 ? (
                   <span>Variante: {file.variantTitle}</span>
                 ) : (
-                  <Button fullWidth primary label={"Titel ändern"} />
+                  <Button fullWidth primary label={'editor:editTitle'} />
                 )}
                 <br />
                 <SaveIndicator id={"save-indicator"}>
-                  <Icon icon={"save"} /> Wird gespeichert ...
+                  <Icon icon={"save"} /> {t('editor:saveInProgress')}
                 </SaveIndicator>
               </Draftinfo>
               <AccordeonPanel
                 collapsed={!accordeonStates.draft}
                 onClick={() => toggleAccordeon("draft")}
-                title={"Entwurf"}
+                title={t("editor:draftPanel.heading")}
               >
                 <Document className={"padded"} />
                 {/* </AccordeonPanelFlyoutButton> */}
@@ -320,7 +320,7 @@ const Editor = (props) => {
                   onClick={() =>
                     setOpenedPanel(openedPanel === "publish" ? null : "publish")
                   }
-                  label={"Veröffentlichen"}
+                  label={t('editor:draftPanel.publishButtonLabel')}
                   icon={"upload"}
                 >
                   <Metadata />
@@ -329,7 +329,7 @@ const Editor = (props) => {
               <AccordeonPanel
                 collapsed={!accordeonStates.graphicPages}
                 onClick={() => toggleAccordeon("graphicPages")}
-                title={"Grafikseiten"}
+                title={t("editor:graphicPanel.heading")}
               >
                 <AccordeonPanelFlyoutButton
                   flownOut={openedPanel === "graphicSettings"}
@@ -352,14 +352,14 @@ const Editor = (props) => {
               <AccordeonPanel
                 collapsed={!accordeonStates.key}
                 onClick={() => toggleAccordeon("key")}
-                title={"Legende"}
+                title={t("editor:keyPanel.heading")}
               >
                 <Keyedit className={"padded"} />
               </AccordeonPanel>
               <AccordeonPanel
                 collapsed={!accordeonStates.braillePages}
                 onClick={() => toggleAccordeon("braillePages")}
-                title={"Brailleseiten"}
+                title={t("editor:braillePanel.heading")}
               >
                 <AccordeonPanelFlyoutButton
                   flownOut={showBraillePanel}
@@ -414,7 +414,7 @@ const Editor = (props) => {
               <AccordeonPanel
                 collapsed={!accordeonStates.objects}
                 onClick={() => toggleAccordeon("objects")}
-                title={"Objekte"}
+                title={t('editor:objectPanel.heading')}
               >
                 <Objects hideFlyout={dragging} />
               </AccordeonPanel>
@@ -434,11 +434,11 @@ const Editor = (props) => {
           {/*TODO auslagern? nimmt ziemlich viele Zeilen in Editor.js*/}
           {showImportModal && (
             <Modal
-              title={"Grafik importieren"}
+              title={"editor:importer.modalHeading"}
               fitted
               actions={[
                 {
-                  label: t("editor:Platzieren"),
+                  label: t("editor:importer.place"),
                   disabled: traceImport.error || !traceImport.preview,
                   template: "primary",
                   align: "right",
@@ -470,7 +470,7 @@ const Editor = (props) => {
                     resetImportModal();
                   },
                 },
-                { label: "Abbrechen", action: resetImportModal },
+                { label: "cancel", action: resetImportModal },
               ]}
               dismiss={resetImportModal}
             >

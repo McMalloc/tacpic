@@ -38,7 +38,7 @@ const ResetPassword = props => {
     }
 
     if (key === null || key.length === 0) {
-        return <Alert warning>Ungültiger Link, um das Passwort zurückzusetzen. Bitte kontaktieren Sie uns.</Alert>
+        return <Alert warning>{t("auth:pwReset.invalidKey")}</Alert>
     }
 
     return (
@@ -47,17 +47,17 @@ const ResetPassword = props => {
                 event.preventDefault();
                 pwdValid && pwdConfirmValid && requestReset(dispatch, pwd, pwdConfirm, key)
             }}>
-                <h1>Passwort zurücksetzen</h1>
-                <p>Geben Sie Ihr neues zweimal Passwort ein.</p>
+                <h1>{t("auth:pwReset.heading")}</h1>
+                <p>{t("auth:pwReset.enterTwice")}</p>
                 <Textinput
                     value={pwd}
-                    label={t("general:password")}
+                    label={"account:password"}
                     autocomplete={"new-password"}
-                    sublabel={"general:password-hint"}
+                    sublabel={"account:password-hint"}
                     validations={[
                         {
                             fn: val => val.length >= 8,
-                            message: "general:password-invalid",
+                            message: "account:password-invalid",
                             callback: setPwdValid
                         }
                     ]}
@@ -67,12 +67,12 @@ const ResetPassword = props => {
                 <Textinput
                     value={pwdConfirm}
                     autocomplete={"new-password"}
-                    label={t("general:password-confirm")}
+                    label={"account:password-confirm"}
                     type={"password"}
                     validations={[
                         {
                             fn: val => val === pwd,
-                            message: "general:password-confirm-invalid",
+                            message: "account:password-confirm-invalid",
                             callback: setPwdConfirmValid
                         }
                     ]}
@@ -83,9 +83,9 @@ const ResetPassword = props => {
 
 
                 <div style={{textAlign: "center"}}>
-                    <Button disabled={!(pwdConfirmValid && pwdValid) || user.reset_state === 2} primary
+                    <Button disabled={!(pwdConfirmValid && pwdValid) || user.reset_state === 2} primary label={"account:pwReset.submit"}
                             icon={user.reset_state === 2 ? "cog fa-spin" : "key"}
-                            type={'submit'}>{t("general:Neues Passwort setzen")}</Button>
+                            type={'submit'} />
                 </div>
             </form>
 

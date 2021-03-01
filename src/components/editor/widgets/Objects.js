@@ -143,7 +143,7 @@ const ObjectEntry = props => {
                 uuids: [props.uuid]
             });
          }}
-            className={'hover-button'} small icon={"trash-alt"} />
+            className={'hover-button'} small title={'delete'} icon={"trash-alt"} />
     </AccordeonMenuEntry>
 }
 

@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro';
-import React, {useState} from "react";
-import {useTranslation} from "react-i18next";
-import {Icon} from "./_Icon";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Icon } from "./_Icon";
 import { Button } from "./Button";
 
 const Menu = styled.div`
@@ -11,6 +11,16 @@ const Menu = styled.div`
   //width: 100%;
   box-shadow: -1px 1px 11px 0px rgba(0, 0, 0, 0.87);
   z-index: 101;
+  top: 0;
+
+  .menu-header {
+    display: flex;
+    justify-content: space-between;
+
+    .additional-actions {
+      padding: 6px;
+    }
+  }
   
   ul {
     display: block;
@@ -30,23 +40,30 @@ const Backdrop = styled.div`
   margin: -6px;
   box-sizing: border-box;
   background-color: rgba(3,113,113,0.5);
-  width: 100%;
-  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 `;
 
 const Burgermenu = props => {
-    const {t} = useTranslation();
-    const [collapsed, setCollapsed] = useState(true);
+  const { t } = useTranslation();
+  const [collapsed, setCollapsed] = useState(true);
 
-    return (
+  return (
+    <>
+      <Button large onClick={() => setCollapsed(!collapsed)} icon={"bars"} label={""} />
+      {!collapsed &&
         <>
-            <Button large onClick={() => setCollapsed(!collapsed)} icon={"bars"} label={""} />
-            {!collapsed &&
-                <>
-                    <Backdrop onClick={() => setCollapsed(true)}/>
-                    <Menu onClick={() => setCollapsed(!collapsed)}>
-                        <Button large icon={"times"} />
-                        <ul>
+          <Backdrop onClick={() => setCollapsed(true)} />
+          <Menu onClick={() => setCollapsed(!collapsed)}>
+            <div className={'menu-header'}>
+              <Button large icon={"times"} /> <div className={'additional-actions'}>
+                  {props.headerAction}
+                </div>
+            </div>
+            
+            <ul>
               {props.children.map((component, index) => {
                 if (Array.isArray(component)) {
                   return <>
@@ -55,13 +72,13 @@ const Burgermenu = props => {
                 }
                 return <li key={index}>{component}</li>
               })}
-                        </ul>
+            </ul>
 
-                    </Menu>
-                </>
-            }
+          </Menu>
         </>
-    )
+      }
+    </>
+  )
 };
 
-export {Burgermenu}
+export { Burgermenu }

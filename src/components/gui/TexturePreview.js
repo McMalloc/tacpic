@@ -25,7 +25,7 @@ const Wrapper = styled.div`
 
 const TexturePreview = props => {
     const { t } = useTranslation();
-    const label = props.template === null ? t("gui:none") : t(props.label);
+    const label = props.template === null ? t("none") : t(props.label);
     return (
         <Wrapper role={"button"}
                  active={props.active}

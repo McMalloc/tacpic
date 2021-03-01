@@ -40,17 +40,17 @@ const AccountVerification = props => {
                 event.preventDefault();
                 pwdValid && pwdConfirmValid && requestVerification(dispatch, pwd, pwdConfirm, key)
             }}>
-                <h1>Noch ein Schritt</h1>
-                <p>Nachdem Sie Ihre E-Mail-Adresse bestätigt haben, müssen Sie sich nur noch ein Passwort ausdenken.</p>
+                <h1>{t('account:oneMoreStep')}</h1>
+                <p>{t('account:pwConfirmCopy')}</p>
                 <Textinput
                     value={pwd}
-                    label={t("general:password")}
+                    label={"account:password"}
                     autocomplete={"new-password"}
-                    sublabel={"general:password-hint"}
+                    sublabel={"account:password-hint"}
                     validations={[
                         {
                             fn: val => val.length >= 8,
-                            message: "general:password-invalid",
+                            message: "account:password-invalid",
                             callback: setPwdValid
                         }
                     ]}
@@ -60,12 +60,12 @@ const AccountVerification = props => {
                 <Textinput
                     value={pwdConfirm}
                     autocomplete={"new-password"}
-                    label={t("general:password-confirm")}
+                    label={"account:password-confirm"}
                     type={"password"}
                     validations={[
                         {
                             fn: val => val === pwd,
-                            message: "general:password-confirm-invalid",
+                            message: "account:password-confirm-invalid",
                             callback: setPwdConfirmValid
                         }
                     ]}
@@ -75,8 +75,9 @@ const AccountVerification = props => {
 
                 <div style={{textAlign: "center"}}>
                     <Button icon={user.verification_state === 2 ? "cog fa-spin" : "check"}
+                    label={'account:submitPassword'}
                             disabled={!(pwdConfirmValid && pwdValid) || user.verification_state === 2} primary
-                            type={'submit'}>{t("general:Passwort setzen")}</Button>
+                            type={'submit'} />
                 </div>
 
             </form>

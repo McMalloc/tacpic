@@ -29,6 +29,8 @@ import Popup from "./components/gui/Popup";
 import ButtonBar from "./components/gui/ButtonBar";
 import Consent from "./components/platform/Consent";
 import Knowledge from "./components/platform/Knowledge";
+import i18next from "i18next";
+import { initLanguage } from "./i18n/i18n";
 
 const ScrollContent = styled.div`
   display: flex;
@@ -70,6 +72,7 @@ const App = () => {
     dispatch({ type: CMS_LEGAL.INDEX.REQUEST });
     dispatch({ type: LOCALFILES.INDEX.REQUEST });
 
+    initLanguage();
     if (localStorage.getItem("jwt") === null) return;
     dispatch({ type: USER.VALIDATE.REQUEST });
   }, []);
@@ -78,16 +81,16 @@ const App = () => {
     if (!(/catalogue/.test(location.pathname) || /info/.test(location.pathname) || /knowledge\/.+/.test(location.pathname))) {
       document.title = t('region:' + location.pathname) + ' | tacpic';
     }
-    document.getElementById("scroll-content").scrollTo(0,0);
+    document.getElementById("scroll-content").scrollTo(0, 0);
     trackPageView();
     // trackEvent({category: 'page change', action: location.pathname});
   }, [location.pathname]);
 
   const navbarItems = [
-    { label: t("general:catalogue"), to: "/catalogue" },
-    { label: t("general:editor"), to: "/editor/splash" },
-    { label: t("general:pricing"), to: "/pricing" },
-    {label: 'Wissen', to: '/knowledge'},
+    { label: t("navigation.catalogue"), to: "/catalogue" },
+    { label: t("navigation.editor"), to: "/editor/splash" },
+    { label: t("navigation.pricing"), to: "/pricing" },
+    { label: t("navigation.knowledge"), to: '/knowledge' },
   ];
 
   return (

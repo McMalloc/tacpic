@@ -1,0 +1,31 @@
+{
+    "learnMore": "Mehr erfahren",
+    "copy": "<0>Mit unserem $t(glossary:tacpicEditor) können Sie jetzt schnell und einfach taktile Grafiken online gestalten.</0><1>Nachdem Sie ihre Tastgrafik entworfen haben, können Sie diese über unseren Druckservice in Auftrag geben oder den Entwurf herunterladen und mit geeigneten Geräten selbst produzieren</1><2>Der $t(glossary:tacpicEditor) ist ein nutzerfreundliches Programm und stellt eine Alternative zu komplexer Grafiksoftware dar. Er wurde als Webanwendung speziell für die Gestaltung von Grafikvorlagen für Tastgrafiken konzipiert.</2>",
+    "readOn": "Weiterlesen",
+    "copyAfterJump": "<0>Nachdem Sie ihre Tastgrafik entworfen haben, können Sie diese über unseren Druckservice in Auftrag geben oder den Entwurf herunterladen und mit geeigneten Geräten selbst produzieren</0><1>Wenn Sie über unseren Druckservice bestellen, werden die Grafiken auf Schwellpapier gedruckt und anschließend angeschwellt, sodass ein buntes Relief entsteht, welches sowohl taktil als auch visuell erfasst werden kann. Auf diese Weise schlagen Sie eine Brücke zwischen sehenden und sehbeeinträchtigten Menschen.</1> <2>Wir befinden uns noch in der Testphase, daher steht Ihnen der Editor kostenlos zur Verfügung. Ebenfalls haben Sie momentan die Möglichkeit die Entwürfe für die eigenhändige Produktion gratis herunterzuladen. Unser Ziel ist es zunächst mithilfe der Community den Onlinekatalog mit Grafikvorlagen zu befüllen und den Service für Sie zu perfektionieren. In einem nächsten Schritt wird es dann erforderlich sein, Lizenzen für die Freischaltung der Downloadfunktion zu erwerben. Der Editor wird Ihnen dauerhaft kostenlos zu Verfügung stehen. Mehr Informationen zum Lizenzmodell erhalten sie hier.</2>",
+    "signUpCTA": "Legen Sie Ihr kostenloses tacpic-Konto an, um eigene Grafiken zu erstellen und lassen Sie sich durch unseren Newsletter über die neusten Entwicklungen informieren.",
+
+    "step1Heading": "1. Grafik gestalten",
+    "step1alt": "dekorative Ilustration Entwurf gestalten",
+    "step1copy": "Entwerfen Sie Ihre Grafik im tacpic Online-Editor.",
+    "step2Heading": "2. Produktion",
+    "step2alt": "dekorative Ilustration Grafik produzieren",
+    "step2copy": "Auf Bestellung produzieren wir Ihren Entwurf als Tastgrafik auf Schwellpapier.",
+    "step2copyOr": "Sie laden Ihren Entwurf herunter und nutzen ihn für die eigene Produktion.",
+    "step3Heading": "3. Lieferung",
+    "step3alt": "dekorative Ilustration Grafik versenden",
+    "step3copy": "Ihre Bestellung wird per Post an Sie versendet.",
+
+    "uspHeading": "$t(glossary:brand) bietet",
+    "usp1": "Nutzerfreundlich & effizient",
+    "usp1copy": "Kernstück ist ein nutzerfreundliches Programm, das eine Alternative zu komplexer Grafiksoftware darstellt. Die Bearbeitungsfunktionen nehmen Rücksicht auf die Möglichkeiten und Grenzen des Tastsinns. Die Software leitet durch den gesamten Gestaltungsprozess und bietet zahlreiche Hilfestellungen.",
+    "usp2": "Community",
+    "usp2copy": "Nach der Gestaltung können die Grafikvorlagen in einem öffentlichen Katalog zugänglich gemacht werden. Andere Nutzende können Verbesserungen nach dem Wiki-Prinzip einpflegen.",
+    "usp3": "Individuell & preisgünstig",
+    "usp3copy": "Tacpic macht es möglich, individuelle Grafiken für Privatpersonen auf kostengünstige Weise umzusetzen. Profitieren können vor allem sehbehinderte Schülerinnen und Schüler in Inklusionsklassen, deren Unterrichtsmaterial speziell auf ihre Bedürfnisse angepasst werden muss.",
+
+    "aboutUs": "Über uns",
+    "aboutUsCopy": "Entstanden ist die Idee im Rahmen eines Semesterprojektes unter Leitung von Prof. Dominik Schumacher im Master-Studiengang Interaction Design an der Hochschule Magdeburg-Stendal. Nach dem erfolgreichen Studienabschluss gründeten die Absolventen Laura Evers, Florentin Förschler und Robert Wlcek tacpic, um einer breiten Öffentlichkeit die Möglichkeit zu geben, taktile Grafiken zu gestalten und zugänglich zu machen.",
+    "aboutUsVideocredits": "Film von <1>lichtempfindlich</1>",
+    "aboutUsVideoOptin": "Inhalte von Youtube laden"
+}

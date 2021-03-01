@@ -48,14 +48,14 @@ const Account = props => {
         <Outlet />
         <div className={'row'}>
             <div className={"col-xs-12"} style={{ textAlign: "center" }}>
-                <Button icon={"sign-out-alt"} onClick={event => dispatch({ type: USER.LOGOUT.REQUEST })} label={t("general:logoff")} />
+                <Button icon={"sign-out-alt"} onClick={event => dispatch({ type: USER.LOGOUT.REQUEST })} label={t("account:logoff")} />
             </div>
         </div>
     </>;
     return (
         <>
             {!user.logged_in ?
-                <Alert info>Nicht eingeloggt.</Alert>
+                <Alert info>{t('account:notLoggedin')}</Alert>
                 // null
                 :
                 <>
@@ -63,15 +63,23 @@ const Account = props => {
                         <div className={"col-xs-12 extra-margin"}>
                             <h4>
                                 {location.pathname === '/account' ?
-                                    <span>Persönlicher Bereich</span>
+                                    <span>{t('account:private')}</span>
                                     :
-                                    <Link to={"/account"}>Persönlicher Bereich</Link>
+                                    <Link to={"/account"}>{t('account:private')}</Link>
                                 }
                                 <Routes>
-                                    <Route path='addresses' element={<span> <Icon icon={"angle-right"} /> Adressen</span>} />
-                                    <Route path='my_account' element={<span> <Icon icon={"angle-right"} /> Mein Konto</span>} />
-                                    <Route path='orders' element={<span> <Icon icon={"angle-right"} /> Bestellungen</span>} />
-                                    <Route path='newsletter' element={<span> <Icon icon={"angle-right"} /> {t("account:newsletter")}</span>} />
+                                    <Route path='addresses' element={
+                                        <span> <Icon icon={"angle-right"} /> {t('account:addresses')}</span>} 
+                                    />
+                                    <Route path='my_account' element={
+                                        <span> <Icon icon={"angle-right"} /> {t('account:my_account')}</span>} 
+                                    />
+                                    <Route path='orders' element={
+                                        <span> <Icon icon={"angle-right"} /> {t('account:orders')}</span>} 
+                                    />
+                                    <Route path='newsletter' element={
+                                        <span> <Icon icon={"angle-right"} /> {t("account:newsletter")}</span>} 
+                                    />
                                 </Routes>
                             </h4>
 

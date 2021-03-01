@@ -7,7 +7,7 @@ import {fadeIn} from "./Animations";
 
 const Wrapper = styled.div`
   height: 100%;
-  min-height: 200px;
+  min-height: ${props => props.frugal ? 0 : 200}px;
   flex-direction: column;
   justify-content: center;
   width: 100%;
@@ -33,8 +33,8 @@ const Loader = props => {
     }, []);
 
     return (
-        <Wrapper large={props.large} className={"loader"}>
-            <Icon icon={`cog fa-3x fa-spin`} />
+        <Wrapper frugal={props.frugal} large={props.large} className={"loader"}>
+            <Icon icon={`cog fa-${props.frugal ? 1 : 3}x fa-spin`} />
             {!!props.message && showMessage ?
                 <Message>{t(props.message)}</Message>
                 : <p>&ensp;</p>

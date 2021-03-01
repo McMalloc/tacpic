@@ -70,7 +70,7 @@ const Swatch = props => {
       className={props.code === COLOURS.none ? 'empty' : ''}
       aria-label={label}>
       <div />
-      {/* <div>{ props.code === COLOURS.none && t("gui:none") }</div> */}
+      {/* <div>{ props.code === COLOURS.none && t("none") }</div> */}
     </Wrapper>
   )
 };

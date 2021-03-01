@@ -1,13 +1,8 @@
-import styled, { useTheme } from "styled-components/macro";
-import React, { Component, useRef, useState } from "react";
-import { fadeIn, slideFromAbove } from "./Animations";
+import styled from "styled-components/macro";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { Icon } from "./_Icon";
-import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
-import More from "./More";
-import Toggle from "./Toggle";
-import { SM_SCREEN } from "../../config/constants";
 import { useBreakpoint } from "../../contexts/breakpoints";
 
 const Label = styled.span`

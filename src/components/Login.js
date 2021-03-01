@@ -21,9 +21,9 @@ const Login = props => {
         <>
             <div className={"row extra-margin"}>
                 <div className={layout}>
-                    <h1>{t("general:login")}</h1>
+                    <h1>{t("account:login")}</h1>
                     {user.reset_state === 3 &&
-                        <Alert info>Ihr Passwort wurde zurückgesetzt. Bitte melden Sie sich mit Ihrem neuen Passwort an.</Alert>
+                        <Alert info>{t("general:passwordResetted")}</Alert>
                     }
                 </div>
             </div>
@@ -37,7 +37,7 @@ const Login = props => {
                     <div className={'full-width align-center'}>
                         <br />
                         <p>
-                            {t("general:signup-cta")} <NavLink to={"/signup"}>{t("general:signup-here")}</NavLink>
+                            {t("account:signup-cta")} <NavLink to={"/signup"}>{t("account:signup-here")}</NavLink>
                         </p>
                     </div>
                 </>

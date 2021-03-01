@@ -1,0 +1,88 @@
+{
+  "format": "Papierformat",
+  "landscape": "Querformat",
+  "portrait": "Hochformat",
+  "done": "Fertig",
+  "submit": "Absenden",
+  "back": "Zurück",
+  "delete": "Löschen",
+  "close": "Schließen",
+  "errorOccured": "Es ist ein Fehler aufgetreten",
+  "claim": "Taktile Medien für sehbehinderte Menschen",
+  "claimUSP": "Taktile Medien – schnell, gut und einfach",
+  "switchLang": "In English",
+  "dateFormat": "DD.MM.YYYY, HH:mm [Uhr]",
+  "or": "oder",
+  "none": "keine",
+  "DE": {
+    "VOLL": "Deutsche Vollschrift",
+    "KURZ": "Deutsche Kurzschrift",
+    "BASIS": "Deutsche Basisschrift"
+  },
+  "tacpic": {
+    "welcome": "Willkommen bei Tacpic!"
+  },
+  "error": {
+    "AccountError": "Fehler bei Kontoerstellung",
+    "not whitelisted": "Die E-Mail-Adresse wurde nicht zur Anmeldung freigegeben.",
+    "display name already in use": "Der Anzeigename ist bereits in Benutzung. Sie müssen zwar keinen angeben, aber wenn, sollte er eindeutig sein."
+  },
+  "help": {
+    "select_braille-system": "Pro Dokument sollte ein einheitliches Punktschriftsystem verwendet werden. Alle Beschriftungen werden in dem hier ausgewählten System angelegt und bestehende Beschriftungen werden umgewandelt.",
+    "select_medium": "Unterschiedliche Medien bieten unterschiedliche Möglichkeiten. Der Editor wird für bestimmte Produktionstechniken Funktionen einschränken, sodass Sie keine Vorlage gestalten, die z.B. mit Schwellpapier gar nicht produzierbar ist."
+  },
+  "auth": {
+    "invalid login, already an account with this login": "Es gibt bereits ein Konto unter dieser E-Mail-Adresse.",
+    "The account you tried to create is currently awaiting verification": "Das Konto mit dieser E-Mail-Adresse muss noch verifiziert werden. Bitte prüfen Sie Ihr Postfach und ggf. den Spam-Ordner.",
+    "no matching login": "Kein Benutzerkonto mit dieser E-Mail-Adresse / Passwort bekannt.",
+    "There was an error creating your account": "Fehler beim Erstellen eines neuen Kontos:"
+  },
+  "navigation": {
+    "catalogue": "$t(glossary:catalogue)",
+    "editor": "Editor",
+    "pricing": "Preise",
+    "knowledge": "Wissen"
+  },
+  "categories": {
+    "illustration": "(beschriftete) Illustration"
+  },
+  "colour": {
+    "#808080": "Grau",
+    "rgb(67,44,134)": "violett, Indigo",
+    "#E4120D": "heißes Rot, Kamin",
+    "#C2368C": "tiefes Pink, Magenta",
+    "#018ECC": "sanftes Blau, Cyan",
+    "#F08000": "kräftiges Orange",
+    "#79BA4A": "saftiges Hellgrün, Birke",
+    "#FFEC01": "Goldgelb",
+    "#FFFFFF": "Papierfarben (Unser Schwellpapier hat einen gelblichen Stich)",
+    "null": "keine Farbe"
+  },
+  "textures": {
+    "diagonal_lines": "Weite diagonale Linien",
+    "diagonal_lines_wide": "Diagonale Linien",
+    "fill": "Vollflächig",
+    "vertical_lines": "Senkrechte Linien",
+    "horizontal_lines": "Waagerechte Linien",
+    "dashed_lines": "Gestrichelte Linien",
+    "grid": "Raster",
+    "stair": "Treppenstufen",
+    "dotted_tight": "Eng gepunktet",
+    "dotted": "Weit gepunktet"
+  },
+  "region": {
+    "/login": "Anmelden",
+    "/account": "Persönlicher Bereich",
+    "/account/orders": "Meine bestellungen",
+    "/account/newsletter": "Datenschutzeinstellungen",
+    "/account/addresses": "Meine Adressen",
+    "/account/my_account": "Kontoinformationen",
+    "/basket": "Warenkorb",
+    "/checkout": "Bestellen",
+    "/editor/splash": "Editor",
+    "/editor/app": "Editor",
+    "/pricing": "Produkte und Preise",
+    "/knowledge": "Wissen",
+    "/": "Start"
+  }
+}

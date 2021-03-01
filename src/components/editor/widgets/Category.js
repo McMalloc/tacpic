@@ -72,7 +72,7 @@ class Category extends Component {
                                         onChange={event => this.props.setCategory(event.value)}
                                         options={groupedOptions}
                                         label={"editor:label_choose_category"} />
-                                <Divider label={"gui:or"} /><br />
+                                <Divider label={"or"} /><br />
                                 <div style={{textAlign: "center"}}>
                                     <Button onClick={this.showAssistent} primary>Hilfe erhalten</Button>
                                 </div>

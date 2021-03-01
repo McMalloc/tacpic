@@ -3,10 +3,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {Radio} from "../../gui/Radio";
 import Select from "../../gui/Select";
 import {Checkbox} from "../../gui/Checkbox";
-import {Numberinput, Textinput} from "../../gui/Input";
-import styled from 'styled-components/macro';
+import {Numberinput} from "../../gui/Input";
 import { CHANGE_FILE_FORMAT } from '../../../actions/action_constants';
 import { determineDimensions, determineFormat } from '../../../utility/determineFormat';
+import { useTranslation } from 'react-i18next';
 
 const changeFileProperty = (dispatch, key, value) => {
     dispatch({
@@ -22,34 +22,9 @@ const changeFileFormat = (dispatch, {width, height}) => {
     })
 };
 
-// const PageGrid = styled.div`
-//     display: flex;                       /* establish flex container */
-//     flex-wrap: wrap;                     /* enable flex items to wrap */
-//     justify-content: space-around;
-// `;
-
-// const GridCell = styled.div`
-//     flex: 0 0 50%;                       /* don't grow, don't shrink, width */
-//     margin-bottom: 5px;
-//     &.page-image-container {
-//       text-align: center;
-//       position: relative;
-//       img {
-//         width: 70%;
-//       }
-//       div.page-number {
-//         position: absolute;
-//         bottom: 12px;
-//         width: 100%;
-//         text-align: center;
-//         font-size: 24px;
-//         font-weight: bold;
-//       }
-//     }
-// `;
-
 const GraphicPageSettings = () => {
     const dispatch = useDispatch();
+    const {t} = useTranslation();
     const {
         verticalGridSpacing,
         horizontalGridSpacing,
@@ -61,13 +36,8 @@ const GraphicPageSettings = () => {
 
     return <>
         <fieldset>
-            {/* <Textinput
-                onChange={event => {
-                    changeFileProperty(dispatch, 'title', event.currentTarget.value)
-                }}
-                value={title}
-                label={"Titel"}/> */}
-            <legend>Format</legend>
+
+            <legend>{t('editor:graphicPanel.format')}</legend>
             {/* <Row> */}
                 <div>
                     <Select label={"editor:label_page-format"} 
@@ -77,7 +47,6 @@ const GraphicPageSettings = () => {
                             [
                                 {label: "DIN A4", value: "a4"},
                                 {label: "DIN A3", value: "a3"}
-                                // {label: "Marburger Format (27 × 34 cm)", value: "marburg"}
                             ]}
                     />
 
@@ -87,107 +56,54 @@ const GraphicPageSettings = () => {
                     <Radio name={"orientation"} onChange={event => {
                         if (width > height && event === 'portrait' || width < height && event === 'landscape') changeFileFormat(dispatch, {height: width, width: height});
                     }} value={width > height ? 'landscape' : 'portrait'} options={[
-                        {label: "Hochformat", value: "portrait"},
-                        {label: "Querformat", value: "landscape"}]}/>
+                        {label: "portrait", value: "portrait"},
+                        {label: "landscape", value: "landscape"}]}/>
                 </div>
-            {/* </Row> */}
-            {/*<Row>*/}
-            {/*    <div className={"col-sm-6"}>*/}
-            {/*        <Select tip={"help:select_medium"}*/}
-            {/*                label={"editor:select_medium"}*/}
-            {/*                options={*/}
-            {/*                    [*/}
-            {/*                        {label: "Schwellpapier", value: "swell"},*/}
-            {/*                        {label: "3D-Druck", value: "3d", isDisabled: true},*/}
-            {/*                        {label: "Thermoform", value: "thermo", isDisabled: true},*/}
-            {/*                        {label: "Schnittcollage", value: "cut", isDisabled: true}*/}
-            {/*                    ]*/}
-            {/*                } default={"swell"}/>*/}
-            {/*    </div>*/}
-            {/*    <div className={"col-sm-6"}>*/}
-            {/*        /!*todo: erst zeigen, nachdem etwas anderes als Schwellpapier ausgewählt worden ist*!/*/}
-            {/*        /!*<Alert info>*!/*/}
-            {/*        /!*    Die Wahl des Mediums hat einen Einfluss auf die angebotenen Bearbeitungsfunktionen des*!/*/}
-            {/*        /!*    Editors. <a href={"#"}>Mehr erfahren</a>*!/*/}
-            {/*        /!*</Alert>*!/*/}
-            {/*    </div>*/}
-            {/*</Row>*/}
         </fieldset>
         <fieldset>
-            <legend>Grundraster</legend>
-            {/* <Row>
-                <div> */}
+            <legend>{t('editor:graphicPanel.grid')}</legend>
+
                     <Checkbox
                         name={"cb_vertical-grid"}
                         value={showVerticalGrid}
                         onChange={() => {
                             changeFileProperty(dispatch, 'showVerticalGrid', !showVerticalGrid)
                         }}
-                        label={"Vertikales Gitternetz zeigen"}/>
+                        label={'editor:graphicPanel.showVertical'}/>
 
                     <img style={{width: 80, height: "auto"}} src={"/images/vertical_grid.svg"}/>
-                {/* </div>
 
-                <div> */}
                     <Numberinput
                         disabled={!showVerticalGrid}
                         onChange={event => {
                             changeFileProperty(dispatch, 'verticalGridSpacing', event.currentTarget.value)
                         }}
                         value={verticalGridSpacing}
-                        label={"Abstand"}
-                        sublabel={"vertikaler Gitternetzlinien"}
+                        label={'editor:graphicPanel.distance'}
+                        sublabel={'editor:graphicPanel.distanceVertical'}
                         unit={"mm"}/>
-                {/* </div>
-            </Row>
-            <Row>
-                <div> */}
+
                     <Checkbox
                         name={"cb_horizontal-grid"}
                         value={showHorizontalGrid}
                         onChange={() => {
                             changeFileProperty(dispatch, 'showHorizontalGrid', !showHorizontalGrid)
                         }}
-                        label={"Horizontales Gitternetz zeigen"}/>
+                        label={'editor:graphicPanel.showHorizontal'}/>
 
                     <img style={{width: 80, height: "auto"}} src={"/images/horizontal_grid.svg"}/>
-                {/* </div>
 
-                <div> */}
                     <Numberinput
                         disabled={!showHorizontalGrid}
                         onChange={event => {
                             changeFileProperty(dispatch, 'horizontalGridSpacing', event.currentTarget.value)
                         }}
                         value={horizontalGridSpacing}
-                        label={"Abstand"}
-                        sublabel={"horizontaler Gitternetzlinien"}
+                        label={'editor:graphicPanel.distance'}
+                        sublabel={'editor:graphicPanel.distanceHorizontal'}
                         unit={"mm"}/>
-                {/* </div>
-            </Row> */}
         </fieldset>
-        <fieldset>
-            <legend>Startelemente</legend>
-                {/* <div className={"col-sm-6"}> */}
-                    <Select label={"editor:label_page-binding"} default={"none"} options={
-                        [
-                            {label: "Keine Bindung", value: "none"},
-                            {label: "Ringbindung oben", value: "ro"},
-                            {label: "Ringbindung unten", value: "ru"}
-                        ]}
-                    />
-                {/* </div>
-                <div className={"col-sm-6"}>
-                    <Checkbox
-                        name={"cb_title"}
-                        value={defaultTitle}
-                        onChange={() => {
-                            toggleDefaultTitle(!defaultTitle)
-                        }}
-                        label={"Titel"}/>
-                </div>
-            </Row> */}
-        </fieldset>
+
     </>;
 };
 

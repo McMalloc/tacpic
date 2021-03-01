@@ -245,7 +245,7 @@ const Checkout = props => {
                         }
 
                         <br />
-                        <Alert danger>
+                        <Alert i18nKey={'commerce:betaHint'} danger>
                             Die Plattform befindet sich in der Alpha-Phase, d.h. sie wird noch getestet.<br />
                             <strong>Getätigte Bestellungen werden entgegen der Beschriftung nicht ausgelöst und es fallen
                             keine Kosten an.</strong>

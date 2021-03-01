@@ -81,7 +81,12 @@ export const FORMATS = {
 
 // Mapping to liblouis table names
 export const BRAILLE_SYSTEMS = {
-  DE: { BIDI: "de-g0-bidi.utb", BASIS: "de-g0.utb", VOLL: "de-g1.ctb", KURZ: "de-g2.ctb" },
+  DE: { 
+    // BIDI: "de-g0-bidi.utb", 
+    BASIS: "de-g0.utb", 
+    VOLL: "de-g1.ctb", 
+    KURZ: "de-g2.ctb"
+  },
 };
 
 export const TEXTURES = [

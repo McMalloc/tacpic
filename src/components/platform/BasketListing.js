@@ -156,7 +156,7 @@ const BasketListing = () => {
                                     name={"product_type_" + index}
                                     value={quoteItem.product_id} options={[
                                         {
-                                            label: `${correspondingVariant.braille_no_of_pages} Seite/n DIN A4, Brailleprägung`,
+                                            label: t('commerce:productSelectWithBraille', {count: correspondingVariant.braille_no_of_pages}),
                                             value: "graphic"
                                         },
                                         { label: "E-Mail", value: "graphic_nobraille" }

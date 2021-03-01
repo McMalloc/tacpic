@@ -1,5 +1,6 @@
-import styled, {ThemeContext} from 'styled-components';
-import React, {useContext} from "react";
+import styled, { ThemeContext } from 'styled-components';
+import React, { useContext } from "react";
+import { Trans } from 'react-i18next';
 
 const Wrapper = styled.div`
   display: flex;
@@ -51,16 +52,23 @@ const Alert = props => {
     return (
         <Wrapper role={(props.warning || props.danger) ? "alert" : ""} {...props} colour={colour}>
             <IconContainer colour={colour}>
-                <i className={"fas fa-" + iconID}/>
+                <i className={"fas fa-" + iconID} />
             </IconContainer>
             <Message {...props}>
-                {props.children}
+                {props.i18nKey ?
+                    <Trans i18nKey={props.i18nKey}>
+                        {props.children}
+                    </Trans>
+                    :
+                    props.children
+                }
+
             </Message>
         </Wrapper>
     )
 };
 
-export {Alert}
+export { Alert }
 // const Flyout = props => {
 //       return <div></div>
 // };

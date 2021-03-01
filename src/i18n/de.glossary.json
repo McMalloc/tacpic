@@ -1,0 +1,16 @@
+{
+    "brailleEmboss": "$t(glossary:brailleScript)prägung",
+    "blackPrint": "Schwarzschrift",
+    "key": "Legende",
+    "key_plural": "Legenden",
+    "brailleScript": "Punktschrift",
+    "texture": "Textur",
+    "border": "Kontur",
+    "tacpicEditor": "$t(glossary:brand) Online-Editor",
+    "brand": "tacpic",
+    "privacyPolicy": "Datenschutzerklärung",
+    "catalogue": "Katalog",
+    "history": "Versionshistorie",
+    "tag": "Schlagwort",
+    "tag_plural": "Schlagwörter"
+}

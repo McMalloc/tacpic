@@ -23,6 +23,7 @@ import { MD_SCREEN, SM_SCREEN, DB_DATE_FORMAT } from "../../config/constants";
 import { FILE } from "../../actions/action_constants";
 import useIntersect from "../../contexts/intersections";
 import { useBreakpoint } from "../../contexts/breakpoints";
+import { Trans } from "react-i18next";
 
 const addToBasket = (dispatch, variantId, quantity, product, index = null) => {
   dispatch({
@@ -33,13 +34,6 @@ const addToBasket = (dispatch, variantId, quantity, product, index = null) => {
     index,
   });
 };
-
-const Details = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  padding-bottom: 12px; */
-  grid-area: details;
-`;
 
 const Title = styled.h2`
   grid-area: title;
@@ -144,9 +138,6 @@ const OrderWidget = styled.div`
 const scrollThreshold = 0.9;
 
 const VariantView = (props) => {
-  // The `path` lets us build <Route> paths that are
-  // relative to the parent route, while the `url` lets
-  // us build relative links.
   const navigate = useNavigate();
   const { t } = useTranslation();
   const theme = useTheme();
@@ -176,7 +167,7 @@ const VariantView = (props) => {
   const pagePreviews = <Preview>
     <Carousel
       single={
-        <span className={"disabled"}>Insgesamt eine Grafikseite.</span>
+        <span className={"disabled"}>{t('catalogue:onlyOnePage')}</span>
       }
     >
       {props.document.pages
@@ -184,6 +175,7 @@ const VariantView = (props) => {
           return (
             <img
               key={index}
+              alt={t('catalogue:pagePreview', { file: props.graphicTitle, number: index + 1 })}
               src={`${API_URL}/thumbnails/${props.current_file_name}-THUMBNAIL-xl-p${index}.png`}
             />
           );
@@ -210,7 +202,7 @@ const VariantView = (props) => {
     {props.description.trim() !== "()" ?
       <p>{props.description}</p>
       :
-      <em>(Keine Beschreibung)</em>
+      <em>({t('catalogue:pagePreview')})</em>
     }
   </div>
 
@@ -218,9 +210,9 @@ const VariantView = (props) => {
     <tbody>
       <tr>
         <td className={"icon-cell"}>
-          <Icon title={"Format der Grafikseiten"} icon={"file-image"} />
+          <Icon title={t('catalogue:graphicPagesFormat')} icon={"file-image"} />
         </td>
-        <td><small>Grafikseiten</small></td>
+        <td><small>{t('catalogue:graphicPages')}</small></td>
         <td className={""}>
           {`${props.graphic_no_of_pages} × ${t(
             `catalogue:${props.graphic_format}-${props.graphic_landscape ? "landscape" : "portrait"
@@ -230,249 +222,246 @@ const VariantView = (props) => {
       </tr>
       <tr>
         <td className={"icon-cell"}>
-          <Icon title={"Format der Brailleseiten"} icon={"file-alt"} />
+          <Icon title={t('catalogue:braillePagesFormat')} icon={"file-alt"} />
         </td>
-        <td><small>Brailleseiten</small></td>
+        <td><small>{t('catalogue:braillePages')}</small></td>
 
         {props.braille_no_of_pages === 0 ? (
-          <td className={"disabled"}>{t("gui:none")}</td>
-        ) : 
-            <td>
-              {`${props.braille_no_of_pages} × ${t("catalogue:a4-portrait")}`}
-            </td>
-          }
-      </tr>
-    <tr>
-      <td className={"icon-cell"}>
-        <Icon title={"Braillesystem"} icon={"braille"} />
-      </td>
-      <td><small>{t("catalogue:braillesystem")}</small></td>
-      <td className={""}>
-        {t(props.system)}
-      </td>
-    </tr>
-    <tr>
-      <td className={"icon-cell"}>
-        <Icon title={"Schlagworte"} icon={"tags"} />
-      </td>
-      <td><small>Schlagworte</small></td>
-      {props.tags.length && props.tags.length > 0 ? (
-        <>
+          <td className={"disabled"}>{t("none")}</td>
+        ) :
           <td>
-            {tags.map((tag) => {
-              if (props.tags.includes(tag.tag_id)) {
-                return (
-                  <TagView
-                    style={{ fontSize: "100%" }}
-                    theme={theme}
-                    key={tag.tag_id}
-                  >
-                    {tag.name}
-                  </TagView>
-                );
-              } else return null;
-            })}
+            {`${props.braille_no_of_pages} × ${t("catalogue:a4-portrait")}`}
           </td>
-        </>
-      ) : (
-          <td className={"disabled"} colSpan={2}>
-            {t("gui:none")}
-          </td>
-        )}
-    </tr>
-    <tr>
-      <td className={"icon-cell"}>
-        <Icon title={"Erstellt am"} icon={"calendar-alt"} />
-      </td>
-      <td><small>Erstellt am</small></td>
-      <td>
-        {moment(props.created_at, DB_DATE_FORMAT).format(
-          "DD.MM.YYYY, HH:mm"
-        )}{" "}
-              Uhr
+        }
+      </tr>
+      <tr>
+        <td className={"icon-cell"}>
+          <Icon title={t('catalogue:brailleSystem')} icon={"braille"} />
         </td>
-    </tr>
+        <td><small>{t("catalogue:brailleSystem")}</small></td>
+        <td className={""}>
+          {t(props.system)}
+        </td>
+      </tr>
+      <tr>
+        <td className={"icon-cell"}>
+          <Icon title={t("catalogue:appliedTags")} icon={"tags"} />
+        </td>
+        <td><small>{t("catalogue:appliedTags")}</small></td>
+        {props.tags.length && props.tags.length > 0 ? (
+          <>
+            <td>
+              {tags.map((tag) => {
+                if (props.tags.includes(tag.tag_id)) {
+                  return (
+                    <TagView
+                      style={{ fontSize: "100%" }}
+                      theme={theme}
+                      key={tag.tag_id}
+                    >
+                      {tag.name}
+                    </TagView>
+                  );
+                } else return null;
+              })}
+            </td>
+          </>
+        ) : (
+            <td className={"disabled"} colSpan={2}>
+              {t("none")}
+            </td>
+          )}
+      </tr>
+      <tr>
+        <td className={"icon-cell"}>
+          <Icon title={t('catalogue:createdAt')} icon={"calendar-alt"} />
+        </td>
+        <td><small>{t('catalogue:createdAt')}</small></td>
+        <td>
+          {moment(props.created_at, DB_DATE_FORMAT).format(t('dateFormat'))}
+        </td>
+      </tr>
     </tbody>
   </table >
 
   const buttonBar = <ButtonBar align={'left'}>
-  <FlyoutButton
-    flyoutWidth={300}
-    disabled={!logged_in || !lg}
-    icon={"pen"}
-    label={"Im Editor öffnen, um ..."}
-  >
-    <FlyoutEntry
-      icon={"file-medical"}
-      label={"catalogue:variant-copy"}
-      onClick={() => {
-        dispatch({
-          type: FILE.OPEN.REQUEST,
-          id: variantId,
-          mode: 'copy',
-        });
-        navigate('/editor/app');
-      }}
-      sublabel={"catalogue:variant-copy-hint"}
-    />
-    <FlyoutEntry
-      icon={"glasses"}
-      label={"catalogue:variant-edit"}
-      onClick={() => {
-        dispatch({
-          type: FILE.OPEN.REQUEST,
-          id: variantId,
-          mode: 'edit',
-        });
-        navigate('/editor/app');
-      }}
-      sublabel={"catalogue:variant-edit-hint"}
-    />
-    <FlyoutEntry
-      icon={"file-export"}
-      label={"catalogue:variant-new"}
-      onClick={() => {
-        dispatch({
-          type: FILE.OPEN.REQUEST,
-          id: variantId,
-          mode: 'new',
-        });
-        navigate('/editor/app');
-      }}
-      sublabel={"catalogue:variant-new-hint"}
-    />
-  </FlyoutButton>
-
-  <FlyoutButton
-    disabled={!logged_in}
-    rightAlign
-    icon={"file-download"}
-    label={"catalogue:download-as"}
-  >
-    {['pdf', 'rtf', 'brf', 'zip'].map(format => {
-      return <FlyoutEntry
-        icon={format === 'pdf' ? 'file-pdf' : format === 'zip' ? 'file-archive' : format === 'rtf' ? 'file-word' : 'braille'}
-        key={format}
-        label={"catalogue:" + format}
-        onClick={() =>
-          (window.location = `${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`)
-        }
-        sublabel={`catalogue:${format}-hint`}
+    <FlyoutButton
+      flyoutWidth={300}
+      disabled={!logged_in || !lg}
+      icon={"pen"}
+      label={"catalogue:openInEditor"}
+    >
+      <FlyoutEntry
+        icon={"file-medical"}
+        label={"catalogue:variant-copy"}
+        onClick={() => {
+          dispatch({
+            type: FILE.OPEN.REQUEST,
+            id: variantId,
+            mode: 'copy',
+          });
+          navigate('/editor/app');
+        }}
+        sublabel={"catalogue:variant-copy-hint"}
       />
-    })}
-  </FlyoutButton>
-  <Toggle
-    label={"catalogue:history_" + (showHistory ? "hide" : "show")}
-    toggled={showHistory}
-    icon={"history"}
-    onClick={() =>
-      setSearchParams({ view: showHistory ? "" : "history" })
-    }
-  />
-</ButtonBar>
+      <FlyoutEntry
+        icon={"glasses"}
+        label={"catalogue:variant-edit"}
+        onClick={() => {
+          dispatch({
+            type: FILE.OPEN.REQUEST,
+            id: variantId,
+            mode: 'edit',
+          });
+          navigate('/editor/app');
+        }}
+        sublabel={"catalogue:variant-edit-hint"}
+      />
+      <FlyoutEntry
+        icon={"file-export"}
+        label={"catalogue:variant-new"}
+        onClick={() => {
+          dispatch({
+            type: FILE.OPEN.REQUEST,
+            id: variantId,
+            mode: 'new',
+          });
+          navigate('/editor/app');
+        }}
+        sublabel={"catalogue:variant-new-hint"}
+      />
+    </FlyoutButton>
 
-return (
-  <Wrapper ref={ref}>
-    {pagePreviews}
+    <FlyoutButton
+      disabled={!logged_in}
+      rightAlign
+      icon={"file-download"}
+      label={"catalogue:download-as"}
+    >
+      {['pdf', 'rtf', 'brf', 'zip'].map(format => {
+        return <FlyoutEntry
+          icon={format === 'pdf' ? 'file-pdf' : format === 'zip' ? 'file-archive' : format === 'rtf' ? 'file-word' : 'braille'}
+          key={format}
+          label={"catalogue:" + format}
+          onClick={() =>
+            (window.location = `${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`)
+          }
+          sublabel={`catalogue:${format}-hint`}
+        />
+      })}
+    </FlyoutButton>
+    <Toggle
+      label={"catalogue:history_" + (showHistory ? "hide" : "show")}
+      toggled={showHistory}
+      icon={"history"}
+      onClick={() =>
+        setSearchParams({ view: showHistory ? "" : "history" })
+      }
+    />
+  </ButtonBar>
 
-    <Title>
-      {props.graphicTitle}: {props.title}
-    </Title>
-    {description}
+  return (
+    <Wrapper ref={ref}>
+      {pagePreviews}
 
-    <div className={'details'}>
-      {detailTable}
+      <Title>
+        {props.graphicTitle}: {props.title}
+      </Title>
+      {description}
 
-      {!logged_in && (
-        <Alert info>
-          Bitte <NavLink to={"/login"}>logge dich ein</NavLink> oder{" "}
-          <NavLink to={"/signup"}>erstelle ein Konto</NavLink>, um Grafiken
-              zu bearbeiten.
-        </Alert>
-      )}
+      <div className={'details'}>
+        {detailTable}
 
-      {!lg && <Alert warning>{t("editor:not_available-screen")}</Alert>}
+        {!logged_in && (
+          <Alert info>
+            <Trans i18nKey={'editor:pleaseLogin'}>
+              0<NavLink to={"/login"}>1</NavLink>2<NavLink to={"/signup"}>3</NavLink>4
+          </Trans>
 
-      {buttonBar}
+          </Alert>
+        )}
 
-      <Well>
-        {props.braille_no_of_pages > 0 ? (
-          <Radio
-            onChange={setProduct}
-            legend={'Grafik auf Schwellpapier bestellen und Bildbeschreibung erhalten als'}
-            name={"graphic_only_or_both_" + props.id}
-            value={product} options={[
-              {
-                label: `${props.braille_no_of_pages} × DIN A4, Brailleprägung`,
-                value: "graphic"
-              },
-              {
-                label: "E-Mail" + ` (${((props.quote - props.quote_graphics_only) / 100)
-                  .toFixed(2)
-                  .replace(".", ",")}€ günstiger)`, value: "graphic_nobraille"
-              }
-            ]} />
-        ) : (
-            <p><strong>Grafik auf {props.graphic_no_of_pages} Seite/n Schwellpapier bestellen</strong></p>
-          )}
+        {!lg && <Alert warning>{t("editor:not_available-screen")}</Alert>}
 
-      <br />
-        <OrderWidget>
-          {/*<div style={{display: 'flex'}}>*/}
-          <Numberinput
-            // disabled={}
-            inline
-            noMargin
-            onChange={(event) => {
-              setQuantity(event.currentTarget.value);
-            }}
-            min={1}
-            value={quantity}
-            label={t(`catalogue:Stück`)}
-          />
+        {buttonBar}
 
-          <div>
-            <Currency
-              amount={
-                (product === "graphic"
-                  ? props.quote
-                  : props.quote_graphics_only) * quantity
-              }
+        <Well>
+          {props.braille_no_of_pages > 0 ? (
+            <Radio
+              onChange={setProduct}
+              legend={['catalogue:orderWithBraille', {count: props.graphic_no_of_pages}]}
+              name={"graphic_only_or_both_" + props.id}
+              value={product} options={[
+                {
+                  label: t('catalogue:orderWithBrailleEmboss', {count: props.braille_no_of_pages}),
+                  value: "graphic"
+                },
+                {
+                  label: t('catalogue:orderWithBrailleMail', 
+                    {saved: (props.quote - props.quote_graphics_only) / 100}), 
+                    value: "graphic_nobraille"
+                }
+              ]} />
+          ) : (
+              <p><strong>{t('catalogue:orderWithoutBraille', {count: props.graphic_no_of_pages})}</strong></p>
+            )}
+
+          <br />
+          <OrderWidget>
+            {/*<div style={{display: 'flex'}}>*/}
+            <Numberinput
+              // disabled={}
+              inline
+              noMargin
+              onChange={(event) => {
+                setQuantity(event.currentTarget.value);
+              }}
+              min={1}
+              value={quantity}
+              label={t(`catalogue:pcs`)}
             />
 
-            {/*{quantity !== 1 &&*/}
-            <small>
-              <br />
-              Einzelpreis:{" "}
+            <div>
               <Currency
-                normal
                 amount={
-                  product === "graphic"
+                  (product === "graphic"
                     ? props.quote
-                    : props.quote_graphics_only
+                    : props.quote_graphics_only) * quantity
                 }
               />
-            </small>
-            {/*}*/}
-            <small>
-              <br />
-              {t("zzgl. Versand")}
-            </small>
-          </div>
 
-          <Button
-            onClick={() => addToBasket(dispatch, variantId, quantity, product)}
-            label={t("catalogue:In den Warenkorb")}
-            large
-            primary
-            icon={"cart-plus"}
-          />
-        </OrderWidget>
-      </Well>
-    </div>
+              {/*{quantity !== 1 &&*/}
+              <small>
+                <br />
+              {t('catalogue:singlePrice')}: <Currency
+                  normal
+                  amount={
+                    product === "graphic"
+                      ? props.quote
+                      : props.quote_graphics_only
+                  }
+                />
+              </small>
+              {/*}*/}
+              <small>
+                <br />
+                {t("catalogue:plusShipping")}
+              </small>
+            </div>
 
-  </Wrapper>
-);
+            <Button
+              onClick={() => addToBasket(dispatch, variantId, quantity, product)}
+              label={t("catalogue:addToCart")}
+              large
+              primary
+              icon={"cart-plus"}
+            />
+          </OrderWidget>
+        </Well>
+      </div>
+
+    </Wrapper>
+  );
 };
 
 export default VariantView;

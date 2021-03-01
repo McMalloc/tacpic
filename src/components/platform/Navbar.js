@@ -1,26 +1,26 @@
 import styled from 'styled-components/macro';
 import React from "react";
-import {useTranslation} from "react-i18next";
-import {NavLink} from "react-router-dom";
-import {useLocation} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {Icon} from "../gui/_Icon";
-import {Button} from "../gui/Button";
-import {LG_SCREEN, MD_SCREEN, SM_SCREEN} from "../../config/constants";
-import {template} from "lodash";
-import {useBreakpoint} from "../../contexts/breakpoints";
-import {Burgermenu} from "../gui/Burgermenu";
+import { useTranslation } from "react-i18next";
+import { NavLink } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Icon } from "../gui/_Icon";
+import { Button } from "../gui/Button";
+import { LG_SCREEN, MD_SCREEN, SM_SCREEN } from "../../config/constants";
+import { template } from "lodash";
+import { useBreakpoint } from "../../contexts/breakpoints";
+import { Burgermenu } from "../gui/Burgermenu";
+import LanguageSwitch from '../gui/LanguageSwitch';
+import ButtonBar from '../gui/ButtonBar';
 
 const Wrapper = styled.nav`
   background-color: white;
-  padding: 6px;
+  padding: 0 3px;
   font-size: 1.1rem;
   box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
   border-bottom: 1px solid ${props => props.theme.grey_5};
-
-  a {
-      margin-left: 0.5rem;
-  }
   
   ${SM_SCREEN} {
     
@@ -35,45 +35,59 @@ const Wrapper = styled.nav`
 
 const NavbarItem = styled(NavLink)`
     color: ${props => props.theme.brand_secondary};
+    padding: 8px 8px;
     text-decoration: none;
-    margin: 0 ${props => props.theme.large_padding};
+    font-weight: bold;
+    /* text-transform: uppercase; */
+    font-family: 'Quicksand', sans-serif;
     position: relative;
-    border-bottom: 3px solid transparent;
-    border-top: 4px solid transparent!important;
+    /* border-left: 1px solid ${props => props.theme.grey_5}; */
     white-space: nowrap;
+    width: 100%;
+    z-index: 0;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+
+    &:hover:before {
+        height: 3px;
+    }
 
     &.active:before {
-        background-color: ${props => props.theme.brand_primary};
+        height: 8px;
     }
-    
-    &:not(:last-child) {
-      margin-right: ${props => props.theme.spacing[1]};
-    }
-    
-    &:hover {
-      border-color: ${props => props.theme.brand_secondary_verylight};
-    }
-   
-    &.active {
-      font-weight: bold;
-      border-color: ${props => props.theme.brand_primary};
-    }
-`;
 
-const EmphasizedNavbarItem = styled(NavbarItem)`
-  background-color: ${props => props.theme.brand_secondary};
-  color: ${props => props.theme.background};
+    &:before {
+        position: absolute;
+        background-color: ${props => props.theme.brand_primary};
+        height: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        transition: height 0.3s;
+        content: "";
+        z-index: -1;
+    }
+    
+    &:last-child, &.single {
+        /* border-right: 1px solid ${props => props.theme.grey_5}; */
+        margin-right: 0.5rem;
+    }
+
+    ${MD_SCREEN} {
+        border: none;
+        font-size: 0.9rem;
+        border-left: 1px solid ${props => props.theme.grey_5};
+
+        &:last-child, &.single {
+            border-right: 1px solid ${props => props.theme.grey_5};
+            margin-right: 0.5rem;
+        }
+    } 
 `;
 
 const NavbarItemGroup = styled.div`
   display: flex;
-  align-content: center;
-  /* flex: 0 1 0; */
-  float: left;
-
-  &:last-child {
-    float: right;
-  }
+  align-items: center;
 `;
 
 const Logo = styled.img`
@@ -100,17 +114,17 @@ const Badge = styled.div`
 `;
 
 const Navbar = props => {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const location = useLocation();
     const user = useSelector(state => state.user);
     const basket = useSelector(state => state.catalogue.basket);
     const dispatch = useDispatch();
-    const {md} = useBreakpoint();
+    const { md } = useBreakpoint();
 
 
     const logo = <>
         <NavLink to={"/"}>
-            <div style={{position: 'relative', marginLeft: md ? 0 : 12, marginRight:  md ? 12 : 0}}>
+            <div style={{ position: 'relative', marginLeft: md ? 0 : 12, marginRight: md ? 12 : 0 }}>
                 <Logo src={"/images/logo.svg"} />
                 <Badge>Alpha</Badge>
             </div>
@@ -126,25 +140,25 @@ const Navbar = props => {
     })
 
     const accountLink = <NavbarItem to={'/account'}>
-        <Icon icon={"user-circle"}/>&nbsp;
-        {t("general:my_account")}
+        <Icon icon={"user-circle"} />&nbsp;
+        {t("account:private")}
     </NavbarItem>
 
     const loginSignupLinks = <>
         <NavLink className={"no-styled-link"} to={'/signup?redirect=' + location.pathname}>
-            <Button label={t("general:signup")} icon={"user-plus"} primary />
-        </NavLink>
+            <Button small={md} label={t("account:signup")} icon={"user-plus"} primary />
+        </NavLink>&ensp;
         <NavLink className={"no-styled-link"} to={'/login'}>
-            <Button label={t("general:login")} icon={"sign-in-alt"} />
+            <Button small={md} label={t("account:login")} icon={"sign-in-alt"} />
         </NavLink>
     </>
 
-    const basketButton = <NavbarItem id={"basket-nav-link"} to={'/basket'}>
-        <Icon icon={"shopping-cart"}/>&nbsp;
+    const basketButton = <NavbarItem className={'single'} id={"basket-nav-link"} to={'/basket'}>
+        <Icon icon={"shopping-cart"} />&nbsp;
         {basket.length > 0 ?
-            <>{t(md ? "commerce:basket" : "commerce:basket_short", {quantity: basket.length})}</>
+            <>{t(md ? "commerce:basket" : "commerce:basketShort", { quantity: basket.length })}</>
             :
-            <>{t("commerce:empty_basket")}</>
+            <>{t("commerce:emptyBasket")}</>
         }
     </NavbarItem>
 
@@ -154,25 +168,24 @@ const Navbar = props => {
                 <>
                     <NavbarItemGroup>
                         {logo}
-                    </NavbarItemGroup>
-                    <NavbarItemGroup>
                         {sections}
+                        {/* <a><LanguageSwitch /></a> */}
                     </NavbarItemGroup>
 
                     <NavbarItemGroup>
                         {basketButton}
-
-                        {user.logged_in ? accountLink : loginSignupLinks}
+                        <LanguageSwitch />&ensp;
+                            {user.logged_in ? accountLink : loginSignupLinks}
                     </NavbarItemGroup>
                 </>
                 :
                 <>
                     <NavbarItemGroup>
-                        <Burgermenu>
+                        <Burgermenu headerAction={<LanguageSwitch />}>
                             {sections}
-                            <hr/>
+                            <hr />
                             {user.logged_in ? accountLink : loginSignupLinks}
-                            <NavbarItem className={"no-styled-link"} to={'/info/de/Impressum'}>
+                            <NavbarItem className={"no-styled-link"} to={'/info/de/66?Impressum'}>
                                 Impressum
                             </NavbarItem>
                         </Burgermenu>
@@ -187,4 +200,4 @@ const Navbar = props => {
     )
 };
 
-export {Navbar, NavbarItem}
+export { Navbar, NavbarItem }
