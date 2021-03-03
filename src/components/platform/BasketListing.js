@@ -140,10 +140,10 @@ const BasketListing = () => {
                                     <strong>{correspondingVariant.graphic_title} ({correspondingVariant.title})</strong>
                                 </Link>
                                 <p>
-                                    Schwellpapier <br />
+                                    {t('glossary:microcapsule')} <br />
                                     {correspondingVariant.graphic_no_of_pages} &times; {t('catalogue:' + correspondingVariant.graphic_format + '-' + (correspondingVariant.graphic_landscape ? 'landscape' : 'portrait'))} 
                                     <br />
-                                    {t(correspondingVariant.system)}
+                                    <span>{t(correspondingVariant.system.replace(':', '.'))}</span>
                                 </p>
 
                             </div>
@@ -152,22 +152,22 @@ const BasketListing = () => {
                             <div className={'middle'}>
                                 <Radio
                                     onChange={value => updateBasket(dispatch, quoteItem.content_id, quoteItem.quantity, value, index)}
-                                    legend={'Bildbeschreibung erhalten als'}
+                                    legend={'commerce:descriptionAs'}
                                     name={"product_type_" + index}
                                     value={quoteItem.product_id} options={[
                                         {
-                                            label: t('commerce:productSelectWithBraille', {count: correspondingVariant.braille_no_of_pages}),
+                                            label: ['commerce:productSelectWithBraille', {count: correspondingVariant.braille_no_of_pages}],
                                             value: "graphic"
                                         },
-                                        { label: "E-Mail", value: "graphic_nobraille" }
+                                        { label: "commerce:perEMail", value: "graphic_nobraille" }
                                     ]} />
                             </div>
                         }
 
                         <div className={'lower'}>
                             <Button onClick={() => removeItem(dispatch, index)} icon={"times"} data-role={"remove-btn"}
-                                label={"Entfernen"} />
-                            <Numberinput min={1} value={quoteItem.quantity} label={'Stück'}
+                                label={"remove"} />
+                            <Numberinput min={1} value={quoteItem.quantity} label={'catalogue:pcs'}
                                 inline noMargin
                                 onChange={event => updateBasket(dispatch, quoteItem.content_id, event.target.value, quoteItem.product_id, index)} />
                             <Currency amount={quoteItem.gross_price * quoteItem.quantity} />
@@ -179,7 +179,7 @@ const BasketListing = () => {
             <MetaItemTable>
                 <tbody>
                     <MetaItemRow>
-                        <td>Zwischensumme Artikel</td>
+                        <td>{t('commerce:subtotal')}</td>
                         <PriceCell><Currency
                             amount={quote.items.reduce((acc, current) => acc + current.gross_price * current.quantity, 0)} />
                         </PriceCell>
@@ -196,12 +196,12 @@ const BasketListing = () => {
                     </MetaItemRow>
                     <MetaItemRow>
 
-                        <td>{t('inkl. 7% Mehrwertsteuer')}</td>
+                        <td>{t('commerce:inclVAT', {amount: 7})}</td>
                         <PriceCell><Currency amount={quote.gross_total - quote.net_total} /></PriceCell>
                     </MetaItemRow>
                     <MetaItemRow>
 
-                        <td className={'overline'}><strong>Gesamt</strong></td>
+                        <td className={'overline'}><strong>{t('commerce:total')}</strong></td>
                         <PriceCell className={'overline'}><strong><Currency amount={quote.gross_total} /></strong>
                         </PriceCell>
                     </MetaItemRow>

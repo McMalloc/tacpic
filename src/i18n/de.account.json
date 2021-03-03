@@ -64,5 +64,19 @@
 
         "mailSent": "<0>Vielen Dank!</0><1/>Wir haben Ihnen eine E-Mail mit weiteren Anweisungen geschickt.",
         "enterMail": "Bitte geben Sie Ihre E-Mail-Adresse, unter der Sie ein Benutzerkonto bei uns haben. Wer schicken Ihnen eine E-Mail mit weiteren Anweisungen."
+    },
+
+    "addressMenu": {
+        "nonCreated": "Noch keine Adressen vorhanden.",
+        "surname": "Vorname",
+        "familyName": "Nachname",
+        "companyName": "Firmenname",
+        "street": "Straße",
+        "houseNumber": "Hausnr.",
+        "city": "Stadt",
+        "zip": "PLZ",
+        "state": "Bundesland",
+        "country": "Staat",
+        "add": "Adresse anlegen"
     }
 }

@@ -1,13 +1,22 @@
 {
-    "noTitle": "Noch kein Titel",
-    "editTitle": "Titel ändern",
-    "saveInProgress": "Titel ändern",
-    "pleaseLogin": "Bitte <1>logge dich ein</1> oder <3>erstelle ein Konto</3>, um Grafiken zu bearbeiten.",
+    "title": "Titel",
+    "noTitle": "Noch kein $t(editor:title) vergeben",
+    "editTitle": "$t(editor:title) ändern",
+    "saveInProgress": "Wird gespeichert",
+    "lastEdited": "Zuletzt bearbeitet",
+    "notPublished": "Nicht veröffentlicht",
+    "deleteDraft": "Entwurf löschen",
+
+    "pleaseLogin": "Bitte <1>loggen Sie sich ein</1> oder <3>erstellen Sie ein Konto</3>, um Grafiken im Katalog zu speichern.",
+    "pleaseLoginHint": "Ohne ein Benutzerkonto können Sie den Editor ohne Speichern ausprobieren.",
 
     "placeholderEllipse": "Ellipse",
     "placeholderRect": "Rechteck",
     "placeholderLabel": "Beschriftung",
     "placeholderKey": "Legende",
+
+    "newDraft": "Neuer Entwurf",
+    "localFilesAvailable": "Es liegen unveröffentlichte Bearbeitungen vor. Diese sind lokal, also nur von diesem Gerät und Browser abrufbar.",
 
     "draftPanel": {
         "heading": "Entwurf",
@@ -17,6 +26,7 @@
         "viewLicense": "Lizenz einsehen."
     },
     "graphicPanel": {
+        "format": "Papierformat",
         "heading": "Grafikseiten",
         "settings": "Einrichten",
         "grid": "Grundraster",
@@ -32,7 +42,7 @@
         "show": "Einblenden",
         "settings": "Einrichten",
         "imageDescription": "Bildbeschreibung",
-        "countHint": "Für A4-Seiten gilt:<1/>Max. {{A4_MAX_ROWS_PER_PAGE}} Zeilen pro Seite<3 />max. {{A4_MAX_CHARS_PER_ROW}} Zeichen pro Zeile",
+        "countHint": "Für $t(glossary:a4)-Seiten gilt:<1/>Max. {{A4_MAX_ROWS_PER_PAGE}} Zeilen pro Seite<3 />max. {{A4_MAX_CHARS_PER_ROW}} Zeichen pro Zeile",
         "marginTop": "Rand oben",
         "marginTopUnit": "in Zeilen",
         "marginLeft": "Rand links",

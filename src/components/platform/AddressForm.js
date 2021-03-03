@@ -7,6 +7,7 @@ import Select from "../gui/Select";
 import {Row} from "../gui/Grid";
 import Modal from "../gui/Modal";
 import {EWR, GERMAN_STATES} from "../../config/constants";
+import { useTranslation } from "react-i18next";
 
 const submitAddress = (dispatch, address) => {
     dispatch({
@@ -32,11 +33,11 @@ export const defaults = {
 
 const AddressForm = props => {
     const dispatch = useDispatch();
+    const {t} = useTranslation();
     const [address, changeAddress] = useState({ ...defaults, ...props.initial });
 
     const setState = event => {
         const updatedModel = {...address, [event.target.name]: event.target.value, id: null};
-        console.dir(updatedModel);
         props.modelCallback && props.modelCallback(updatedModel);
         changeAddress(updatedModel);
     }
@@ -47,12 +48,12 @@ const AddressForm = props => {
             <div className={"col-xs-6"}>
                 <Textinput required={address.company_name.length === 0} onChange={setState}
                            value={address.first_name}
-                           name={"first_name"} label={"Vorname"}/>
+                           name={"first_name"} label={"account:addressMenu.surname"}/>
             </div>
             <div className={"col-xs-6"}>
                 <Textinput required={address.company_name.length === 0} onChange={setState}
                            value={address.last_name}
-                           name={"last_name"} label={"Nachname"}/>
+                           name={"last_name"} label={"account:addressMenu.familyName"}/>
             </div>
         </Row>
 
@@ -60,24 +61,29 @@ const AddressForm = props => {
             <div className={"col-xs-6"}>
                 <Textinput required={address.last_name.length === 0} onChange={setState}
                            value={address.company_name}
-                           name={"company_name"} label={"Firmenname"}/>
+                           name={"company_name"} label={"account:addressMenu.companyName"}/>
             </div>
         </Row>
 
         <Row>
             <div className={"col-xs-9"}>
                 <Textinput required onChange={setState} value={address.street} name={"street"}
-                           label={"Straße"}/>
+                           label={"account:addressMenu.street"}/>
             </div>
             <div className={"col-xs-3"}>
                 <Textinput required onChange={setState} value={address.house_number} name={"house_number"}
-                           label={"Hausnummer"}/>
+                           label={"account:addressMenu.houseNumber"}/>
             </div>
         </Row>
 
         <Row>
             <div className={"col-xs-9"}>
-                <Textinput required onChange={setState} value={address.city} name={"city"} label={"Stadt"}/>
+                <Textinput 
+                    required 
+                    onChange={setState} 
+                    value={address.city} 
+                    name={"city"} 
+                    label={"account:addressMenu.city"}/>
             </div>
             <div className={"col-xs-3"}>
                 <Textinput validations={[
@@ -85,7 +91,12 @@ const AddressForm = props => {
                         fn: val => /[0-9]+/.test(val), message: "general:zip-invalid", callback: () => {
                         }
                     }
-                ]} required onChange={setState} value={address.zip} name={"zip"} label={"Postleitzahl"}/>
+                ]} 
+                required 
+                onChange={setState} 
+                value={address.zip} 
+                name={"zip"} 
+                label={"account:addressMenu.zip"}/>
             </div>
         </Row>
 
@@ -94,20 +105,20 @@ const AddressForm = props => {
                 <Select onChange={({label, value}) => {
                     changeAddress({...address, state: value})
                 }}
-                        value={address.state} name={"state"} label={"Bundesland"}
+                        value={address.state} name={"state"} label={"account:addressMenu.state"}
                     options={GERMAN_STATES} />
             </div>
             <div className={"col-xs-6"}>
                 <Select value={address.country} name={"country"} disabled={!address.is_invoice_addr}
                         onChange={(label, value) => changeAddress({...address, country: value})}
                         options={address.is_invoice_addr ? EWR : [{label: "Deutschland", value: "DEU"}]}
-                        label={"Staat"}/>
+                        label={"account:addressMenu.country"}/>
                 {/*{(!address.is_invoice_addr) &&*/}
                 {/*        <small>Zur Zeit unterstützen wir nur die Lieferung nach Deutschland.</small>*/}
                 {/*}*/}
             </div>
             <div>
-                *: erforderlich
+                *: {t('required')}
             </div>
         </Row>
 
@@ -135,13 +146,13 @@ const AddressForm = props => {
         return (
             <Modal fitted actions={[
                 {
-                    label: "Verwerfen",
+                    label: "discard",
                     name: "cancel-address-form",
                     align: "left",
                     action: props.cancel
                 },
                 {
-                    label: "Adresse anlegen",
+                    label: "account:addressMenu.add",
                     name: "confirm-address-form",
                     align: "right",
                     template: 'primary',

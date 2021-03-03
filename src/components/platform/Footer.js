@@ -65,9 +65,7 @@ const Footer = props => {
     return (
         <FooterStyled small={props.small}>
             <div className={"container"}>
-                {/* <Row>
-                    <Button icon={'language'} onClick={() => i18n.changeLanguage('en')} primary label={'toEnglish'} />
-                </Row> */}
+
                 <Row>
                 {props.small ?
                     <div className={"col-md-12 align-center"}>
@@ -82,7 +80,8 @@ const Footer = props => {
                                 <span className={"heading"}>{t('footer:informationHeading')}</span>
                                 {legalTexts.map((text, index) => {
                                     return <span key={index}><NavLink
-                                        to={`/info/${i18n.language}/${text.id}?${text.title}`}>{text.title}</NavLink> <br/></span>
+                                        to={`/info/${i18n.language}/${text.id}?${text.title}`}>
+                                            {t('legal:' + text.title)}</NavLink> <br/></span>
                                 })}
                             </p>
 

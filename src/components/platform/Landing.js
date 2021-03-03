@@ -77,7 +77,6 @@ const Wrapper = styled.div`
           background-size: contain;
       }
       
-
       &:after {
         background: rgb(255,255,255);
         background: linear-gradient(0deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 100%);
@@ -153,7 +152,6 @@ const Landing = () => {
                         <div className={"col-xs-12 col-sm-6"}>
                             <Trans i18nKey={'landing:copy'}>
                                 <h2>h</h2>
-                                <p>p</p>
                                 <p>p</p>
                             </Trans>
 

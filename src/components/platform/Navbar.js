@@ -48,6 +48,10 @@ const NavbarItem = styled(NavLink)`
     font-size: 1.1rem;
     letter-spacing: 1px;
 
+    &.disabled {
+        color: #ccc;
+    }
+
     &:hover:before {
         height: 3px;
     }
@@ -153,7 +157,7 @@ const Navbar = props => {
         </NavLink>
     </>
 
-    const basketButton = <NavbarItem className={'single'} id={"basket-nav-link"} to={'/basket'}>
+    const basketButton = <NavbarItem className={`single ${basket.length === 0 && 'disabled'}`} id={"basket-nav-link"} to={'/basket'}>
         <Icon icon={"shopping-cart"} />&nbsp;
         {basket.length > 0 ?
             <>{t(md ? "commerce:basket" : "commerce:basketShort", { quantity: basket.length })}</>

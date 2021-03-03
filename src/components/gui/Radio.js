@@ -81,7 +81,7 @@ const Radio = props => {
     return (
         <div role={'group'} aria-labelledby={props.name + "_head"}>
             <Grouphead id={props.name + "_head"}>
-              {t(...props.legend)}
+              {Array.isArray(props.legend) ? t(...props.legend) : t(props.legend)}
             </Grouphead>
             {props.options && props.options.map((option, index) => {
                 return (
@@ -96,7 +96,7 @@ const Radio = props => {
                             type={"radio"}/>
                             <Label active={option.value === props.value}
                                    htmlFor={props.name + "-" + option.value}>
-                                <span className={"label"}>{option.component ? option.component : option.label}</span>
+                                <span className={"label"}>{option.component ? option.component : Array.isArray(option.label) ? t(...option.label) : t(option.label)}</span>
                             </Label>
                     </Wrapper>
                 )

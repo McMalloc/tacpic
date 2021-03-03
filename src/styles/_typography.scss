@@ -158,6 +158,11 @@ p {
     font-size: 0.95rem;
   }
 
+  &.smallprint {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
   &.copy {
     max-width: 600px;
   }

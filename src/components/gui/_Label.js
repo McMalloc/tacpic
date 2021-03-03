@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro';
 import React from "react";
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 const Main = styled.label`
   display: ${props => props.inline ? "inline" : "block"};
@@ -10,9 +10,15 @@ const Main = styled.label`
   margin-bottom: ${props => props.noMargin ? 0 : props.theme.spacing[3]};
   // color: ${props => props.required ? "blue" : "inherit"};
   
-  &:hover:first-line {
-    //border-color: ${props => props.theme.brand_secondary};
-    text-decoration: ${props => props.disabled ? 'none' : "underline"};
+  &:hover {
+    
+    &:first-line {
+      text-decoration: ${props => props.disabled ? 'none' : "underline"};
+    }
+
+    input {
+      border-color: ${props => props.theme.grey_2};
+    }
   }
 `;
 
@@ -23,16 +29,16 @@ export const Sub = styled.span`
 `;
 
 const Label = props => {
-    const { t } = useTranslation();
-    return (
-        <Main data-tip={t(props.tip)} {...props}>
-            {t(props.label)}{props.required && <span aria-hidden={true}>&nbsp;*</span>}
-            {props.sublabel &&
-            <><br/><Sub className={'sub-label'}>{t(props.sublabel)}</Sub></>
-            }
-            {props.children}
-        </Main>
-    );
+  const { t } = useTranslation();
+  return (
+    <Main data-tip={t(props.tip)} {...props}>
+      {t(props.label)}{props.required && <span aria-hidden={true}>&nbsp;*</span>}
+      {props.sublabel &&
+        <><br /><Sub className={'sub-label'}>{t(props.sublabel)}</Sub></>
+      }
+      {props.children}
+    </Main>
+  );
 };
 
 export default Label;

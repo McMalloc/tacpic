@@ -45,8 +45,8 @@ const GraphicPageSettings = () => {
                         onChange={selection => changeFileFormat(dispatch, determineDimensions(selection.value, width > height))} 
                         options={
                             [
-                                {label: "DIN A4", value: "a4"},
-                                {label: "DIN A3", value: "a3"}
+                                {label: t('glossary:a4'), value: "a4"},
+                                {label: t('glossary:a3'), value: "a3"}
                             ]}
                     />
 

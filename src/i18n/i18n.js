@@ -8,6 +8,7 @@ import DELanding from "./de.landing";
 import DECatalogue from "./de.catalogue";
 import DEFooter from "./de.footer";
 import DEAccount from "./de.account";
+import DEProducts from "./de.products";
 import ENEditor from "./en.editor";
 
 const resources = {
@@ -19,6 +20,7 @@ const resources = {
         landing: DELanding,
         account: DEAccount,
         footer: DEFooter,
+        products: DEProducts,
         catalogue: DECatalogue
     },
     en: {
@@ -85,7 +87,9 @@ i18n
             escapeValue: false,
             format: function(value, format, lang) {
                 if (format === 'currency') {
-                    return new Intl.NumberFormat(lang, { style: 'currency', currency: 'EUR' }).format(value)
+                    return new Intl.NumberFormat(lang, 
+                        { style: 'currency', currency: 'EUR' })
+                        .format(value / 100).replace(',00', ',–').replace(" ", " ")
                 };
                 return value;
             }

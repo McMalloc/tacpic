@@ -1,15 +1,12 @@
 import styled, { useTheme } from "styled-components/macro";
 import React, { useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CenterWrapper from "../gui/_CenterWrapper";
 import { Row } from "../gui/Grid";
 import { Button } from "../gui/Button";
 import Tile from "../gui/_Tile";
-import { Icon } from "../gui/_Icon";
-import { NavLink } from "react-router-dom";
-import { ORDER_RESET } from "../../actions/action_constants";
 
 const PrintserviceTable = styled.table`
   max-width: 600px;
@@ -30,7 +27,7 @@ const ProductCardWrapper = styled(Tile)`
       text-decoration: underline;
     }
     .product-card-icon img {
-      box-shadow: 0 0 0 5px ${(props) => props.theme.brand_primary};
+      box-shadow: 0 0 0 10px ${(props) => props.theme.brand_primary};
     }
   }
 
@@ -82,27 +79,27 @@ const ProductCard = (props) => {
       <h2 className={"product-card-heading"}>{props.heading}</h2>
       <div className={"product-card-subheading"}>{props.subheading}</div>
       <div className={"product-card-icon"}>
-        <img src={"images/" + props.icon} />
+        <img alt={''} src={"images/" + props.icon} />
       </div>
       <div className={"product-card-price-label"}>
         {!!props.priceLabels[1] ? (
           <>
             <div className={"price-special"}>{props.priceLabels[0]}</div>
-            <small>{props.priceLabels[1]}</small>
+            <p className={'smallprint'}>{props.priceLabels[1]}</p>
           </>
         ) : (
           <>{props.priceLabels[0]}</>
         )}
       </div>
       <p className={"product-card-copy"}>
-        <small>{props.copy}</small>
+        <p className={'smallprint'}>{props.copy}</p>
       </p>
       <div className={"product-card-buttons"}>{props.buttons}</div>
     </ProductCardWrapper>
   );
 };
 
-const Pricing = (props) => {
+const Pricing = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -110,64 +107,67 @@ const Pricing = (props) => {
 
   const products = [
     {
-      name: "Nutzung des Editors",
-      description:
-        "Nutzen Sie den tacpic Online-Editor dauerhaft kostenlos, um Ihre Vorlagen für Ihre Taktilen Grafiken zu entwerfen.",
-      duration: "unbegrenzt",
+      name: "products:editorHeading",
+      description: "products:editorDescription",
+      duration: "products:forever",
       icon: "icon_guenstig.svg",
-      price: "kostenlos",
+      price: "products:free",
+      priceAmount: 0,
       priceHint: null,
       buttons: [
         loggedIn ? (
-          "Sie haben sich bereits registriert!"
+          null
         ) : (
           <Button
             onClick={() => navigate("/signup")}
             icon={"user-plus"}
-            label={"Konto anlegen"}
+            label={"signup"}
             primary
           />
         ),
         <Button
           onClick={() => navigate("/editor/app")}
           icon={"pen"}
-          label={"Editor testen"}
+          label={"products:editorTest"}
         />,
       ],
     },
     {
-      name: "Download-Lizenz",
-      description: "30 Tage nach Erwerb der Lizenz stehen Ihnen sämtliche Entwürfe aus dem tacpic Katalog in zahlreichen Formaten zum Download zur Verfügung.",
-      duration: "1 Monat",
+      name: "products:subHeading",
+      description: "products:subDescription",
+      durationText: "products:1Month",
+      duration: 30,
       icon: "icon_guenstig.svg",
-      price: "aktuell kostenlos",
-      priceHint: "nach Beta-Phase 19,99€ inkl. MwSt.",
+      price: "products:currentlyFree",
+      priceAmount: 1999,
+      priceHint: "products:priceHint",
       buttons: [
         <Button
           icon={"shopping-cart"}
-          label={"In den Warenkorb"}
+          label={"catalogue:addToCart"}
           disabled
           primary
         />,
-        <Button icon={"file"} label={"Angebot anfordern"} />,
+        <Button icon={"file"} label={"products:requestOffer"} />,
       ],
     },
     {
-      name: "Download-Lizenz",
-      description:
-        "365 Tage nach Erwerb der Lizenz stehen Ihnen sämtliche Entwürfe aus dem tacpic Katalog in zahlreichen Formaten zum Download zur Verfügung.",
-      duration: "1 Jahr",
+      name: "products:subHeading",
+      description: "products:subDescription",
+      durationText: "products:1Year",
+      duration: 365,
       icon: "icon_guenstig.svg",
       price: "aktuell kostenlos",
-      priceHint: "nach Beta-Phase 199,-€ inkl. MwSt.",
+      priceAmount: 19900,
+      priceHint: "products:priceHint",
       buttons: [
         <Button
           icon={"shopping-cart"}
-          label={"In den Warenkorb"}
+          label={"catalogue:addToCart"}
           disabled
           primary
         />,
-        <Button icon={"file"} label={"Angebot anfordern"} />,
+        <Button icon={"file"} label={"products:requestOffer"} />,
       ],
     },
   ];
@@ -176,30 +176,27 @@ const Pricing = (props) => {
     <>
       <Row>
         <div className={"col-xs-12 col-sm-12 col-lg-3"}>
-          <h1>{t("general:pricing")}</h1>
+          <h1>{t("products:pricing")}</h1>
         </div>
         <div className={"col-xs-12"}>
-          <h2>Druckservice</h2>
-          <p>
-            Der Preis für eine Tastgrafik ergibt sich aus der Anzahl an Grafik-
-            und Brailleseiten und dem gewünschten Format.
-          </p>
+          <h2>{t("products:printing")}</h2>
+          <p>{t("products:printingDescription")}</p>
           <PrintserviceTable>
             <thead>
-              <th>Produkt</th>
-              <th>Preis pro Seite</th>
+              <th>{t("product")}</th>
+              <th>{t("products:pricePerPage")}</th>
             </thead>
             <tbody>
               <tr>
-                <td>Schwellpapierdruck DIN A4</td>
+                <td>{t("products:swellA4")}</td>
                 <td>-</td>
               </tr>
               <tr>
-                <td>Schwellpapierdruck DIN A3</td>
+                <td>{t("products:swellA3")}</td>
                 <td>-</td>
               </tr>
               <tr>
-                <td>Brailleprägung DIN A4</td>
+                <td>{t("products:braille")}</td>
                 <td>-</td>
               </tr>
             </tbody>
@@ -211,8 +208,8 @@ const Pricing = (props) => {
 
       <Row>
         <div className={"col-xs-12 col-sm-12 col-lg-12"}>
-          <h2>tacpic Online-Editor und Downloads aus dem tacpic Katalog</h2>
-          <p>Der tacpic Online-Editor steht Ihnen dauerhaft kostenlos zur Verfügung und wird fortlaufend verbessert. Wenn Sie Entwürfe aus dem sich stetig erweiternden tacpic Katalog für die eigene Produktion herunterladen wollen, wird es zukünftig notwendig sein eine der angebotenen Download Lizenzen zu erwerben. Da sich tacpic.de momentan noch in der Beta-Phase befindet, steht Ihnen die Möglichkeit zum Download aktuell kostenlos zur Verfügung.</p>
+          <h2>{t("products:heading")}</h2>
+          <p>{t("products:description")}</p>
         </div>
       </Row>
       <Row style={{ padding: "2rem 0" }}>
@@ -220,11 +217,11 @@ const Pricing = (props) => {
           return (
             <div className={"col-xs-12 col-sm-4"}>
               <ProductCard
-                heading={product.name}
-                subheading={product.duration}
+                heading={t(product.name)}
+                subheading={t(product.durationText)}
                 icon={product.icon}
-                priceLabels={[product.price, product.priceHint]}
-                copy={product.description}
+                priceLabels={[t(product.price), t(product.priceHint, {price: product.priceAmount})]}
+                copy={t(product.description, {count: product.duration})}
                 buttons={product.buttons}
               />
             </div>
@@ -233,28 +230,31 @@ const Pricing = (props) => {
       </Row>
       <Row>
         <div className={"col-xs-12 col-sm-4"}>
-          <strong>Funktionen des tacpic Editors</strong>
+          <strong>{t("products:editorFeaturesHeading")}:</strong>
           <ul>
             
-            <li>Braillekonverter</li>
-            <li>Basis- Voll- und Kurzschrift</li>
-            <li>wissenschaftlich geprüfte Texturen</li>
-            <li>Unterstützte Erstellung von Legenden</li>
-            <li>Bildbeschreibungsassistent</li>
-            <li>Importieren und Nachzeichen Funktion</li>
-            <li>Automatische Texterkennung</li>
+            <Trans i18nKey={'products:editorFeatures'}>
+              <li>0</li>
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+              <li>4</li>
+              <li>5</li>
+              <li>6</li>
+            </Trans>
 
           </ul>
         </div>
         <div className={"col-xs-12 col-sm-8"}>
-          <strong>Zum Download verfügbare Formate</strong>
+          <strong>{t("products:formatsHeading")}:</strong>
           <ul>
             
-            <li>PDF (Grafik)</li>
-            <li>RTF (Klartext für Textverarbeitungsprogramme)</li>
-            <li>RTF (codiert nach jeweiligem Braillesystem) (falls wir das anbieten werden, vorsichtshalber mal weg lassen)</li>
-            <li>BRF (codiert für Brailledrucker Index Everest)</li>
-            <li>ZIP-Ordner (alle Formate in einem komprimierten Ordner)</li>
+          <Trans i18nKey={'products:formats'}>
+              <li>0</li>
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+            </Trans>
 
           </ul>
         </div>

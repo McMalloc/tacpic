@@ -1,6 +1,9 @@
 {
     "brailleEmboss": "$t(glossary:brailleScript)prägung",
     "blackPrint": "Schwarzschrift",
+    "microcapsule": "Schwellpapier",
+    "a4": "DIN A4",
+    "a3": "DIN A3",
     "key": "Legende",
     "key_plural": "Legenden",
     "brailleScript": "Punktschrift",

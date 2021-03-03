@@ -10,6 +10,7 @@ import styled from 'styled-components/macro';
 import {Alert} from "../gui/Alert";
 import ButtonBar from "../gui/ButtonBar";
 import Modal from "../gui/Modal";
+import { useTranslation } from "react-i18next";
 
 const AddressWrapper = styled.div`
     background-color: ${props => props.theme.background};
@@ -37,6 +38,7 @@ const removeAddress = (dispatch, addressID) => {
 // TODO Bestätigungsdialog könnte refaktorisiert werden
 const Addresses = () => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
     const addresses = useSelector(state => state.user.addresses);
     const invoiceAddresses = addresses.filter(address => address.is_invoice_addr);
     const shippingAddresses = addresses.filter(address => !address.is_invoice_addr);
@@ -59,8 +61,8 @@ const Addresses = () => {
         <>
             <Row>
                 {invoiceAddresses.length === 0 && shippingAddresses.length === 0 &&
-                <div className={'col-xs-12'}>
-                    <Alert info>Noch keine Adressen vorhanden</Alert>
+                <div className={'col-xs-12 col-sm-6 col-sm-offset-3'}>
+                    <Alert info>{t('account:addressMenu.nonCreated')}</Alert>
                 </div>
                 }
 
