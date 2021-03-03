@@ -18,6 +18,11 @@
     "orderWithoutBraille_plural": "Grafik auf {{count}} Seiten Schwellpapier bestellen",
     "orderWithoutBraille": "Grafik auf einer Seite Schwellpapier bestellen",
 
+    "variants": "{{count}} Variante",
+    "variants_filtered": "{{count}} zutreffende Variante",
+    "variants_plural": "{{count}} Varianten",
+    "variants_filtered_plural": "{{count}} zutreffende Varianten",
+
     "formatHeading": "Format",
     "a3": "$t(glossary:a3)",
     "a4": "$t(glossary:a4)",

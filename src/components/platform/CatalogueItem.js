@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import Tile from "../gui/_Tile";
 import { API_URL } from "../../env.json"
 import {LG_SCREEN, MD_SCREEN, SM_SCREEN} from "../../config/constants";
+import { useTranslation } from "react-i18next";
 
 const Wrapper = styled.div`
   padding: 6px;
@@ -50,6 +51,7 @@ const Info = styled.div`
 `;
 
 export default props => {
+    const {t} = useTranslation();
     const thumbnailURL =
         `${API_URL}/thumbnails/${props.variants[0].current_file_name}-THUMBNAIL-sm-p0.png`
     return (
@@ -61,9 +63,7 @@ export default props => {
                     <Info>
                         <Title title={props.title} aria-label={props.title} className={"hover-sensitive"}>{props.title}</Title><br/>
                         <small>
-                            {props.variants.length}
-                            {props.filtered ? ' zutreffende ' : ' '}
-                            Variante{props.variants.length !== 1 && 'n'}
+                            {t('catalogue:variants', {count: props.variants.length, context: props.filtered ? 'filtered' : 'all'})}
                         </small>
                     </Info>
                 </Tile>
