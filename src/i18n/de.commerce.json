@@ -22,6 +22,8 @@
     "descriptionAs": "Bildbeschreibung erhalten als",
     "perEMail": "E-Mail nach Bestellung",
 
+    "savedAdresses": "Hinterlegte Adressen",
+
     "subtotal": "Zwischensumme Artikel",
     "total": "Gesamt",
     "inclVAT": "inkl. {{amount}}% Mehrwertsteuer",
