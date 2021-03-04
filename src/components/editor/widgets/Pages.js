@@ -85,7 +85,6 @@ const Pages = (props) => {
                 />
                 <PageTitle>{page.name !== null ? page.name : "Seite " + (index + 1)}</PageTitle>
               </div>
-
               {index !== 0 &&
                 <Button onClick={event => {
                   event.stopPropagation();

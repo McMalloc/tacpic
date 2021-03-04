@@ -285,12 +285,14 @@ const file = (state = {}, action) => {
         action.uuids.forEach((uuid) => {
           let objectIndex = -1;
           let pageIndex = -1;
+          let found = false;
           state.pages.forEach((page, index) => {
+            if (found) return;
             objectIndex = page.objects.findIndex(object => object.uuid === uuid);
-            if (objectIndex >= 0) pageIndex = index;
+            pageIndex = index;
+            if (objectIndex !== -1) found = true;
           })
-
-          draftState.pages[pageIndex].objects.splice(objectIndex, 1);
+          if (found) draftState.pages[pageIndex].objects.splice(objectIndex, 1);
         });
       })
     case "PAGE_ADD":
