@@ -48,7 +48,7 @@
     "tagsHeading": "$t(glossary:tag_plural)",
     "noTagsAvailable": "Keine $t(glossary:tag_plural) vorhanden.",
     "tagsLoading": "$t(glossary:tag_plural) werden geladen.",
-    "onlyOnePage": "Insgesamt eine Grafikseite.",
+    "onlyOnePage": "Einzelne Grafikseite.",
     "pagePreview": "Vorschau der Seite {{number}} von {{file}}.",
     "noDescription": "Keine Beschreibung.",
     "appliedTags": "$t(glossary:tag_plural)",
