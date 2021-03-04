@@ -10,6 +10,7 @@ import DEFooter from "./de.footer";
 import DEAccount from "./de.account";
 import DEProducts from "./de.products";
 import ENEditor from "./en.editor";
+import ENAccount from "./en.account";
 
 const resources = {
     de: {
@@ -24,7 +25,8 @@ const resources = {
         catalogue: DECatalogue
     },
     en: {
-        editor: ENEditor
+        editor: ENEditor,
+        account: ENAccount
     }
 };
 
