@@ -1,0 +1,20 @@
+  
+{
+    "brailleEmboss": "$t(glossary:brailleScript)prägung",
+    "blackPrint": "Black print",
+    "microcapsule": "Microcapsule paper",
+    "a4": "ISO A4",
+    "a3": "ISO A3",
+    "key": "Key",
+    "key_plural": "Keys",
+    "brailleScript": "Braille",
+    "texture": "Texture",
+    "border": "Outline",
+    "tacpicEditor": "$t(glossary:brand) online-editor",
+    "brand": "tacpic",
+    "privacyPolicy": "Privacy policy",
+    "catalogue": "Catalog",
+    "history": "Version history",
+    "tag": "Tag",
+    "tag_plural": "Tags"
+}
