@@ -3,7 +3,7 @@
     "search": "Suchen",
     "searchterm": "Suchbegriff",
     "search-placeholder": "z.B. Biologie Herz",
-    "grub": "Im Katalog stöbern",
+    "grub": "Im $t(glossary:catalogue) stöbern",
     "history_show": "Versionshistorie zeigen",
     "history_hide": "Versionshistorie ausblenden",
     "create": "Grafik gestalten",
