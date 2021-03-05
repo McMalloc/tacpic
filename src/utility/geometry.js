@@ -16,13 +16,11 @@ export const getRotation = (pointA, pointB) => {
     const deltaY = pointA[1] - pointB[1];
     const deltaX = pointB[0] - pointA[0];
     const result = 180 / Math.PI * (Math.atan2(deltaY, deltaX));
-    console.log(deltaY, deltaX, result);
     // return 0;
     return (result < 0) ? (360 + result) : result;
 };
 
 export const getMidpoint = (pointA, pointB, isQ = false) => {
-    // if (isQ) return [(pointA[0]*2 + pointB[0])/2, (pointA[1]*2 + pointB[1])/2];
     return [(pointA[0] + pointB[0]) / 2, (pointA[1] + pointB[1]) / 2];
 };
 

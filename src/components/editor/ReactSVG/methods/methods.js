@@ -10,6 +10,7 @@ import {
     getPathBBox,
     pathScale, removePoint, reverse,
     smoothCubicPoint,
+    getCoords,
     smoothLastSegment, smoothSegment
 } from "./path";
 
@@ -317,6 +318,7 @@ const methods = {
         getClientBox: defaultGetClientBox,
         create: createPath,
         getBBox: getPathBBox,
+        getCoords,
         getOffset,
         addPoint,
         removePoint,

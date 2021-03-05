@@ -157,3 +157,13 @@ export const smoothSegment = (path, start, end, error) => {
     path.points = head.concat(smoothedSegment, tail);
     return path;
 }
+
+export const getCoords = (path, index) => {
+    if (index < 0) index = path.points.length + index;
+    index = Math.max(Math.min(index, path.points.length - 1), 0);
+    const coordsLength = path.points[index].coords.length;
+    return [
+        path.points[index].coords[coordsLength - 2],
+        path.points[index].coords[coordsLength - 1]
+    ]
+}
