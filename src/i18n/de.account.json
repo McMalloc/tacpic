@@ -78,5 +78,12 @@
         "state": "Bundesland",
         "country": "Staat",
         "add": "Adresse anlegen"
+    },
+
+    "orderMenu": {
+        "noOrders": "Es sind bisher keine Bestellungen erfasst worden.",
+        "placedAt": "Erfolgt am",
+        "sum": "Summe",
+        "state": "Status"
     }
 }
