@@ -42,7 +42,7 @@
     "invalid login, already an account with this login": "Es gibt bereits ein Konto unter dieser E-Mail-Adresse.",
     "The account you tried to create is currently awaiting verification": "Das Konto mit dieser E-Mail-Adresse muss noch verifiziert werden. Bitte prüfen Sie Ihr Postfach und ggf. den Spam-Ordner.",
     "no matching login": "Kein Benutzerkonto mit dieser E-Mail-Adresse / Passwort bekannt.",
-    "There was an error creating your account": "Fehler beim Erstellen eines neuen Kontos:"
+    "There was an error creating your account": "Fehler beim Erstellen eines neuen Kontos."
   },
   "navigation": {
     "catalogue": "$t(glossary:catalogue)",
@@ -66,8 +66,8 @@
     "null": "keine Farbe"
   },
   "textures": {
-    "diagonal_lines": "Weite diagonale Linien",
-    "diagonal_lines_wide": "Diagonale Linien",
+    "diagonal_lines": "Diagonale Linien",
+    "diagonal_lines_wide": "Weite diagonale Linien",
     "fill": "Vollflächig",
     "vertical_lines": "Senkrechte Linien",
     "horizontal_lines": "Waagerechte Linien",
