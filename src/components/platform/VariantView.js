@@ -15,7 +15,6 @@ import Carousel from "../gui/Carousel";
 import ButtonBar from "../gui/ButtonBar";
 import { Radio } from "../gui/Radio";
 import { Numberinput } from "../gui/Input";
-import { Currency } from "../gui/Currency";
 import * as moment from "moment";
 import { APP_URL, API_URL } from "../../env.json";
 import Well from "../gui/Well";
@@ -398,7 +397,7 @@ const VariantView = (props) => {
                 },
                 {
                   label: t('catalogue:orderWithBrailleMail', 
-                    {saved: (props.quote - props.quote_graphics_only) / 100}), 
+                    {saved: (props.quote - props.quote_graphics_only)}), 
                     value: "graphic_nobraille"
                 }
               ]} />
@@ -407,6 +406,7 @@ const VariantView = (props) => {
             )}
 
           <br />
+          
           <OrderWidget>
             {/*<div style={{display: 'flex'}}>*/}
             <Numberinput
@@ -422,31 +422,18 @@ const VariantView = (props) => {
             />
 
             <div>
-              <Currency
-                amount={
-                  (product === "graphic"
+              <strong>{t('{{amount, currency}}', {amount: (product === "graphic"
                     ? props.quote
-                    : props.quote_graphics_only) * quantity
-                }
-              />
+                    : props.quote_graphics_only) * quantity})}</strong>
 
               {/*{quantity !== 1 &&*/}
-              <small>
-                <br />
-              {t('catalogue:singlePrice')}: <Currency
-                  normal
-                  amount={
-                    product === "graphic"
-                      ? props.quote
-                      : props.quote_graphics_only
-                  }
-                />
-              </small>
-              {/*}*/}
-              <small>
+              <div style={{fontSize: '0.8rem'}}>
+              {t('catalogue:singlePrice')}: {t('{{amount, currency}}', {amount: (product === "graphic"
+                    ? props.quote
+                    : props.quote_graphics_only)})}
                 <br />
                 {t("catalogue:plusShipping")}
-              </small>
+              </div>
             </div>
 
             <Button

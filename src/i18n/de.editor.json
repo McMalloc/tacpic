@@ -92,6 +92,7 @@
         "colourHeading": "Farbe",
         "borderHeading": "$t(glossary:border)",
         "showBorder": "Fühl- und sichtbare $t(glossary:border)",
+        "borderWidth": "$t(glossary:border)stärke",
         "05": "0,5 mm (Hilfslinie)",
         "15": "1,5 mm",
         "25": "2,5 mm (dicke Linie)",

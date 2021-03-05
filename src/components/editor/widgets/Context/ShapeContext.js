@@ -106,7 +106,7 @@ const ShapeContext = props => {
                     }} value={selectedObject.borderWidth} 
                        menuPlacement={'top'} 
                        disabled={!selectedObject.border} 
-                       label={"'editor:objectPanel.borderWidth'"} options={[
+                       label={"editor:objectPanel.borderWidth"} options={[
                         {
                             value: 0.5,
                             label: t("editor:objectPanel.05")
@@ -134,7 +134,7 @@ const ShapeContext = props => {
                     {selectedObject.type === 'path' &&
                         <>
                             <Checkbox name={"arrow-start"}
-                                checked={selectedObject.startArrow}
+                                value={selectedObject.startArrow}
                                 onChange={() => {
                                     changeProp(
                                         dispatch,
@@ -144,7 +144,7 @@ const ShapeContext = props => {
                                 }}
                                 label={"editor:objectPanel.arrowheadStart"} />
                             <Checkbox name={"arrow-end"}
-                                checked={selectedObject.endArrow}
+                                value={selectedObject.endArrow}
                                 onChange={() => {
                                     changeProp(
                                         dispatch,
@@ -154,7 +154,7 @@ const ShapeContext = props => {
                                 }}
                                 label={"editor:objectPanel.arrowheadEnd"} />
                             <Checkbox name={"closed-path"}
-                                checked={selectedObject.closed}
+                                value={selectedObject.closed}
                                 onChange={() => {
                                     changeProp(
                                         dispatch,

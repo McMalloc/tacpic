@@ -1,10 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {ORDER} from "../../../actions/action_constants";
-import styled from 'styled-components/macro';
 import * as moment from "moment";
-import {Currency} from "../../gui/Currency";
-import {Button} from "../../gui/Button";
 import {useTranslation} from "react-i18next";
 import {Alert} from "../../gui/Alert";
 import { DB_DATE_FORMAT } from "../../../config/constants";
@@ -21,16 +18,16 @@ const Orders = () => {
         })
     }, []);
 
-    if (orders.length === 0) return <Alert info>Es sind bisher keine Bestellungen erfasst worden.</Alert>;
+    if (orders.length === 0) return <Alert info>{t('account:orderMenu.noOrders')}</Alert>;
 
     return (
         <section>
             <table>
                 <thead>
-                <td>Erfolgt am</td>
-                <td>Summe</td>
-                <td>Zahlart</td>
-                <td>Status</td>
+                <td>{t('account:orderMenu.placedAt')}</td>
+                <td>{t('account:orderMenu.sum')}</td>
+                <td>{t('commerce:paymentMethod')}</td>
+                <td>{t('account:orderMenu.state')}</td>
                 <td></td>
                 </thead>
                 {orders.map(order => {
@@ -39,7 +36,7 @@ const Orders = () => {
                             {moment(order.created_at, DB_DATE_FORMAT).format("DD.MM.yyyy")}
                         </td>
                         <td>
-                            <Currency normal amount={order.total_gross} />
+                            {t('{{amount, currency}}', {amount: order.total_gross})}
                         </td>
                         <td>
                             {t('commerce:' + order.payment_method)}

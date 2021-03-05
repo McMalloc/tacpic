@@ -3,24 +3,18 @@ import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import AddressForm from "./AddressForm";
 import {
-    ITEM_ADDED_TO_BASKET,
     ITEM_REMOVED_FROM_BASKET,
     ITEM_UPDATED_IN_BASKET,
-    ORDER,
     QUOTE,
     VARIANTS
 } from "../../actions/action_constants";
 import { useDispatch, useSelector } from "react-redux";
-import { Currency } from "../gui/Currency";
 import { Numberinput } from "../gui/Input";
 import { Radio } from "../gui/Radio";
 import { Button } from "../gui/Button";
 import { Link } from "react-router-dom";
 import styled from 'styled-components/macro';
-import Tile from "../gui/_Tile";
-import CenterWrapper from "../gui/_CenterWrapper";
 import { API_URL } from "../../env.json";
-import { Alert } from "../gui/Alert";
 import Well from "../gui/Well";
 // import {CSSTransition} from "react-transition-group";
 
@@ -141,7 +135,7 @@ const BasketListing = () => {
                                 </Link>
                                 <p>
                                     {t('glossary:microcapsule')} <br />
-                                    {correspondingVariant.graphic_no_of_pages} &times; {t('catalogue:' + correspondingVariant.graphic_format + '-' + (correspondingVariant.graphic_landscape ? 'landscape' : 'portrait'))} 
+                                    {correspondingVariant.graphic_no_of_pages} &times; {t('catalogue:' + correspondingVariant.graphic_format + '-' + (correspondingVariant.graphic_landscape ? 'landscape' : 'portrait'))}
                                     <br />
                                     <span>{t(correspondingVariant.system.replace(':', '.'))}</span>
                                 </p>
@@ -156,7 +150,7 @@ const BasketListing = () => {
                                     name={"product_type_" + index}
                                     value={quoteItem.product_id} options={[
                                         {
-                                            label: ['commerce:productSelectWithBraille', {count: correspondingVariant.braille_no_of_pages}],
+                                            label: ['commerce:productSelectWithBraille', { count: correspondingVariant.braille_no_of_pages }],
                                             value: "graphic"
                                         },
                                         { label: "commerce:perEMail", value: "graphic_nobraille" }
@@ -170,7 +164,9 @@ const BasketListing = () => {
                             <Numberinput min={1} value={quoteItem.quantity} label={'catalogue:pcs'}
                                 inline noMargin
                                 onChange={event => updateBasket(dispatch, quoteItem.content_id, event.target.value, quoteItem.product_id, index)} />
-                            <Currency amount={quoteItem.gross_price * quoteItem.quantity} />
+                            {t('{{amount, currency}}', {
+                                amount: quoteItem.gross_price * quoteItem.quantity
+                            })}
                         </div>
                     </ItemPanel>
                     // </CSSTransition>
@@ -180,29 +176,38 @@ const BasketListing = () => {
                 <tbody>
                     <MetaItemRow>
                         <td>{t('commerce:subtotal')}</td>
-                        <PriceCell><Currency
-                            amount={quote.items.reduce((acc, current) => acc + current.gross_price * current.quantity, 0)} />
+                        <PriceCell>
+                        {t('{{amount, currency}}', {
+                                amount: quote.items.reduce((acc, current) => acc + current.gross_price * current.quantity, 0)
+                            })}
                         </PriceCell>
                     </MetaItemRow>
-                    {/*<MetaItemRow>*/}
-
-                    {/*    <td>{quote.packaging_item.product_id}</td>*/}
-                    {/*    <PriceCell><Currency amount={quote.packaging_item.gross_price}/></PriceCell>*/}
-                    {/*</MetaItemRow>*/}
                     <MetaItemRow>
 
                         <td>{t('commerce:' + quote.postage_item.product_id)}</td>
-                        <PriceCell><Currency amount={quote.postage_item.gross_price} /></PriceCell>
+                        <PriceCell>
+                            {t('{{amount, currency}}', {
+                                amount: quote.postage_item.gross_price
+                            })}
+                        </PriceCell>
                     </MetaItemRow>
                     <MetaItemRow>
 
-                        <td>{t('commerce:inclVAT', {amount: 7})}</td>
-                        <PriceCell><Currency amount={quote.gross_total - quote.net_total} /></PriceCell>
+                        <td>{t('commerce:inclVAT', { amount: 7 })}</td>
+                        <PriceCell>
+                            {t('{{amount, currency}}', {
+                                amount: quote.gross_total - quote.net_total
+                            })}
+                        </PriceCell>
                     </MetaItemRow>
                     <MetaItemRow>
 
                         <td className={'overline'}><strong>{t('commerce:total')}</strong></td>
-                        <PriceCell className={'overline'}><strong><Currency amount={quote.gross_total} /></strong>
+                        <PriceCell className={'overline'}><strong>
+                            {t('{{amount, currency}}', {
+                                amount: quote.gross_total
+                            })}
+                        </strong>
                         </PriceCell>
                     </MetaItemRow>
                 </tbody>
