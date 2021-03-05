@@ -32,7 +32,7 @@
   "error": {
     "AccountError": "Fehler bei Kontoerstellung",
     "not whitelisted": "Die E-Mail-Adresse wurde nicht zur Anmeldung freigegeben.",
-    "display name already in use": "Der Anzeigename ist bereits in Benutzung. Sie müssen zwar keinen angeben, aber wenn, sollte er eindeutig sein."
+    "display name already in use": "Dieser Anzeigename ist bereits vergeben."
   },
   "help": {
     "select_braille-system": "Pro Dokument sollte ein einheitliches Punktschriftsystem verwendet werden. Alle Beschriftungen werden in dem hier ausgewählten System angelegt und bestehende Beschriftungen werden umgewandelt.",
