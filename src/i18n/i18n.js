@@ -9,8 +9,15 @@ import DECatalogue from "./de.catalogue";
 import DEFooter from "./de.footer";
 import DEAccount from "./de.account";
 import DEProducts from "./de.products";
+import ENCommon from "./en.common";
+import ENGlossary from "./en.glossary";
+import ENCommerce from "./en.commerce";
 import ENEditor from "./en.editor";
+import ENLanding from "./en.landing";
+import ENCatalogue from "./en.catalogue";
+import ENFooter from "./en.footer";
 import ENAccount from "./en.account";
+import ENProducts from "./en.products";
 
 const resources = {
     de: {
@@ -25,8 +32,15 @@ const resources = {
         catalogue: DECatalogue
     },
     en: {
+        common: ENCommon,
+        account: ENAccount,
+        glossary: ENGlossary,
+        commerce: ENCommerce,
         editor: ENEditor,
-        account: ENAccount
+        landing: ENLanding,
+        footer: ENFooter,
+        products: ENProducts,
+        catalogue: ENCatalogue
     }
 };
 
