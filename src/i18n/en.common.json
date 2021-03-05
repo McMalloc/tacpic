@@ -1,0 +1,95 @@
+{
+  "format": "Paper format",
+  "landscape": "Landscape",
+  "portrait": "Portrait",
+  "done": "Done",
+  "submit": "Submit",
+  "hint": "Hints",
+  "back": "Back",
+  "delete": "Delete",
+  "loggedInAs": "Logged in as",
+  "remove": "Remove",
+  "close": "close",
+  "errorOccured": "An error has occurred",
+  "claim": "Tactile media for visually impaired people",
+  "claimUSP": "Tactile media - fast, good and simple",
+  "switchLang": "In Deutsch",
+  "dateFormat": "YYYY.MM.DD, HH:mm",
+  "or": "Or",
+  "none": "None",
+  "discard": "Discard",
+  "backToStart": "Back to the home page.",
+  "required": "Required",
+  "product": "Product",
+  "DE": {
+    "VOLL": "German \"Vollschrift\"",
+    "KURZ": "German \"Kurzschrift\"",
+    "BASIS": "German \"Basisschrift\""
+  },
+  "tacpic": {
+    "welcome": "Welcome to tacpic!"
+  },
+  "error": {
+    "AccountError": "Account creation error",
+    "not whitelisted": "This e-mail address has not been approved for registration.",
+    "display name already in use": "This display name is already taken."
+  },
+  "help": {
+    "select_braille-system": "A uniform $t(glossary:brailleScript) system should be used per document. All captions are created in the system selected here and existing captions are converted.",
+    "select_medium": "Different media offer different possibilities. The editor will restrict functions for certain production techniques so that you do not design a draft that cannot be produced at all with swell paper, for example."
+  },
+  "auth": {
+    "invalid login, already an account with this login": "There is already an account under this e-mail address.",
+    "The account you tried to create is currently awaiting verification": "The account with this email address still needs to be verified. Please check your mailbox and spam folder.",
+    "no matching login": "No user account known with this e-mail address / password.",
+    "There was an error creating your account": "Error while creating a new account."
+  },
+  "navigation": {
+    "catalogue": "$t(glossary:catalogue)",
+    "editor": "Editor",
+    "pricing": "Pricing",
+    "knowledge": "Knowledge"
+  },
+  "categories": {
+    "illustration": "(labeled) Illustration"
+  },
+  "colour": {
+    "#808080": "Gray",
+    "rgb(67,44,134)": "Purple, Indigo",
+    "#E4120D": "Red",
+    "#C2368C": "Violet",
+    "#018ECC": "Cyan",
+    "#F08000": "Orange",
+    "#79BA4A": "Light green",
+    "#FFEC01": "Yellow",
+    "#FFFFFF": "Paper colors (our swell paper has a yellowish tint)",
+    "null": "No color"
+  },
+  "textures": {
+    "diagonal_lines": "Diagonal lines",
+    "diagonal_lines_wide": "Wide diagonal lines",
+    "fill": "Solid",
+    "vertical_lines": "Vertical lines",
+    "horizontal_lines": "Horizontal lines",
+    "dashed_lines": "Dashed lines",
+    "grid": "Grid",
+    "stair": "Stairs",
+    "dotted_tight": "Dotted narrow",
+    "dotted": "Dotted wide"
+  },
+  "region": {
+    "/login": "Log in",
+    "/account": "Personal area",
+    "/account/orders": "My orders",
+    "/account/newsletter": "Privacy settings",
+    "/account/addresses": "My addresses",
+    "/account/my_account": "Account information",
+    "/basket": "Shopping cart",
+    "/checkout": "Order",
+    "/editor/splash": "Editor",
+    "/editor/app": "Editor",
+    "/pricing": "Products and pricese",
+    "/knowledge": "Knowledge",
+    "/": "Start"
+  }
+}
