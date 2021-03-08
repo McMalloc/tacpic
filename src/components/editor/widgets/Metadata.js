@@ -180,7 +180,7 @@ const Metadata = () => {
                           checked={licenseAgreed}
                           label={t("editor:license_agreed")}/>
                 <a className={"checkbox-additional"} target={"blank"}
-                   href={"https://creativecommons.org/licenses/by-sa/4.0/deed.de"}>{t('editor.draftPanel.viewLicense')}</a>
+                   href={"https://creativecommons.org/licenses/by-sa/4.0/deed.de"}>{t('editor:draftPanel.viewLicense')}</a>
             </div>
             <br/>
             <Button onClick={() => {

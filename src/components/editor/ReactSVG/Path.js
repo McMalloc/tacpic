@@ -23,7 +23,6 @@ export default function SVGPath(props) {
     if (props.endArrow) {
         lastPoint = methods.path.getCoords(props, -1);
         secondToLastPoint = methods.path.getCoords(props, -2);
-        console.log('   -------');
     }
 
     const neutralBorder = <path

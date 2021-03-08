@@ -49,7 +49,7 @@ export const TOOLS = {
 export const COLOURS = {
   none: "transparent",
   // grey: "#808080",
-  blue: "rgb(67,44,134)",
+  blue: "#432C86",
   red: "#E4120D",
   magenta: "#C2368C",
   cyan: "#018ECC",
