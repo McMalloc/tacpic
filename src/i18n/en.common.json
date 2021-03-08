@@ -1,5 +1,6 @@
 {
   "format": "Paper format",
+  "more": "More",
   "landscape": "Landscape",
   "portrait": "Portrait",
   "done": "Done",
@@ -55,7 +56,7 @@
   },
   "colour": {
     "#808080": "Gray",
-    "rgb(67,44,134)": "Purple, Indigo",
+    "#432C86": "Purple, Indigo",
     "#E4120D": "Red",
     "#C2368C": "Violet",
     "#018ECC": "Cyan",

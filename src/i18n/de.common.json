@@ -1,5 +1,6 @@
 {
   "format": "Papierformat",
+  "more": "Mehr",
   "landscape": "Querformat",
   "portrait": "Hochformat",
   "done": "Fertig",
@@ -55,7 +56,7 @@
   },
   "colour": {
     "#808080": "Grau",
-    "rgb(67,44,134)": "violett, Indigo",
+    "#432C86": "violett, Indigo",
     "#E4120D": "heißes Rot, Kamin",
     "#C2368C": "tiefes Pink, Magenta",
     "#018ECC": "sanftes Blau, Cyan",

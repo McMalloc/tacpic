@@ -59,7 +59,7 @@ const Wrapper = styled.div`
 // mit Farbcode und Bezeichnung als title
 const Swatch = props => {
   const { t } = useTranslation();
-  const label = t("colour:" + props.code);
+  const label = t("colour." + props.code);
 
   return (
     <Wrapper role={"button"}
