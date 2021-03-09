@@ -1,5 +1,5 @@
 import uuidv4 from "../../../../utility/uuid";
-import {getMirrorPoint} from "../../../../utility/geometry";
+import {getMirrorPoint, getRotation} from "../../../../utility/geometry";
 import fitCurve from "fit-curve";
 import {chunk} from "lodash";
 import {textureColourMapping} from "./methods";
@@ -179,4 +179,31 @@ export const getCoords = (path, index, which = 0) => {
         point.coords[coordsLength - 2 - coordOffset],
         point.coords[coordsLength - 1 - coordOffset]
     ]
+}
+
+export const getCoordsForStartRotation = path => {
+    let secondPointCoords;
+    let startPointCoords = getCoords(path, 0);
+    let secondPoint = getPoint(path, 1);
+    if (secondPoint.kind === 'C') {
+        secondPointCoords = getCoords(path, 1, 2);
+    } else {
+        secondPointCoords = getCoords(path, 1);
+    }
+    return [startPointCoords, secondPointCoords];
+}
+
+export const getCoordsForEndRotation = path => {
+    let lastPointCoords, secondLastPointCoords;
+    let lastPoint = getPoint(path, -1);
+    let secondLastPoint = getPoint(path, -2);
+
+    if (lastPoint.kind === 'C') {
+        lastPointCoords = getCoords(path, -1);
+        secondLastPointCoords = getCoords(path, -1, 1);
+    } else {
+        lastPointCoords = getCoords(path, -1);
+        secondLastPointCoords = getCoords(path, -2);
+    }
+    return [lastPointCoords, secondLastPointCoords];
 }

@@ -14,15 +14,13 @@ export default function SVGPath(props) {
     const [offsetX, offsetY] = methods.path.getOffset(props);
     const transformProperty = `translate(${props.x} ${props.y}) scale(${props.scaleX} ${props.scaleY}) rotate(${props.angle} ${offsetX} ${offsetY})`;
 
-    let startPoint, secondPoint, lastPoint, secondToLastPoint = [];
+    let startPoint, secondPoint, lastPointCoords, secondLastPointCoords = [];
     if (props.startArrow) {
-        startPoint = methods.path.getCoords(props, 0);
-        secondPoint = methods.path.getCoords(props, 1, 1);
+        [startPoint, secondPoint] = methods.path.getCoordsForStartRotation(props);
     }
 
     if (props.endArrow) {
-        lastPoint = methods.path.getCoords(props, -1);
-        secondToLastPoint = methods.path.getCoords(props, -1, 1);
+        [lastPointCoords, secondLastPointCoords] = methods.path.getCoordsForEndRotation(props);
     }
 
     const neutralBorder = <path
@@ -55,8 +53,8 @@ export default function SVGPath(props) {
                     stroke={'white'}
                     stroke-width={'2mm'}
                     transform={
-                        `translate(${lastPoint.join(',')}) 
-                        rotate(-${getRotation(lastPoint, secondToLastPoint) + 45})`}
+                        `translate(${lastPointCoords.join(',')}) 
+                        rotate(-${getRotation(lastPointCoords, secondLastPointCoords) + 45})`}
                     points={"-22,-22 18,-12 -12,18"} />
 
             }
