@@ -20,6 +20,9 @@ export const TagView = styled.span`
   font-size: 14px;
   position: relative;
   margin-left: 0.5rem;
+  margin-bottom: 1px;
+  margin-top: 1px;
+}
   position: relative;
   
   &:not(:last-child) {
