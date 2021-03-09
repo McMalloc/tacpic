@@ -26,6 +26,12 @@ const patterns = {
                   y2={"11.43mm"} stroke={"black"} strokeWidth={"0.8mm"}/>
         </>
     },
+    medium: {
+        width: "10mm", height: "10mm",
+        objects: <>
+            <rect x={0} y={0} width={"10mm"} height={"10mm"} fill={'lightgrey'}/>
+        </>
+    },
     fill: {
         width: "10mm", height: "10mm",
         objects: <>

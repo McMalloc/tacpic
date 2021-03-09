@@ -68,6 +68,7 @@ const userApi = (state = {}, action) => {
                 login_pending: false,
                 email: action.data.email,
                 id: action.data.id,
+                role: action.data.role,
                 displayName: action.data.display_name,
                 newsletterActive: action.data.newsletter_active
             };

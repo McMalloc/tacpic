@@ -1,5 +1,7 @@
 {
     "braillePanel": {
          "countHint": "True for A4:<1/>max. {{A4_MAX_ROWS_PER_PAGE}} rows per page <3/>max. {{A4_MAX_CHARS_PER_ROW}} characters per Row"
-    }
+    },
+
+    "editingMode": "Editing mode"
 }

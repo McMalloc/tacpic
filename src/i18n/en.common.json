@@ -76,7 +76,8 @@
     "grid": "Grid",
     "stair": "Stairs",
     "dotted_tight": "Dotted narrow",
-    "dotted": "Dotted wide"
+    "dotted": "Dotted wide",
+    "medium": "medium relief"
   },
   "region": {
     "/login": "Log in",

@@ -17,7 +17,7 @@ const TexturePalette = props => {
                     active={props.selected === texture}
                     key={index}
                     id={"texture-select-" + texture}
-                    label={"textures:" + texture}
+                    label={"textures." + texture}
                     onClick={() => {
                         props.onChange(texture);
                     }}

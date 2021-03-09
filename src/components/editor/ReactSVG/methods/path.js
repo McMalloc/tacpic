@@ -158,12 +158,25 @@ export const smoothSegment = (path, start, end, error) => {
     return path;
 }
 
-export const getCoords = (path, index) => {
+const getPoint = (path, index) => {
     if (index < 0) index = path.points.length + index;
     index = Math.max(Math.min(index, path.points.length - 1), 0);
-    const coordsLength = path.points[index].coords.length;
+    return path.points[index]
+}
+
+/**
+ * Get Coords for specific point
+ *
+ * @param {Array} points List of points
+ * @param {Number} index Index of point, may be negative for Python-style index accessors fromt he back of the array.
+ * @param {Number} which Which coordinates, default is 0 (actual vertex); 1 for first control point, 2 for second control point
+ * */
+export const getCoords = (path, index, which = 0) => {
+    let point = getPoint(path, index);
+    let coordOffset = point.kind === 'C' ? which*2 : 0;
+    const coordsLength = point.coords.length;
     return [
-        path.points[index].coords[coordsLength - 2],
-        path.points[index].coords[coordsLength - 1]
+        point.coords[coordsLength - 2 - coordOffset],
+        point.coords[coordsLength - 1 - coordOffset]
     ]
 }

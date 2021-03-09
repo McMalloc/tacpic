@@ -34,7 +34,8 @@ const Wrapper = styled.nav`
 `;
 
 const NavbarItem = styled(NavLink)`
-    color: ${props => props.theme.brand_secondary};
+    color: ${props => props.restricted ? props.theme.background : props.theme.brand_secondary};
+    background-color: ${props => props.restricted ? props.theme.danger : props.theme.background};
     padding: 8px 8px;
     text-decoration: none;
     font-weight: bold;
@@ -142,6 +143,13 @@ const Navbar = props => {
             </NavbarItem>
         )
     })
+
+    if (user.role === 1) sections.push(
+        <NavbarItem restricted key={sections.length} to={'/admin'}>
+            <Icon icon={"tools"} />&nbsp;
+            {t('navigation.admin')}
+        </NavbarItem>
+    )
 
     const accountLink = <NavbarItem to={'/account'}>
         <Icon icon={"user-circle"} />&nbsp;

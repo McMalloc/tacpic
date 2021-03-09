@@ -55,6 +55,7 @@ const Wrapper = styled.div`
 
   .description {
     grid-area: description;
+    min-height: 5rem;
     overflow: auto;
     background: linear-gradient(0deg, rgba(0,0,0,0.2439477744222689) 0%, rgba(0,0,0,0) 10px, rgba(0,0,0,0) 100%);
   }
@@ -239,7 +240,7 @@ const VariantView = (props) => {
         </td>
         <td><small>{t("catalogue:brailleSystem")}</small></td>
         <td className={""}>
-          {t(props.system)}
+          {t(props.system.replace(':', '.'))}
         </td>
       </tr>
       <tr>

@@ -105,7 +105,9 @@ i18n
                 if (format === 'currency') {
                     return new Intl.NumberFormat(lang, 
                         { style: 'currency', currency: 'EUR' })
-                        .format(value / 100).replace(',00', ',–').replace(" ", " ")
+                        .format(value / 100)
+                        // .replace(',00', ',–') #1163
+                        .replace(" ", " ")
                 };
                 return value;
             }
