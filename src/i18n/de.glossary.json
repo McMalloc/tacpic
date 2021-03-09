@@ -8,6 +8,7 @@
     "key_plural": "Legenden",
     "brailleScript": "Punktschrift",
     "texture": "Textur",
+    "texture_plural": "Texturen",
     "border": "Kontur",
     "tacpicEditor": "$t(glossary:brand) Online-Editor",
     "brand": "tacpic",
@@ -15,5 +16,7 @@
     "catalogue": "Katalog",
     "history": "Versionshistorie",
     "tag": "Schlagwort",
-    "tag_plural": "Schlagwörter"
+    "tag_plural": "Schlagwörter",
+    "draft": "Entwurf",
+    "draft_plural": "Entwürfe"
 }
