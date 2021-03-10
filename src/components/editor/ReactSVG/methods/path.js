@@ -1,5 +1,5 @@
 import uuidv4 from "../../../../utility/uuid";
-import {getMirrorPoint} from "../../../../utility/geometry";
+import {getMirrorPoint, getRotation} from "../../../../utility/geometry";
 import fitCurve from "fit-curve";
 import {chunk} from "lodash";
 import {textureColourMapping} from "./methods";
@@ -158,12 +158,52 @@ export const smoothSegment = (path, start, end, error) => {
     return path;
 }
 
-export const getCoords = (path, index) => {
+const getPoint = (path, index) => {
     if (index < 0) index = path.points.length + index;
     index = Math.max(Math.min(index, path.points.length - 1), 0);
-    const coordsLength = path.points[index].coords.length;
+    return path.points[index]
+}
+
+/**
+ * Get Coords for specific point
+ *
+ * @param {Array} points List of points
+ * @param {Number} index Index of point, may be negative for Python-style index accessors fromt he back of the array.
+ * @param {Number} which Which coordinates, default is 0 (actual vertex); 1 for first control point, 2 for second control point
+ * */
+export const getCoords = (path, index, which = 0) => {
+    let point = getPoint(path, index);
+    let coordOffset = point.kind === 'C' ? which*2 : 0;
+    const coordsLength = point.coords.length;
     return [
-        path.points[index].coords[coordsLength - 2],
-        path.points[index].coords[coordsLength - 1]
+        point.coords[coordsLength - 2 - coordOffset],
+        point.coords[coordsLength - 1 - coordOffset]
     ]
+}
+
+export const getCoordsForStartRotation = path => {
+    let secondPointCoords;
+    let startPointCoords = getCoords(path, 0);
+    let secondPoint = getPoint(path, 1);
+    if (secondPoint.kind === 'C') {
+        secondPointCoords = getCoords(path, 1, 2);
+    } else {
+        secondPointCoords = getCoords(path, 1);
+    }
+    return [startPointCoords, secondPointCoords];
+}
+
+export const getCoordsForEndRotation = path => {
+    let lastPointCoords, secondLastPointCoords;
+    let lastPoint = getPoint(path, -1);
+    let secondLastPoint = getPoint(path, -2);
+
+    if (lastPoint.kind === 'C') {
+        lastPointCoords = getCoords(path, -1);
+        secondLastPointCoords = getCoords(path, -1, 1);
+    } else {
+        lastPointCoords = getCoords(path, -1);
+        secondLastPointCoords = getCoords(path, -2);
+    }
+    return [lastPointCoords, secondLastPointCoords];
 }

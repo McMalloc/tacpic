@@ -93,7 +93,6 @@ export const TEXTURES = [
   null,
   "diagonal_lines",
   "diagonal_lines_wide",
-  "fill",
   "vertical_lines",
   "horizontal_lines",
   "dashed_lines",
@@ -101,6 +100,8 @@ export const TEXTURES = [
   "stair",
   "dotted_tight",
   "dotted",
+  "medium",
+  "fill"
 ];
 
 export const GERMAN_STATES = [

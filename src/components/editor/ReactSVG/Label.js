@@ -169,7 +169,7 @@ const Label = (props) => {
       >
         {props.editMode && (
           <Indicator className={"editor-ui"}>
-            <Icon icon={"pen"} /> Bearbeitungsmodus
+            <Icon icon={"pen"} /> {t('editor:editingMode')}
           </Indicator>
         )}
         {/*Bug in WebKit macht die relative Positionierung nötig*/}

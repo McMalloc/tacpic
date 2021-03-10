@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import Editor from "./components/editor/Editor";
+import React, { useEffect, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import { useTranslation } from "react-i18next";
@@ -25,12 +24,13 @@ import LegalIndex from "./components/platform/Legal";
 import { Pricing } from "./components/platform/Pricing";
 import EditorSplash from "./components/editor/EditorSplash";
 import { useMatomo } from '@datapunt/matomo-tracker-react'
-import Popup from "./components/gui/Popup";
-import ButtonBar from "./components/gui/ButtonBar";
 import Consent from "./components/platform/Consent";
 import Knowledge from "./components/platform/Knowledge";
-import i18next from "i18next";
 import { initLanguage } from "./i18n/i18n";
+import Loader from "./components/gui/Loader";
+
+const Editor = React.lazy(() => import("./components/editor/Editor"));
+const AdminIndex = React.lazy(() => import("./components/admin/AdminIndex"));
 
 const ScrollContent = styled.div`
   display: flex;
@@ -129,7 +129,13 @@ const App = () => {
               path="/editor/splash"
               element={<EditorSplash />}
             />
-            <Route path="/editor/app" element={<Editor />} />
+            <Route path="/editor/app" element={<Suspense fallback={<Loader />}>
+              <Editor />
+            </Suspense>} />
+            <Route path="/admin" element={<Suspense fallback={<Loader />}>
+              <AdminIndex />
+            </Suspense>} />
+            {/* <Route path="/editor/app" element={<Editor />} /> */}
             <Route path="/stats" element={<Stats />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/knowledge" element={<Knowledge />} />

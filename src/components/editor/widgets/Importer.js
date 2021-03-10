@@ -1,15 +1,15 @@
-import React, {useRef, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import styled from 'styled-components/macro';
 import Divider from "../../gui/Divider";
-import {Button} from "../../gui/Button";
-import {Icon} from "../../gui/_Icon";
-import {IMPORT} from "../../../actions/action_constants";
-import {Row} from "../../gui/Grid";
-import {SVG_MIME} from "../../../config/constants";
+import { Button } from "../../gui/Button";
+import { Icon } from "../../gui/_Icon";
+import { IMPORT } from "../../../actions/action_constants";
+import { Row } from "../../gui/Grid";
+import { SVG_MIME } from "../../../config/constants";
 import SVGImage from "../../gui/SVGImage";
-import {useTranslation} from "react-i18next";
-import {Alert} from "../../gui/Alert";
+import { useTranslation } from "react-i18next";
+import { Alert } from "../../gui/Alert";
 import Loader from "../../gui/Loader";
 import Toggle from "../../gui/Toggle";
 
@@ -21,12 +21,10 @@ const Dropzone = styled.div`
   box-sizing: border-box;
   padding: ${props => props.theme.spacing[3]};
   background-color: ${props => props.hovering ? props.theme.brand_secondary_verylight : "inherit"};
-  cursor: ${props => props.hovering ? "copy" : "inherit"}
+  cursor: ${props => props.hovering ? "copy" : "inherit"};
   position: relative;
   text-align: center;
-  
   transition: background-color 0.2s;
- 
 `;
 
 const Fileinput = styled.input`
@@ -106,8 +104,8 @@ const Importer = () => {
     const dispatch = useDispatch();
     const [upload, setUpload] = useState(null);
     const [hoverWithFile, setHoverWithFile] = useState(false);
-    const {preview, pending, error, previewName, ocr, ocrSelection} = useSelector(state => state.editor.ui.import);
-    const {t} = useTranslation();
+    const { preview, pending, error, previewName, ocr, ocrSelection } = useSelector(state => state.editor.ui.import);
+    const { t } = useTranslation();
 
     const onDropHandler = event => {
         event.preventDefault();
@@ -134,14 +132,14 @@ const Importer = () => {
                     hovering={hoverWithFile}
                     onDrop={onDropHandler}>
                     <Fileinput onChange={event => requestTrace(dispatch, event.currentTarget.files[0], setUpload)}
-                               ref={fileRef}
-                               type={"file"}/>
-                    <Icon icon={"arrow-down"}/> {t('editor:importer.dropzoneCTA')}
-                    <Divider label={"or"}/>
+                        ref={fileRef}
+                        type={"file"} />
+                    <Icon icon={"arrow-down"} /> {t('editor:importer.dropzoneCTA')}
+                    <Divider label={"or"} />
                     {preview === null ?
-                        <Button primary icon={"upload"} onClick={openDialog} label={'editor:importer.selectFile'}/>
+                        <Button primary icon={"upload"} onClick={openDialog} label={'editor:importer.selectFile'} />
                         :
-                        <Button primary icon={"upload"} onClick={openDialog} label={'editor:importer.selectNew'}/>
+                        <Button primary icon={"upload"} onClick={openDialog} label={'editor:importer.selectNew'} />
                     }
                 </Dropzone>
                 <small>{t("editor:importer.validFormats")}</small>
@@ -149,49 +147,49 @@ const Importer = () => {
             <Row>
                 <div className={"col-md-6"}>
                     {upload &&
-                    <>
-                        <ImageContainer alt={t("editor:importer.uploadedImage")} src={upload}/>
-                        <div>{t("editor:importer.filename")}: <strong>{previewName}</strong></div>
-                    </>
+                        <>
+                            <ImageContainer alt={t("editor:importer.uploadedImage")} src={upload} />
+                            <div>{t("editor:importer.filename")}: <strong>{previewName}</strong></div>
+                        </>
                     }
                 </div>
                 <div className={"col-md-6"}>
-                    {error && <Alert danger>{t('errorOccured')}: <br/>{error.message}</Alert>}
-                    <SVGImageContainer alt={t("editor:importer.tracedPreview")} src={preview}/>
+                    {error && <Alert danger>{t('errorOccured')}: <br />{error.message}</Alert>}
+                    <SVGImageContainer alt={t("editor:importer.tracedPreview")} src={preview} />
                     {pending &&
-                    <Loader message={"editor:importer.tracedPreview"}/>
+                        <Loader message={"editor:importer.tracedPreview"} />
                     }
                 </div>
             </Row>
             {ocr.length > 0 &&
-            <Row>
-                <hr />
-                <div className={"col-md-12"}>
-                {t('editor:importer.labelsFound')}:
+                <Row>
+                    <hr />
+                    <div className={"col-md-12"}>
+                        {t('editor:importer.labelsFound')}:
                     <OCRWrapper>
-                        <Button primary label={'editor:importer.' + (ocr.length === ocrSelection.length ? "delectAll" : "selectAll")}
+                            <Button primary label={'editor:importer.' + (ocr.length === ocrSelection.length ? "delectAll" : "selectAll")}
                                 toggled={ocr.length === ocrSelection.length}
                                 onClick={() => {
                                     ocr.length === ocrSelection.length ?
                                         setOCRSelection(dispatch, [])
                                         :
                                         setOCRSelection(dispatch, ocr.map((_, index) => index))
-                                }}/>&emsp;
+                                }} />&emsp;
                         {ocr.map((label, index) => {
-                            const active = ocrSelection.includes(index);
-                            return <OCRLabel toggled={active} onClick={() => {
-                                let labels = [...ocrSelection];
-                                if (active) {
-                                    setOCRSelection(dispatch, labels.filter(i => i !== index));
-                                } else {
-                                    labels.push(index);
-                                    setOCRSelection(dispatch, labels);
-                                }
-                            }} label={label} />
-                        })}
-                    </OCRWrapper>
-                </div>
-            </Row>
+                                    const active = ocrSelection.includes(index);
+                                    return <OCRLabel toggled={active} onClick={() => {
+                                        let labels = [...ocrSelection];
+                                        if (active) {
+                                            setOCRSelection(dispatch, labels.filter(i => i !== index));
+                                        } else {
+                                            labels.push(index);
+                                            setOCRSelection(dispatch, labels);
+                                        }
+                                    }} label={label} />
+                                })}
+                        </OCRWrapper>
+                    </div>
+                </Row>
             }
         </>
 

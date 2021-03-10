@@ -11,7 +11,8 @@ import {
     pathScale, removePoint, reverse,
     smoothCubicPoint,
     getCoords,
-    smoothLastSegment, smoothSegment
+    getCoordsForEndRotation,
+    getCoordsForStartRotation, smoothSegment
 } from "./path";
 
 const defaultStrokeWidth = 1.5;
@@ -319,6 +320,8 @@ const methods = {
         create: createPath,
         getBBox: getPathBBox,
         getCoords,
+        getCoordsForStartRotation,
+        getCoordsForEndRotation,
         getOffset,
         addPoint,
         removePoint,
