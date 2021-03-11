@@ -7,6 +7,7 @@ import catalogue from './catalogueApi'
 import app from "./appReducer";
 import cms from "./cmsReducer";
 import undoable from "./undoable";
+import admin from "./adminReducer";
 
 const editor = combineReducers({file: undoable(file), ui, localfiles: localfiles});
 
@@ -16,6 +17,7 @@ const createRootReducer = () => combineReducers({
     catalogue,
     user,
     cms,
-    app
+    app,
+    admin
 })
 export default createRootReducer;

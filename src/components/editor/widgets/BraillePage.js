@@ -3,6 +3,7 @@ import styled from "styled-components/macro";
 import { useSelector } from "react-redux";
 import { toBrailleNumbers } from "../../../utility/toBrailleNumber";
 import { Alert } from "../../gui/Alert";
+import { useTranslation } from "react-i18next";
 
 const brailleCellWidth = 2.5;
 const brailleCellHeight = 5;
@@ -63,6 +64,7 @@ const Pagenumber = styled.div`
 `;
 
 const BraillePage = (props) => {
+  const {t} = useTranslation();
   const currentPageIndex = useSelector((state) => state.editor.ui.currentPage);
   const system = useSelector((state) => state.editor.file.present.system);
   const braillePages = useSelector(
@@ -73,7 +75,7 @@ const BraillePage = (props) => {
   if (braillePages.braille.trim().length === 0) {
     return (
       <Wrapper>
-        <Alert info>Noch kein Inhalt für Brailleseiten vorhanden.</Alert>
+        <Alert info>{t('editor:braillePanel.noContent')}</Alert>
       </Wrapper>
     );
   }

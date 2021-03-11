@@ -1,9 +1,8 @@
 import uuidv4 from "../../../../utility/uuid";
-import {getMirrorPoint, getRotation} from "../../../../utility/geometry";
+import {getMirrorPoint } from "../../../../utility/geometry";
 import fitCurve from "fit-curve";
 import {chunk} from "lodash";
-import {textureColourMapping} from "./methods";
-import { TEXTURES, COLOURS } from '../../../../config/constants';
+import { COLOURS } from '../../../../config/constants';
 
 export const createPath = (x = 0, y = 0, template = null, fill = COLOURS.none, moniker = "Kurve") => {
     return {
@@ -196,7 +195,6 @@ export const getCoordsForStartRotation = path => {
 export const getCoordsForEndRotation = path => {
     let lastPointCoords, secondLastPointCoords;
     let lastPoint = getPoint(path, -1);
-    let secondLastPoint = getPoint(path, -2);
 
     if (lastPoint.kind === 'C') {
         lastPointCoords = getCoords(path, -1);

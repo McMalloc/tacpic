@@ -19,7 +19,10 @@ const updateContent = (dispatch, blocks) => {
     })
 }
 
-const steps = ["editor:verbalise_type-of-graphic", "editor:verbalise_summary", "editor:verbalise_details"];
+const steps = [
+    "editor:braillePanel.verbalise_type-of-graphic", 
+    "editor:braillePanel.verbalise_summary", 
+    "editor:braillePanel.verbalise_details"];
 
 const Verbaliser = props => {
     const dispatch = useDispatch();
@@ -49,29 +52,29 @@ const Verbaliser = props => {
             <StepIndicator navigationable={setStep} steps={steps} current={step}/>
             {step === 0 &&
             <>
-                <p>{t("editor:verbalise_type-of-graphic-hint")}</p>
+                <p>{t("editor:braillePanel.verbalise_type-of-graphic-hint")}</p>
                 <Textinput
                     value={type}
                     onChange={event => setType(event.target.value)}
-                    label={"editor:verbalise_type-of-graphic"}/>
+                    label={"editor:braillePanel.verbalise_type-of-graphic"}/>
             </>
             }
             {step === 1 &&
             <>
-                <p>{t("editor:verbalise_summary-hint")}</p>
+                <p>{t("editor:braillePanel.verbalise_summary-hint")}</p>
                 <Multiline rows={3}
                            value={summary}
                            onChange={event => setSummary(event.target.value)}
-                           label={"editor:verbalise_summary"}/>
+                           label={"editor:braillePanel.verbalise_summary"}/>
             </>
             }
             {step === 2 &&
             <>
-                <p>{t("editor:verbalise_details-hint")}</p>
+                <p>{t("editor:braillePanel.verbalise_details-hint")}</p>
                 <Multiline rows={8}
                            value={details}
                            onChange={event => setDetails(event.target.value)}
-                           label={"editor:verbalise_details"}/>
+                           label={"editor:braillePanel.verbalise_details"}/>
             </>
             }
 

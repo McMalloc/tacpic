@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import './Path.css';
 import { createPattern } from "./Patterns";
 import { getRotation } from "../../../utility/geometry";
@@ -7,7 +7,8 @@ import { buildPath } from "./PathGeneration";
 import { COLOURS } from '../../../config/constants';
 
 export default function SVGPath(props) {
-    const path = buildPath(props.points, props.closed);
+    // const path = buildPath(props.points, props.closed);
+    const path = useMemo(() => buildPath(props.points, props.closed), [props.points, props.closed]);
     // const smoothPathC = buildPath(props.points, cubicCommand, props.closed);
     // const smoothPathQ = buildPath(props.points, quadraticCommand, props.closed);
 

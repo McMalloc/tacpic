@@ -15,6 +15,7 @@ import {openFileWatcher} from "./file_saga";
 import {
     TAGS,
     GRAPHIC,
+    USER,
     VARIANTS,
     VARIANT,
     ADDRESS,
@@ -81,7 +82,7 @@ export default function* root() {
                     }
                 }))
         })),
-        call(createSaga(CMS_CATEGORY.INDEX, 'get', 'cms/categories', takeLatest, false, id, id)),
+        call(createSaga(CMS_CATEGORY.INDEX, 'get', 'cms/categories?per_page=100', takeLatest, false, id, id)),
         call(createSaga(CMS_LEGAL.INDEX, 'get', 'cms/menu', takeLatest, false, id, id)),
         call(createSaga(CMS_LEGAL.GET, 'get', 'cms/pages/:id', takeLatest, false, id, id)),
 
@@ -93,6 +94,8 @@ export default function* root() {
 
         call(createSaga(IMPORT.TRACE, 'post', 'trace', takeLatest, false, id, id)),
         call(createSaga(IMPORT.OCR, 'post', 'ocr', takeLatest, false, id, id)),
+
+        call(createSaga(USER.INDEX, 'get', 'internal/users', takeLatest, true, id, id)),
 
         call(orderCreateSaga),
         call(orderIndexSaga),

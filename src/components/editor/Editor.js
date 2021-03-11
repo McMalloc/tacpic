@@ -163,7 +163,7 @@ const Editor = () => {
         if (event.ctrlKey && clipboard.length > 0) {
           dispatch({
             type: OBJECT_UPDATED,
-            preview: {...clipboard[0], uuid: uuidv4(), x: clipboard[0].x + 20, y: clipboard[0].y + 20},
+            preview: { ...clipboard[0], uuid: uuidv4(), x: clipboard[0].x + 20, y: clipboard[0].y + 20 },
           });
         }
         break;
@@ -199,9 +199,9 @@ const Editor = () => {
       navigate('/editor/splash');
       break;
     case 1:
-        return <Wrapper>
-          <Loader large message={"Bitte warten, wir bereiten alles vor."} />
-        </Wrapper>
+      return <Wrapper>
+        <Loader large message={"Bitte warten, wir bereiten alles vor."} />
+      </Wrapper>
     case 3:
       return <Wrapper>
         Whoops
@@ -211,272 +211,272 @@ const Editor = () => {
 
   return (
     <ErrorBoundary>
-          <Wrapper onKeyDown={onKeyDownHandler}>
-            <Radiobar className={"editor-toolbar"}>
-              <RadiobarSegment>
-                {Object.keys(TOOLS).map(
-                  (tool, index) => {
-                    return (
-                      <Toggle
-                        label={"editor:toggle_tools-" + tool}
-                        primary
-                        key={index}
-                        icon={TOOLS[tool].cssClass}
-                        toggled={uiSettings.tool === tool}
-                        onClick={() => {
-                          if (
-                            uiSettings.tool === "SELECT" &&
-                            tool !== "SELECT"
-                          ) {
-                            dispatch({
-                              type: "OBJECT_SELECTED",
-                              uuids: [null],
-                            });
-                          }
-                          switchCursorMode(
-                            dispatch,
-                            uiSettings.tool === tool ? "SELECT" : tool
-                          );
-                        }}
-                      />
-                    );
-                  }
-                )}
-                <Toggle
-                  label={"editor:toggle_tools-IMPORT"}
-                  primary
-                  icon={"file-import"}
-                  toggled={showImportModal}
-                  onClick={() => {
-                    setShowImportModal(true);
-                  }}
-                />
-              </RadiobarSegment>
-              <RadiobarSegment>
-                <Button
-                  label={"editor:undo"}
-                  primary
-                  title={"editor:undo-hint"}
-                  disabled={undoLength === 0}
-                  icon={"undo"}
-                  onClick={() => {
-                    dispatch({ type: "UNDO" });
-                  }}
-                />
-                <Button
-                  label={"editor:redo"}
-                  primary
-                  title={"editor:redo-hint"}
-                  disabled={redoLength === 0}
-                  icon={"redo"}
-                  onClick={() => {
-                    dispatch({ type: "REDO" });
-                  }}
-                />
-              </RadiobarSegment>
-              {/*<Toggle primary onClick={() => {*/}
-              {/*}} label={"Neu"}/>*/}
-            </Radiobar>
-            <Sidebar>
-              <Draftinfo
-                onClick={() => {
-                  toggleAccordeon("draft", true);
-                  setOpenedPanel("publish");
-                  // setTimeout(() => {
-                  //     document.getElementById("label-for-graphic-title").focus();
-                  // }, 100);
-                }}
-              >
-                <strong>
-                  {file.graphicTitle.length === 0 ? (
-                    <span className={"disabled"}>{t('editor:noTitle')}</span>
-                  ) : (
-                    file.graphicTitle
-                  )}
-                </strong>
-                <br />
-                {file.graphicTitle.length !== 0 ? (
-                  <span>Variante: {file.variantTitle}</span>
-                ) : (
-                  <Button fullWidth primary label={'editor:editTitle'} />
-                )}
-                <br />
-                <SaveIndicator id={"save-indicator"}>
-                  <Icon icon={"save"} /> {t('editor:saveInProgress')}
-                </SaveIndicator>
-              </Draftinfo>
-              <AccordeonPanel
-                collapsed={!accordeonStates.draft}
-                onClick={() => toggleAccordeon("draft")}
-                title={t("editor:draftPanel.heading")}
-              >
-                <Document className={"padded"} />
-                {/* </AccordeonPanelFlyoutButton> */}
-                <AccordeonPanelFlyoutButton
-                  flownOut={openedPanel === "publish"}
-                  className={"padded"}
-                  primary
-                  hideFlyout={dragging}
-                  onClick={() =>
-                    setOpenedPanel(openedPanel === "publish" ? null : "publish")
-                  }
-                  label={t('editor:draftPanel.publishButtonLabel')}
-                  icon={"upload"}
-                >
-                  <Metadata />
-                </AccordeonPanelFlyoutButton>
-              </AccordeonPanel>
-              <AccordeonPanel
-                collapsed={!accordeonStates.graphicPages}
-                onClick={() => toggleAccordeon("graphicPages")}
-                title={t("editor:graphicPanel.heading")}
-              >
-                <AccordeonPanelFlyoutButton
-                  flownOut={openedPanel === "graphicSettings"}
-                  className={"padded"}
-                  hideFlyout={dragging}
-                  onClick={() =>
-                    setOpenedPanel(
-                      openedPanel === "graphicSettings"
-                        ? null
-                        : "graphicSettings"
-                    )
-                  }
-                  label={"Einrichten"}
-                  icon={"cog"}
-                >
-                  <GraphicPageSettings />
-                </AccordeonPanelFlyoutButton>
-                <Pages />
-              </AccordeonPanel>
-              <AccordeonPanel
-                collapsed={!accordeonStates.key}
-                onClick={() => toggleAccordeon("key")}
-                title={t("editor:keyPanel.heading")}
-              >
-                <Keyedit className={"padded"} />
-              </AccordeonPanel>
-              <AccordeonPanel
-                collapsed={!accordeonStates.braillePages}
-                onClick={() => toggleAccordeon("braillePages")}
-                title={t("editor:braillePanel.heading")}
-              >
-                <AccordeonPanelFlyoutButton
-                  flownOut={showBraillePanel}
-                  className={"padded"}
-                  onClick={() => setShowBraillePanel(!showBraillePanel)}
-                  label={"Einblenden"}
-                  icon={"mag"}
-                />
-                <AccordeonPanelFlyoutButton
-                  flownOut={openedPanel === "brailleSettings"}
-                  className={"padded"}
-                  hideFlyout={dragging}
-                  onClick={() =>
-                    setOpenedPanel(
-                      openedPanel === "brailleSettings"
-                        ? null
-                        : "brailleSettings"
-                    )
-                  }
-                  label={"Einrichten"}
-                  icon={"braille"}
-                >
-                  <BraillePageSettings />
-                </AccordeonPanelFlyoutButton>
-                <AccordeonPanelFlyoutButton
-                  flownOut={openedPanel === "imagedescription"}
-                  forcedRerender={rerender}
-                  className={"padded"}
-                  hideFlyout={dragging}
-                  onClick={() =>
-                    setOpenedPanel(
-                      openedPanel === "imagedescription"
-                        ? null
-                        : "imagedescription"
-                    )
-                  }
-                  label={"Bildbeschreibung"}
-                  icon={"image"}
-                >
-                  <Verbaliser
-                    style={{ maxHeight: "100%", height: "100%" }}
-                    redrawCallback={() => {
-                      rerenderUnrulyComponents(rerender + 1);
-                    }}
-                    closeSelf={() => {
-                      setOpenedPanel(null);
-                      setShowBraillePanel(true);
+      <Wrapper onKeyDown={onKeyDownHandler}>
+        <Radiobar className={"editor-toolbar"}>
+          <RadiobarSegment>
+            {Object.keys(TOOLS).map(
+              (tool, index) => {
+                return (
+                  <Toggle
+                    label={"editor:toggle_tools-" + tool}
+                    primary
+                    key={index}
+                    icon={TOOLS[tool].cssClass}
+                    toggled={uiSettings.tool === tool}
+                    onClick={() => {
+                      if (
+                        uiSettings.tool === "SELECT" &&
+                        tool !== "SELECT"
+                      ) {
+                        dispatch({
+                          type: "OBJECT_SELECTED",
+                          uuids: [null],
+                        });
+                      }
+                      switchCursorMode(
+                        dispatch,
+                        uiSettings.tool === tool ? "SELECT" : tool
+                      );
                     }}
                   />
-                </AccordeonPanelFlyoutButton>
-              </AccordeonPanel>
-              <AccordeonPanel
-                collapsed={!accordeonStates.objects}
-                onClick={() => toggleAccordeon("objects")}
-                title={t('editor:objectPanel.heading')}
-              >
-                <Objects hideFlyout={dragging} />
-              </AccordeonPanel>
-            </Sidebar>
-            <CanvasWrapper full={!showBraillePanel}>
-              <Canvas
-                isDragging={(dragging) => setDragging(dragging)}
-                hide={page.text}
-              />
-              {openedPanel !== null && (
-                <FlyoutSensitive onClick={() => setOpenedPanel(null)} />
+                );
+              }
+            )}
+            <Toggle
+              label={"editor:toggle_tools-IMPORT"}
+              primary
+              icon={"file-import"}
+              toggled={showImportModal}
+              onClick={() => {
+                setShowImportModal(true);
+              }}
+            />
+          </RadiobarSegment>
+          <RadiobarSegment>
+            <Button
+              label={"editor:undo"}
+              primary
+              title={"editor:undo-hint"}
+              disabled={undoLength === 0}
+              icon={"undo"}
+              onClick={() => {
+                dispatch({ type: "UNDO" });
+              }}
+            />
+            <Button
+              label={"editor:redo"}
+              primary
+              title={"editor:redo-hint"}
+              disabled={redoLength === 0}
+              icon={"redo"}
+              onClick={() => {
+                dispatch({ type: "REDO" });
+              }}
+            />
+          </RadiobarSegment>
+          {/*<Toggle primary onClick={() => {*/}
+          {/*}} label={"Neu"}/>*/}
+        </Radiobar>
+        <Sidebar>
+          <Draftinfo
+            onClick={() => {
+              toggleAccordeon("draft", true);
+              setOpenedPanel("publish");
+              // setTimeout(() => {
+              //     document.getElementById("label-for-graphic-title").focus();
+              // }, 100);
+            }}
+          >
+            <strong>
+              {file.graphicTitle.length === 0 ? (
+                <span className={"disabled"}>{t('editor:noTitle')}</span>
+              ) : (
+                  file.graphicTitle
+                )}
+            </strong>
+            <br />
+            {file.graphicTitle.length !== 0 ? (
+              <span>Variante: {file.variantTitle}</span>
+            ) : (
+                <Button fullWidth primary label={'editor:editTitle'} />
               )}
-            </CanvasWrapper>
-            {showBraillePanel && <BraillePageWrapper />}
-          </Wrapper>
-
-          {/*TODO auslagern? nimmt ziemlich viele Zeilen in Editor.js*/}
-          {showImportModal && (
-            <Modal
-              title={"editor:importer.modalHeading"}
-              fitted
-              actions={[
-                {
-                  label: t("editor:importer.place"),
-                  disabled: traceImport.error || !traceImport.preview,
-                  template: "primary",
-                  align: "right",
-                  action: () => {
-                    // TODO nach Mausklick platzieren, also an InteractiveSVG weitergeben
-                    dispatch({
-                      type: OBJECT_UPDATED,
-                      preview: methods.embedded.create(
-                        0,
-                        0,
-                        traceImport.preview,
-                        traceImport.previewName
-                      ),
-                    });
-                    dispatch({
-                      type: OBJECT_BULK_ADD,
-                      objects: ocrSelection.map((ocrIndex, index) => {
-                        return methods.label.create(
-                          SVG_A4_PX_WIDTH + 5,
-                          index * 50,
-                          200,
-                          50,
-                          ocr[index],
-                          undefined,
-                          { editMode: false }
-                        );
-                      }),
-                    });
-                    resetImportModal();
-                  },
-                },
-                { label: "cancel", action: resetImportModal },
-              ]}
-              dismiss={resetImportModal}
+            <br />
+            <SaveIndicator id={"save-indicator"}>
+              <Icon icon={"save"} /> {t('editor:saveInProgress')}
+            </SaveIndicator>
+          </Draftinfo>
+          <AccordeonPanel
+            collapsed={!accordeonStates.draft}
+            onClick={() => toggleAccordeon("draft")}
+            title={t("editor:draftPanel.heading")}
+          >
+            <Document className={"padded"} />
+            {/* </AccordeonPanelFlyoutButton> */}
+            <AccordeonPanelFlyoutButton
+              flownOut={openedPanel === "publish"}
+              className={"padded"}
+              primary
+              hideFlyout={dragging}
+              onClick={() =>
+                setOpenedPanel(openedPanel === "publish" ? null : "publish")
+              }
+              label={t('editor:draftPanel.publishButtonLabel')}
+              icon={"upload"}
             >
-              <Importer />
-            </Modal>
+              <Metadata />
+            </AccordeonPanelFlyoutButton>
+          </AccordeonPanel>
+          <AccordeonPanel
+            collapsed={!accordeonStates.graphicPages}
+            onClick={() => toggleAccordeon("graphicPages")}
+            title={t("editor:graphicPanel.heading")}
+          >
+            <AccordeonPanelFlyoutButton
+              flownOut={openedPanel === "graphicSettings"}
+              className={"padded"}
+              hideFlyout={dragging}
+              onClick={() =>
+                setOpenedPanel(
+                  openedPanel === "graphicSettings"
+                    ? null
+                    : "graphicSettings"
+                )
+              }
+              label={t("editor:setup")}
+              icon={"cog"}
+            >
+              <GraphicPageSettings />
+            </AccordeonPanelFlyoutButton>
+            <Pages />
+          </AccordeonPanel>
+          <AccordeonPanel
+            collapsed={!accordeonStates.key}
+            onClick={() => toggleAccordeon("key")}
+            title={t("editor:keyPanel.heading")}
+          >
+            <Keyedit className={"padded"} />
+          </AccordeonPanel>
+          <AccordeonPanel
+            collapsed={!accordeonStates.braillePages}
+            onClick={() => toggleAccordeon("braillePages")}
+            title={t("editor:braillePanel.heading")}
+          >
+            <AccordeonPanelFlyoutButton
+              flownOut={showBraillePanel}
+              className={"padded"}
+              onClick={() => setShowBraillePanel(!showBraillePanel)}
+              label={t("editor:braillePanel.show")}
+              icon={"mag"}
+            />
+            <AccordeonPanelFlyoutButton
+              flownOut={openedPanel === "brailleSettings"}
+              className={"padded"}
+              hideFlyout={dragging}
+              onClick={() =>
+                setOpenedPanel(
+                  openedPanel === "brailleSettings"
+                    ? null
+                    : "brailleSettings"
+                )
+              }
+              label={t("editor:setup")}
+              icon={"braille"}
+            >
+              <BraillePageSettings />
+            </AccordeonPanelFlyoutButton>
+            <AccordeonPanelFlyoutButton
+              flownOut={openedPanel === "imagedescription"}
+              forcedRerender={rerender}
+              className={"padded"}
+              hideFlyout={dragging}
+              onClick={() =>
+                setOpenedPanel(
+                  openedPanel === "imagedescription"
+                    ? null
+                    : "imagedescription"
+                )
+              }
+              label={t("editor:braillePanel.imageDescription")}
+              icon={"image"}
+            >
+              <Verbaliser
+                style={{ maxHeight: "100%", height: "100%" }}
+                redrawCallback={() => {
+                  rerenderUnrulyComponents(rerender + 1);
+                }}
+                closeSelf={() => {
+                  setOpenedPanel(null);
+                  setShowBraillePanel(true);
+                }}
+              />
+            </AccordeonPanelFlyoutButton>
+          </AccordeonPanel>
+          <AccordeonPanel
+            collapsed={!accordeonStates.objects}
+            onClick={() => toggleAccordeon("objects")}
+            title={t('editor:objectPanel.heading')}
+          >
+            <Objects hideFlyout={dragging} />
+          </AccordeonPanel>
+        </Sidebar>
+        <CanvasWrapper full={!showBraillePanel}>
+          <Canvas
+            isDragging={(dragging) => setDragging(dragging)}
+            hide={page.text}
+          />
+          {openedPanel !== null && (
+            <FlyoutSensitive onClick={() => setOpenedPanel(null)} />
           )}
+        </CanvasWrapper>
+        {showBraillePanel && <BraillePageWrapper />}
+      </Wrapper>
+
+      {/*TODO auslagern? nimmt ziemlich viele Zeilen in Editor.js*/}
+      {showImportModal && (
+        <Modal
+          title={"editor:importer.modalHeading"}
+          fitted
+          actions={[
+            {
+              label: t("editor:importer.place"),
+              disabled: traceImport.error || !traceImport.preview,
+              template: "primary",
+              align: "right",
+              action: () => {
+                // TODO nach Mausklick platzieren, also an InteractiveSVG weitergeben
+                dispatch({
+                  type: OBJECT_UPDATED,
+                  preview: methods.embedded.create(
+                    0,
+                    0,
+                    traceImport.preview,
+                    traceImport.previewName
+                  ),
+                });
+                dispatch({
+                  type: OBJECT_BULK_ADD,
+                  objects: ocrSelection.map((ocrIndex, index) => {
+                    return methods.label.create(
+                      SVG_A4_PX_WIDTH + 5,
+                      index * 50,
+                      200,
+                      50,
+                      ocr[index],
+                      undefined,
+                      { editMode: false }
+                    );
+                  }),
+                });
+                resetImportModal();
+              },
+            },
+            { label: "cancel", action: resetImportModal },
+          ]}
+          dismiss={resetImportModal}
+        >
+          <Importer />
+        </Modal>
+      )}
     </ErrorBoundary>
   );
 };

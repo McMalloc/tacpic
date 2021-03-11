@@ -83,7 +83,7 @@ const Pages = (props) => {
                   width={width}
                   height={height}
                 />
-                <PageTitle>{page.name !== null ? page.name : "Seite " + (index + 1)}</PageTitle>
+                <PageTitle>{page.name !== null ? page.name : t('editor:graphicPanel.page') + (index + 1)}</PageTitle>
               </div>
               {index !== 0 &&
                 <Button onClick={event => {

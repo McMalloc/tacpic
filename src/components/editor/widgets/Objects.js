@@ -8,6 +8,7 @@ import Context from "./Context/Context";
 import { useDrag, useDrop } from "react-dnd";
 import { OBJECT_ENTRY, OBJECTS_SWAPPED } from "../../../actions/action_constants";
 import methods from '../ReactSVG/methods/methods';
+import { useTranslation } from 'react-i18next';
 
 const select = (dispatch, uuid) => {
     dispatch({
@@ -87,14 +88,9 @@ const ObjectPreview = props => {
     </svg>
 }
 
-const detransform = (x, y, width, height, targetWidth, targetHeight) => {
-
-}
-
 const ObjectEntry = props => {
     const ref = useRef(null);
     const dispatch = useDispatch();
-    const [hovered, setHovered] = useState(false);
 
     const [{ isDragging }, drag] = useDrag({
         item: { type: OBJECT_ENTRY, index: props.index },
@@ -148,6 +144,7 @@ const ObjectEntry = props => {
 }
 
 const Objects = props => {
+    const {t} = useTranslation();
     const objects = useSelector(
         state => state.editor.file.present.pages[state.editor.ui.currentPage].objects
     )
@@ -156,7 +153,7 @@ const Objects = props => {
         state => state.editor.ui.selectedObjects[0]
     );
 
-    if (!objects || objects.length === 0) return <p className={"disabled"}>Keine Objekte auf Seite.</p>;
+    if (!objects || objects.length === 0) return <p className={"disabled"}>{t('editor:objectPanel.noObjects')}</p>;
 
     return (
         <>

@@ -4,7 +4,7 @@ import {applyMiddleware, compose, createStore} from "redux";
 import createRootReducer from "../reducers";
 import rootSaga from "../sagas";
 import {createBrowserHistory} from "history";
-import {app, catalogue, editor, user, cms} from "./initialState";
+import {app, catalogue, editor, user, cms, admin} from "./initialState";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -38,7 +38,7 @@ const trackEvent = store => next => action => {
 
 export default createStore(
     createRootReducer(history), // root reducer with router state
-    {editor, catalogue, user, app, cms},
+    {editor, catalogue, user, app, cms, admin},
     composeEnhancers(
         applyMiddleware(
             // routerMiddleware(history), // for dispatching history actions

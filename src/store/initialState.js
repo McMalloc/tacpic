@@ -162,6 +162,10 @@ export const user = {
     error: null
 };
 
+export const admin = {
+    users: []
+}
+
 export const cms = {
     categories: {
         index: [],

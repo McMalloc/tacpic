@@ -30,9 +30,12 @@ const Knowledge = props => {
     })
   }, [category, index])
 
-  if (!successful) return <Loader />
+  const knowledgeCat = hierarchy.find(cat => cat.slug === 'wissen');
+  if (!successful || !knowledgeCat) return <Loader />
 
   // TODO Dokumententitel
+
+  
 
   const page = relevantPages.find(page => page.slug === postSlug);
   return <div className='row'>
@@ -47,7 +50,6 @@ const Knowledge = props => {
         pending={loadedPages.pending}
         pages={relevantPages} />
       </div>
-      
     </div>
     <div className={'col-md-9 col-xs-12'}>
       {!!page &&

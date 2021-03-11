@@ -1,0 +1,22 @@
+{
+  "brailleEmboss": "$t(glossary:brailleScript)prägung",
+  "blackPrint": "Schwarzschrift",
+  "microcapsule": "Schwellpapier",
+  "a4": "DIN A4",
+  "a3": "DIN A3",
+  "key": "Legende",
+  "key_plural": "Legenden",
+  "brailleScript": "Punktschrift",
+  "texture": "Textur",
+  "texture_plural": "Texturen",
+  "border": "Kontur",
+  "tacpicEditor": "$t(glossary:brand) Online-Editor",
+  "brand": "tacpic",
+  "privacyPolicy": "Datenschutzerklärung",
+  "catalogue": "Katalog",
+  "history": "Versionshistorie",
+  "tag": "Schlagwort",
+  "tag_plural": "Schlagwörter",
+  "draft": "Entwurf",
+  "draft_plural": "Entwürfe"
+}
