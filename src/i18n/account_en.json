@@ -71,5 +71,11 @@
     "state": "State",
     "country": "Country",
     "add": "Add address"
+  },
+  "orderMenu": {
+    "noOrders": "No orders have been recorded yet.",
+    "placedAt": "Ordered on",
+    "state": "Status",
+    "sum": "Total"
   }
 }

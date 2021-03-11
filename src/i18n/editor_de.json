@@ -30,7 +30,8 @@
     "showVertical": "Vertikales Gitternetz anzeigen",
     "distanceVertical": "vertikaler Gitternetzlinien",
     "showHorizontal": "Horizontales Gitternetz anzeigen",
-    "distanceHorizontal": "horizontaler Gitternetzlinien"
+    "distanceHorizontal": "horizontaler Gitternetzlinien",
+    "page": "Seite"
   },
   "braillePanel": {
     "heading": "$t(glossary:brailleScript)seiten",
@@ -94,7 +95,8 @@
     "dotted": "gestrichelt",
     "arrowheadStart": "Pfeilspitze am Anfang",
     "arrowheadEnd": "Pfeilspitze am Ende",
-    "closeShape": "Form schließen"
+    "closeShape": "Form schließen",
+    "noObjects": "Keine Objekte auf der Seite"
   },
   "importer": {
     "modalHeading": "Grafik importieren",
@@ -198,5 +200,6 @@
   "delete_file_confirm_ok": "Ja, löschen",
   "delete_file_confirm_heading": "Löschen bestätigen",
   "delete_file_confirm_copy": "Möchten Sie die lokalen, d.h. nur auf diesem Gerät gespeicherten Änderungen vom {{date}} an {{title}} unwiderruflich löschen?",
-  "editingMode": "Bearbeitungsmodus"
+  "editingMode": "Bearbeitungsmodus",
+  "setup": "Einrichten"
 }

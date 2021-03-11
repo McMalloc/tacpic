@@ -2,7 +2,7 @@
   "checkout": "Buy now",
   "basket": "Shopping cart ({{quantity}} Item)",
   "basketShort": "({{quantity}})",
-  "emptyBasket": "",
+  "emptyBasket": "Cart is empty",
   "request-quote": "Request an offer",
   "remove": "Remove",
   "add-to-list": "Add to list",
