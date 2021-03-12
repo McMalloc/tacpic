@@ -2,7 +2,7 @@
   "checkout": "Zahlungspflichtig bestellen",
   "basket": "Warenkorb ({{quantity}} Artikel)",
   "basketShort": "({{quantity}})",
-  "emptyBasket": "",
+  "emptyBasket": "Warenkorb ist leer",
   "request-quote": "Angebot anfordern",
   "remove": "Entfernen",
   "add-to-list": "Auf die Liste",
