@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../gui/Button";
 import Toggle from "../gui/Toggle";
 import { FlyoutButton, FlyoutEntry } from "../gui/FlyoutButton";
-import { ITEM_ADDED_TO_BASKET } from "../../actions/action_constants";
+import { ITEM_ADDED_TO_BASKET, VARIANT } from "../../actions/action_constants";
 import styled, { useTheme } from "styled-components/macro";
 import { useTranslation } from "react-i18next";
 import { Icon } from "../gui/_Icon";
@@ -145,7 +145,7 @@ const VariantView = (props) => {
   let { graphicId, variantId } = useParams();
   const dispatch = useDispatch();
   const tags = useSelector((state) => state.catalogue.tags);
-  const logged_in = useSelector((state) => state.user.logged_in);
+  const { logged_in, role } = useSelector((state) => state.user);
   const [product, setProduct] = useState("graphic");
   const [quantity, setQuantity] = useState(1);
   const [ref, entry] = useIntersect({ threshold: scrollThreshold });
@@ -358,6 +358,24 @@ const VariantView = (props) => {
         setSearchParams({ view: showHistory ? "" : "history" })
       }
     />
+    {role === 1 &&
+      <FlyoutButton
+        disabled={!logged_in}
+        label={'catalogue:adminFeatures'} icon={'eye-slash'}
+      >
+        <FlyoutEntry
+            label={"catalogue:hideVariant"}
+            onClick={() => dispatch({ type: VARIANT.HIDE.REQUEST, payload: {id: variantId, public: false}})}
+            sublabel={""}
+          />
+        <FlyoutEntry
+            label={"catalogue:hideGraphic"}
+            onClick={() => {}}
+            sublabel={""}
+          />
+        
+      </FlyoutButton>
+    }
   </ButtonBar>
 
   return (
@@ -389,25 +407,25 @@ const VariantView = (props) => {
           {props.braille_no_of_pages > 0 ? (
             <Radio
               onChange={setProduct}
-              legend={['catalogue:orderWithBraille', {count: props.graphic_no_of_pages}]}
+              legend={['catalogue:orderWithBraille', { count: props.graphic_no_of_pages }]}
               name={"graphic_only_or_both_" + props.id}
               value={product} options={[
                 {
-                  label: t('catalogue:orderWithBrailleEmboss', {count: props.braille_no_of_pages}),
+                  label: t('catalogue:orderWithBrailleEmboss', { count: props.braille_no_of_pages }),
                   value: "graphic"
                 },
                 {
-                  label: t('catalogue:orderWithBrailleMail', 
-                    {saved: (props.quote - props.quote_graphics_only)}), 
-                    value: "graphic_nobraille"
+                  label: t('catalogue:orderWithBrailleMail',
+                    { saved: (props.quote - props.quote_graphics_only) }),
+                  value: "graphic_nobraille"
                 }
               ]} />
           ) : (
-              <p><strong>{t('catalogue:orderWithoutBraille', {count: props.graphic_no_of_pages})}</strong></p>
+              <p><strong>{t('catalogue:orderWithoutBraille', { count: props.graphic_no_of_pages })}</strong></p>
             )}
 
           <br />
-          
+
           <OrderWidget>
             {/*<div style={{display: 'flex'}}>*/}
             <Numberinput
@@ -423,15 +441,19 @@ const VariantView = (props) => {
             />
 
             <div>
-              <strong>{t('{{amount, currency}}', {amount: (product === "graphic"
-                    ? props.quote
-                    : props.quote_graphics_only) * quantity})}</strong>
+              <strong>{t('{{amount, currency}}', {
+                amount: (product === "graphic"
+                  ? props.quote
+                  : props.quote_graphics_only) * quantity
+              })}</strong>
 
               {/*{quantity !== 1 &&*/}
-              <div style={{fontSize: '0.8rem'}}>
-              {t('catalogue:singlePrice')}: {t('{{amount, currency}}', {amount: (product === "graphic"
+              <div style={{ fontSize: '0.8rem' }}>
+                {t('catalogue:singlePrice')}: {t('{{amount, currency}}', {
+                  amount: (product === "graphic"
                     ? props.quote
-                    : props.quote_graphics_only)})}
+                    : props.quote_graphics_only)
+                })}
                 <br />
                 {t("catalogue:plusShipping")}
               </div>

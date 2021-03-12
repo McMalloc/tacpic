@@ -77,5 +77,6 @@
     "placedAt": "Erfolgt am",
     "sum": "Summe",
     "state": "Status"
-  }
+  },
+  "The account you tried to create is currently awaiting verification": "Eine Verifizierung dieser E-Mail-Adresse steht noch aus. Bitte überprüfen Sie Ihr E-Mail-Postfach, eventuell auch den Spam-Ordner."
 }

@@ -71,6 +71,8 @@ export default function* root() {
         call(createSaga(QUOTE.GET, 'post', 'quotes', takeLatest, false, id, id)),
 
         call(createSaga(GRAPHIC.GET, 'get', 'graphics/:id', takeLatest, false, id, id)),
+        call(createSaga(GRAPHIC.HIDE, 'post', 'internal/graphics/:id', takeLatest, true, id, id)),
+        call(createSaga(VARIANT.HIDE, 'post', 'internal/variants/:id', takeLatest, true, id, id)),
         call(createSaga(VARIANT.HISTORY, 'get', 'variants/:id/history', takeLatest, false, id, id)),
 
         // call(createSaga(CMS_PAGE.GET, 'get', 'cms/pages/:id', takeLatest, false, id, id)),

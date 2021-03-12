@@ -18,10 +18,17 @@ const AdminUsers = props => {
 
     // if (users.length === 0) return null;
 
-    const columns = React.useMemo(() => users.length === 0 ? [] : users[0].keys.map(key => ({
-        Header: t(key),
-        accessor: key
-    })), []);
+    const columns = React.useMemo(() => {
+        if (users.length === 0 || !!users[0]) { 
+            return [] 
+        } else {
+            console.log(Object.keys(users[0]));
+            Object.keys(users[0]).map(key => ({
+                Header: t(key),
+                accessor: key
+            }))
+        }
+    }, []);
 
     const tableInstance = useTable({ columns, usersData })
     const {

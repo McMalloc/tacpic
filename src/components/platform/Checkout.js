@@ -184,7 +184,7 @@ const Checkout = props => {
         <p><strong>{t('hint')}</strong><br />
         
             <Trans i18nKey={'commerce:eulaHint'}>
-            0<a href={"http://localhost:3000/info/de/63?Allgemeine%20Gesch%C3%A4ftsbedingungen"}>
+            0<a target={'_blank'} href={"/info/de/63?Allgemeine%20Gesch%C3%A4ftsbedingungen"}>
                 1
             </a>2
             </Trans>

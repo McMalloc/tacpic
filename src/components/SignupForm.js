@@ -30,10 +30,6 @@ const SignupForm = props => {
         return () => dispatch({ type: RESET_USER_ERRORS })
     }, []);
 
-    // if (user.verification_state === -5) {
-    //     return <Navigate push to="/catalogue"/>;
-    // }
-
     return (
         <>
             <div className={"row"}>

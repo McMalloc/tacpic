@@ -2,6 +2,7 @@ import { call, put, select } from "redux-saga/effects";
 import { API_URL } from '../env';
 import { SVG_MIME } from "../config/constants";
 import { getCache, setCache } from "./cache";
+import i18n from "i18next";
 
 const buildParams = (paramObj) => {
     let paramString = '';
@@ -95,6 +96,7 @@ export default function createSaga(
                         const filePayload = action.payload && action.payload.toString() === '[object FormData]';
                         let headers = {
                             'Accept': 'application/json',
+                            'Accept-Language': i18n.language,
                             'Tacpic-Version': frontendVersion
                         };
                         if (!filePayload) headers['Content-Type'] = 'application/json';

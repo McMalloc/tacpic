@@ -4,14 +4,20 @@ import {useTranslation} from "react-i18next";
 
 export default ({error}) => {
     const { t } = useTranslation();
+    
     if (!error) return null;
+
+    if (!!error.error) return <Alert warning>
+        {t("account:" + error.error)}
+    </Alert>
+
     if (!!error['field-error']) return <Alert warning>
-        {t("auth:" + error.error)}<br/>
-        {error['field-error'] && t("auth:" + error['field-error'][1])}
+        {t("account:" + error.error)}<br/>
+        {error['field-error'] && t("account:" + error['field-error'][1])}
     </Alert>
 
     return <Alert warning>
-        {t("error:" + error.type)}:<br/>
-        {error.message && t("error:" + error.message)}
+        {t("account:" + error.type)}:<br/>
+        {error.message && t("account:" + error.message)}
     </Alert>
 }

@@ -1,20 +1,18 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import styled from 'styled-components/macro';
-import {Multiline, Textinput} from "../../gui/Input";
+import {Textinput} from "../../gui/Input";
 import Select from "../../gui/Select";
 import {Button} from "../../gui/Button";
-import {GRAPHIC, VERSION, VARIANT} from "../../../actions/action_constants";
+import {GRAPHIC, VARIANT} from "../../../actions/action_constants";
 import Modal from "../../gui/Modal";
 import {Alert} from "../../gui/Alert";
 import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {NavLink} from "react-router-dom";
 import uuidv4 from "../../../utility/uuid";
-import {useParams} from "react-router";
 import {Checkbox} from "../../gui/Checkbox";
 import Loader from "../../gui/Loader";
-import ServerError from "../../platform/ServerError";
 
 const Status = styled.div`
   display: flex;
@@ -51,7 +49,7 @@ const uploadVersion = (dispatch, file, changeMessage) => {
 
 const Metadata = () => {
     const file = useSelector(state => state.editor.file.present);
-    const logged_in = useSelector(state => state.user.logged_in);
+    const {logged_in, role} = useSelector(state => state.user);
     const tags = useSelector(
         state => state.catalogue.tags.map(tag => {
             return {
@@ -96,7 +94,7 @@ const Metadata = () => {
                 }}
                 tip={"help:input_graphic-title"}
                 name={"graphic-title"}
-                disabled={file.derivedFrom !== null}
+                disabled={file.derivedFrom !== null && role !== 1}
                 label={"editor:input_catalogue-title"}
                 sublabel={"editor:input_catalogue-title-sub"}/>
             {file.derivedFrom !== null &&
