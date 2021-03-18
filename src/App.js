@@ -79,7 +79,7 @@ const App = () => {
 
   useEffect(() => {
     if (!(/catalogue/.test(location.pathname) || /info/.test(location.pathname) || /knowledge\/.+/.test(location.pathname))) {
-      document.title = t('region:' + location.pathname) + ' | tacpic';
+      document.title = t('region.' + location.pathname) + ' | tacpic';
     }
     document.getElementById("scroll-content").scrollTo(0, 0);
     trackPageView();
@@ -90,7 +90,7 @@ const App = () => {
     { label: t("navigation.catalogue"), to: "/catalogue" },
     { label: t("navigation.editor"), to: "/editor/splash" },
     { label: t("navigation.pricing"), to: "/pricing" },
-    { label: t("navigation.knowledge"), to: '/knowledge' },
+    { label: t("navigation.knowledge"), to: '/knowledge/tastgrafiken' },
   ];
 
   return (

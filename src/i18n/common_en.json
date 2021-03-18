@@ -39,12 +39,6 @@
     "select_braille-system": "A uniform $t(glossary:brailleScript) system should be used per document. All captions are created in the system selected here and existing captions are converted.",
     "select_medium": "Different media offer different possibilities. The editor will restrict functions for certain production techniques so that you do not design a draft that cannot be produced at all with swell paper, for example."
   },
-  "auth": {
-    "invalid login, already an account with this login": "There is already an account under this e-mail address.",
-    "The account you tried to create is currently awaiting verification": "The account with this email address still needs to be verified. Please check your mailbox and spam folder.",
-    "no matching login": "No user account known with this e-mail address / password.",
-    "There was an error creating your account": "Error while creating a new account."
-  },
   "navigation": {
     "catalogue": "$t(glossary:catalogue)",
     "editor": "Editor",

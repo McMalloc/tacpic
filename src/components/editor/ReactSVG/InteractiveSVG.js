@@ -551,6 +551,7 @@ class InteractiveSVG extends Component {
                 onKeyUp={this.keyUpHandler}
                 onMouseUp={this.mouseUpHandler}
                 isPanning={this.state.panning}
+                isDragging={this.state.dragging}
                 tool={this.props.ui.tool}
                 scale={this.props.ui.scalingFactor}
                 onMouseMove={this.mouseMoveHandler}

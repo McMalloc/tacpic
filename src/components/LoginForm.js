@@ -54,8 +54,8 @@ const Login = props => {
 
             {user.error !== null &&
             <><Alert warning>
-                {t("auth:" + user.error.error)}<br/>
-                {user.error['field-error'] && t("auth:" + user.error['field-error'][1])}
+                {t("account:" + user.error.error)}<br/>
+                {user.error['field-error'] && t("account:" + user.error['field-error'][1])}
             </Alert><br/></>
             }
             <p className={"align-right"}>

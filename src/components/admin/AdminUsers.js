@@ -14,23 +14,22 @@ const AdminUsers = props => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const users = useSelector(state => state.admin.users);
-    const usersData = useMemo(() => users, [users]);
-
-    // if (users.length === 0) return null;
+    const usersData = useMemo(() => users, [users.length]);
 
     const columns = React.useMemo(() => {
-        if (users.length === 0 || !!users[0]) { 
-            return [] 
+        if (usersData.length === 0 || !usersData[0]) {
+            return []
         } else {
-            console.log(Object.keys(users[0]));
-            Object.keys(users[0]).map(key => ({
+            console.log(Object.keys(usersData[0]));
+            return Object.keys(usersData[0]).map(key => ({
                 Header: t(key),
                 accessor: key
             }))
         }
-    }, []);
+    }, [usersData.length]);
 
-    const tableInstance = useTable({ columns, usersData })
+
+    const tableInstance = useTable({ columns, data: usersData })
     const {
         getTableProps,
         getTableBodyProps,

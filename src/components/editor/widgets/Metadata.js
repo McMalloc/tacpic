@@ -7,12 +7,13 @@ import {Button} from "../../gui/Button";
 import {GRAPHIC, VARIANT} from "../../../actions/action_constants";
 import Modal from "../../gui/Modal";
 import {Alert} from "../../gui/Alert";
-import {useTranslation} from "react-i18next";
+import {useTranslation, Trans} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {NavLink} from "react-router-dom";
 import uuidv4 from "../../../utility/uuid";
 import {Checkbox} from "../../gui/Checkbox";
 import Loader from "../../gui/Loader";
+import i18n from "i18next";
 
 const Status = styled.div`
   display: flex;
@@ -76,8 +77,9 @@ const Metadata = () => {
 
     if (!logged_in) return (
             <Alert info>
-                Bitte <NavLink to={'/login'}>logge dich ein</NavLink> oder <NavLink to={'/signup'}>erstelle ein
-                Konto</NavLink>, um Grafiken zu erstellen.
+                <Trans i18nKey={'editor:pleaseLogin'}>
+                                0<NavLink to={"/login"}>1</NavLink>2<NavLink to={"/signup"}>3</NavLink>4
+                </Trans>
             </Alert>
     );
 
@@ -178,7 +180,7 @@ const Metadata = () => {
                           checked={licenseAgreed}
                           label={t("editor:license_agreed")}/>
                 <a className={"checkbox-additional"} target={"blank"}
-                   href={"https://creativecommons.org/licenses/by-sa/4.0/deed.de"}>{t('editor:draftPanel.viewLicense')}</a>
+                   href={`https://creativecommons.org/licenses/by-sa/4.0/deed${i18n.language === 'de' ? '.de' : ''}`}>{t('editor:draftPanel.viewLicense')}</a>
             </div>
             <br/>
             <Button onClick={() => {
