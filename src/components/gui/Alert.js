@@ -38,7 +38,7 @@ const Alert = props => {
         colour = theme.info;
     }
     if (props.warning) {
-        iconID = "hand-point-up";
+        iconID = "hand-point-right";
         colour = theme.warning;
     }
     if (props.danger) {

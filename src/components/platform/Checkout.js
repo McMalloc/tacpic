@@ -165,40 +165,38 @@ const Checkout = props => {
         {/*<h2>Überprüfen</h2>*/}
         <div>{t('loggedInAs')} {user.email}</div>
         <p>
-            <strong>{t('commerce:shippingAddress')}</strong><br />
+            <small>{t('commerce:shippingAddress')}</small><br />
             <AddressView {...(shippingAddress.id !== null ? user.addresses.find(address => address.id === shippingAddress.id) : shippingAddress)} />
         </p>
 
         {useInvoiceAddress &&
             <p>
-                <strong>{t('commerce:invoiceAddress')}</strong><br />
+                <small>{t('commerce:invoiceAddress')}</small><br />
                 <AddressView {...(invoiceAddress.id !== null ? user.addresses.find(address => address.id === invoiceAddress.id) : invoiceAddress)} />
             </p>
         }
 
         <p>
-            <strong>{t('commerce:paymentMethod')}</strong><br />
+            <small>{t('commerce:paymentMethod')}</small><br />
             {t('commerce:' + paymentMethod)}
         </p>
 
-        <p><strong>{t('hint')}</strong><br />
-        
+        <p><small>{t('hint')}</small><br />
+
             <Trans i18nKey={'commerce:eulaHint'}>
-            0<a target={'_blank'} href={"/info/de/63?Allgemeine%20Gesch%C3%A4ftsbedingungen"}>
-                1
+                0<a target={'_blank'} href={"/info/de/63?Allgemeine%20Gesch%C3%A4ftsbedingungen"}>
+                    1
             </a>2
             </Trans>
-            
-            
+            <br />
+            <Alert warning>{t('commerce:pleaseReviewOrder')}</Alert>
+
+
         </p>
 
         <br />
         {back}
-        <Button label={"commerce:order"}
-            icon={orderState.pending ? "cog fa-spin" : "handshake"}
-            onClick={() => placeOrder(dispatch, shippingAddress, useInvoiceAddress ? invoiceAddress : null, paymentMethod, idempotencyKey)}
-            primary rightAction
-            disabled={paymentMethod === null || orderState.pending} />
+
         <br />
     </section>
 
@@ -239,22 +237,24 @@ const Checkout = props => {
                                 {orderState.error.type}: {orderState.error.message}
                             </Alert><br /></>
                         }
-
-                        <br />
-                        <Alert i18nKey={'commerce:betaHint'} danger>
-                            0<br/><strong>2</strong>
-                        </Alert>
                     </div>
-
-
-
 
                 </div>
                 <div className={"col-xs-12 col-md-6 col-md-offset-1"}>
                     <div style={{ position: 'sticky', top: 12 }}>
                         <h2>{t('commerce:basketHeading')}</h2>
                         <BasketListing />
+                        <Alert i18nKey={'commerce:betaHint'} danger>
+                            0<br /><strong>2</strong>
+                        </Alert>
                         <br />
+                        {step === 3 && 
+                        <Button label={"commerce:order"}
+                            icon={orderState.pending ? "cog fa-spin" : "handshake"}
+                            onClick={() => placeOrder(dispatch, shippingAddress, useInvoiceAddress ? invoiceAddress : null, paymentMethod, idempotencyKey)}
+                            primary rightAction large
+                            disabled={paymentMethod === null || orderState.pending} />
+                            }
                         <br />
                     </div>
                 </div>

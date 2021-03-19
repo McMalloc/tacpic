@@ -38,6 +38,7 @@
   "toOverview": "Weiter zur Übersicht",
   "order": "Kostenpflichtig bestellen",
   "eulaHint": "Bitte nehmen Sie unsere <1>Allgemeinen Geschäftsbedingungen (AGB)</1> zur Kenntnis.",
+  "pleaseReviewOrder": "Überprüfen Sie noch einmal die Richtigkeit Ihres Warenkorbs, bevor Sie kostenpflichtig bestellen.",
   "alphaHint": "Die Plattform befindet sich in der Alpha-Phase, d.h. sie wird noch getestet.<1 /><2>Getätigte Bestellungen werden entgegen der Beschriftung nicht ausgelöst und es fallen keine Kosten an.</2>",
   "newAddress": "Neue Adresse",
   "address": "Adresse",

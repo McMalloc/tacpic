@@ -364,16 +364,16 @@ const VariantView = (props) => {
         label={'catalogue:adminFeatures'} icon={'eye-slash'}
       >
         <FlyoutEntry
-            label={"catalogue:hideVariant"}
-            onClick={() => dispatch({ type: VARIANT.HIDE.REQUEST, payload: {id: variantId, public: false}})}
-            sublabel={""}
-          />
+          label={"catalogue:hideVariant"}
+          onClick={() => dispatch({ type: VARIANT.HIDE.REQUEST, payload: { id: variantId, public: false } })}
+          sublabel={""}
+        />
         <FlyoutEntry
-            label={"catalogue:hideGraphic"}
-            onClick={() => {}}
-            sublabel={""}
-          />
-        
+          label={"catalogue:hideGraphic"}
+          onClick={() => { }}
+          sublabel={""}
+        />
+
       </FlyoutButton>
     }
   </ButtonBar>
@@ -447,15 +447,17 @@ const VariantView = (props) => {
                   : props.quote_graphics_only) * quantity
               })}</strong>
 
-              {/*{quantity !== 1 &&*/}
               <div style={{ fontSize: '0.8rem' }}>
-                {t('catalogue:singlePrice')}: {t('{{amount, currency}}', {
-                  amount: (product === "graphic"
-                    ? props.quote
-                    : props.quote_graphics_only)
-                })}
+                {quantity !== 1 &&
+                  <>{t('catalogue:singlePrice')}: {t('{{amount, currency}}', {
+                    amount: (product === "graphic"
+                      ? props.quote
+                      : props.quote_graphics_only)
+                  })}</>}
                 <br />
-                {t("catalogue:plusShipping")}
+                {t("catalogue:plusShipping", { amount: 200 })}
+                <br />
+                {t('catalogue:deliveryTime', {lower: 4, upper: 5})}
               </div>
             </div>
 

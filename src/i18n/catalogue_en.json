@@ -9,7 +9,7 @@
   "create": "Design graphic",
   "pcs": "Piece",
   "singlePrice": "Unit price",
-  "plusShipping": "plus shipping",
+  "plusShipping": "plus {{amount, currency}} shipping",
   "addToCart": "Add to Cart",
   "orderWithBraille_plural": "Order graphic on {{count}} sheets swell paper and get image description as ...",
   "orderWithBraille": "Order graphic on one sheet of swell paper and get image description as ...",
@@ -68,5 +68,6 @@
   "brf": "brf-Format",
   "brf-hint": "Contains Braille code for direct printing with an Index Everest series Braille printer.",
   "zip": "ZIP-archive",
-  "zip-hint": "An archive file that contains all the files mentioned above."
+  "zip-hint": "An archive file that contains all the files mentioned above.",
+  "deliveryTime": "delivery in {{lower}}–{{upper}} days"
 }

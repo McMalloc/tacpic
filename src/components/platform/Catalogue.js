@@ -149,7 +149,7 @@ const Catalogue = () => {
     return (
         <>
             <Row>
-                <div className={"col-xs-12 col-md-8 col-md-offset-2"}>
+                <div className={"col-xs-12 col-md-8"}>
                     <h1>{t('catalogue:heading')}</h1>
                 </div>
             </Row>
@@ -157,15 +157,15 @@ const Catalogue = () => {
             {breakpoints.md ?
                 <>
                     <Row>
-                        <div className={"col-md-6 col-md-offset-2 extra-margin double"}>
+                        <div className={"col-md-6 col-md-offset-3 extra-margin double"}>
                             <Searchbar />
                         </div>
                     </Row>
                     <Row>
-                        <div className={"col-md-2"}>
+                        <div className={"col-md-3"}>
                             {tagSidebar}
                         </div>
-                        <div className={"col-md-10"}>
+                        <div className={"col-md-9"}>
                             <CatalogueItemList graphics={catalogue.graphics} />
                         </div>
                     </Row>

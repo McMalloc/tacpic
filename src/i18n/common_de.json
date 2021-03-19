@@ -79,6 +79,7 @@
     "/account": "Persönlicher Bereich",
     "/admin": "Administration",
     "/account/orders": "Meine bestellungen",
+    "/order-completed": "Bestellung abgeschlossen",
     "/account/newsletter": "Datenschutzeinstellungen",
     "/account/addresses": "Meine Adressen",
     "/account/my_account": "Kontoinformationen",

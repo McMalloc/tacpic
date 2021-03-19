@@ -178,7 +178,7 @@ const Landing = () => {
                                 <p>{t('landing:signUpCTA')}</p>
                                 <p>
                                     <NavLink className={"no-styled-link"} to={'/signup'}>
-                                        <Button icon={"user-plus"} label={'general:signup'} primary />
+                                        <Button icon={"user-plus"} label={'account:signup'} primary />
                                     </NavLink>
                                 </p>
                             </Well>

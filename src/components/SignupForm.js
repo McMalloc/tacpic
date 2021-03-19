@@ -87,10 +87,11 @@ const SignupForm = props => {
 
                             <p>{t("account:passwordNextStep")}</p>
 
-                            <Checkbox onChange={event => setNewsletterActive(!newsletterActive)}
+                            {/* TODO Rechtlich abklären */}
+                            {/* <Checkbox onChange={event => setNewsletterActive(!newsletterActive)}
                                 name={'cb-newsletter-active'}
                                 checked={newsletterActive}
-                                label={"account:newsletter-active"} />
+                                label={"account:newsletter-active"} /> */}
 
                             <Checkbox onChange={event => setPrivacyAccepted(!privacyAccepted)}
                                 name={'cb-privacy-accept'}
