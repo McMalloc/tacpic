@@ -2,7 +2,7 @@
   "heading": "$t(glossary:catalogue)",
   "search": "Suchen",
   "searchterm": "Suchbegriff",
-  "search-placeholder": "z.B. Biologie Herz",
+  "search-placeholder": "z.B. Biologie Zelle",
   "grub": "Im $t(glossary:catalogue) stöbern",
   "history_show": "Versionshistorie zeigen",
   "history_hide": "Versionshistorie ausblenden",
