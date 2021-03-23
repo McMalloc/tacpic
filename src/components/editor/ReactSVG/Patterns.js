@@ -29,7 +29,7 @@ const patterns = {
     medium: {
         width: "10mm", height: "10mm",
         objects: <>
-            <rect x={0} y={0} width={"10mm"} height={"10mm"} fill={'lightgrey'}/>
+            <rect x={0} y={0} width={"10mm"} height={"10mm"} fill={'#B5AEAB'}/>
         </>
     },
     fill: {

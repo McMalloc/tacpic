@@ -58,17 +58,17 @@ const iconMap = {
     // path: 'bezier-curve'
 }
 
-const keyDownHandler = (event, selectedUUID, dispatch) => {
+const keyDownHandler = (event, selectedUUIDs, dispatch) => {
     switch (event.which) {// TODO use constants instead of magic numbers
         case 46: // DEL
-            if (!!selectedUUID) return;
+            if (!!selectedUUIDs) return;
             dispatch({
                 type: 'OBJECT_SELECTED',
                 uuids: [null]
             });
             dispatch({
                 type: 'OBJECT_REMOVED',
-                selectedUUID
+                selectedUUIDs
             });
             break;
         default:
@@ -91,6 +91,9 @@ const ObjectPreview = props => {
 const ObjectEntry = props => {
     const ref = useRef(null);
     const dispatch = useDispatch();
+    const singleSelection = useSelector(
+        state => state.editor.ui.selectedObjects
+    ).length === 1;
 
     const [{ isDragging }, drag] = useDrag({
         item: { type: OBJECT_ENTRY, index: props.index },
@@ -123,7 +126,7 @@ const ObjectEntry = props => {
         hovered={isOver}
         style={{ justifyContent: "space-between" }}
         ref={ref}
-        onClick={() => select(dispatch, props.selected ? null : props.uuid)}>
+        onClick={() => select(dispatch, props.selected && singleSelection ? null : props.uuid)}>
 
         <div style={{ display: 'flex', alignItems: 'center', height: 35 }}>
             <ObjectPreview {...props} />
@@ -149,20 +152,22 @@ const Objects = props => {
         state => state.editor.file.present.pages[state.editor.ui.currentPage].objects
     )
     const dispatch = useDispatch();
-    const selectedUUID = useSelector(
-        state => state.editor.ui.selectedObjects[0]
+    const selectedUUIDs = useSelector(
+        state => state.editor.ui.selectedObjects
     );
 
-    if (!objects || objects.length === 0) return <p className={"disabled"}>{t('editor:objectPanel.noObjects')}</p>;
+    if (!objects || objects.length === 0) return <p className={"disabled"}>
+        {t('editor:objectPanel.noObjects')}
+    </p>;
 
     return (
         <>
             {/*<div>Vordergrund</div>*/}
-            <Wrapper onKeyDown={event => keyDownHandler(event, selectedUUID, dispatch)}>
+            <Wrapper onKeyDown={event => keyDownHandler(event, selectedUUIDs, dispatch)}>
                 {objects.map((object, index) => {
-                    const selected = selectedUUID === object.uuid;
+                    const selected = selectedUUIDs.includes(object.uuid);
                     return <AccordeonPanelFlyoutButton
-                        flownOut={object.type !== 'key' && selected}
+                        flownOut={object.type !== 'key' && selected && selectedUUIDs.length === 1}
                         hideFlyout={props.hideFlyout}
                         key={index}
                         genericButton={<ObjectEntry selected={selected} {...object} index={index} />}>

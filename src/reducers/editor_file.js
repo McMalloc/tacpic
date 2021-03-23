@@ -109,20 +109,24 @@ const file = (state = {}, action) => {
       return oldState;
 
     case OBJECT_UPDATED:
-      if (action.preview === null) return state;
+      if (action.previews === null) return state;
+      
       return produce(state, (draftState) => {
-        index = draftState.pages[action.shared_currentPage].objects.findIndex(
-          (obj) => obj.uuid === action.preview.uuid
+        action.previews.forEach(preview => {
+          index = draftState.pages[action.shared_currentPage].objects.findIndex(
+          (obj) => obj.uuid === preview.uuid
         );
         if (index === -1) {
           // add if not present TODO: delete old adding method
           draftState.pages[action.shared_currentPage].objects.push(
-            action.preview
+            preview
           );
         } else {
           draftState.pages[action.shared_currentPage].objects[index] =
-            action.preview;
+            preview;
         }
+        })
+        
       });
 
     case OBJECT_BULK_ADD:
@@ -283,15 +287,19 @@ const file = (state = {}, action) => {
     case "OBJECT_REMOVED":
       return produce(state, (draftState) => {
         action.uuids.forEach((uuid) => {
+          console.log("deleting ", uuid);
           let objectIndex = -1;
           let pageIndex = -1;
           let found = false;
-          state.pages.forEach((page, index) => {
+          draftState.pages.forEach((page, index) => {
             if (found) return;
             objectIndex = page.objects.findIndex(object => object.uuid === uuid);
             pageIndex = index;
             if (objectIndex !== -1) found = true;
           })
+          console.log(pageIndex, objectIndex);
+          console.log(draftState.pages[pageIndex].objects);
+          console.log("               ");
           if (found) draftState.pages[pageIndex].objects.splice(objectIndex, 1);
         });
       })

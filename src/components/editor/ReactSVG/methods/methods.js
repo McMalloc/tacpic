@@ -167,6 +167,12 @@ const defaultRotate = (object, deltaX, deltaY, downX, downY, offsetX, offsetY) =
     return object;
 };
 
+const defaultIsMarqueed = (object, marqueRect) => {
+    const {x, y, width, height} =  methods[object.type].getBBox(object);
+    if (x > marqueRect.x1 && x + width < marqueRect.x2 && y > marqueRect.y1 && y + height < marqueRect.y2) return true;
+    return false;
+}
+
 // TODO scaling für Rechtecke: http://phrogz.net/svg/drag_under_transformation.xhtml
 const defaultScale = (object, offsetX, offsetY, downX, downY, absX, absY) => {
     if (object.x < absX) {
@@ -237,8 +243,8 @@ const getBBox = object => {
 
 const getKeyBBox = object => {
     return {
-        x: object.anchored ? document.getElementById("container-" + object.uuid).dataset.internalX : object.x,
-        y: object.anchored ? document.getElementById("container-" + object.uuid).dataset.internalY : object.y,
+        x: object.anchored ? parseInt(document.getElementById("container-" + object.uuid).dataset.internalX) : object.x,
+        y: object.anchored ? parseInt(document.getElementById("container-" + object.uuid).dataset.internalY) : object.y,
         width: object.width,//bbox.width * (object.width / bbox.width),
         height: object.height
     };
@@ -301,12 +307,14 @@ const methods = {
         create: createRect,
         getBBox: rectGetBBox,
         getClientBox: defaultGetClientBox,
+        isMarqueed: defaultIsMarqueed
     },
     embedded: {
         translate: defaultTranslate,
         rotate: defaultRotate,
         scale: defaultScale,//embeddedScale,
         create: createEmbedded,
+        isMarqueed: defaultIsMarqueed,
         getBBox: getBBox,//getBBox,
         getClientBox: defaultGetClientBox,
     },
@@ -322,6 +330,7 @@ const methods = {
         getCoords,
         getCoordsForStartRotation,
         getCoordsForEndRotation,
+        isMarqueed: defaultIsMarqueed,
         getOffset,
         addPoint,
         removePoint,
@@ -335,11 +344,13 @@ const methods = {
         scale: defaultScale,
         getClientBox: defaultGetClientBox,
         getBBox: ellipseGetBBox,
+        isMarqueed: defaultIsMarqueed,
         create: createEllipse
     },
     label: {
         translate: defaultTranslate,
         getClientBox: defaultGetClientBox,
+        isMarqueed: defaultIsMarqueed,
         getBBox: rectGetBBox,
         scale: defaultScale,
         create: createLabel,
@@ -347,6 +358,7 @@ const methods = {
     },
     key: {
         create: createKey,
+        isMarqueed: defaultIsMarqueed,
         scale: defaultScale,
         translate: defaultTranslate,
         rotate: id,
