@@ -1,4 +1,4 @@
-import {cosOfDegs, getMirrorPoint, sinOfDegs} from "../../../../utility/geometry";
+import {cosOfDegs, sinOfDegs} from "../../../../utility/geometry";
 import uuidv4 from "../../../../utility/uuid";
 import {COLOURS, SVG_A4_PX_WIDTH} from "../../../../config/constants";
 import {getTransforms} from "../transform";
@@ -14,6 +14,7 @@ import {
     getCoordsForEndRotation,
     getCoordsForStartRotation, smoothSegment
 } from "./path";
+import i18n from "i18next";
 
 const defaultStrokeWidth = 1.5;
 const defaultStrokeStyle = "solid";
@@ -77,7 +78,7 @@ const createRect = (x = 0, y = 0, width = 100, height = 100, template = 'diagona
         border: true,
         borderWidth: defaultStrokeWidth,
         borderStyle: defaultStrokeStyle,
-        moniker: "Rechteck",
+        moniker: i18n.t("editor:placeholderRect"),
         angle: 0,
         type: 'rect'
     }
@@ -113,7 +114,7 @@ const createEllipse = (x = 0, y = 0, width = 100, height = 100, template = 'diag
         border: true,
         borderWidth: defaultStrokeWidth,
         borderStyle: defaultStrokeStyle,
-        moniker: "Ellipse",
+        moniker: i18n.t("editor:placeholderEllipse"),
         angle: 0,
         type: 'ellipse'
     }
@@ -122,7 +123,7 @@ const createEllipse = (x = 0, y = 0, width = 100, height = 100, template = 'diag
 const createLabel = (x = 0, y = 0, width = 100, height = 100, text = '', braille = '', overrides = {}) => {
     const defaults = {
         x, y, width, height, text, braille,
-        moniker: "Beschriftung",
+        moniker: i18n.t("editor:placeholderLabel"),
         displayDots: true,
         displayLetters: true,
         smooth: true,
@@ -141,7 +142,7 @@ const createLabel = (x = 0, y = 0, width = 100, height = 100, text = '', braille
     }
 };
 
-const createKey = (x = 0, y = 0, width = 200, height = 300, moniker = "Legende") => {
+const createKey = (x = 0, y = 0, width = 200, height = 300, moniker = i18n.t("editor:placeholderKey")) => {
     return {
         uuid: uuidv4(),
         x, y, width, height,

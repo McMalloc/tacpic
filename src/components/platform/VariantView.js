@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../gui/Button";
 import Toggle from "../gui/Toggle";
 import { FlyoutButton, FlyoutEntry } from "../gui/FlyoutButton";
-import { ITEM_ADDED_TO_BASKET, VARIANT } from "../../actions/action_constants";
+import { ITEM_ADDED_TO_BASKET, ITEM_REMOVED_FROM_BASKET, VARIANT } from "../../actions/action_constants";
 import styled, { useTheme } from "styled-components/macro";
 import { useTranslation } from "react-i18next";
 import { Icon } from "../gui/_Icon";
@@ -31,6 +31,13 @@ const addToBasket = (dispatch, variantId, quantity, product, index = null) => {
     contentId: parseInt(variantId),
     quantity: parseInt(quantity),
     index,
+  });
+};
+
+const removeFromBasket = (dispatch, index) => {
+  dispatch({
+    type: ITEM_REMOVED_FROM_BASKET,
+    index
   });
 };
 
@@ -144,7 +151,8 @@ const VariantView = (props) => {
   const { lg, md } = useBreakpoint();
   let { graphicId, variantId } = useParams();
   const dispatch = useDispatch();
-  const tags = useSelector((state) => state.catalogue.tags);
+  const tags = useSelector(state => state.catalogue.tags);
+  const basketIndex = useSelector(state => state.catalogue.basket.map(item => parseInt(item.contentId)).findIndex(id => id == variantId));
   const { logged_in, role } = useSelector((state) => state.user);
   const [product, setProduct] = useState("graphic");
   const [quantity, setQuantity] = useState(1);
@@ -462,11 +470,17 @@ const VariantView = (props) => {
             </div>
 
             <Button
-              onClick={() => addToBasket(dispatch, variantId, quantity, product)}
-              label={t("catalogue:addToCart")}
+              onClick={() => {
+                basketIndex === -1 ?
+                  addToBasket(dispatch, variantId, quantity, product)
+                  :
+                  removeFromBasket(dispatch, basketIndex)
+              }}
+              label={t(basketIndex >= 0 ? "commerce:remove" : "catalogue:addToCart")}
+              title={t("catalogue:removeFromCart")}
               large
-              primary
-              icon={"cart-plus"}
+              primary={basketIndex === -1}
+              icon={basketIndex >= 0 ? "shopping-cart" : "cart-plus"}
             />
           </OrderWidget>
         </Well>

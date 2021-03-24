@@ -70,7 +70,7 @@ const Checkout = props => {
     const addressSection =
         <section>
             {addresses.length > 0 && <>
-                <Radio name={"checkout-shipping-address-radio"} legend={'commerce:savedAdresses'} onChange={value => {
+                <Radio name={"checkout-shipping-address-radio"} legend={'commerce:savedAddresses'} onChange={value => {
                     setEnterShippingAddress(false);
                     setShippingAddress({ ...shippingAddress, id: parseInt(value) })
                 }}

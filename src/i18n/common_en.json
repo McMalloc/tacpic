@@ -90,5 +90,6 @@
     "/": "Start",
     "/admin": "Administration",
     "/order-completed": "Order completed"
-  }
+  },
+  "cancel": "Cancel"
 }

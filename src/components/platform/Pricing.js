@@ -157,7 +157,7 @@ const Pricing = () => {
       durationText: "products:1Year",
       duration: 365,
       icon: "icon_guenstig.svg",
-      price: "aktuell kostenlos",
+      price: "products:currentlyFree",
       priceAmount: 19900,
       priceHint: "products:priceHint",
       buttons: [

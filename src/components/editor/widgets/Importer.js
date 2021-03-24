@@ -65,7 +65,6 @@ const OCRWrapper = styled.div`
 `;
 
 const OCRLabel = styled(Toggle)`
-  flex: 1 0 auto;
   margin: ${props => props.theme.base_padding};
   
   &:last-child {
@@ -177,7 +176,7 @@ const Importer = () => {
                                 }} />&emsp;
                         {ocr.map((label, index) => {
                                     const active = ocrSelection.includes(index);
-                                    return <OCRLabel toggled={active} onClick={() => {
+                                    return <OCRLabel key={index} toggled={active} onClick={() => {
                                         let labels = [...ocrSelection];
                                         if (active) {
                                             setOCRSelection(dispatch, labels.filter(i => i !== index));

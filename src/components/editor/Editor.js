@@ -437,6 +437,7 @@ const Editor = () => {
           title={"editor:importer.modalHeading"}
           fitted
           actions={[
+            { label: "cancel", action: resetImportModal },
             {
               label: t("editor:importer.place"),
               disabled: traceImport.error || !traceImport.preview,
@@ -469,8 +470,7 @@ const Editor = () => {
                 });
                 resetImportModal();
               },
-            },
-            { label: "cancel", action: resetImportModal },
+            }
           ]}
           dismiss={resetImportModal}
         >

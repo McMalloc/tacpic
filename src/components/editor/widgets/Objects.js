@@ -91,6 +91,7 @@ const ObjectPreview = props => {
 const ObjectEntry = props => {
     const ref = useRef(null);
     const dispatch = useDispatch();
+    const {t} = useTranslation();
     const singleSelection = useSelector(
         state => state.editor.ui.selectedObjects
     ).length === 1;
@@ -130,7 +131,7 @@ const ObjectEntry = props => {
 
         <div style={{ display: 'flex', alignItems: 'center', height: 35 }}>
             <ObjectPreview {...props} />
-            {props.type === "label" ? `Beschriftung: "${props.text}"` : props.moniker}</div>
+            {props.type === "label" ? `${t('editor:placeholderLabel')}: "${props.text}"` : props.moniker}</div>
         <Button onClick={event => {
             event.stopPropagation();
             !!props.selected && dispatch({
