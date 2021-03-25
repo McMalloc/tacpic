@@ -121,7 +121,7 @@ const Pricing = () => {
           <Button
             onClick={() => navigate("/signup")}
             icon={"user-plus"}
-            label={"signup"}
+            label={"account:signup"}
             primary
           />
         ),

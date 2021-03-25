@@ -244,9 +244,21 @@ class InteractiveSVG extends Component {
             let selectedId = null;
             if (this.props.ui.tool === 'SELECT' || !!target.dataset.selectOverride) {
                 selectedId = target.dataset.uuid || target.id;
-                if (target.dataset.selectable && (this.props.ui.selectedObjects.length <= 1 || !this.props.ui.selectedObjects.includes(selectedId))) {
-                    this.props.select([selectedId]);
+                let alreadySelected = this.props.ui.selectedObjects.includes(selectedId);
+                if (event.ctrlKey) {
+                    if (alreadySelected) {
+                        let selection = [...this.props.ui.selectedObjects];
+                        selection.splice(this.props.ui.selectedObjects.indexOf(selectedId), 1)
+                        this.props.select(selection);
+                    } else {
+                        this.props.select([...this.props.ui.selectedObjects, selectedId])
+                    }
+                } else {
+                    if (target.dataset.selectable && (this.props.ui.selectedObjects.length <= 1 || !alreadySelected)) {
+                        this.props.select([selectedId]);
+                    }
                 }
+
             }
 
             if (target.dataset.role === 'ROTATE') this.setState({ transform: 'rotate' });

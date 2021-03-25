@@ -127,12 +127,11 @@ const Editor = () => {
   const ocrSelection = useSelector(
     (state) => state.editor.ui.import.ocrSelection
   );
-  const selectedObject = useSelector((state) => {
-    if (!state.editor.file.present.pages[state.editor.ui.currentPage]) return null;
-    return findObject(
+  const selectedObjects = useSelector(state => {
+    return state.editor.ui.selectedObjects.map(uuid => findObject(
       state.editor.file.present.pages[state.editor.ui.currentPage].objects,
-      state.editor.ui.selectedObjects[0]
-    );
+      uuid
+    ))
   });
   const clipboard = useSelector((state) => state.editor.ui.clipboard);
   const dispatch = useDispatch();
@@ -155,7 +154,7 @@ const Editor = () => {
         if (event.ctrlKey) {
           dispatch({
             type: COPY,
-            objects: [selectedObject],
+            objects: selectedObjects,
           });
         }
         break;
@@ -163,7 +162,10 @@ const Editor = () => {
         if (event.ctrlKey && clipboard.length > 0) {
           dispatch({
             type: OBJECT_UPDATED,
-            preview: { ...clipboard[0], uuid: uuidv4(), x: clipboard[0].x + 20, y: clipboard[0].y + 20 },
+            previews: clipboard.map(copy => ({
+              ...copy,
+              uuid: uuidv4(), x: copy.x + 20, y: copy.y + 20
+            }))
           });
         }
         break;
@@ -186,7 +188,7 @@ const Editor = () => {
     localStorage.setItem("accordeonStates", JSON.stringify(newState));
   };
 
-  if (!accordeonStates.key && selectedObject && selectedObject.type === "key")
+  if (!accordeonStates.key && selectedObjects !== null && selectedObjects[0].type === "key")
     toggleAccordeon("key", true);
 
   const resetImportModal = () => {
@@ -447,14 +449,14 @@ const Editor = () => {
                 // TODO nach Mausklick platzieren, also an InteractiveSVG weitergeben
                 dispatch({
                   type: OBJECT_UPDATED,
-                  preview: methods.embedded.create(
+                  previews: [methods.embedded.create(
                     0,
                     0,
                     traceImport.preview,
                     traceImport.previewName
-                  ),
+                  )],
                 });
-                dispatch({
+                ocrSelection.length > 0 && dispatch({
                   type: OBJECT_BULK_ADD,
                   objects: ocrSelection.map((ocrIndex, index) => {
                     return methods.label.create(
@@ -468,7 +470,7 @@ const Editor = () => {
                     );
                   }),
                 });
-                resetImportModal();
+                setShowImportModal(false);
               },
             }
           ]}
