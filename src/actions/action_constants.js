@@ -11,6 +11,7 @@ const action_constants = (domain, methods) => {
 
 
 export const APP        = action_constants('APP',       ['FRONTEND', 'BACKEND', 'VERSION', 'LEGAL', 'IDB_INIT']);
+export const ADMIN      = action_constants('ADMIN',     ['FRONTEND_ERRORS', 'BACKEND_ERRORS']);
 export const USER       = action_constants('USER',      ['LOGIN', 'LOGOUT', 'CREATE', 'SAVE_LAYOUT', 'VALIDATE', 'VERIFY', 'RESET_REQUEST','RESET','UPDATE', 'INDEX']);
 export const SEARCH     = action_constants('SEARCH',    ['QUERY']);
 export const PRODUCT    = action_constants('PRODUCT',   ['FETCH', 'GET']);
@@ -27,7 +28,7 @@ export const ORDER      = action_constants('ORDER',     ['CREATE', 'GET', 'INDEX
 export const QUOTE      = action_constants('QUOTE',     ['REQUEST', 'GET']);
 export const ADDRESS    = action_constants('ADDRESS',   ['GET', 'CREATE', 'UPDATE', 'REMOVE']); // TODO rename GET to ADDRESS.INDEX
 export const IMPORT     = action_constants('IMPORT',    ['TRACE', 'OCR']);
-export const LOCALFILES  = action_constants('LOCALFILE', ['INDEX', 'GET', 'REMOVE']);
+export const LOCALFILES = action_constants('LOCALFILE', ['INDEX', 'GET', 'REMOVE']);
 
 export const CMS_PAGE    = action_constants('CMS_PAGE',   ['INDEX', 'GET']);
 export const CMS_CATEGORY    = action_constants('CMS_CATEGORY',   ['INDEX', 'GET']);
@@ -41,6 +42,8 @@ export const CHANGE_IMAGE_DESCRIPTION = 'CHANGE_IMAGE_DESCRIPTION';
 export const ITEM_ADDED_TO_BASKET = 'ITEM_ADDED_TO_BASKET';
 export const ITEM_REMOVED_FROM_BASKET = 'ITEM_REMOVED_FROM_BASKET';
 export const ITEM_UPDATED_IN_BASKET = 'ITEM_UPDATED_IN_BASKET';
+export const BASKET_NEEDS_REFRESH = 'BASKET_NEEDS_REFRESH';
+export const UPDATE_BASKET = 'UPDATE_BASKET';
 export const CLEAR_BASKET = 'CLEAR_BASKET';
 export const ORDER_RESET = 'ORDER_RESET';
 export const RESET_USER_ERRORS = 'RESET_USER_ERRORS';

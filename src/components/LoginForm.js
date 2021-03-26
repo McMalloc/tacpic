@@ -18,6 +18,7 @@ const Login = props => {
     // input states
     const [uname, setUname] = useState('');
     const [pwd, setPwd] = useState('');
+    const [tryAgain, setTryAgain] = useState('');
 
     // input validities
     const [emailValid, setEmailValid] = useState(false);
@@ -26,6 +27,7 @@ const Login = props => {
     return (
         <form onSubmit={(event) => {
             event.preventDefault();
+            setTryAgain(pwd+uname);
             dispatch({
                 // emailValid && passwordValid && dispatch({
                 type: USER.LOGIN.REQUEST,
@@ -52,7 +54,7 @@ const Login = props => {
                 onChange={event => setPwd(event.target.value)}
                 name={'pwd'}/>
 
-            {user.error !== null &&
+            {user.error !== null && (tryAgain === pwd+uname) &&
             <><Alert warning>
                 {t("account:" + user.error.error)}<br/>
                 {user.error['field-error'] && t("account:" + user.error['field-error'][1])}

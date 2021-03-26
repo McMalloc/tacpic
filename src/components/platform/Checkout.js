@@ -32,6 +32,7 @@ const Checkout = props => {
     const addresses = user.addresses;
     const idempotencyKey = uuidv4();
     const orderState = useSelector(state => state.catalogue.order);
+    const emptyBasket = useSelector(state => state.catalogue.basket.length === 0);
 
     if (!orderState.pending && orderState.successful) navigate('/order-completed');
 
@@ -64,6 +65,8 @@ const Checkout = props => {
         changeStep(1);
         setAutologgedin(true);
     }
+
+    if (emptyBasket) navigate('/basket');
 
     const back = <Button label={"back"} onClick={() => changeStep(Math.max(step - 1, 0))} />
 

@@ -76,7 +76,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   padding: ${(props) => props.theme.large_padding};
 
-  min-width: 100vw;
+  min-width: 100%;
 
   ${SM_SCREEN} {
     min-width: calc(100vw - 40px); // subtraction of modal window margins

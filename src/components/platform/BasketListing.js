@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import styled from 'styled-components/macro';
 import { API_URL } from "../../env.json";
 import Well from "../gui/Well";
+import Loader, {LoaderOverlay} from "../gui/Loader";
 // import {CSSTransition} from "react-transition-group";
 
 const updateBasket = (dispatch, variantId, quantity, product, index) => {
@@ -40,6 +41,7 @@ const ItemPanel = styled(Well)`
 
   .upper {
     display: flex;
+    word-break: break-all;
     
     .left {
       flex: 1 1 30%;
@@ -69,6 +71,10 @@ const MetaItemTable = styled.table`
   .overline {
     border-top: 2px solid ${props => props.theme.grey_4};
   }
+`
+
+const Wrapper = styled.div`
+  position: relative;
 `
 
 const MetaItemRow = styled.tr`
@@ -115,11 +121,10 @@ const BasketListing = () => {
     if (quote.items.length === 0) return null;
 
     return (
-        <>
+        <Wrapper>
             {quote.items.map((quoteItem, index) => {
                 const correspondingVariant = quotedVariants.find(v => v.id === quoteItem.content_id);
                 if (!correspondingVariant) return null
-                console.log(correspondingVariant);
                 return (
                     // <CSSTransition in={quote.items} timeout={200} classNames={'item'}>
                     <ItemPanel key={index}>
@@ -213,7 +218,14 @@ const BasketListing = () => {
                 </tbody>
 
             </MetaItemTable>
-        </>
+
+            
+            {quote.pending && 
+                <LoaderOverlay>
+                    <Loader />
+                </LoaderOverlay>
+            }
+        </Wrapper>
     );
 };
 

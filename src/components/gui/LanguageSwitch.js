@@ -5,7 +5,7 @@ import { Button } from './Button';
 
 const LanguageSwitch = props => {
     return (
-        <Button small icon={'language'} onClick={() => switchLanguage()} label={'switchLang'} />
+        <Button style={{alignSelf: 'center'}} small icon={'language'} onClick={() => switchLanguage()} label={'switchLang'} />
     )
 };
 

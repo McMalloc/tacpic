@@ -106,8 +106,9 @@ const exitEditMode = (dispatch, uuid) => {
 
 const enterEditMode = (dispatch, props) => {
   setTimeout(() => {
-    if (props.isTitle && props.braille.length === 0)
+    // if (props.isTitle && props.braille.length === 0)
       //   document.getElementById("editable_" + props.uuid).val = "";
+      
       document.getElementById("editable_" + props.uuid).focus();
   }, 100);
   dispatch({

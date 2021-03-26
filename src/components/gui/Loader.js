@@ -43,6 +43,14 @@ const Loader = props => {
     )
 };
 
+export const LoaderOverlay = styled.div`
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background:url(
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAALUlEQVQYV2P8+vXrf25ubkYQzcDAwABiM4IYyAIgNooKmC6wIEw7jIZrRzYXAMFoK6DGvkYvAAAAAElFTkSuQmCC
+   ) repeat;
+`
+
 export default Loader;
 
 Loader.propTypes = {

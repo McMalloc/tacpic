@@ -645,8 +645,8 @@ class InteractiveSVG extends Component {
                 {this.svgElement.current !== null &&
                     <SVGGrid canvasWidth={this.svgElement.current.scrollWidth}
                         canvasHeight={this.svgElement.current.scrollHeight}
-                        offsetX={this.props.ui.viewPortX % (this.props.file.present.verticalGridSpacing * this.props.ui.scalingFactor)}
-                        offsetY={this.props.ui.viewPortY % (this.props.file.present.horizontalGridSpacing * this.props.ui.scalingFactor)}
+                        offsetX={this.props.ui.viewPortX}
+                        offsetY={this.props.ui.viewPortY}
                         verticalGridSpacing={this.props.file.present.verticalGridSpacing * this.props.ui.scalingFactor}
                         horizontalGridSpacing={this.props.file.present.horizontalGridSpacing * this.props.ui.scalingFactor} />
                 }

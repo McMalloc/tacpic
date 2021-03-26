@@ -60,7 +60,7 @@ const AddressForm = props => {
 
         <Row>
             <div className={"col-xs-6"}>
-                <Textinput required={address.last_name.length === 0} onChange={setState}
+                <Textinput onChange={setState}
                            value={address.company_name}
                            name={"company_name"} label={"account:addressMenu.companyName"}/>
             </div>
@@ -89,7 +89,7 @@ const AddressForm = props => {
             <div className={"col-xs-3"}>
                 <Textinput validations={[
                     {
-                        fn: val => /[0-9]+/.test(val), message: "general:zip-invalid", callback: () => {
+                        fn: val => /[0-9]+/.test(val), message: "account:zip-invalid", callback: () => {
                         }
                     }
                 ]} 

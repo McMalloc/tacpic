@@ -1,42 +1,32 @@
 import styled from 'styled-components/macro';
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Icon } from "../gui/_Icon";
 import { Button } from "../gui/Button";
 import { LG_SCREEN, MD_SCREEN, SM_SCREEN } from "../../config/constants";
-import { template } from "lodash";
 import { useBreakpoint } from "../../contexts/breakpoints";
 import { Burgermenu } from "../gui/Burgermenu";
 import LanguageSwitch from '../gui/LanguageSwitch';
-import ButtonBar from '../gui/ButtonBar';
 
 const Wrapper = styled.nav`
   background-color: white;
   padding: 0 3px;
   font-size: 1.1rem;
+  min-height: 39px;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid ${props => props.theme.grey_5};
-  
-  ${SM_SCREEN} {
-    
-  }  
-  ${MD_SCREEN} {
-    font-size: 1rem;
-  }  
-  ${LG_SCREEN} {
-    //background-color: blue;
-  }
 `;
 
 const NavbarItem = styled(NavLink)`
     color: ${props => props.restricted ? props.theme.background : props.theme.brand_secondary};
     background-color: ${props => props.restricted ? props.theme.danger : props.theme.background};
     padding: 8px 8px;
+    box-sizing: border-box;
     text-decoration: none;
     font-weight: bold;
     /* text-transform: uppercase; */
@@ -47,7 +37,21 @@ const NavbarItem = styled(NavLink)`
     width: 100%;
     z-index: 0;
     font-size: 1.1rem;
+    display: flex;
+    align-items: center;
     letter-spacing: 1px;
+
+    &.two-lines {
+        font-family: Roboto, sans-serif;
+        letter-spacing: 0;
+        padding: 4px 8px;
+        line-height: 90%;
+    }
+
+    .really-small {
+        font-weight: normal;
+        font-size: 0.85rem;
+    }
 
     &.disabled {
         color: #ccc;
@@ -80,19 +84,26 @@ const NavbarItem = styled(NavLink)`
 
     ${MD_SCREEN} {
         border: none;
-        font-size: 0.9rem;
+        
         border-left: 1px solid ${props => props.theme.grey_5};
+        .really-small {
+            font-size: 0.7rem;
+        }
 
         &:last-child, &.single {
             border-right: 1px solid ${props => props.theme.grey_5};
             margin-right: 0.5rem;
         }
     } 
+
+    ${SM_SCREEN} {
+        font-size: 0.9rem;
+    } 
 `;
 
 const NavbarItemGroup = styled.div`
   display: flex;
-  align-items: center;
+  align-items: stretch;
 `;
 
 const Logo = styled.img`
@@ -123,13 +134,13 @@ const Navbar = props => {
     const location = useLocation();
     const user = useSelector(state => state.user);
     const basket = useSelector(state => state.catalogue.basket);
-    const dispatch = useDispatch();
     const { md } = useBreakpoint();
+    const navigate = useNavigate();
 
 
     const logo = <>
         <NavLink to={"/"}>
-            <div style={{ position: 'relative', marginLeft: md ? 0 : 12, marginRight: md ? 12 : 0 }}>
+            <div style={{ position: 'relative', alignSelf: 'center', marginLeft: md ? 0 : 12, marginRight: md ? 12 : 0 }}>
                 <Logo src={"/images/logo.svg"} />
                 <Badge>Alpha</Badge>
             </div>
@@ -151,18 +162,20 @@ const Navbar = props => {
         </NavbarItem>
     )
 
-    const accountLink = <NavbarItem to={'/account'}>
-        <Icon icon={"user-circle"} />&nbsp;
-        {t("account:private")}
-    </NavbarItem>
+    const accountLink = <>
+        <NavbarItem className={'two-lines'} to={'/account'}>
+            <Icon icon={"user-circle"} />&nbsp;
+            <div>
+                <span className={'really-small'}>Angemeldet als</span> <br />
+                {user.email}
+            </div>
+            {/* {t("account:private")} */}
+        </NavbarItem></>
 
     const loginSignupLinks = <>
-        <NavLink className={"no-styled-link"} to={'/signup?redirect=' + location.pathname}>
-            <Button small={md} label={t("account:signup")} icon={"user-plus"} primary />
-        </NavLink>&ensp;
-        <NavLink className={"no-styled-link"} to={'/login'}>
-            <Button small={md} label={t("account:login")} icon={"sign-in-alt"} />
-        </NavLink>
+        <Button style={{ alignSelf: 'center' }} onClick={() => navigate('/signup?redirect=' + location.pathname)} small={md} label={t("account:signup")} icon={"user-plus"} primary />
+        &ensp;
+        <Button style={{ alignSelf: 'center' }} onClick={() => navigate('/login?redirect=' + location.pathname)} small={md} label={t("account:login")} icon={"sign-in-alt"} />
     </>
 
     const basketButton = <NavbarItem className={`single ${basket.length === 0 && 'disabled'}`} id={"basket-nav-link"} to={'/basket'}>
@@ -170,7 +183,8 @@ const Navbar = props => {
         {basket.length > 0 ?
             <>{t(md ? "commerce:basket" : "commerce:basketShort", { quantity: basket.length })}</>
             :
-            <>{t("commerce:emptyBasket")}</>
+            <></>
+            // <>{t("commerce:emptyBasket")}</>
         }
     </NavbarItem>
 
@@ -194,11 +208,12 @@ const Navbar = props => {
                 <>
                     <NavbarItemGroup>
                         <Burgermenu headerAction={<LanguageSwitch />}>
+                            <br />
                             {sections}
                             <hr />
                             {user.logged_in ? accountLink : loginSignupLinks}
                             <NavbarItem className={"no-styled-link"} to={'/info/de/66?Impressum'}>
-                                Impressum
+                                {t("footer:imprint")}
                             </NavbarItem>
                         </Burgermenu>
                         {logo}

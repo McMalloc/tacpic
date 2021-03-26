@@ -116,7 +116,7 @@ const Textinput = props => {
     let validations = !!props.validations ? [...props.validations] : [];
 
     props.required && validations.push({
-        fn: val => /.+/.test(val), message: "general:required", callback: () => {}
+        fn: val => /.+/.test(val), message: "account:required", callback: () => {}
     })
 
     const [validities, setValidities] = useState(validations.map(() => false));

@@ -30,6 +30,7 @@ const Menu = styled.div`
     
     li {
       padding: 6px;
+      margin: 0;
     }
   }
 `;

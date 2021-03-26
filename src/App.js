@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Navbar } from "./components/platform/Navbar";
 import Catalogue from "./components/platform/Catalogue";
 import { useDispatch, useSelector } from "react-redux";
-import { USER, APP, LOCALFILES, CMS_LEGAL } from "./actions/action_constants";
+import { USER, APP, LOCALFILES, CMS_LEGAL, BASKET_NEEDS_REFRESH } from "./actions/action_constants";
 import styled from "styled-components/macro";
 import SignupForm from "./components/SignupForm";
 import { Footer } from "./components/platform/Footer";
@@ -72,6 +72,8 @@ const App = () => {
     dispatch({ type: CMS_LEGAL.INDEX.REQUEST });
     dispatch({ type: LOCALFILES.INDEX.REQUEST });
 
+    window.addEventListener('focus', () => dispatch({ type: BASKET_NEEDS_REFRESH }));
+
     initLanguage();
     if (localStorage.getItem("jwt") === null) return;
     dispatch({ type: USER.VALIDATE.REQUEST });
@@ -81,9 +83,10 @@ const App = () => {
     if (!(/catalogue/.test(location.pathname) || /info/.test(location.pathname) || /knowledge\/.+/.test(location.pathname))) {
       document.title = t('region.' + location.pathname) + ' | tacpic';
     }
+
+    // scroll to top at page change
     document.getElementById("scroll-content").scrollTo(0, 0);
     trackPageView();
-    // trackEvent({category: 'page change', action: location.pathname});
   }, [location.pathname]);
 
   const navbarItems = [
