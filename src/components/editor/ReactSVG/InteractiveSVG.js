@@ -242,7 +242,7 @@ class InteractiveSVG extends Component {
              * selectable and not part of a selected group.
              * */
             let selectedId = null;
-            if (this.props.ui.tool === 'SELECT' || !!target.dataset.selectOverride) {
+            if (target.dataset.selectable && (this.props.ui.tool === 'SELECT' || !!target.dataset.selectOverride)) {
                 selectedId = target.dataset.uuid || target.id;
                 let alreadySelected = this.props.ui.selectedObjects.includes(selectedId);
                 if (event.ctrlKey) {

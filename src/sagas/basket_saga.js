@@ -16,12 +16,10 @@ export function* basketChangeSaga() {
 export function* basketCheckSaga() {
     yield takeLatest(BASKET_NEEDS_REFRESH, function* () {
         try {
-            console.log("refresh");
             const basket = yield select(state=>state.catalogue.basket);
             const cachedBasket = JSON.parse(localStorage.getItem('basket')) || [];
             const diff = differenceWith(basket, cachedBasket, isEqual);
             let ich = {geh: 'hi'}
-            console.log(ich.geh.krachen);
             if (diff.length > 0) {
                 console.log("put!");
                 yield put({type: UPDATE_BASKET, basket: cachedBasket})

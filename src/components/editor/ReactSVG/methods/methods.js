@@ -255,6 +255,7 @@ const getKeyBBox = object => {
 export const combineBBoxes = (objects, transformed = true) => {
     let x1 = Infinity, y1 = Infinity, x2 = 0, y2 = 0;
     objects.forEach(object => {
+        console.log(object);
         let box;
         if (transformed) {
             box = methods[object.type].getClientBox(object);
