@@ -188,7 +188,7 @@ const Editor = () => {
     localStorage.setItem("accordeonStates", JSON.stringify(newState));
   };
 
-  if (!accordeonStates.key && selectedObjects !== null && selectedObjects[0].type === "key")
+  if (!accordeonStates.key && selectedObjects.length !== 0 && selectedObjects[0].type === "key")
     toggleAccordeon("key", true);
 
   const resetImportModal = () => {
