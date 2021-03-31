@@ -13,11 +13,13 @@ const Main = styled.label`
   &:hover {
     
     &:first-line {
-      text-decoration: ${props => props.disabled ? 'none' : "underline"};
+      color: ${props => props.theme.brand_secondary};
+      /* text-decoration: ${props => props.disabled ? 'none' : "underline"}; */
     }
 
     input {
       border-color: ${props => props.theme.grey_2};
+      text-decoration: ${props => props.disabled ? 'none' : "underline"};
     }
   }
 `;
@@ -32,7 +34,7 @@ const Label = props => {
   const { t } = useTranslation();
   return (
     <Main data-tip={t(props.tip)} {...props}>
-      {t(props.label)}{props.required && <span aria-hidden={true}>&nbsp;*</span>}
+      <small>{t(props.label)}{props.required && <span aria-hidden={true}>&nbsp;*</span>}</small>
       {props.sublabel &&
         <><br /><Sub className={'sub-label'}>{t(props.sublabel)}</Sub></>
       }

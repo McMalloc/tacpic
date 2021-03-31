@@ -2,7 +2,7 @@
   "heading": "$t(glossary:catalogue)",
   "search": "Search",
   "searchterm": "Search term",
-  "search-placeholder": "",
+  "search-placeholder": "e.g. Biologie Zelle",
   "grub": "Browse the $t(glossary:catalogue)",
   "history_show": "Show version history",
   "history_hide": "Hide version history",
@@ -60,7 +60,7 @@
   "load_more": "Load more",
   "variant-new-hint": "Opens this variant as the basis for a new, independent draft.",
   "download-as": "Download as ...",
-  "pdf": "pdf-Format",
+  "pdf": "PDF format",
   "pdf-hint": "Contains only graphic pages for self-printing on swell paper.",
   "rtf": "rtf-Format",
   "rtf-hint": "Includes image description as visual black font to open in Word, Pages, Open Office or other word processing programs.",
@@ -68,5 +68,6 @@
   "brf-hint": "Contains Braille code for direct printing with an Index Everest series Braille printer.",
   "zip": "ZIP-archive",
   "zip-hint": "An archive file that contains all the files mentioned above.",
-  "deliveryTime": "delivery in {{lower}}–{{upper}} days"
+  "deliveryTime": "delivery in {{lower}}–{{upper}} days",
+  "price": "Price"
 }

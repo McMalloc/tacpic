@@ -10,28 +10,46 @@ import {find} from "lodash";
 const customStyles = {
     control: (provided, state) => ({
         ...provided,
-        borderColor: standard.midlight,
+        border: standard.elementBorder,
+        // borderWidth: '2px',
         fontWeight: 'bold',
+        transition: 'all 50ms',
         outline: state.isFocused ? '4px solid rgba(38, 132, 255, 0.7)' : 'none',
-        'hover': {
-            cursor: state.isDisabled ? 'not-allowed' : 'inherit',
+        ':hover': {
+            borderColor: standard.grey_2,
+            boxShadow: standard.middle_shadow,
+            cursor: state.isDisabled ? 'not-allowed' : 'pointer',
         }
     }),
     option: (provided, state) => ({
         ...provided,
         fontSize: "0.9em",
+        cursor: 'pointer',
         backgroundColor: state.isSelected ? standard.brand_secondary : 'inherit',
         borderBottom: '1px solid ' + standard.midlight,
-        padding: standard.spacing[2],
+        padding: '0.5rem',
         ":hover": {
-            backgroundColor: state.isSelected ? standard.brand_secondary_lighter : standard.grey_5,
+            backgroundColor: state.isSelected ? standard.brand_secondary_lighter + '!important' : standard.grey_5,
             textDecoration: 'underline'
         }
     }),
     indicatorSeparator: (provided, state) => ({
         ...provided,
+        width: '2px',
+        backgroundColor: standard.grey_4,
         margin: 0
-    })
+    }),
+    singleValue: (provided, state) => {
+        return {
+                ...provided,
+                overflow: 'visible',
+                top: React.isValidElement(state.data.label) ?  '90%' : '50%'
+            }
+    },
+    // singleValue: (provided, state) => ({
+    //     ...provided,
+    //     top: React.isValidElement(state.data.value) ?  '90%' : '50%'
+    // })
 };
 
 const Select = props => {

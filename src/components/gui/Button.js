@@ -35,8 +35,7 @@ const ButtonBase = styled.button`
   position: relative;
   font-size: ${(props) => (props.small ? "0.9rem" : "1rem")};
   width: ${(props) => (props.fullWidth ? "100%" : "auto")};
-  transition: box-shadow 0.15s cubic-bezier(0.19, 1, 0.22, 1),
-    background-color 0.15s;
+  transition: all 0.15s cubic-bezier(0.19, 1, 0.22, 1);
   display: inline-flex;
   justify-content: ${(props) => (props.leftAlign ? "left" : "center")};
 

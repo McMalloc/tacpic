@@ -24,6 +24,7 @@ const VariantPreviewStyled = styled.div`
 
   background-color: ${(props) => (props.active ? props.grey_6 : "inherit")};
   color: ${(props) => (props.active ? props.foreground : "inherit")};
+  
 
   transition: background-color 0.1s, color 0.1s;
 
@@ -55,6 +56,7 @@ const VariantPreviewStyled = styled.div`
   }
 
   .variant-info {
+    word-break: break-all;
     flex: 1 1 100%;
     padding: ${props => props.theme.large_padding};
     color: ${props => props.active ? props.brand_secondary : "inherit"};

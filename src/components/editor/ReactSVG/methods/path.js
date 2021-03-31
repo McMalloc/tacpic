@@ -33,10 +33,6 @@ export const createPath = (x = 0, y = 0, template = null, fill = COLOURS.none, m
 
 export const pathScale = (object, offsetX, offsetY, downX, downY, fullOffsetX, fullOffsetY) => {
     const {width, height} = getPathBBox(object);
-    console.log("width: ", downX- fullOffsetX, width);
-    console.log("   ", width + downX- fullOffsetX, width);
-    console.log("height: ", downY - fullOffsetY, height);
-    console.log("   ", height + downY - fullOffsetY, height);
     object.scaleX = (width - downX + fullOffsetX) / width;
     object.scaleY = (height - downY + fullOffsetY) / height;
     return object;

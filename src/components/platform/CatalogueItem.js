@@ -45,7 +45,7 @@ const Title = styled.div`
 const Info = styled.div`
   background-color: ${props => props.theme.background};
   padding: 8px;
-  word-break: break-all;
+  word-break: break-word;
   color: ${props => props.theme.foreground};
   border-radius: 0 0 ${props => props.theme.border_radius} ${props => props.theme.border_radius};
 `;
