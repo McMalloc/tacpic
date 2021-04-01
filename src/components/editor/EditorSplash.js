@@ -78,7 +78,7 @@ const EditorSplash = () => {
     return (
         <>
             <Row>
-                <div className={"col-xs-12 col-md-10 col-md-offset-1"}>
+                <div className={"col-xs-12 col-md-12"}>
                     <h1>Editor</h1>
                     {!user.logged_in &&
                         <Alert info>
@@ -101,7 +101,7 @@ const EditorSplash = () => {
             {localIndex.length > 0 &&
                 <Row>
                     {/* <Alert danger>Diese lokal gespeicherte Arbeit steht nicht auf anderen Geräten oder Browsern zur Verfügung kann verloren gehen, wenn beispielsweise der Browsercache geleert wird.</Alert> */}
-                    <div className={"col-xs-12 col-md-10 col-md-offset-1"}>
+                    <div className={"col-xs-12 col-md-12"}>
                         <hr />
                         <p>{t('editor:localFilesAvailable')}</p>
                         {localIndex.map(file => {

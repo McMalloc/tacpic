@@ -18,6 +18,7 @@
   "private": "Personal area",
   "required": "Required information",
   "display_name": "Display name",
+  "accountOf": "Account of",
   "display_name-hint": "You can also change the display name later. It is used to indicate your authorship of graphics.",
   "viewPrivacyPolicy": "View $t(glossary:privacyPolicy)",
   "alreadySignedUp": "Do you already have an account? <1>Log in here.</1>",

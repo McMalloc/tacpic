@@ -48,6 +48,11 @@ const FlyoutEntryWrapper = styled.div`
   margin-right: -${(props) => props.theme.large_padding};
   border-bottom: 1px solid ${(props) => props.theme.foreground};
 
+  .icon {
+      width: 2rem;
+      display: inline-block;
+  }
+
   &:first-child {
     margin-top: -${(props) => props.theme.large_padding};
   }
@@ -57,15 +62,17 @@ const FlyoutEntryWrapper = styled.div`
   }
 
   label {
-    margin-left: 1em;
+    /* margin-left: 1em; */
+  }
+
+  .sub-label {
+    margin-top: 0.5rem;
   }
 
   &:hover {
     label {
       text-decoration: underline;
     }
-    background-color: ${(props) => props.theme.grey_6};
-    //color: white;
   }
 `;
 

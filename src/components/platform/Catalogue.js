@@ -21,7 +21,7 @@ const TagSidebar = styled.aside`
   top: ${(props) => props.theme.large_padding};
 
   .tag-wrapper {
-    padding: 2px 0 2px 4px;
+    padding: 4px 0 0 4px;
     box-sizing: border-box;
     margin-top: 2px;
     border-radius: ${(props) => props.theme.border_radius};

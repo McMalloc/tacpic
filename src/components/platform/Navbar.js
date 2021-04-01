@@ -13,7 +13,6 @@ import LanguageSwitch from '../gui/LanguageSwitch';
 
 const Wrapper = styled.nav`
   background-color: white;
-  padding: 0 3px;
   font-size: 1.1rem;
   min-height: 39px;
   box-sizing: border-box;
@@ -82,7 +81,7 @@ const NavbarItem = styled(NavLink)`
         margin-right: 0.5rem;
     }
 
-    ${MD_SCREEN} {
+    ${LG_SCREEN} {
         border: none;
         
         border-left: 1px solid ${props => props.theme.grey_5};
@@ -108,6 +107,7 @@ const NavbarItemGroup = styled.div`
 
 const Logo = styled.img`
   width: 80px;
+  padding: 5px;
   align-self: center;
   background-repeat: no-repeat;
 `;
@@ -123,7 +123,7 @@ const Badge = styled.div`
     letter-spacing: 1px;
     text-align: center;
     right: 5px;
-    top: 0;
+    bottom: 0;
     font-weight: bold;
     border-radius: 3;
     padding: 0 3px;
@@ -134,13 +134,13 @@ const Navbar = props => {
     const location = useLocation();
     const user = useSelector(state => state.user);
     const basket = useSelector(state => state.catalogue.basket);
-    const { md } = useBreakpoint();
+    const { md, lg } = useBreakpoint();
     const navigate = useNavigate();
 
 
     const logo = <>
         <NavLink to={"/"}>
-            <div style={{ position: 'relative', alignSelf: 'center', marginLeft: md ? 0 : 12, marginRight: md ? 12 : 0 }}>
+            <div style={{ position: 'relative', alignSelf: 'center' }}>
                 <Logo src={"/images/logo.svg"} />
                 <Badge>Alpha</Badge>
             </div>
@@ -166,22 +166,24 @@ const Navbar = props => {
         <NavbarItem className={'two-lines'} to={'/account'}>
             <Icon icon={"user-circle"} />&nbsp;
             <div>
-                <span className={'really-small'}>Angemeldet als</span> <br />
+                <span className={'really-small'}>
+                    {t('account:accountOf')}
+                    </span> <br />
                 {user.email}
             </div>
             {/* {t("account:private")} */}
         </NavbarItem></>
 
     const loginSignupLinks = <>
-        <Button style={{ alignSelf: 'center' }} onClick={() => navigate('/signup?redirect=' + location.pathname)} small={md} label={t("account:signup")} icon={"user-plus"} primary />
+        <Button style={{ alignSelf: 'center' }} onClick={() => navigate('/signup?redirect=' + location.pathname)} small={lg} label={t("account:signup")} icon={"user-plus"} primary />
         &ensp;
-        <Button style={{ alignSelf: 'center' }} onClick={() => navigate('/login?redirect=' + location.pathname)} small={md} label={t("account:login")} icon={"sign-in-alt"} />
+        <Button style={{ alignSelf: 'center' }} onClick={() => navigate('/login?redirect=' + location.pathname)} small={lg} label={t("account:login")} icon={"sign-in-alt"} />
     </>
 
     const basketButton = <NavbarItem className={`single ${basket.length === 0 && 'disabled'}`} id={"basket-nav-link"} to={'/basket'}>
         <Icon icon={"shopping-cart"} />&nbsp;
         {basket.length > 0 ?
-            <>{t(md ? "commerce:basket" : "commerce:basketShort", { quantity: basket.length })}</>
+            <>{t(lg ? "commerce:basket" : "commerce:basketShort", { quantity: basket.length })}</>
             :
             <></>
             // <>{t("commerce:emptyBasket")}</>
@@ -189,8 +191,8 @@ const Navbar = props => {
     </NavbarItem>
 
     return (
-        <Wrapper tinyMenu={!md}>
-            {md ?
+        <Wrapper tinyMenu={!lg}>
+            {lg ?
                 <>
                     <NavbarItemGroup>
                         {logo}

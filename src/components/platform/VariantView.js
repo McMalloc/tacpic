@@ -405,8 +405,9 @@ const VariantView = (props) => {
                 label: <FlyoutEntry
                   icon={"braille"}
                   label={t('catalogue:orderWithBrailleEmboss', { count: props.braille_no_of_pages })}
-                  sublabel={"catalogue:orderWithBrailleEmbossHint"}
+                  // sublabel={"catalogue:orderWithBrailleEmbossHint"}
                 />,
+                display: t('catalogue:orderWithBrailleEmboss', { count: props.braille_no_of_pages }),
                 value: 'graphic'
               },
               {
@@ -416,6 +417,8 @@ const VariantView = (props) => {
                     { saved: (props.quote - props.quote_graphics_only) })}
                   sublabel={"catalogue:orderWithBrailleMailHint"}
                 />,
+                display: t('catalogue:orderWithBrailleMail',
+                { saved: (props.quote - props.quote_graphics_only) }),
                 value: 'graphic_nobraille'
               }
             ]} />}
@@ -428,7 +431,7 @@ const VariantView = (props) => {
               inline
               noMargin
               onChange={(event) => {
-                setQuantity(parseInt(event.currentTarget.value));
+                setQuantity(Math.max(parseInt(event.currentTarget.value), 1));
               }}
               min={1}
               value={quantity}
@@ -439,7 +442,7 @@ const VariantView = (props) => {
               <strong>{t('{{amount, currency}}', {
                 amount: (product === "graphic"
                   ? props.quote
-                  : props.quote_graphics_only) * quantity
+                  : props.quote_graphics_only) * (quantity || 0)
               })}</strong>
 
               <div style={{ fontSize: '0.8rem' }}>

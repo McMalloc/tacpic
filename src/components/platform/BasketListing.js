@@ -126,6 +126,7 @@ const BasketListing = () => {
             {quote.items.map((quoteItem, index) => {
                 const correspondingVariant = quotedVariants.find(v => v.id === quoteItem.content_id);
                 if (!correspondingVariant) return null
+                console.log(correspondingVariant);
                 return (
                     // <CSSTransition in={quote.items} timeout={200} classNames={'item'}>
                     <ItemPanel key={index}>
@@ -164,14 +165,16 @@ const BasketListing = () => {
                                             label={t('catalogue:orderWithBrailleEmboss', { count: correspondingVariant.braille_no_of_pages })}
                                             sublabel={"catalogue:orderWithBrailleEmbossHint"}
                                         />,
+                                        display: t('catalogue:orderWithBrailleEmboss', { count: correspondingVariant.braille_no_of_pages }),
                                         value: 'graphic'
                                     },
                                     {
                                         label: <FlyoutEntry
                                             icon={"file-word"}
-                                            label={t('catalogue:perEMail')}
+                                            label={t('catalogue:orderWithBrailleMailPlain')}
                                             sublabel={"catalogue:orderWithBrailleMailHint"}
                                         />,
+                                        display: t('catalogue:orderWithBrailleMailPlain'),
                                         value: 'graphic_nobraille'
                                     }
                                 ]} />
@@ -182,7 +185,12 @@ const BasketListing = () => {
                                 label={"remove"} />
                             <Numberinput min={1} value={quoteItem.quantity} label={'catalogue:pcs'}
                                 inline noMargin
-                                onChange={event => updateBasket(dispatch, quoteItem.content_id, event.target.value, quoteItem.product_id, index)} />
+                                onChange={event => updateBasket(
+                                    dispatch,
+                                    quoteItem.content_id,
+                                    Math.max(1, event.target.value),
+                                    quoteItem.product_id,
+                                    index)} />
 
                             <InfoLabel
                                 title={'catalogue:price'}

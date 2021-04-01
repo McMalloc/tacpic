@@ -1,8 +1,11 @@
 import styled from 'styled-components/macro';
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Icon } from "./_Icon";
 import { Button } from "./Button";
+
+const Wrapper = styled.div`
+  margin: 6px;
+`;
 
 const Menu = styled.div`
   position:fixed;
@@ -12,14 +15,12 @@ const Menu = styled.div`
   box-shadow: -1px 1px 11px 0px rgba(0, 0, 0, 0.87);
   z-index: 101;
   top: 0;
+  left: 0;
 
   .menu-header {
     display: flex;
     justify-content: space-between;
-
-    .additional-actions {
-      padding: 6px;
-    }
+    padding: 6px;
   }
   
   ul {
@@ -52,16 +53,15 @@ const Burgermenu = props => {
   const [collapsed, setCollapsed] = useState(true);
 
   return (
-    <>
-      <Button large onClick={() => setCollapsed(!collapsed)} icon={"bars"} label={""} />
+    <Wrapper>
+      <Button title={t('menu')} style={{width: 35}} onClick={() => setCollapsed(!collapsed)} icon={"bars"} label={""} />
       {!collapsed &&
         <>
           <Backdrop onClick={() => setCollapsed(true)} />
           <Menu onClick={() => setCollapsed(!collapsed)}>
             <div className={'menu-header'}>
-              <Button large icon={"times"} /> <div className={'additional-actions'}>
+              <Button title={t('close')} style={{width: 35}} icon={"times"} /> 
                   {props.headerAction}
-                </div>
             </div>
             
             <ul>
@@ -78,7 +78,7 @@ const Burgermenu = props => {
           </Menu>
         </>
       }
-    </>
+    </Wrapper>
   )
 };
 

@@ -17,6 +17,8 @@
   "orderWithBraille_plural": "Grafik auf {{count}} Seiten Schwellpapier bestellen und Bildbeschreibung erhalten als ...",
   "orderWithBraille": "Grafik auf einer Seite Schwellpapier bestellen und Bildbeschreibung erhalten als ...",
   "orderWithBrailleMail": "E-Mail ({{saved, currency}} günstiger)",
+  "orderWithBrailleMailPlain": "Anhang in Bestätigungs-E-Mail",
+  "orderWithBrailleMailHint": "Sie erhalten die Datei direkt als Anhang der E-Mail zur Bestellbestätigung im RTF-Format, kompatibel mit allen gängigen Textverarbeitungsanwendungen.",
   "orderWithBrailleEmboss": "{{count}} × $t(glossary:a4), $t(glossary:brailleEmboss)",
   "orderWithoutBraille_plural": "Grafik auf {{count}} Seiten Schwellpapier bestellen",
   "orderWithoutBraille": "Grafik auf einer Seite Schwellpapier bestellen",

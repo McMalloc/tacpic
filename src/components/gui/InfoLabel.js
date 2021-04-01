@@ -23,9 +23,9 @@ const InfoLabel = props => {
             <div className={'content'}>
                 <small>{t(props.label)}</small><br />
                 {props.components ?
-                props.components
-                :
-                <strong>{props.noTranslate ? props.info : t(props.info)}</strong>
+                    props.components
+                    :
+                    <strong>{props.noTranslate ? props.info : t(props.info)}</strong>
                 }
             </div>
         </Wrapper>
