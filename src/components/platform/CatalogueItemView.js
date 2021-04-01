@@ -56,7 +56,6 @@ const VariantPreviewStyled = styled.div`
   }
 
   .variant-info {
-    word-break: break-all;
     flex: 1 1 100%;
     padding: ${props => props.theme.large_padding};
     color: ${props => props.active ? props.brand_secondary : "inherit"};
@@ -119,7 +118,7 @@ const VariantPreview = ({
       <img
         src={`${API_URL}/thumbnails/${current_file_name}-THUMBNAIL-xl-p0.png`}
       />
-      <div className={"variant-info"}>
+      <div className={"variant-info breakable-long-lines"}>
         <strong>{title}</strong>
         <br />
         {subtitle && <small>{subtitle}</small>}

@@ -43,7 +43,6 @@ const ItemPanel = styled(Well)`
   margin-bottom: 12px;
 
   .upper {
-    word-break: break-all;
     margin-bottom: 1rem;
   }
 
@@ -130,7 +129,7 @@ const BasketListing = () => {
                 return (
                     // <CSSTransition in={quote.items} timeout={200} classNames={'item'}>
                     <ItemPanel key={index}>
-                        <div className={'upper'}>
+                        <div className={'upper breakable-long-lines'}>
                             <Link
                                 to={`/catalogue/${correspondingVariant.graphic_id}/variant/${correspondingVariant.id}`}>
                                 <strong>{correspondingVariant.graphic_title} ({correspondingVariant.title})</strong>

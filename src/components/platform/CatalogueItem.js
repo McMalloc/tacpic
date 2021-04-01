@@ -45,7 +45,6 @@ const Title = styled.div`
 const Info = styled.div`
   background-color: ${props => props.theme.background};
   padding: 8px;
-  word-break: break-word;
   color: ${props => props.theme.foreground};
   border-radius: 0 0 ${props => props.theme.border_radius} ${props => props.theme.border_radius};
 `;
@@ -60,7 +59,7 @@ export default props => {
                 <Tile>
                     <Preview
                         id={"catalogue-item-" + props.id + "-thumbnail"} thumbnailURL={thumbnailURL} />
-                    <Info>
+                    <Info className={'breakable-long-lines'}>
                         <Title title={props.title} aria-label={props.title} className={"hover-sensitive"}>{props.title}</Title><br/>
                         <small>
                             {t('catalogue:variants', {count: props.variants.length, context: props.filtered ? 'filtered' : 'all'})}
