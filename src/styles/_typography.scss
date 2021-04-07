@@ -36,18 +36,21 @@ html {
 @font-face {
   font-family: Roboto;
   src: url("/webfonts/Roboto-Regular.ttf");
+  font-display: swap;
   font-weight: normal;
 }
 
 @font-face {
   font-family: Roboto;
   src: url("/webfonts/Roboto-Bold.ttf");
+  font-display: swap;
   font-weight: bold;
 }
 
 @font-face {
   font-family: Roboto;
   src: url("/webfonts/Roboto-MediumItalic.ttf");
+  font-display: swap;
   font-weight: normal;
   font-style: italic;
 }
@@ -55,6 +58,7 @@ html {
 @font-face {
   font-family: Quicksand;
   src: url("/webfonts/Quicksand-Regular.ttf");
+  font-display: swap;
   font-weight: normal;
 }
 
@@ -135,7 +139,7 @@ small {
 }
 
 .disabled {
-  color: #777;
+  color: #333;
   font-style: italic;
 }
 

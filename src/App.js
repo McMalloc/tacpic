@@ -32,7 +32,7 @@ import Loader from "./components/gui/Loader";
 const Editor = React.lazy(() => import("./components/editor/Editor"));
 const AdminIndex = React.lazy(() => import("./components/admin/AdminIndex"));
 
-const ScrollContent = styled.div`
+const ScrollContent = styled.main`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -103,7 +103,7 @@ const App = () => {
       }
 
       <Navbar items={navbarItems} />
-      <ScrollContent id={"scroll-content"}>
+      <ScrollContent role={'main'} id={"scroll-content"}>
         <AppContainer
           id={"app-container"}
           inEditor={inEditor}

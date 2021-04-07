@@ -12,6 +12,7 @@ import { DB_DATE_FORMAT } from "../../config/constants";
 import * as moment from 'moment'
 import { Icon } from "../gui/_Icon";
 import { Button } from "../gui/Button";
+import { useTranslation } from "react-i18next";
 
 const VariantPreviewStyled = styled.div`
   display: flex;
@@ -113,9 +114,11 @@ const VariantPreview = ({
 }) => {
   let selectedVariantId = useParams().variantId;
   const allTags = useSelector((state) => state.catalogue.tags);
+  const { t } = useTranslation();
   return (
     <VariantPreviewStyled active={id === parseInt(selectedVariantId)}>
       <img
+        alt={t('catalogue:variantPreviewAlt') + ' ' + title}
         src={`${API_URL}/thumbnails/${current_file_name}-THUMBNAIL-xl-p0.png`}
       />
       <div className={"variant-info breakable-long-lines"}>
@@ -129,10 +132,10 @@ const VariantPreview = ({
               if (index > nrOfVisibleTags) return null;
               if (index === nrOfVisibleTags)
                 return (
-                  <TagView>({tags.length - nrOfVisibleTags} weitere)</TagView>
+                  <TagView>{t('catalogue:moreTags', {amount: tags.length - nrOfVisibleTags})}</TagView>
                 );
               return (
-                <TagView title={"Schlagwort"} key={t}>
+                <TagView title={completeTag && completeTag.name} key={t}>
                   {completeTag && completeTag.name}
                 </TagView>
               );

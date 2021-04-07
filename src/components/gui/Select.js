@@ -80,6 +80,7 @@ const Select = props => {
                     isMulti={props.isMulti}
                     placeholder={t(props.placeholder)}
                     value={value}
+                    isSearchable={props.isSearchable}
                     components={{ SingleValue: customOptionDisplay ? SingleValue : components.SingleValue }}
                     isDisabled={props.disabled}
                     onCreateOption={props.onCreateOption}

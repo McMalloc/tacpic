@@ -125,7 +125,6 @@ const BasketListing = () => {
             {quote.items.map((quoteItem, index) => {
                 const correspondingVariant = quotedVariants.find(v => v.id === quoteItem.content_id);
                 if (!correspondingVariant) return null
-                console.log(correspondingVariant);
                 return (
                     // <CSSTransition in={quote.items} timeout={200} classNames={'item'}>
                     <ItemPanel key={index}>

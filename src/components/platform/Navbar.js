@@ -113,10 +113,9 @@ const Logo = styled.img`
 `;
 
 const Badge = styled.div`
-    color: white;
+    color: rgba(205, 30, 30, 0.8);
     font-size: 11px;
-    background-color: rgba(255, 30, 30, 0.5);
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+    border: 1px solid rgba(205, 30, 30, 0.8);
     position: absolute;
     left: 5px;
     text-transform: uppercase;
@@ -141,7 +140,7 @@ const Navbar = props => {
     const logo = <>
         <NavLink to={"/"}>
             <div style={{ position: 'relative', alignSelf: 'center' }}>
-                <Logo src={"/images/logo.svg"} />
+                <Logo alt={'tacpic Logo'} src={"/images/logo.svg"} />
                 <Badge>Alpha</Badge>
             </div>
         </NavLink>

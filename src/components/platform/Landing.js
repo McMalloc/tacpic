@@ -119,7 +119,8 @@ const Landing = () => {
                 <div className={"col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 vertical-center-wrapper align-center"}>
                     <Form>
                         <div>
-                            <BigLogo src={"/images/logo.svg"} alt={"tapic Logo"} /><br />
+                            <h1 style={{margin: 0}} aria-label={'tacpic'}><BigLogo src={"/images/logo.svg"} alt={"tapic Logo"} /></h1>
+                            <br />
                             <small>{t('claim')}</small>
                         </div>
                         <br />
@@ -167,8 +168,11 @@ const Landing = () => {
                         </div>
 
                         <div className={"col-xs-12 col-sm-6"}>
-                            <Video ref={videoPlayer} onLoadStart={() => videoPlayer.current.volume = 0.35}
-                                src={"images/konzept_tacpic.mp4"} controls={true} poster={"images/thumbnail.jpg"} />
+                            <Video ref={videoPlayer} onLoadStart={() => videoPlayer.current.volume = 0.20}
+                                controls={true} poster={"images/thumbnail.jpg"}>
+                                <source src={"images/konzept_tacpic.mp4"} type={"video/mp4"} />
+                                <track src={"images/konzept_captions.vtt"} kind={"captions"} srclang={"de"} label={t("landing:germanCaptions")} />
+                            </Video>
                         </div>
                     </div>
 

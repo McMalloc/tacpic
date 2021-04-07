@@ -44,7 +44,7 @@ const Searchbar = () => {
                 className={"attached"}
                 noMargin
                 style={{ width: '100%' }}
-                label={''}
+                label={t('landing:searchNow')}
                 onChange={event => setSearchTerm(event.target.value)}
                 externalLabel={"search-bar-label"}
                 placeholder={t("catalogue:search-placeholder")}

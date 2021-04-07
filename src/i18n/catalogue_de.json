@@ -14,6 +14,8 @@
   "deliveryTime": "Lieferzeit {{lower}}–{{upper}} Tage",
   "addToCart": "In den Warenkorb",
   "removeFromCart": "Aus Warenkorb entfernen",
+  "moreTags": "{{amount}} weitere",
+  "variantPreviewAlt": "Vorschaubild für die Variante",
   "orderWithBraille_plural": "Grafik auf {{count}} Seiten Schwellpapier bestellen und Bildbeschreibung erhalten als ...",
   "orderWithBraille": "Grafik auf einer Seite Schwellpapier bestellen und Bildbeschreibung erhalten als ...",
   "orderWithBrailleMail": "E-Mail ({{saved, currency}} günstiger)",

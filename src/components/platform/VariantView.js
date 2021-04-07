@@ -311,7 +311,7 @@ const VariantView = (props) => {
     <Wrapper ref={ref}>
       {pagePreviews}
 
-      <Title>
+      <Title className={'breakable-long-lines'}>
         {props.graphicTitle}: {props.title}
       </Title>
 
@@ -329,7 +329,7 @@ const VariantView = (props) => {
           <InfoLabel
             icon={'file-alt'}
             title={'catalogue:braillePagesFormat'}
-            info={`${props.braille_no_of_pages} × ${t("catalogue:a4-portrait")}`}
+            info={props.braille_no_of_pages > 0 ? `${props.braille_no_of_pages} × ${t("catalogue:a4-portrait")}` : <span className={"disabled"}>{t("none")}</span>}
             label={'catalogue:braillePages'} />
 
           <InfoLabel
@@ -341,7 +341,7 @@ const VariantView = (props) => {
           <InfoLabel
             icon={'tags'}
             title={'catalogue:appliedTags'}
-            components={props.tags.length && props.tags.length > 0 ? (
+            info={props.tags.length && props.tags.length > 0 ? (
               <>
                 <td>
                   {tags.map((tag) => {
@@ -360,9 +360,9 @@ const VariantView = (props) => {
                 </td>
               </>
             ) : (
-                <td className={"disabled"} colSpan={2}>
+                <span className={"disabled"}>
                   {t("none")}
-                </td>
+                </span>
               )}
             label={'catalogue:appliedTags'} />
 
@@ -400,7 +400,7 @@ const VariantView = (props) => {
           />
 
           {props.braille_no_of_pages > 0 &&
-            <Select label={t('commerce:descriptionAs')} value={product} onChange={event => setProduct(event.value)} name={"graphic_only_or_both_" + props.id} options={[
+            <Select isSearchable={false} label={t('commerce:descriptionAs')} value={product} onChange={event => setProduct(event.value)} name={"graphic_only_or_both_" + props.id} options={[
               {
                 label: <FlyoutEntry
                   icon={"braille"}

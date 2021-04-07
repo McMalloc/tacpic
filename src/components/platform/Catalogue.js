@@ -16,7 +16,7 @@ import { useBreakpoint } from "../../contexts/breakpoints";
 import { BRAILLE_SYSTEMS, MD_SCREEN } from '../../config/constants';
 import { useTranslation } from 'react-i18next';
 
-const TagSidebar = styled.aside`
+const TagSidebar = styled.div`
   position: sticky;
   top: ${(props) => props.theme.large_padding};
 

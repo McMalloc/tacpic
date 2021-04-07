@@ -7,7 +7,6 @@ const Wrapper = styled.span`
   display: flex;
   
 margin-bottom: 0.5rem;
-
   .icon {
       width: 2rem;
       align-self: center;
@@ -16,17 +15,16 @@ margin-bottom: 0.5rem;
 
 const InfoLabel = props => {
     const { t } = useTranslation();
-
     return (
         <Wrapper title={t(props.title)}>
             <Icon icon={props.icon} />
             <div className={'content'}>
                 <small>{t(props.label)}</small><br />
-                {props.components ?
-                    props.components
-                    :
-                    <strong>{props.noTranslate ? props.info : t(props.info)}</strong>
-                }
+                {typeof props.info === 'object' ?
+                props.info
+                :
+                <strong>{props.noTranslate ? props.info : t(props.info)}</strong>
+            }
             </div>
         </Wrapper>
     )

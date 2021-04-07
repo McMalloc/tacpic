@@ -34,8 +34,6 @@ const Checkout = props => {
     const orderState = useSelector(state => state.catalogue.order);
     const emptyBasket = useSelector(state => state.catalogue.basket.length === 0);
 
-    if (!orderState.pending && orderState.successful) navigate('/order-completed');
-
     const { t } = useTranslation();
     const dispatch = useDispatch();
     useEffect(() => {
@@ -67,13 +65,14 @@ const Checkout = props => {
     }
 
     if (emptyBasket) navigate('/basket');
+    if (!orderState.pending && orderState.successful) navigate('/order-completed');
 
     const back = <Button label={"back"} onClick={() => changeStep(Math.max(step - 1, 0))} />
 
     const addressSection =
         <section>
             {addresses.length > 0 && <>
-                <Radio name={"checkout-shipping-address-radio"} legend={'commerce:savedAddresses'} onChange={value => {
+                <Radio padded name={"checkout-shipping-address-radio"} legend={'commerce:savedAddresses'} onChange={value => {
                     setEnterShippingAddress(false);
                     setShippingAddress({ ...shippingAddress, id: parseInt(value) })
                 }}

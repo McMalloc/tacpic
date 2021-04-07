@@ -56,9 +56,10 @@ const ModalHeader = styled.div`
   color: ${props => props.theme.brand_secondary_lighter};
 `;
 
-const ModalTitle = styled.h3`
-  margin: 0;
+const ModalTitle = styled.div`
   flex: 1 1 auto;
+  font-weight: 700;
+  font-size: 1.2rem;
 `;
 
 const ModalContent = styled.div`
