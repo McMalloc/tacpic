@@ -129,7 +129,7 @@ const VariantPreview = ({
         <strong>{title}</strong>
         <br />
         {subtitle && <small>{subtitle}</small>}
-        <div>
+        {/* <div>
           {!!tags && tags.length !== 0 &&
             tags.map((t, index) => {
               let completeTag = allTags.find((_t) => _t.tag_id === t);
@@ -144,7 +144,7 @@ const VariantPreview = ({
                 </TagView>
               );
             })}
-        </div>
+        </div> */}
       </div>
     </VariantPreviewStyled>
   );
