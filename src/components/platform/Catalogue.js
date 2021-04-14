@@ -95,7 +95,7 @@ const Catalogue = () => {
         !catalogue.searchPending && queryGraphics(dispatch);
         dispatch({
             type: TAGS.GET.REQUEST,
-            payload: { limit: 30 }
+            payload: { limit: 300 }
         })
     }, []);
 
