@@ -135,7 +135,7 @@ const BasketListing = () => {
                             </Link>
                         </div>
                         <div className={'middle'}>
-                            <img style={{ height: 'auto', maxHeight: '100%', width: 'auto' }}
+                            <img alt={t('catalogue:variantPreviewAlt')} style={{ height: 'auto', maxHeight: '100%', width: 'auto' }}
                                 src={`${API_URL}/thumbnails/${correspondingVariant.current_file_name}-THUMBNAIL-sm-p0.png`} />
                         </div>
                         <InfoLabel

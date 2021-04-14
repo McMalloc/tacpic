@@ -69,7 +69,7 @@ const CatalogueItemList = props => {
     const searchPending = useSelector(state => state.catalogue.searchPending);
     const loadMorePending = useSelector(state => state.catalogue.loadMorePending);
 
-    const newButton = <CatalogueItemWrapper>
+    const newButton = <CatalogueItemWrapper role={'button'}>
             <AddButton id={'btn-new-graphic'} onClick={() => {
                 dispatch({type: FILE.OPEN.REQUEST})
                 navigate("/editor/splash");

@@ -23,6 +23,7 @@ const Input = styled.input`
   font-weight: 700;
   margin: 0;
   color: ${props => props.disabled ? props.theme.middark : props.theme.brand_secondary};
+  -webkit-appearance: none;
  
   display: ${props => props.inline ? "inline" : "block"};
   width: ${props => props.inline ? "inherit" : "100%"};

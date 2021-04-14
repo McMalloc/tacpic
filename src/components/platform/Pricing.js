@@ -148,7 +148,7 @@ const Pricing = () => {
           disabled
           primary
         />,
-        <Button icon={"file"} label={"products:requestOffer"} />,
+        // <Button icon={"file"} label={"products:requestOffer"} />,
       ],
     },
     {
@@ -167,7 +167,7 @@ const Pricing = () => {
           disabled
           primary
         />,
-        <Button icon={"file"} label={"products:requestOffer"} />,
+        // <Button icon={"file"} label={"products:requestOffer"} />,
       ],
     },
   ];

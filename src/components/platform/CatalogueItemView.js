@@ -116,12 +116,16 @@ const VariantPreview = ({
   const allTags = useSelector((state) => state.catalogue.tags);
   const { t } = useTranslation();
   return (
-    <VariantPreviewStyled active={id === parseInt(selectedVariantId)}>
+    <VariantPreviewStyled 
+      role={'link'}
+      aria-label={title} 
+      active={id === parseInt(selectedVariantId)}>
       <img
         alt={t('catalogue:variantPreviewAlt') + ' ' + title}
+        aria-hidden={true}
         src={`${API_URL}/thumbnails/${current_file_name}-THUMBNAIL-xl-p0.png`}
       />
-      <div className={"variant-info breakable-long-lines"}>
+      <div aria-hidden={true} className={"variant-info breakable-long-lines"}>
         <strong>{title}</strong>
         <br />
         {subtitle && <small>{subtitle}</small>}
@@ -146,10 +150,6 @@ const VariantPreview = ({
   );
 };
 
-const VariantCarousel = (props) => {
-  return {};
-};
-
 const CatalogueItemView = ({ variantsOverview }) => {
   let { graphicId, variantId } = useParams();
   const dispatch = useDispatch();
@@ -157,6 +157,7 @@ const CatalogueItemView = ({ variantsOverview }) => {
   const history = useSelector((state) => state.catalogue.currentHistory);
   const { md } = useBreakpoint();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t } = useTranslation();
   const showHistory = searchParams.get("view") === "history";
 
   const viewedGraphic = useSelector((state) => state.catalogue.viewedGraphic);
@@ -172,6 +173,7 @@ const CatalogueItemView = ({ variantsOverview }) => {
   }, [graphicId]);
 
   useEffect(() => {
+
     if (showHistory) {
       dispatch({
         type: VARIANT.HISTORY.REQUEST,
@@ -183,7 +185,7 @@ const CatalogueItemView = ({ variantsOverview }) => {
   const variantColumn = (
     <VariantColumn className={"col-sm-2 col-md-3 col-lg-2"}>
       <div className={"heading"}>
-        <strong>Verfügbare Varianten</strong><br /><small>({variantsOverview.length} gesamt)</small>
+        <strong>{t('catalogue:availableVariants', {amount: variantsOverview.length})}</strong>
       </div>
       <div>
         {variantsOverview.map((variant, index) => {

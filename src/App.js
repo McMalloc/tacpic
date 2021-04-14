@@ -32,7 +32,7 @@ import Loader from "./components/gui/Loader";
 const Editor = React.lazy(() => import("./components/editor/Editor"));
 const AdminIndex = React.lazy(() => import("./components/admin/AdminIndex"));
 
-const ScrollContent = styled.main`
+const ScrollContent = styled.div`
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -47,7 +47,7 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-const AppContainer = styled.div`
+const AppContainer = styled.main`
   flex: 1 ${(props) => (props.inEditor || props.inEditorSplash ? 1 : 0)} 100%;
   overflow-y: ${(props) => (props.inEditor ? "hidden" : "visible")};
 
@@ -103,7 +103,7 @@ const App = () => {
       }
 
       <Navbar items={navbarItems} />
-      <ScrollContent role={'main'} id={"scroll-content"}>
+      <ScrollContent id={"scroll-content"}>
         <AppContainer
           id={"app-container"}
           inEditor={inEditor}

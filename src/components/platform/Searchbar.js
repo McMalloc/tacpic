@@ -38,7 +38,7 @@ const Searchbar = () => {
     const [searchTerm, setSearchTerm] = useState(catalogue.filterTerms);
 
     return (
-        <Bar>
+        <Bar role={'search'}>
             <Textinput value={searchTerm}
                 name={"search-bar"}
                 className={"attached"}

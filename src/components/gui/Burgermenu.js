@@ -54,13 +54,13 @@ const Burgermenu = props => {
 
   return (
     <Wrapper>
-      <Button title={t('menu')} style={{width: 35}} onClick={() => setCollapsed(!collapsed)} icon={"bars"} label={""} />
+      <Button aria-label={t('openMenu')} title={t('openMenu')} style={{width: 35}} onClick={() => setCollapsed(!collapsed)} icon={"bars"} label={""} />
       {!collapsed &&
         <>
           <Backdrop onClick={() => setCollapsed(true)} />
           <Menu onClick={() => setCollapsed(!collapsed)}>
             <div className={'menu-header'}>
-              <Button title={t('close')} style={{width: 35}} icon={"times"} /> 
+              <Button aria-label={t('closeMenu')} title={t('closeMenu')} style={{width: 35}} icon={"times"} /> 
                   {props.headerAction}
             </div>
             

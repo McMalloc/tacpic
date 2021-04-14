@@ -20,7 +20,7 @@ const customStyles = {
         border: standard.elementBorder,
         // borderWidth: '2px',
         fontWeight: 'bold',
-        backgroundColor: state.menuIsOpen ? standard.brand_primary : 'inherit',
+        backgroundColor: state.menuIsOpen ? standard.brand_primary : standard.background,
         transition: 'all 50ms',
         outline: state.isFocused ? '4px solid rgba(38, 132, 255, 0.7)' : 'none',
         ':hover': {
@@ -87,7 +87,7 @@ const Select = props => {
                     onChange={props.onChange}
                     // menuIsOpen={true}
                     menuPlacement={props.menuPlacement}
-                    menuPortalTarget={document.getElementById("select-portal-target")}
+                    // menuPortalTarget={document.getElementById("select-portal-target")}
                     options={props.options} />
             </Label>
         </div>

@@ -13,35 +13,35 @@
 </head>
 
 <body>
-  
+
 
   <!-- container used to calculate text width -->
   <div aria-hidden=true id="dummy" style="position: absolute; opacity: 0;"></div>
 
-  <div id="root">
+  <div id="root" aria-hidden='false'>
 
     <!-- loader -->
     <div style="
     display: grid;
     place-items: center;
-  font-size: 120%;
-  font-family: sans-serif;
-  animation: pulsating 0.8s infinite;">
+    font-size: 120%;
+    font-family: sans-serif;
+    animation: pulsating 0.8s infinite;">
 
-<noscript>
-  <div style="width: 100%; margin: 20% 0;">
-    <p style="width: 400px;">Die Entwicklung von Webanwendungen beansprucht viele Ressourcen. 
-  Wir können dieses Angebot leider nur mit aktiviertem Javascript anbieten. 
-  Falls Sie aus Datenschutzgründen Javascript deaktiviert haben, können zumindest wir Sie beruhigen: 
-  Wir schalten keine Werbung und teilen Nutzungsdaten nicht mit Dritten.
-<br /><br />
+      <noscript>
+        <div style="width: 100%; margin: 20% 0;">
+          <p style="width: 400px;">Die Entwicklung von Webanwendungen beansprucht viele Ressourcen.
+            Wir können dieses Angebot leider nur mit aktiviertem Javascript anbieten.
+            Falls Sie aus Datenschutzgründen Javascript deaktiviert haben, können zumindest wir Sie beruhigen:
+            Wir schalten keine Werbung und teilen Nutzungsdaten nicht mit Dritten.
+            <br /><br />
 
-    <a target='_blank' href="https://www.enable-javascript.com/de/">So aktivieren Sie Javascript.</a>
-  </p>
-  </div>
-  
+            <a target='_blank' href="https://www.enable-javascript.com/de/">So aktivieren Sie Javascript.</a>
+          </p>
+        </div>
 
-</noscript>
+
+      </noscript>
       <img style="width: 200px" alt="Tacpic Logo" src="/images/logo.svg"><br />
       Einen Moment bitte /<br />
       One Moment please<br />
@@ -61,7 +61,7 @@
   </div>
 
 
-  
+
   <div id="flyout"></div>
   <div id="modal"></div>
   <div id="popup"></div>

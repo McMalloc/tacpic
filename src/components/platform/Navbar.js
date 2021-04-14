@@ -138,9 +138,9 @@ const Navbar = props => {
 
 
     const logo = <>
-        <NavLink to={"/"}>
-            <div style={{ position: 'relative', alignSelf: 'center' }}>
-                <Logo alt={'tacpic Logo'} src={"/images/logo.svg"} />
+        <NavLink aria-label={t('tacpicToStart')} to={"/"}>
+            <div aria-hidden={'true'} style={{ position: 'relative', alignSelf: 'center' }}>
+                <Logo alt={''} src={"/images/logo.svg"} />
                 <Badge>Alpha</Badge>
             </div>
         </NavLink>
@@ -162,9 +162,9 @@ const Navbar = props => {
     )
 
     const accountLink = <>
-        <NavbarItem className={'two-lines'} to={'/account'}>
+        <NavbarItem aria-label={t('account:accountOf') + ' ' + user.email} className={'two-lines'} to={'/account'}>
             <Icon icon={"user-circle"} />&nbsp;
-            <div>
+            <div aria-hidden={true}>
                 <span className={'really-small'}>
                     {t('account:accountOf')}
                     </span> <br />
@@ -211,7 +211,7 @@ const Navbar = props => {
                         <Burgermenu headerAction={<LanguageSwitch />}>
                             <br />
                             {sections}
-                            <hr />
+                            <hr aria-hidden={true}/>
                             {user.logged_in ? accountLink : loginSignupLinks}
                             <NavbarItem className={"no-styled-link"} to={'/info/de/66?Impressum'}>
                                 {t("footer:imprint")}

@@ -204,14 +204,6 @@ const VariantView = (props) => {
     </Carousel>
   </Preview>
 
-  const description = <div className={"description"}>
-    {props.description.trim() !== "()" ?
-      <p>{props.description}</p>
-      :
-      <em>({t('catalogue:pagePreview')})</em>
-    }
-  </div>
-
   const buttonBar = <ButtonBar>
     <FlyoutButton
       flyoutWidth={300}
@@ -384,7 +376,7 @@ const VariantView = (props) => {
           </Alert>
         )}
 
-        {!lg && <Alert warning>{t("editor:not_available-screen")}</Alert>}
+        {!lg && <Alert info>{t("editor:not_available-screen")}</Alert>}
       </div>
       <div className={'order'}>
         {buttonBar}

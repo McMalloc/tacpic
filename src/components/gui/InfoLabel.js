@@ -16,7 +16,7 @@ margin-bottom: 0.5rem;
 const InfoLabel = props => {
     const { t } = useTranslation();
     return (
-        <Wrapper title={t(props.title)}>
+        <Wrapper role={'group'} title={t(props.title)}>
             <Icon icon={props.icon} />
             <div className={'content'}>
                 <small>{t(props.label)}</small><br />

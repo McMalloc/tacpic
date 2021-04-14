@@ -84,7 +84,7 @@ const Catalogue = () => {
     const { graphicId } = useParams();
 
     const location = useLocation();
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
 
     // const graphicOverview = catalogue.graphics.find(graphic => graphic.id == graphicId);
@@ -104,7 +104,7 @@ const Catalogue = () => {
         if (!graphicOverview.title || !graphicId) {
             document.title = `${t('glossary:catalogue')} \u23D0 ${t('glossary:brand')}`
         } else if (view === 'history') {
-            document.title = 
+            document.title =
                 `${t('glossary:catalogue')}: 
                 ${graphicOverview.title} 
                 (${t('glossary:history')}) 
@@ -114,30 +114,32 @@ const Catalogue = () => {
         }
     }, [graphicOverview.id, location.pathname, location.search]);
 
-    const tagSidebar = <TagSidebar>
-        <strong>{t('catalogue:formatHeading')}</strong>
-        <div className={"tag-wrapper"}>
+    const tagSidebar = <TagSidebar role={'group'} aria-label={'Filter'}>
+            <strong id={'filter-group-format'}>{t('catalogue:formatHeading')}</strong>
+            <div role={'group'} aria-hidden={true} aria-labelledby={'filter-group-format'} className={"tag-wrapper"}>
 
-            <Checkbox onChange={() => toggleFormat(dispatch, 'a4')}
-                name={'format-toggle-a4'}
-                value={catalogue.filterFormat.includes('a4')}
-                label={'catalogue:a4'} />
-            <Checkbox onChange={() => toggleFormat(dispatch, 'a3')}
-                name={'format-toggle-a3'}
-                value={catalogue.filterFormat.includes('a3')}
-                label={'catalogue:a3'} />
-        </div>
+                <Checkbox onChange={() => toggleFormat(dispatch, 'a4')}
+                    name={'format-toggle-a4'}
+                    value={catalogue.filterFormat.includes('a4')}
+                    label={'catalogue:a4'} />
+                <Checkbox onChange={() => toggleFormat(dispatch, 'a3')}
+                    name={'format-toggle-a3'}
+                    value={catalogue.filterFormat.includes('a3')}
+                    label={'catalogue:a3'} />
+            </div>
+
         <br />
-        <strong>{t('catalogue:systemHeading')}</strong>
-        <div className={"tag-wrapper"}>
+        <strong id={'filter-group-system'}>{t('catalogue:systemHeading')}</strong>
+        <div role={'group'} aria-labelledby={'filter-group-system'} className={"tag-wrapper"}>
             {Object.keys(BRAILLE_SYSTEMS).map(lang =>
-                <div key={lang}>{Object.keys(BRAILLE_SYSTEMS[lang]).map(system =>
+                <>{Object.keys(BRAILLE_SYSTEMS[lang]).map(system =>
                     <Checkbox onChange={() => toggleSystem(dispatch, lang + ':' + system)}
-                        key={system}
+                        key={lang + system}
                         name={'system-toggle-' + system}
                         value={catalogue.filterSystem.includes(lang + ':' + system)}
                         label={'catalogue:' + system} />
-                )}</div>
+                        
+                )}</>
             )}
 
         </div>
@@ -190,12 +192,13 @@ const Catalogue = () => {
             }
 
             {!!graphicId &&
-                <Modal title={graphicOverview && graphicOverview.title} noPadding={true} fitted
+                <Modal title={t('catalogue:detailsFor') + (graphicOverview && graphicOverview.title)} noPadding={true} fitted
                     dismiss={() => navigate("/catalogue")}>
 
                     <CatalogueItemView variantsOverview={graphicOverview.variants || []} />
 
-                </Modal>}
+                </Modal>
+            }
         </>
     )
 };

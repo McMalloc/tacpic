@@ -72,11 +72,11 @@ const Addresses = () => {
 
                 {showConfirmModal &&
                 <Modal fitted title={"Entfernen bestätigen"} dismiss={() => setShowConfirmModal(false)} actions={[
+                    {label: "Nein, behalten", action: () => setShowConfirmModal(false)},
                     {label: "Ja, entfernen", template: "primary", align: "right", action: () => {
                             removeAddress(dispatch, addressToBeRemoved.id);
                             setShowConfirmModal(false);
-                        }},
-                    {label: "Nein, behalten", action: () => setShowConfirmModal(false)}
+                        }}
                 ]}>
                     <p>Soll die Addresse wirklich entfernt werden?</p>
                     <AddressView {...addressToBeRemoved} />

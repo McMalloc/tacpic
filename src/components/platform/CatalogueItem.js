@@ -54,13 +54,13 @@ export default props => {
     const thumbnailURL =
         `${API_URL}/thumbnails/${props.variants[0].current_file_name}-THUMBNAIL-sm-p0.png`
     return (
-        <Wrapper id={"catalogue-item-" + props.id}>
-            <Link className={'no-styled-link'} to={props.id + "/variant/" + props.variants[0].id}>
+        <Wrapper aria-labelledby={'catalogue-title-' + props.id} role={'link'} id={"catalogue-item-" + props.id}>
+            <Link aria-hidden={true} className={'no-styled-link'} to={props.id + "/variant/" + props.variants[0].id}>
                 <Tile>
                     <Preview
                         id={"catalogue-item-" + props.id + "-thumbnail"} thumbnailURL={thumbnailURL} />
                     <Info className={'breakable-long-lines'}>
-                        <Title title={props.title} aria-label={props.title} className={"hover-sensitive"}>{props.title}</Title><br/>
+                        <Title title={props.title} id={'catalogue-title-' + props.id} className={"hover-sensitive"}>{props.title}</Title><br/>
                         <small>
                             {t('catalogue:variants', {count: props.variants.length, context: props.filtered ? 'filtered' : 'all'})}
                         </small>

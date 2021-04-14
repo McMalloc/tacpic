@@ -65,7 +65,7 @@ const IllustrationContainer = styled.div`
   }
 `
 
-const Wrapper = styled.div`
+const Wrapper = styled.main`
   position: relative;
 
   .key-visual {
@@ -216,7 +216,8 @@ const Landing = () => {
                         </div>
                     </div>
                     <div style={{ alignItems: 'flex-start' }} className={"row extra-padding"}>
-                        <img src={"images/key2.jpg"} alt={""} />
+                        <img src={"images/key2.jpg"} title={'Photo: Nilz Böhme'} alt={"Frau untersucht die Qualität einer geschwellten Grafik mit einem Vergrößerungsglas. Photo von Nilz Böhme."} />
+                            <small>Photo <a href="https://www.nilzboehme.de">Nilz Böhme</a></small>
                     </div>
                     <div className={"row"}>
                         <h2 style={{ textAlign: 'center', width: '100%' }}>{t('landing:uspHeading')}</h2>
