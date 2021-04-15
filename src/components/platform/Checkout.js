@@ -14,6 +14,7 @@ import LoginForm from "../LoginForm";
 import StepIndicator from "../gui/StepIndicator";
 import uuidv4 from "../../utility/uuid";
 import { useNavigate } from "react-router-dom";
+import { MAX_VALUE_FOR_ORDER } from "../../config/constants";
 
 // TODO Kommentar anfügen
 
@@ -33,6 +34,7 @@ const Checkout = props => {
     const idempotencyKey = uuidv4();
     const orderState = useSelector(state => state.catalogue.order);
     const emptyBasket = useSelector(state => state.catalogue.basket.length === 0);
+    const quote = useSelector(state => state.catalogue.quote);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -79,11 +81,12 @@ const Checkout = props => {
                     value={shippingAddress.id}
                     options={addresses.map(address => {
                         return {
-                            component: <AddressView {...address} />,
+                            label: `${address.first_name} ${address.last_name}\n${address.street} ${address.house_number}\n${address.zip} ${address.city}`,
                             value: address.id
                         }
                     })} />
             </>}
+            <br />
             {showShippingAddressForm && <form
                 onChange={() => {
                     shippingAddress.id !== null && setShippingAddress({ ...shippingAddress, id: null });
@@ -144,15 +147,11 @@ const Checkout = props => {
     const paymentSection = <section>
         <Radio padded value={paymentMethod} name={'payment-method'} onChange={setPaymentMethod} options={[
             {
-                component: <div>{t('commerce:invoice')}<br />
-                    <span className={'sub-label'}>{t('commerce:invoice_payment_hint')}</span>
-                </div>,
+                label: `${t('commerce:invoice')}\n${t('commerce:invoice_payment_hint')}`,
                 value: "invoice"
             },
             {
-                component: <div>{t('commerce:paypal')}<br />
-                    <span className={'sub-label'}>{t('commerce:paypal_payment_hint')}</span>
-                </div>,
+                label: `${t('commerce:paypal')}\n${t('commerce:paypal_payment_hint')}`,
                 value: "paypal",
                 disabled: true
             }
@@ -246,17 +245,28 @@ const Checkout = props => {
                     <div style={{ position: 'sticky', top: 12 }}>
                         <h2>{t('commerce:basketHeading')}</h2>
                         <BasketListing />
+
                         <Alert i18nKey={'commerce:betaHint'} danger>
                             0<br /><strong>2</strong>
                         </Alert>
                         <br />
-                        {step === 3 && 
-                        <Button label={"commerce:order"}
-                            icon={orderState.pending ? "cog fa-spin" : "handshake"}
-                            onClick={() => placeOrder(dispatch, shippingAddress, useInvoiceAddress ? invoiceAddress : null, paymentMethod, idempotencyKey)}
-                            primary rightAction large
-                            disabled={paymentMethod === null || orderState.pending} />
-                            }
+
+
+
+                        {step === 3 &&
+                            <>
+                                {quote.gross_total > MAX_VALUE_FOR_ORDER ?
+                                    <Alert warning>
+                                        {t('commerce:orderTooLargeHint')}
+                                    </Alert>
+                                    :
+                                    <Button label={"commerce:order"}
+                                        icon={orderState.pending ? "cog fa-spin" : "handshake"}
+                                        onClick={() => placeOrder(dispatch, shippingAddress, useInvoiceAddress ? invoiceAddress : null, paymentMethod, idempotencyKey)}
+                                        primary rightAction large
+                                        disabled={paymentMethod === null || orderState.pending} />
+                                }
+                            </>}
                         <br />
                     </div>
                 </div>

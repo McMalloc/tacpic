@@ -51,7 +51,7 @@ const Alert = props => {
     }
     return (
         <Wrapper role={(props.warning || props.danger) ? "alert" : ""} {...props} colour={colour}>
-            <IconContainer colour={colour}>
+            <IconContainer aria-hidden={true} colour={colour}>
                 <i className={"fas fa-" + iconID} />
             </IconContainer>
             <Message {...props}>

@@ -15,6 +15,7 @@
   "login": "Log in",
   "logoff": "Log out",
   "notLoggedin": "not logged in.",
+  "reallyRemoveAddress": "Do you really want to remove the following address?",
   "private": "Personal area",
   "required": "Required information",
   "display_name": "Display name",

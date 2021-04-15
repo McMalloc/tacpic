@@ -384,7 +384,7 @@ const VariantView = (props) => {
         <Well>
 
           <InfoLabel
-            label={'Grafik'}
+            label={t('catalogue:graphic')}
             info={`${props.graphic_no_of_pages} × ${t(
               `catalogue:${props.graphic_format}-${props.graphic_landscape ? "landscape" : "portrait"
               }`
@@ -392,28 +392,25 @@ const VariantView = (props) => {
           />
 
           {props.braille_no_of_pages > 0 &&
-            <Select isSearchable={false} label={t('commerce:descriptionAs')} value={product} onChange={event => setProduct(event.value)} name={"graphic_only_or_both_" + props.id} options={[
-              {
-                label: <FlyoutEntry
-                  icon={"braille"}
-                  label={t('catalogue:orderWithBrailleEmboss', { count: props.braille_no_of_pages })}
-                  // sublabel={"catalogue:orderWithBrailleEmbossHint"}
-                />,
-                display: t('catalogue:orderWithBrailleEmboss', { count: props.braille_no_of_pages }),
-                value: 'graphic'
-              },
-              {
-                label: <FlyoutEntry
-                  icon={"file-word"}
-                  label={t('catalogue:orderWithBrailleMail',
-                    { saved: (props.quote - props.quote_graphics_only) })}
-                  sublabel={"catalogue:orderWithBrailleMailHint"}
-                />,
-                display: t('catalogue:orderWithBrailleMail',
-                { saved: (props.quote - props.quote_graphics_only) }),
-                value: 'graphic_nobraille'
-              }
-            ]} />}
+            <Select
+              isSearchable={false}
+              label={t('commerce:descriptionAs')}
+              value={product}
+              onChange={event => setProduct(event.value)}
+              name={"graphic_only_or_both_" + props.id}
+              options={[
+                {
+                  label: t('catalogue:orderWithBrailleEmboss', { count: props.braille_no_of_pages }),
+                  value: 'graphic'
+                },
+                {
+                  label: t('catalogue:orderWithBrailleMail',
+                  { saved: (props.quote - props.quote_graphics_only) }),
+                  sublabel: t("catalogue:orderWithBrailleMailHint"),
+                  value: 'graphic_nobraille'
+                }
+              ]} />
+          }
           <br />
 
           <OrderWidget>
@@ -439,12 +436,13 @@ const VariantView = (props) => {
 
               <div style={{ fontSize: '0.8rem' }}>
                 {quantity !== 1 &&
-                  <>{t('catalogue:singlePrice')}: {t('{{amount, currency}}', {
+                  <>{t('catalogue:singlePrice', {
                     amount: (product === "graphic"
                       ? props.quote
                       : props.quote_graphics_only)
-                  })}</>}
-                <br />
+                  })}</>
+                
+                }<br />
                 {t("catalogue:plusShipping", { amount: 200 })}
                 <br />
                 {t('catalogue:deliveryTime', { lower: 4, upper: 5 })}

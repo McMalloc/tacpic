@@ -6,11 +6,11 @@ import styled from 'styled-components/macro';
 const AddressView = props => {
     const {t} = useTranslation();
 
-    return (<p>
+    return (<>
         {props.first_name} {props.last_name} <br />
         {props.street} {props.house_number} <br />
         {props.zip} {props.city}
-    </p>)
+    </>)
 }
 
 AddressView.propTypes = {

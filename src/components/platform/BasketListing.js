@@ -152,27 +152,19 @@ const BasketListing = () => {
                             label={'catalogue:graphicPages'} />
 
                         {correspondingVariant.braille_no_of_pages !== 0 &&
-                            <Select label={t('commerce:descriptionAs')}
+                            <Select label={'commerce:descriptionAs'}
                                 value={quoteItem.product_id}
                                 onChange={event => updateBasket(dispatch, quoteItem.content_id, quoteItem.quantity, event.value, index)}
                                 name={"product_type_" + index}
                                 options={[
                                     {
-                                        label: <FlyoutEntry
-                                            icon={"braille"}
-                                            label={t('catalogue:orderWithBrailleEmboss', { count: correspondingVariant.braille_no_of_pages })}
-                                            sublabel={"catalogue:orderWithBrailleEmbossHint"}
-                                        />,
-                                        display: t('catalogue:orderWithBrailleEmboss', { count: correspondingVariant.braille_no_of_pages }),
+                                        label: t('catalogue:orderWithBrailleEmboss', { count: correspondingVariant.braille_no_of_pages }),
+                                        sublabel: t("catalogue:orderWithBrailleEmbossHint"),
                                         value: 'graphic'
                                     },
                                     {
-                                        label: <FlyoutEntry
-                                            icon={"file-word"}
-                                            label={t('catalogue:orderWithBrailleMailPlain')}
-                                            sublabel={"catalogue:orderWithBrailleMailHint"}
-                                        />,
-                                        display: t('catalogue:orderWithBrailleMailPlain'),
+                                        label: 'catalogue:orderWithBrailleMailPlain',
+                                        sublabel: "catalogue:orderWithBrailleMailHint",
                                         value: 'graphic_nobraille'
                                     }
                                 ]} />

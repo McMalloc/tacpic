@@ -165,7 +165,7 @@ const AddressForm = props => {
                         props.cancel();
                     }
                 }
-            ]} title={"Adresse hinzufügen"}>
+            ]} title={t("account:add_address")}>
                 <form id={"address-edit-form"}>{form}</form>
             </Modal>
         )

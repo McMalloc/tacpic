@@ -12,9 +12,8 @@ const Document = (props) => {
     return (
       <div className={props.className}>
           <Select
-      tip={"help:select_braille-system"}
-      default={'DE:VOLL'}
-      value={system}
+      title={"help:select_braille-system"}
+      value={system || 'DE:VOLL'}
           onChange={(selection) =>
             dispatch({
                 type: "CHANGE_FILE_PROPERTY",

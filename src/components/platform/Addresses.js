@@ -71,14 +71,14 @@ const Addresses = () => {
                 }
 
                 {showConfirmModal &&
-                <Modal fitted title={"Entfernen bestätigen"} dismiss={() => setShowConfirmModal(false)} actions={[
-                    {label: "Nein, behalten", action: () => setShowConfirmModal(false)},
-                    {label: "Ja, entfernen", template: "primary", align: "right", action: () => {
+                <Modal fitted title={t('confirmRemove')} dismiss={() => setShowConfirmModal(false)} actions={[
+                    {label: t('dontRemove'), action: () => setShowConfirmModal(false)},
+                    {label: t('yesRemove'), template: "primary", align: "right", action: () => {
                             removeAddress(dispatch, addressToBeRemoved.id);
                             setShowConfirmModal(false);
                         }}
                 ]}>
-                    <p>Soll die Addresse wirklich entfernt werden?</p>
+                    <p>{t('account:reallyRemoveAddress')}</p>
                     <AddressView {...addressToBeRemoved} />
                 </Modal>
                 }
@@ -92,12 +92,12 @@ const Addresses = () => {
                                 <Button onClick={() => {
                                     setInitial(address);
                                     setShowForm(true);
-                                }} icon={'pen'} label={"Bearbeiten"}/>
+                                }} icon={'pen'} label={"edit"}/>
                                 <Button icon={'times'} onClick={() => {
                                     setAddressToBeRemoved(address);
                                     setShowConfirmModal(true);
                                 }}
-                                        label={"Entfernen"}/>
+                                        label={"remove"}/>
                             </ButtonBar>
 
                         </AddressWrapper>

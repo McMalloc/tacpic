@@ -50,37 +50,11 @@ const Basket = props => {
                         <>
                             <BasketListing />
                             {quote.gross_total > MAX_VALUE_FOR_ORDER ?
-                                <>
-                                    {quote.successfull ?
-                                        <p>Vielen Dank! Wir werden Ihre Anfrage schnellstmöglich bearbeiten.</p>
-                                        :
-                                        <div>
-                                            <Alert warning>
+
+                                    <Alert warning>
                                                 {t('commerce:orderTooLargeHint')}
                                             </Alert>
-                                            <Multiline value={quoteComment} onChange={event => setQuoteComment(event.target.value)} label={"commerce:comment"} />
-                                            {user.logged_in ?
-                                                <Checkbox value={emailCopy} onChange={() => setEmailCopy(!emailCopy)} label={"commerce:sendMeRequestCopy"} />
-                                                :
-                                                <Textinput
-                                                    value={email}
-                                                    label={t("email")}
-                                                    sublabel={t("commerce:emailNeededForRequest")}
-                                                    autocomplete={"username"}
-                                                    required
-                                                    validations={[
-                                                        { fn: val => emailRegex.test(val), message: "general:email-invalid", callback: setEmailValid }
-                                                    ]}
-                                                    onChange={event => setEmail(event.target.value)}
-                                                    name={'uname'} />
-                                            }
-                                            <div style={{ textAlign: 'center', margin: '12px 0' }}>
-                                                <Button icon={"question"} disabled={!(emailValid || user.logged_in) || quote.pending}
-                                                    onClick={() => requestQuote(dispatch, quoteComment, basket, emailCopy)} label={t("commerce:requestQuote")} primary large />
-                                            </div>
-                                        </div>
-                                    }
-                                </>
+                                            
                                 :
                                 <div style={{ textAlign: 'center', margin: '12px 0' }}>
                                     <Link className={"no-styled-link"} to="/checkout">
