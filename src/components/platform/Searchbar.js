@@ -38,13 +38,13 @@ const Searchbar = () => {
     const [searchTerm, setSearchTerm] = useState(catalogue.filterTerms);
 
     return (
-        <Bar>
+        <Bar role={'search'}>
             <Textinput value={searchTerm}
                 name={"search-bar"}
                 className={"attached"}
                 noMargin
                 style={{ width: '100%' }}
-                label={''}
+                label={t('landing:searchNow')}
                 onChange={event => setSearchTerm(event.target.value)}
                 externalLabel={"search-bar-label"}
                 placeholder={t("catalogue:search-placeholder")}

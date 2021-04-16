@@ -163,7 +163,9 @@ export const user = {
 };
 
 export const admin = {
-    users: []
+    users: [],
+    frontendErrors: [],
+    backendErrors: []
 }
 
 export const cms = {

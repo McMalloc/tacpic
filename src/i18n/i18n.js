@@ -9,6 +9,7 @@ import DECatalogue from "./catalogue_de";
 import DEFooter from "./footer_de";
 import DEAccount from "./account_de";
 import DEProducts from "./products_de";
+import DEKnowledge from "./knowledge_de";
 import ENCommon from "./common_en";
 import ENGlossary from "./glossary_en";
 import ENCommerce from "./commerce_en";
@@ -18,6 +19,7 @@ import ENCatalogue from "./catalogue_en";
 import ENFooter from "./footer_en";
 import ENAccount from "./account_en";
 import ENProducts from "./products_en";
+import ENKnowledge from "./knowledge_en";
 
 const resources = {
     de: {
@@ -29,7 +31,8 @@ const resources = {
         account: DEAccount,
         footer: DEFooter,
         products: DEProducts,
-        catalogue: DECatalogue
+        catalogue: DECatalogue,
+        knowledge: DEKnowledge
     },
     en: {
         common: ENCommon,
@@ -40,7 +43,8 @@ const resources = {
         landing: ENLanding,
         footer: ENFooter,
         products: ENProducts,
-        catalogue: ENCatalogue
+        catalogue: ENCatalogue,
+        knowledge: ENKnowledge
     }
 };
 

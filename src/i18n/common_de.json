@@ -2,6 +2,10 @@
   "format": "Papierformat",
   "more": "Mehr",
   "landscape": "Querformat",
+  "cancel": "Abbrechen",
+  "menu": "Menü",
+  "openMenu": "Menü öffnen",
+  "closeMenu": "Menü schließen",
   "portrait": "Hochformat",
   "done": "Fertig",
   "submit": "Absenden",
@@ -11,12 +15,14 @@
   "loggedInAs": "Eingeloggt als",
   "remove": "Entfernen",
   "close": "Schließen",
+  "closeModal": "Dialog schließen",
   "errorOccured": "Es ist ein Fehler aufgetreten",
   "claim": "Taktile Medien für sehbehinderte Menschen",
   "claimUSP": "Taktile Medien – schnell, gut und einfach",
   "switchLang": "In English",
   "dateFormat": "DD.MM.YYYY, HH:mm [Uhr]",
   "or": "oder",
+  "tacpicToStart": "Zur tacpic Startseite",
   "none": "keine",
   "discard": "Verwerfen",
   "backToStart": "Zurück zur Startseite.",
@@ -38,12 +44,6 @@
   "help": {
     "select_braille-system": "Pro Dokument sollte ein einheitliches Punktschriftsystem verwendet werden. Alle Beschriftungen werden in dem hier ausgewählten System angelegt und bestehende Beschriftungen werden umgewandelt.",
     "select_medium": "Unterschiedliche Medien bieten unterschiedliche Möglichkeiten. Der Editor wird für bestimmte Produktionstechniken Funktionen einschränken, sodass Sie keine Vorlage gestalten, die z.B. mit Schwellpapier gar nicht produzierbar ist."
-  },
-  "auth": {
-    "invalid login, already an account with this login": "Es gibt bereits ein Konto unter dieser E-Mail-Adresse.",
-    "The account you tried to create is currently awaiting verification": "Das Konto mit dieser E-Mail-Adresse muss noch verifiziert werden. Bitte prüfen Sie Ihr Postfach und ggf. den Spam-Ordner.",
-    "no matching login": "Kein Benutzerkonto mit dieser E-Mail-Adresse / Passwort bekannt.",
-    "There was an error creating your account": "Fehler beim Erstellen eines neuen Kontos."
   },
   "navigation": {
     "catalogue": "$t(glossary:catalogue)",
@@ -85,6 +85,7 @@
     "/account": "Persönlicher Bereich",
     "/admin": "Administration",
     "/account/orders": "Meine bestellungen",
+    "/order-completed": "Bestellung abgeschlossen",
     "/account/newsletter": "Datenschutzeinstellungen",
     "/account/addresses": "Meine Adressen",
     "/account/my_account": "Kontoinformationen",

@@ -121,7 +121,7 @@ const Pricing = () => {
           <Button
             onClick={() => navigate("/signup")}
             icon={"user-plus"}
-            label={"signup"}
+            label={"account:signup"}
             primary
           />
         ),
@@ -148,7 +148,7 @@ const Pricing = () => {
           disabled
           primary
         />,
-        <Button icon={"file"} label={"products:requestOffer"} />,
+        // <Button icon={"file"} label={"products:requestOffer"} />,
       ],
     },
     {
@@ -157,7 +157,7 @@ const Pricing = () => {
       durationText: "products:1Year",
       duration: 365,
       icon: "icon_guenstig.svg",
-      price: "aktuell kostenlos",
+      price: "products:currentlyFree",
       priceAmount: 19900,
       priceHint: "products:priceHint",
       buttons: [
@@ -167,7 +167,7 @@ const Pricing = () => {
           disabled
           primary
         />,
-        <Button icon={"file"} label={"products:requestOffer"} />,
+        // <Button icon={"file"} label={"products:requestOffer"} />,
       ],
     },
   ];

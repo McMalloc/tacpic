@@ -61,7 +61,8 @@ export const COLOURS = {
 
 export const KEYCODES = {
   SHIFT: 16,
-  SPACE: 32
+  SPACE: 32,
+  ESC: 27
 };
 
 export const FORMATS = {

@@ -16,6 +16,10 @@ import { Link } from "react-router-dom";
 import styled from 'styled-components/macro';
 import { API_URL } from "../../env.json";
 import Well from "../gui/Well";
+import Loader, { LoaderOverlay } from "../gui/Loader";
+import Select from "../gui/Select";
+import { FlyoutEntry } from "../gui/FlyoutButton";
+import InfoLabel from "../gui/InfoLabel";
 // import {CSSTransition} from "react-transition-group";
 
 const updateBasket = (dispatch, variantId, quantity, product, index) => {
@@ -39,25 +43,23 @@ const ItemPanel = styled(Well)`
   margin-bottom: 12px;
 
   .upper {
-    display: flex;
-    
-    .left {
-      flex: 1 1 30%;
-      height: 120px;
-      padding-right: 0.5rem;
-      padding-bottom: 0.5rem;
-       img {
+    margin-bottom: 1rem;
+  }
+
+  .middle {
+      text-align: center;
+    img {
             box-shadow: 1px 1px 4px rgba(0,0,0,0.5);
           }
-    }
-    .right {
-      flex: 2 1 70%;
-    }
   }
   .lower {
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: space-between;
+
+    button {
+        align-self: flex-end;
+    }
   }
 `;
 
@@ -69,6 +71,10 @@ const MetaItemTable = styled.table`
   .overline {
     border-top: 2px solid ${props => props.theme.grey_4};
   }
+`
+
+const Wrapper = styled.div`
+  position: relative;
 `
 
 const MetaItemRow = styled.tr`
@@ -115,47 +121,53 @@ const BasketListing = () => {
     if (quote.items.length === 0) return null;
 
     return (
-        <>
+        <Wrapper>
             {quote.items.map((quoteItem, index) => {
                 const correspondingVariant = quotedVariants.find(v => v.id === quoteItem.content_id);
                 if (!correspondingVariant) return null
-                console.log(correspondingVariant);
                 return (
                     // <CSSTransition in={quote.items} timeout={200} classNames={'item'}>
                     <ItemPanel key={index}>
-                        <div className={'upper'}>
-                            <div className={'left'}>
-                                <img style={{ height: 'auto', maxHeight: '100%', width: 'auto' }}
-                                    src={`${API_URL}/thumbnails/${correspondingVariant.current_file_name}-THUMBNAIL-sm-p0.png`} />
-                            </div>
-                            <div className={'right'}>
-                                <Link
-                                    to={`/catalogue/${correspondingVariant.graphic_id}/variant/${correspondingVariant.id}`}>
-                                    <strong>{correspondingVariant.graphic_title} ({correspondingVariant.title})</strong>
-                                </Link>
-                                <p>
-                                    {t('glossary:microcapsule')} <br />
-                                    {correspondingVariant.graphic_no_of_pages} &times; {t('catalogue:' + correspondingVariant.graphic_format + '-' + (correspondingVariant.graphic_landscape ? 'landscape' : 'portrait'))}
-                                    <br />
-                                    <span>{t(correspondingVariant.system.replace(':', '.'))}</span>
-                                </p>
-
-                            </div>
+                        <div className={'upper breakable-long-lines'}>
+                            <Link
+                                to={`/catalogue/${correspondingVariant.graphic_id}/variant/${correspondingVariant.id}`}>
+                                <strong>{correspondingVariant.graphic_title} ({correspondingVariant.title})</strong>
+                            </Link>
                         </div>
+                        <div className={'middle'}>
+                            <img alt={t('catalogue:variantPreviewAlt')} style={{ height: 'auto', maxHeight: '100%', width: 'auto' }}
+                                src={`${API_URL}/thumbnails/${correspondingVariant.current_file_name}-THUMBNAIL-sm-p0.png`} />
+                        </div>
+                        <InfoLabel
+                            title={'catalogue:brailleSystem'}
+                            info={correspondingVariant.system.replace(':', '.')}
+                            label={'catalogue:brailleSystem'} />
+
+                        <InfoLabel
+                            title={'catalogue:graphicPagesFormat'}
+                            info={`${correspondingVariant.graphic_no_of_pages} × ${t(
+                                `catalogue:${correspondingVariant.graphic_format}-${correspondingVariant.graphic_landscape ? "landscape" : "portrait"
+                                }`
+                            )}`}
+                            label={'catalogue:graphicPages'} />
+
                         {correspondingVariant.braille_no_of_pages !== 0 &&
-                            <div className={'middle'}>
-                                <Radio
-                                    onChange={value => updateBasket(dispatch, quoteItem.content_id, quoteItem.quantity, value, index)}
-                                    legend={'commerce:descriptionAs'}
-                                    name={"product_type_" + index}
-                                    value={quoteItem.product_id} options={[
-                                        {
-                                            label: ['commerce:productSelectWithBraille', { count: correspondingVariant.braille_no_of_pages }],
-                                            value: "graphic"
-                                        },
-                                        { label: "commerce:perEMail", value: "graphic_nobraille" }
-                                    ]} />
-                            </div>
+                            <Select label={'commerce:descriptionAs'}
+                                value={quoteItem.product_id}
+                                onChange={event => updateBasket(dispatch, quoteItem.content_id, quoteItem.quantity, event.value, index)}
+                                name={"product_type_" + index}
+                                options={[
+                                    {
+                                        label: t('catalogue:orderWithBrailleEmboss', { count: correspondingVariant.braille_no_of_pages }),
+                                        sublabel: t("catalogue:orderWithBrailleEmbossHint"),
+                                        value: 'graphic'
+                                    },
+                                    {
+                                        label: 'catalogue:orderWithBrailleMailPlain',
+                                        sublabel: "catalogue:orderWithBrailleMailHint",
+                                        value: 'graphic_nobraille'
+                                    }
+                                ]} />
                         }
 
                         <div className={'lower'}>
@@ -163,10 +175,19 @@ const BasketListing = () => {
                                 label={"remove"} />
                             <Numberinput min={1} value={quoteItem.quantity} label={'catalogue:pcs'}
                                 inline noMargin
-                                onChange={event => updateBasket(dispatch, quoteItem.content_id, event.target.value, quoteItem.product_id, index)} />
-                            {t('{{amount, currency}}', {
-                                amount: quoteItem.gross_price * quoteItem.quantity
-                            })}
+                                onChange={event => updateBasket(
+                                    dispatch,
+                                    quoteItem.content_id,
+                                    Math.max(1, event.target.value),
+                                    quoteItem.product_id,
+                                    index)} />
+
+                            <InfoLabel
+                                title={'catalogue:price'}
+                                info={t('{{amount, currency}}', {
+                                    amount: quoteItem.gross_price * quoteItem.quantity
+                                })}
+                                label={'catalogue:price'} />
                         </div>
                     </ItemPanel>
                     // </CSSTransition>
@@ -177,7 +198,7 @@ const BasketListing = () => {
                     <MetaItemRow>
                         <td>{t('commerce:subtotal')}</td>
                         <PriceCell>
-                        {t('{{amount, currency}}', {
+                            {t('{{amount, currency}}', {
                                 amount: quote.items.reduce((acc, current) => acc + current.gross_price * current.quantity, 0)
                             })}
                         </PriceCell>
@@ -213,7 +234,14 @@ const BasketListing = () => {
                 </tbody>
 
             </MetaItemTable>
-        </>
+
+
+            {quote.pending &&
+                <LoaderOverlay>
+                    <Loader />
+                </LoaderOverlay>
+            }
+        </Wrapper>
     );
 };
 

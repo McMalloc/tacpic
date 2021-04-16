@@ -23,6 +23,7 @@ const Input = styled.input`
   font-weight: 700;
   margin: 0;
   color: ${props => props.disabled ? props.theme.middark : props.theme.brand_secondary};
+  -webkit-appearance: none;
  
   display: ${props => props.inline ? "inline" : "block"};
   width: ${props => props.inline ? "inherit" : "100%"};
@@ -116,7 +117,7 @@ const Textinput = props => {
     let validations = !!props.validations ? [...props.validations] : [];
 
     props.required && validations.push({
-        fn: val => /.+/.test(val), message: "general:required", callback: () => {}
+        fn: val => /.+/.test(val), message: "account:required", callback: () => {}
     })
 
     const [validities, setValidities] = useState(validations.map(() => false));

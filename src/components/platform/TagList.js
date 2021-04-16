@@ -46,8 +46,8 @@ const TagList = props => {
                     </div>
                 )
             })}
-            <strong>{t('catalogue:tagsHeading')}</strong>
-            <div className={'tag-wrapper custom-tag-list'}>
+            <strong id={'filter-group-tags'}>{t('catalogue:tagsHeading')}</strong>
+            <div aria-labelledby={'filter-group-tags'} className={'tag-wrapper custom-tag-list'}>
                 {misc.map(tag => {
                         return <Tag key={tag.tag_id} {...tag}/>
                     }

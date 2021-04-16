@@ -45,7 +45,7 @@ const RotationGrabber = (props) => (
 );
 
 const Manipulator = (props) => {
-  const selected = [props.selected];
+  const selected = props.selected;
 
   const { scalingFactor, viewPortX, viewPortY } = useSelector(
     (state) => state.editor.ui

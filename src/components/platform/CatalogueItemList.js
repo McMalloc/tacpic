@@ -7,7 +7,7 @@ import {Icon} from "../gui/_Icon";
 import {Alert} from "../gui/Alert";
 import {FILE, LOAD_MORE} from "../../actions/action_constants";
 import {Button} from "../gui/Button";
-import Loader from "../gui/Loader";
+import Loader, {LoaderOverlay} from "../gui/Loader";
 import { useTranslation } from 'react-i18next';
 
 const FlexRow = styled.div`
@@ -20,14 +20,6 @@ const Wrapper = styled.div`
   position: relative;
   min-height: 100px;
 `;
-
-const LoaderOverlay = styled.div`
-    position: absolute;
-    left: 0; right: 0; top: 0; bottom: 0;
-    background:url(
-data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAALUlEQVQYV2P8+vXrf25ubkYQzcDAwABiM4IYyAIgNooKmC6wIEw7jIZrRzYXAMFoK6DGvkYvAAAAAElFTkSuQmCC
-   ) repeat;
-`
 
 const AddButton = styled.div`
   display: flex;
@@ -77,10 +69,10 @@ const CatalogueItemList = props => {
     const searchPending = useSelector(state => state.catalogue.searchPending);
     const loadMorePending = useSelector(state => state.catalogue.loadMorePending);
 
-    const newButton = <CatalogueItemWrapper>
+    const newButton = <CatalogueItemWrapper role={'button'}>
             <AddButton id={'btn-new-graphic'} onClick={() => {
                 dispatch({type: FILE.OPEN.REQUEST})
-                navigate("/editor/app");
+                navigate("/editor/splash");
             }}>
                 <span><Icon icon={'plus'}/></span>
                 <span>{t('catalogue:new_graphic') }</span>

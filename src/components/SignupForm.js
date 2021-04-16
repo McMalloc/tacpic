@@ -25,6 +25,7 @@ const SignupForm = props => {
     const [displaynameValid, setDisplaynameValid] = useState(false);
     const [privacyAccepted, setPrivacyAccepted] = useState(false);
     const [newsletterActive, setNewsletterActive] = useState(false);
+    const [tryAgain, setTryAgain] = useState('');
 
     useEffect(() => {
         return () => dispatch({ type: RESET_USER_ERRORS })
@@ -56,6 +57,7 @@ const SignupForm = props => {
                         <br />
                         <form onSubmit={(event) => {
                             event.preventDefault();
+                            setTryAgain(uname + displayname);
                             emailValid && dispatch({
                                 type: USER.CREATE.REQUEST,
                                 payload: { uname, displayname, newsletterActive }
@@ -83,14 +85,16 @@ const SignupForm = props => {
                                 onChange={event => setDisplayname(event.target.value)}
                                 name={'uname'} />
 
-                            <ServerError error={user.error} />
+                            {tryAgain === uname + displayname && <ServerError error={user.error} />}
+
 
                             <p>{t("account:passwordNextStep")}</p>
 
-                            <Checkbox onChange={event => setNewsletterActive(!newsletterActive)}
+                            {/* TODO Rechtlich abklären */}
+                            {/* <Checkbox onChange={event => setNewsletterActive(!newsletterActive)}
                                 name={'cb-newsletter-active'}
                                 checked={newsletterActive}
-                                label={"account:newsletter-active"} />
+                                label={"account:newsletter-active"} /> */}
 
                             <Checkbox onChange={event => setPrivacyAccepted(!privacyAccepted)}
                                 name={'cb-privacy-accept'}

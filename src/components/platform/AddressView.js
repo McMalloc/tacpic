@@ -3,20 +3,14 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import styled from 'styled-components/macro';
 
-const Wrapper = styled.div`
-`;
-
 const AddressView = props => {
     const {t} = useTranslation();
 
-    return (<Wrapper>
+    return (<>
         {props.first_name} {props.last_name} <br />
         {props.street} {props.house_number} <br />
         {props.zip} {props.city}
-
-        {/*{props.state && <span>({t(props.state)})</span>} <br />*/}
-        {/*{t(props.country)}*/}
-    </Wrapper>)
+    </>)
 }
 
 AddressView.propTypes = {

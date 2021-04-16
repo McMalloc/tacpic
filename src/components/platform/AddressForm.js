@@ -8,6 +8,7 @@ import {Row} from "../gui/Grid";
 import Modal from "../gui/Modal";
 import {EWR, GERMAN_STATES} from "../../config/constants";
 import { useTranslation } from "react-i18next";
+import { Alert } from "../gui/Alert";
 
 const submitAddress = (dispatch, address) => {
     dispatch({
@@ -59,7 +60,7 @@ const AddressForm = props => {
 
         <Row>
             <div className={"col-xs-6"}>
-                <Textinput required={address.last_name.length === 0} onChange={setState}
+                <Textinput onChange={setState}
                            value={address.company_name}
                            name={"company_name"} label={"account:addressMenu.companyName"}/>
             </div>
@@ -88,7 +89,7 @@ const AddressForm = props => {
             <div className={"col-xs-3"}>
                 <Textinput validations={[
                     {
-                        fn: val => /[0-9]+/.test(val), message: "general:zip-invalid", callback: () => {
+                        fn: val => /[0-9]+/.test(val), message: "account:zip-invalid", callback: () => {
                         }
                     }
                 ]} 
@@ -109,10 +110,11 @@ const AddressForm = props => {
                     options={GERMAN_STATES} />
             </div>
             <div className={"col-xs-6"}>
-                <Select value={address.country} name={"country"} disabled={!address.is_invoice_addr}
+                <Select value={address.country} name={"country"} disabled={!address.is_invoice_addr || true}
                         onChange={(label, value) => changeAddress({...address, country: value})}
                         options={address.is_invoice_addr ? EWR : [{label: "Deutschland", value: "DEU"}]}
                         label={"account:addressMenu.country"}/>
+                        <Alert info>{t('account:onlyGermany')}</Alert>
                 {/*{(!address.is_invoice_addr) &&*/}
                 {/*        <small>Zur Zeit unterstützen wir nur die Lieferung nach Deutschland.</small>*/}
                 {/*}*/}
@@ -163,7 +165,7 @@ const AddressForm = props => {
                         props.cancel();
                     }
                 }
-            ]} title={"Adresse hinzufügen"}>
+            ]} title={t("account:add_address")}>
                 <form id={"address-edit-form"}>{form}</form>
             </Modal>
         )

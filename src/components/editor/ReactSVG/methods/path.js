@@ -33,10 +33,6 @@ export const createPath = (x = 0, y = 0, template = null, fill = COLOURS.none, m
 
 export const pathScale = (object, offsetX, offsetY, downX, downY, fullOffsetX, fullOffsetY) => {
     const {width, height} = getPathBBox(object);
-    console.log("width: ", downX- fullOffsetX, width);
-    console.log("   ", width + downX- fullOffsetX, width);
-    console.log("height: ", downY - fullOffsetY, height);
-    console.log("   ", height + downY - fullOffsetY, height);
     object.scaleX = (width - downX + fullOffsetX) / width;
     object.scaleY = (height - downY + fullOffsetY) / height;
     return object;
@@ -61,17 +57,22 @@ export const getPathBBox = path => {
     // paths need to add their translation parameters to the bbox because
     // the native getBBox() method will not measure in transform properties
     // let bbox = getBBox(path);
-
 };
 
 // param 0 CP_ST: control point of start point
 // param 2 CP_E: control point of end point
 // param 4 E: end point
 export const changePoint = (path, coords, index = path.points.length - 1, param = 0, kind) => {
-    path.points[index].coords[param] = coords[0];
-    if (!!kind) {
-        path.points[index].kind = kind;
+    if (!!kind) path.points[index].kind = kind;
+    if (param === 4) {
+        const diffX = path.points[index].coords[4] - coords[0];
+        const diffY = path.points[index].coords[5] - coords[1];
+        path.points[index].coords[2] -= diffX;
+        path.points[index].coords[3] -= diffY;
+        path.points[index + 1].coords[0] -= diffX;
+        path.points[index + 1].coords[1] -= diffY;
     }
+    path.points[index].coords[param] = coords[0];
     path.points[index].coords[param + 1] = coords[1];
     return path;
 };

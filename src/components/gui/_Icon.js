@@ -17,7 +17,7 @@ const Wrapper = styled.span`
 const Icon = props => {
     return (
         typeof props.icon !== 'undefined' && props.icon !== null ?
-                <Wrapper {...props} className={"icon"}><i className={"fas fa-" + props.icon}/></Wrapper> : null
+                <Wrapper aria-hidden={'true'} role={'presentation'} {...props} className={"icon"}><i className={"fas fa-" + props.icon}/></Wrapper> : null
     )
 
 };

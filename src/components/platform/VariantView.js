@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../gui/Button";
 import Toggle from "../gui/Toggle";
 import { FlyoutButton, FlyoutEntry } from "../gui/FlyoutButton";
-import { ITEM_ADDED_TO_BASKET, VARIANT } from "../../actions/action_constants";
+import { ITEM_ADDED_TO_BASKET, ITEM_REMOVED_FROM_BASKET, VARIANT } from "../../actions/action_constants";
 import styled, { useTheme } from "styled-components/macro";
 import { useTranslation } from "react-i18next";
 import { Icon } from "../gui/_Icon";
@@ -23,6 +23,8 @@ import { FILE } from "../../actions/action_constants";
 import useIntersect from "../../contexts/intersections";
 import { useBreakpoint } from "../../contexts/breakpoints";
 import { Trans } from "react-i18next";
+import InfoLabel from "../gui/InfoLabel";
+import Select from "../gui/Select";
 
 const addToBasket = (dispatch, variantId, quantity, product, index = null) => {
   dispatch({
@@ -31,6 +33,13 @@ const addToBasket = (dispatch, variantId, quantity, product, index = null) => {
     contentId: parseInt(variantId),
     quantity: parseInt(quantity),
     index,
+  });
+};
+
+const removeFromBasket = (dispatch, index) => {
+  dispatch({
+    type: ITEM_REMOVED_FROM_BASKET,
+    index
   });
 };
 
@@ -50,26 +59,20 @@ const Wrapper = styled.div`
   grid-template-areas:
     "title"
     "preview"
-    "description"
-    "details";
-
-  .description {
-    grid-area: description;
-    min-height: 5rem;
-    overflow: auto;
-    background: linear-gradient(0deg, rgba(0,0,0,0.2439477744222689) 0%, rgba(0,0,0,0) 10px, rgba(0,0,0,0) 100%);
-  }
+    "details"
+    "order";
 
   .details {
     grid-area: details;
     margin-top: 0.5rem;
+    /* background: linear-gradient(0deg, rgba(0,0,0,0.2439477744222689) 0%, rgba(0,0,0,0) 10px, rgba(0,0,0,0) 100%); */
   }
 
   flex: 0 1 auto;
   box-sizing: border-box;
   padding: ${(props) => props.theme.large_padding};
 
-  min-width: 100vw;
+  min-width: 100%;
 
   ${SM_SCREEN} {
     min-width: calc(100vw - 40px); // subtraction of modal window margins
@@ -86,8 +89,8 @@ const Wrapper = styled.div`
     grid-template-rows: auto 1fr 1fr;
     grid-template-areas:
       "preview  title"
-      "preview  description"
-      "preview  details";
+      "preview  details"
+      "preview  order";
   }
 `;
 
@@ -123,6 +126,7 @@ const BraillePagePreview = styled.div`
 `;
 
 const OrderWidget = styled.div`
+  grid-area: order;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -135,6 +139,7 @@ const OrderWidget = styled.div`
     }
   }
 `;
+
 const scrollThreshold = 0.9;
 
 const VariantView = (props) => {
@@ -144,7 +149,8 @@ const VariantView = (props) => {
   const { lg, md } = useBreakpoint();
   let { graphicId, variantId } = useParams();
   const dispatch = useDispatch();
-  const tags = useSelector((state) => state.catalogue.tags);
+  const tags = useSelector(state => state.catalogue.tags);
+  const basketIndex = useSelector(state => state.catalogue.basket.map(item => parseInt(item.contentId)).findIndex(id => id == variantId));
   const { logged_in, role } = useSelector((state) => state.user);
   const [product, setProduct] = useState("graphic");
   const [quantity, setQuantity] = useState(1);
@@ -198,93 +204,7 @@ const VariantView = (props) => {
     </Carousel>
   </Preview>
 
-  const description = <div className={"description"}>
-    {props.description.trim() !== "()" ?
-      <p>{props.description}</p>
-      :
-      <em>({t('catalogue:pagePreview')})</em>
-    }
-  </div>
-
-  const detailTable = <table className={'extra-margin'}>
-    <tbody>
-      <tr>
-        <td className={"icon-cell"}>
-          <Icon title={t('catalogue:graphicPagesFormat')} icon={"file-image"} />
-        </td>
-        <td><small>{t('catalogue:graphicPages')}</small></td>
-        <td className={""}>
-          {`${props.graphic_no_of_pages} × ${t(
-            `catalogue:${props.graphic_format}-${props.graphic_landscape ? "landscape" : "portrait"
-            }`
-          )}`}
-        </td>
-      </tr>
-      <tr>
-        <td className={"icon-cell"}>
-          <Icon title={t('catalogue:braillePagesFormat')} icon={"file-alt"} />
-        </td>
-        <td><small>{t('catalogue:braillePages')}</small></td>
-
-        {props.braille_no_of_pages === 0 ? (
-          <td className={"disabled"}>{t("none")}</td>
-        ) :
-          <td>
-            {`${props.braille_no_of_pages} × ${t("catalogue:a4-portrait")}`}
-          </td>
-        }
-      </tr>
-      <tr>
-        <td className={"icon-cell"}>
-          <Icon title={t('catalogue:brailleSystem')} icon={"braille"} />
-        </td>
-        <td><small>{t("catalogue:brailleSystem")}</small></td>
-        <td className={""}>
-          {t(props.system.replace(':', '.'))}
-        </td>
-      </tr>
-      <tr>
-        <td className={"icon-cell"}>
-          <Icon title={t("catalogue:appliedTags")} icon={"tags"} />
-        </td>
-        <td><small>{t("catalogue:appliedTags")}</small></td>
-        {props.tags.length && props.tags.length > 0 ? (
-          <>
-            <td>
-              {tags.map((tag) => {
-                if (props.tags.includes(tag.tag_id)) {
-                  return (
-                    <TagView
-                      style={{ fontSize: "100%" }}
-                      theme={theme}
-                      key={tag.tag_id}
-                    >
-                      {tag.name}
-                    </TagView>
-                  );
-                } else return null;
-              })}
-            </td>
-          </>
-        ) : (
-            <td className={"disabled"} colSpan={2}>
-              {t("none")}
-            </td>
-          )}
-      </tr>
-      <tr>
-        <td className={"icon-cell"}>
-          <Icon title={t('catalogue:createdAt')} icon={"calendar-alt"} />
-        </td>
-        <td><small>{t('catalogue:createdAt')}</small></td>
-        <td>
-          {moment(props.created_at, DB_DATE_FORMAT).format(t('dateFormat'))}
-        </td>
-      </tr>
-    </tbody>
-  </table >
-
-  const buttonBar = <ButtonBar align={'left'}>
+  const buttonBar = <ButtonBar>
     <FlyoutButton
       flyoutWidth={300}
       disabled={!logged_in || !lg}
@@ -331,7 +251,7 @@ const VariantView = (props) => {
         sublabel={"catalogue:variant-new-hint"}
       />
     </FlyoutButton>
-
+        &ensp;
     <FlyoutButton
       disabled={!logged_in}
       rightAlign
@@ -350,6 +270,7 @@ const VariantView = (props) => {
         />
       })}
     </FlyoutButton>
+    &ensp;
     <Toggle
       label={"catalogue:history_" + (showHistory ? "hide" : "show")}
       toggled={showHistory}
@@ -364,16 +285,16 @@ const VariantView = (props) => {
         label={'catalogue:adminFeatures'} icon={'eye-slash'}
       >
         <FlyoutEntry
-            label={"catalogue:hideVariant"}
-            onClick={() => dispatch({ type: VARIANT.HIDE.REQUEST, payload: {id: variantId, public: false}})}
-            sublabel={""}
-          />
+          label={"catalogue:hideVariant"}
+          onClick={() => dispatch({ type: VARIANT.HIDE.REQUEST, payload: { id: variantId, public: false } })}
+          sublabel={""}
+        />
         <FlyoutEntry
-            label={"catalogue:hideGraphic"}
-            onClick={() => {}}
-            sublabel={""}
-          />
-        
+          label={"catalogue:hideGraphic"}
+          onClick={() => { }}
+          sublabel={""}
+        />
+
       </FlyoutButton>
     }
   </ButtonBar>
@@ -382,13 +303,69 @@ const VariantView = (props) => {
     <Wrapper ref={ref}>
       {pagePreviews}
 
-      <Title>
+      <Title className={'breakable-long-lines'}>
         {props.graphicTitle}: {props.title}
       </Title>
-      {description}
 
       <div className={'details'}>
-        {detailTable}
+        <div className={'extra-margin'}>
+          <InfoLabel
+            icon={'file-image'}
+            title={'catalogue:graphicPagesFormat'}
+            info={`${props.graphic_no_of_pages} × ${t(
+              `catalogue:${props.graphic_format}-${props.graphic_landscape ? "landscape" : "portrait"
+              }`
+            )}`}
+            label={'catalogue:graphicPages'} />
+
+          <InfoLabel
+            icon={'file-alt'}
+            title={'catalogue:braillePagesFormat'}
+            info={props.braille_no_of_pages > 0 ? `${props.braille_no_of_pages} × ${t("catalogue:a4-portrait")}` : <span className={"disabled"}>{t("none")}</span>}
+            label={'catalogue:braillePages'} />
+
+          <InfoLabel
+            icon={'braille'}
+            title={'catalogue:brailleSystem'}
+            info={props.system.replace(':', '.')}
+            label={'catalogue:brailleSystem'} />
+
+          <InfoLabel
+            icon={'tags'}
+            title={'catalogue:appliedTags'}
+            info={props.tags.length && props.tags.length > 0 ? (
+              <>
+                <td>
+                  {tags.map((tag) => {
+                    if (props.tags.includes(tag.tag_id)) {
+                      return (
+                        <TagView
+                          style={{ fontSize: "100%" }}
+                          theme={theme}
+                          key={tag.tag_id}
+                        >
+                          {tag.name}
+                        </TagView>
+                      );
+                    } else return null;
+                  })}
+                </td>
+              </>
+            ) : (
+                <span className={"disabled"}>
+                  {t("none")}
+                </span>
+              )}
+            label={'catalogue:appliedTags'} />
+
+
+          <InfoLabel
+            icon={'calendar-alt'}
+            noTranslate
+            title={'catalogue:createdAt'}
+            info={moment(props.created_at, DB_DATE_FORMAT).format(t('dateFormat'))}
+            label={'catalogue:createdAt'} />
+        </div>
 
         {!logged_in && (
           <Alert info>
@@ -399,31 +376,41 @@ const VariantView = (props) => {
           </Alert>
         )}
 
-        {!lg && <Alert warning>{t("editor:not_available-screen")}</Alert>}
-
+        {!lg && <Alert info>{t("editor:not_available-screen")}</Alert>}
+      </div>
+      <div className={'order'}>
         {buttonBar}
 
         <Well>
-          {props.braille_no_of_pages > 0 ? (
-            <Radio
-              onChange={setProduct}
-              legend={['catalogue:orderWithBraille', { count: props.graphic_no_of_pages }]}
+
+          <InfoLabel
+            label={t('catalogue:graphic')}
+            info={`${props.graphic_no_of_pages} × ${t(
+              `catalogue:${props.graphic_format}-${props.graphic_landscape ? "landscape" : "portrait"
+              }`
+            )}`}
+          />
+
+          {props.braille_no_of_pages > 0 &&
+            <Select
+              isSearchable={false}
+              label={t('commerce:descriptionAs')}
+              value={product}
+              onChange={event => setProduct(event.value)}
               name={"graphic_only_or_both_" + props.id}
-              value={product} options={[
+              options={[
                 {
                   label: t('catalogue:orderWithBrailleEmboss', { count: props.braille_no_of_pages }),
-                  value: "graphic"
+                  value: 'graphic'
                 },
                 {
                   label: t('catalogue:orderWithBrailleMail',
-                    { saved: (props.quote - props.quote_graphics_only) }),
-                  value: "graphic_nobraille"
+                  { saved: (props.quote - props.quote_graphics_only) }),
+                  sublabel: t("catalogue:orderWithBrailleMailHint"),
+                  value: 'graphic_nobraille'
                 }
               ]} />
-          ) : (
-              <p><strong>{t('catalogue:orderWithoutBraille', { count: props.graphic_no_of_pages })}</strong></p>
-            )}
-
+          }
           <br />
 
           <OrderWidget>
@@ -433,7 +420,7 @@ const VariantView = (props) => {
               inline
               noMargin
               onChange={(event) => {
-                setQuantity(event.currentTarget.value);
+                setQuantity(Math.max(parseInt(event.currentTarget.value), 1));
               }}
               min={1}
               value={quantity}
@@ -444,27 +431,36 @@ const VariantView = (props) => {
               <strong>{t('{{amount, currency}}', {
                 amount: (product === "graphic"
                   ? props.quote
-                  : props.quote_graphics_only) * quantity
+                  : props.quote_graphics_only) * (quantity || 0)
               })}</strong>
 
-              {/*{quantity !== 1 &&*/}
               <div style={{ fontSize: '0.8rem' }}>
-                {t('catalogue:singlePrice')}: {t('{{amount, currency}}', {
-                  amount: (product === "graphic"
-                    ? props.quote
-                    : props.quote_graphics_only)
-                })}
+                {quantity !== 1 &&
+                  <>{t('catalogue:singlePrice', {
+                    amount: (product === "graphic"
+                      ? props.quote
+                      : props.quote_graphics_only)
+                  })}</>
+                
+                }<br />
+                {t("catalogue:plusShipping", { amount: 200 })}
                 <br />
-                {t("catalogue:plusShipping")}
+                {t('catalogue:deliveryTime', { lower: 4, upper: 5 })}
               </div>
             </div>
 
             <Button
-              onClick={() => addToBasket(dispatch, variantId, quantity, product)}
-              label={t("catalogue:addToCart")}
+              onClick={() => {
+                basketIndex === -1 ?
+                  addToBasket(dispatch, variantId, quantity, product)
+                  :
+                  removeFromBasket(dispatch, basketIndex)
+              }}
+              label={t(basketIndex >= 0 ? "commerce:remove" : "catalogue:addToCart")}
+              title={t("catalogue:removeFromCart")}
               large
-              primary
-              icon={"cart-plus"}
+              primary={basketIndex === -1}
+              icon={basketIndex >= 0 ? "shopping-cart" : "cart-plus"}
             />
           </OrderWidget>
         </Well>

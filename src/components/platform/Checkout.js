@@ -14,6 +14,7 @@ import LoginForm from "../LoginForm";
 import StepIndicator from "../gui/StepIndicator";
 import uuidv4 from "../../utility/uuid";
 import { useNavigate } from "react-router-dom";
+import { MAX_VALUE_FOR_ORDER } from "../../config/constants";
 
 // TODO Kommentar anfügen
 
@@ -32,8 +33,8 @@ const Checkout = props => {
     const addresses = user.addresses;
     const idempotencyKey = uuidv4();
     const orderState = useSelector(state => state.catalogue.order);
-
-    if (!orderState.pending && orderState.successful) navigate('/order-completed');
+    const emptyBasket = useSelector(state => state.catalogue.basket.length === 0);
+    const quote = useSelector(state => state.catalogue.quote);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -65,23 +66,27 @@ const Checkout = props => {
         setAutologgedin(true);
     }
 
+    if (emptyBasket) navigate('/basket');
+    if (!orderState.pending && orderState.successful) navigate('/order-completed');
+
     const back = <Button label={"back"} onClick={() => changeStep(Math.max(step - 1, 0))} />
 
     const addressSection =
         <section>
             {addresses.length > 0 && <>
-                <Radio name={"checkout-shipping-address-radio"} legend={'commerce:savedAdresses'} onChange={value => {
+                <Radio padded name={"checkout-shipping-address-radio"} legend={'commerce:savedAddresses'} onChange={value => {
                     setEnterShippingAddress(false);
                     setShippingAddress({ ...shippingAddress, id: parseInt(value) })
                 }}
                     value={shippingAddress.id}
                     options={addresses.map(address => {
                         return {
-                            component: <AddressView {...address} />,
+                            label: `${address.first_name} ${address.last_name}\n${address.street} ${address.house_number}\n${address.zip} ${address.city}`,
                             value: address.id
                         }
                     })} />
             </>}
+            <br />
             {showShippingAddressForm && <form
                 onChange={() => {
                     shippingAddress.id !== null && setShippingAddress({ ...shippingAddress, id: null });
@@ -142,15 +147,11 @@ const Checkout = props => {
     const paymentSection = <section>
         <Radio padded value={paymentMethod} name={'payment-method'} onChange={setPaymentMethod} options={[
             {
-                component: <div>{t('commerce:invoice')}<br />
-                    <span className={'sub-label'}>{t('commerce:invoice_payment_hint')}</span>
-                </div>,
+                label: `${t('commerce:invoice')}\n${t('commerce:invoice_payment_hint')}`,
                 value: "invoice"
             },
             {
-                component: <div>{t('commerce:paypal')}<br />
-                    <span className={'sub-label'}>{t('commerce:paypal_payment_hint')}</span>
-                </div>,
+                label: `${t('commerce:paypal')}\n${t('commerce:paypal_payment_hint')}`,
                 value: "paypal",
                 disabled: true
             }
@@ -165,40 +166,38 @@ const Checkout = props => {
         {/*<h2>Überprüfen</h2>*/}
         <div>{t('loggedInAs')} {user.email}</div>
         <p>
-            <strong>{t('commerce:shippingAddress')}</strong><br />
+            <small>{t('commerce:shippingAddress')}</small><br />
             <AddressView {...(shippingAddress.id !== null ? user.addresses.find(address => address.id === shippingAddress.id) : shippingAddress)} />
         </p>
 
         {useInvoiceAddress &&
             <p>
-                <strong>{t('commerce:invoiceAddress')}</strong><br />
+                <small>{t('commerce:invoiceAddress')}</small><br />
                 <AddressView {...(invoiceAddress.id !== null ? user.addresses.find(address => address.id === invoiceAddress.id) : invoiceAddress)} />
             </p>
         }
 
         <p>
-            <strong>{t('commerce:paymentMethod')}</strong><br />
+            <small>{t('commerce:paymentMethod')}</small><br />
             {t('commerce:' + paymentMethod)}
         </p>
 
-        <p><strong>{t('hint')}</strong><br />
-        
+        <p><small>{t('hint')}</small><br />
+
             <Trans i18nKey={'commerce:eulaHint'}>
-            0<a target={'_blank'} href={"/info/de/63?Allgemeine%20Gesch%C3%A4ftsbedingungen"}>
-                1
+                0<a target={'_blank'} href={"/info/de/63?Allgemeine%20Gesch%C3%A4ftsbedingungen"}>
+                    1
             </a>2
             </Trans>
-            
-            
+            <br />
+            <Alert warning>{t('commerce:pleaseReviewOrder')}</Alert>
+
+
         </p>
 
         <br />
         {back}
-        <Button label={"commerce:order"}
-            icon={orderState.pending ? "cog fa-spin" : "handshake"}
-            onClick={() => placeOrder(dispatch, shippingAddress, useInvoiceAddress ? invoiceAddress : null, paymentMethod, idempotencyKey)}
-            primary rightAction
-            disabled={paymentMethod === null || orderState.pending} />
+
         <br />
     </section>
 
@@ -239,22 +238,35 @@ const Checkout = props => {
                                 {orderState.error.type}: {orderState.error.message}
                             </Alert><br /></>
                         }
-
-                        <br />
-                        <Alert i18nKey={'commerce:betaHint'} danger>
-                            0<br/><strong>2</strong>
-                        </Alert>
                     </div>
-
-
-
 
                 </div>
                 <div className={"col-xs-12 col-md-6 col-md-offset-1"}>
                     <div style={{ position: 'sticky', top: 12 }}>
                         <h2>{t('commerce:basketHeading')}</h2>
                         <BasketListing />
+
+                        <Alert i18nKey={'commerce:betaHint'} danger>
+                            0<br /><strong>2</strong>
+                        </Alert>
                         <br />
+
+
+
+                        {step === 3 &&
+                            <>
+                                {quote.gross_total > MAX_VALUE_FOR_ORDER ?
+                                    <Alert warning>
+                                        {t('commerce:orderTooLargeHint')}
+                                    </Alert>
+                                    :
+                                    <Button label={"commerce:order"}
+                                        icon={orderState.pending ? "cog fa-spin" : "handshake"}
+                                        onClick={() => placeOrder(dispatch, shippingAddress, useInvoiceAddress ? invoiceAddress : null, paymentMethod, idempotencyKey)}
+                                        primary rightAction large
+                                        disabled={paymentMethod === null || orderState.pending} />
+                                }
+                            </>}
                         <br />
                     </div>
                 </div>

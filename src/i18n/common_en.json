@@ -4,6 +4,7 @@
   "landscape": "Landscape",
   "portrait": "Portrait",
   "done": "Done",
+  "menu": "Menu",
   "submit": "Submit",
   "hint": "Hints",
   "back": "Back",
@@ -15,9 +16,13 @@
   "claim": "Tactile media for visually impaired people",
   "claimUSP": "Tactile media - fast, good and simple",
   "switchLang": "In Deutsch",
-  "dateFormat": "YYYY.MM.DD, HH:mm",
+  "dateFormat": "MMMM Do YYYY, H:mm",
   "or": "Or",
   "none": "None",
+  "confirmRemove": "Confirm removal",
+  "yesRemove": "Yes, remove",
+  "dontRemove": "No, keep",
+  "edit": "Edit",
   "discard": "Discard",
   "backToStart": "Back to the home page.",
   "required": "Required",
@@ -38,12 +43,6 @@
   "help": {
     "select_braille-system": "A uniform $t(glossary:brailleScript) system should be used per document. All captions are created in the system selected here and existing captions are converted.",
     "select_medium": "Different media offer different possibilities. The editor will restrict functions for certain production techniques so that you do not design a draft that cannot be produced at all with swell paper, for example."
-  },
-  "auth": {
-    "invalid login, already an account with this login": "There is already an account under this e-mail address.",
-    "The account you tried to create is currently awaiting verification": "The account with this email address still needs to be verified. Please check your mailbox and spam folder.",
-    "no matching login": "No user account known with this e-mail address / password.",
-    "There was an error creating your account": "Error while creating a new account."
   },
   "navigation": {
     "catalogue": "$t(glossary:catalogue)",
@@ -94,6 +93,8 @@
     "/pricing": "Products and pricese",
     "/knowledge": "Knowledge",
     "/": "Start",
-    "/admin": "Administration"
-  }
+    "/admin": "Administration",
+    "/order-completed": "Order completed"
+  },
+  "cancel": "Cancel"
 }

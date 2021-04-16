@@ -19,7 +19,7 @@ import {
     VARIANTS,
     VARIANT,
     ADDRESS,
-    APP, QUOTE, IMPORT, CMS_PAGE, CMS_CATEGORY, CMS_LEGAL
+    APP, QUOTE, IMPORT, CMS_PAGE, CMS_CATEGORY, CMS_LEGAL, ADMIN
 } from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {
@@ -35,7 +35,7 @@ import {
 } from "./label_translate_saga";
 import {renderWatcher} from "./render_saga";
 import {addressRemoveSaga} from "./address_saga";
-import {basketChangeSaga} from "./basket_saga";
+import {basketChangeSaga, basketCheckSaga} from "./basket_saga";
 import {orderCreateSaga, orderIndexSaga} from "./order_saga";
 import {titleEditWatch} from "./title_saga";
 import { backupRemoveWatcher, backupWatcher, backupAutoRemoveWatcher, backupIndexWatcher } from "./backup_saga";
@@ -98,6 +98,8 @@ export default function* root() {
         call(createSaga(IMPORT.OCR, 'post', 'ocr', takeLatest, false, id, id)),
 
         call(createSaga(USER.INDEX, 'get', 'internal/users', takeLatest, true, id, id)),
+        call(createSaga(ADMIN.FRONTEND_ERRORS, 'get', 'internal/errors/frontend', takeLatest, true, id, id)),
+        call(createSaga(ADMIN.BACKEND_ERRORS, 'get', 'internal/errors/backend', takeLatest, true, id, id)),
 
         call(orderCreateSaga),
         call(orderIndexSaga),
@@ -106,6 +108,7 @@ export default function* root() {
         call(createSaga(APP.BACKEND, 'get', 'BACKEND.json', takeLatest, false, id, id)),
 
         call(basketChangeSaga),
+        call(basketCheckSaga),
 
         call(catalogueSearchSaga),
         call(catalogueLoadMoreSaga),

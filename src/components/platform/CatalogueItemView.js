@@ -12,6 +12,7 @@ import { DB_DATE_FORMAT } from "../../config/constants";
 import * as moment from 'moment'
 import { Icon } from "../gui/_Icon";
 import { Button } from "../gui/Button";
+import { useTranslation } from "react-i18next";
 
 const VariantPreviewStyled = styled.div`
   display: flex;
@@ -24,6 +25,7 @@ const VariantPreviewStyled = styled.div`
 
   background-color: ${(props) => (props.active ? props.grey_6 : "inherit")};
   color: ${(props) => (props.active ? props.foreground : "inherit")};
+  
 
   transition: background-color 0.1s, color 0.1s;
 
@@ -112,38 +114,40 @@ const VariantPreview = ({
 }) => {
   let selectedVariantId = useParams().variantId;
   const allTags = useSelector((state) => state.catalogue.tags);
+  const { t } = useTranslation();
   return (
-    <VariantPreviewStyled active={id === parseInt(selectedVariantId)}>
+    <VariantPreviewStyled 
+      role={'link'}
+      aria-label={title} 
+      active={id === parseInt(selectedVariantId)}>
       <img
+        alt={t('catalogue:variantPreviewAlt') + ' ' + title}
+        aria-hidden={true}
         src={`${API_URL}/thumbnails/${current_file_name}-THUMBNAIL-xl-p0.png`}
       />
-      <div className={"variant-info"}>
+      <div aria-hidden={true} className={"variant-info breakable-long-lines"}>
         <strong>{title}</strong>
         <br />
         {subtitle && <small>{subtitle}</small>}
-        <div>
+        {/* <div>
           {!!tags && tags.length !== 0 &&
             tags.map((t, index) => {
               let completeTag = allTags.find((_t) => _t.tag_id === t);
               if (index > nrOfVisibleTags) return null;
               if (index === nrOfVisibleTags)
                 return (
-                  <TagView>({tags.length - nrOfVisibleTags} weitere)</TagView>
+                  <TagView>{t('catalogue:moreTags', {amount: tags.length - nrOfVisibleTags})}</TagView>
                 );
               return (
-                <TagView title={"Schlagwort"} key={t}>
+                <TagView title={completeTag && completeTag.name} key={t}>
                   {completeTag && completeTag.name}
                 </TagView>
               );
             })}
-        </div>
+        </div> */}
       </div>
     </VariantPreviewStyled>
   );
-};
-
-const VariantCarousel = (props) => {
-  return {};
 };
 
 const CatalogueItemView = ({ variantsOverview }) => {
@@ -153,6 +157,7 @@ const CatalogueItemView = ({ variantsOverview }) => {
   const history = useSelector((state) => state.catalogue.currentHistory);
   const { md } = useBreakpoint();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t } = useTranslation();
   const showHistory = searchParams.get("view") === "history";
 
   const viewedGraphic = useSelector((state) => state.catalogue.viewedGraphic);
@@ -168,6 +173,7 @@ const CatalogueItemView = ({ variantsOverview }) => {
   }, [graphicId]);
 
   useEffect(() => {
+
     if (showHistory) {
       dispatch({
         type: VARIANT.HISTORY.REQUEST,
@@ -179,7 +185,7 @@ const CatalogueItemView = ({ variantsOverview }) => {
   const variantColumn = (
     <VariantColumn className={"col-sm-2 col-md-3 col-lg-2"}>
       <div className={"heading"}>
-        <strong>Verfügbare Varianten</strong><br /><small>({variantsOverview.length} gesamt)</small>
+        <strong>{t('catalogue:availableVariants', {amount: variantsOverview.length})}</strong>
       </div>
       <div>
         {variantsOverview.map((variant, index) => {

@@ -7,7 +7,7 @@ import {
     VARIANTS,
     VARIANT,
     ITEM_ADDED_TO_BASKET,
-    ITEM_REMOVED_FROM_BASKET, ORDER_RESET, QUOTE, CLEAR_BASKET, LOAD_MORE, ITEM_UPDATED_IN_BASKET
+    ITEM_REMOVED_FROM_BASKET, ORDER_RESET, QUOTE, CLEAR_BASKET, LOAD_MORE, ITEM_UPDATED_IN_BASKET, UPDATE_BASKET
 } from '../actions/action_constants';
 import {produce} from "immer";
 
@@ -112,10 +112,22 @@ const catalogueApi = (state = {}, action) => {
                 });
                 draftState.quotedVariants = action.data;
             });
+        case QUOTE.GET.REQUEST:
+            return {
+                ...state,
+                quote: {
+                    ...state.quote,
+                    pending: true
+                }
+            };
         case QUOTE.GET.SUCCESS:
             return {
                 ...state,
-                quote: action.data
+                quote: {
+                    ...action.data,
+                    pending: false,
+                    successfull: true
+                }
             };
         case QUOTE.REQUEST.REQUEST:
             return {
@@ -220,6 +232,10 @@ const catalogueApi = (state = {}, action) => {
                         draftState.basket[index].productId = action.productId;
                     }
                 })
+            });
+        case UPDATE_BASKET:
+            return produce(state, draftState => {
+                draftState.basket = action.basket
             });
         case 'TAG_TOGGLED':
             const tagIndex = state.filterTags.indexOf(action.id);

@@ -3,33 +3,40 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTable } from 'react-table';
 import styled from 'styled-components/macro';
-import { USER } from '../../actions/action_constants';
+import { ADMIN } from '../../actions/action_constants';
 
 // TODO: Minimieren-Button
 const Wrapper = styled.div`
 
 `;
 
-const AdminUsers = props => {
+const AdminErrors = props => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const users = useSelector(state => state.admin.users);
-    const usersData = useMemo(() => users, [users.length]);
+
+    useEffect(() => {
+        dispatch({ type: ADMIN.FRONTEND_ERRORS.REQUEST })
+        dispatch({ type: ADMIN.BACKEND_ERRORS.REQUEST })
+    }, []);
+
+    const backendErrors = useSelector(state => state.admin.backendErrors);
+    const memoedBackendErrors = useMemo(() => backendErrors, [backendErrors.length]);
+    const frontendErrors = useSelector(state => state.admin.frontendErrors);
+    const memoedFrontendErrors = useMemo(() => frontendErrors, [frontendErrors.length]);
 
     const columns = React.useMemo(() => {
-        if (usersData.length === 0 || !usersData[0]) {
+        if (memoedBackendErrors.length === 0 || !memoedBackendErrors[0]) {
             return []
         } else {
-            console.log(Object.keys(usersData[0]));
-            return Object.keys(usersData[0]).map(key => ({
+            return Object.keys(memoedBackendErrors[0]).map(key => ({
                 Header: t(key),
                 accessor: key
             }))
         }
-    }, [usersData.length]);
+    }, [memoedBackendErrors.length]);
 
 
-    const tableInstance = useTable({ columns, data: usersData })
+    const tableInstance = useTable({ columns, data: memoedBackendErrors })
     const {
         getTableProps,
         getTableBodyProps,
@@ -37,10 +44,6 @@ const AdminUsers = props => {
         rows,
         prepareRow,
     } = tableInstance
-
-    useEffect(() => {
-        dispatch({ type: USER.INDEX.REQUEST })
-    }, []);
 
     return (
         <Wrapper>
@@ -64,7 +67,10 @@ const AdminUsers = props => {
                                 {row.cells.map(cell => {
                                     return (
                                         <td {...cell.getCellProps()}>
-                                            {cell.render('Cell')}
+                                            <div style={{ maxWidth: 250, maxHeight: 200, overflow: 'auto' }}>
+                                                {cell.render('Cell')}
+                                            </div>
+
                                         </td>
                                     )
                                 })}
@@ -77,4 +83,4 @@ const AdminUsers = props => {
     )
 };
 
-export default AdminUsers;
+export default AdminErrors;

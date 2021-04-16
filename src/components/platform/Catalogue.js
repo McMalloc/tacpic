@@ -16,12 +16,12 @@ import { useBreakpoint } from "../../contexts/breakpoints";
 import { BRAILLE_SYSTEMS, MD_SCREEN } from '../../config/constants';
 import { useTranslation } from 'react-i18next';
 
-const TagSidebar = styled.aside`
+const TagSidebar = styled.div`
   position: sticky;
   top: ${(props) => props.theme.large_padding};
 
   .tag-wrapper {
-    padding: 2px 0 2px 4px;
+    padding: 4px 0 0 4px;
     box-sizing: border-box;
     margin-top: 2px;
     border-radius: ${(props) => props.theme.border_radius};
@@ -84,7 +84,7 @@ const Catalogue = () => {
     const { graphicId } = useParams();
 
     const location = useLocation();
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
 
     // const graphicOverview = catalogue.graphics.find(graphic => graphic.id == graphicId);
@@ -95,7 +95,7 @@ const Catalogue = () => {
         !catalogue.searchPending && queryGraphics(dispatch);
         dispatch({
             type: TAGS.GET.REQUEST,
-            payload: { limit: 30 }
+            payload: { limit: 300 }
         })
     }, []);
 
@@ -104,7 +104,7 @@ const Catalogue = () => {
         if (!graphicOverview.title || !graphicId) {
             document.title = `${t('glossary:catalogue')} \u23D0 ${t('glossary:brand')}`
         } else if (view === 'history') {
-            document.title = 
+            document.title =
                 `${t('glossary:catalogue')}: 
                 ${graphicOverview.title} 
                 (${t('glossary:history')}) 
@@ -114,30 +114,32 @@ const Catalogue = () => {
         }
     }, [graphicOverview.id, location.pathname, location.search]);
 
-    const tagSidebar = <TagSidebar>
-        <strong>{t('catalogue:formatHeading')}</strong>
-        <div className={"tag-wrapper"}>
+    const tagSidebar = <TagSidebar role={'group'} aria-label={'Filter'}>
+            <strong id={'filter-group-format'}>{t('catalogue:formatHeading')}</strong>
+            <div role={'group'} aria-hidden={true} aria-labelledby={'filter-group-format'} className={"tag-wrapper"}>
 
-            <Checkbox onChange={() => toggleFormat(dispatch, 'a4')}
-                name={'format-toggle-a4'}
-                value={catalogue.filterFormat.includes('a4')}
-                label={'catalogue:a4'} />
-            <Checkbox onChange={() => toggleFormat(dispatch, 'a3')}
-                name={'format-toggle-a3'}
-                value={catalogue.filterFormat.includes('a3')}
-                label={'catalogue:a3'} />
-        </div>
+                <Checkbox onChange={() => toggleFormat(dispatch, 'a4')}
+                    name={'format-toggle-a4'}
+                    value={catalogue.filterFormat.includes('a4')}
+                    label={'catalogue:a4'} />
+                <Checkbox onChange={() => toggleFormat(dispatch, 'a3')}
+                    name={'format-toggle-a3'}
+                    value={catalogue.filterFormat.includes('a3')}
+                    label={'catalogue:a3'} />
+            </div>
+
         <br />
-        <strong>{t('catalogue:systemHeading')}</strong>
-        <div className={"tag-wrapper"}>
+        <strong id={'filter-group-system'}>{t('catalogue:systemHeading')}</strong>
+        <div role={'group'} aria-labelledby={'filter-group-system'} className={"tag-wrapper"}>
             {Object.keys(BRAILLE_SYSTEMS).map(lang =>
-                <div key={lang}>{Object.keys(BRAILLE_SYSTEMS[lang]).map(system =>
+                <>{Object.keys(BRAILLE_SYSTEMS[lang]).map(system =>
                     <Checkbox onChange={() => toggleSystem(dispatch, lang + ':' + system)}
-                        key={system}
+                        key={lang + system}
                         name={'system-toggle-' + system}
                         value={catalogue.filterSystem.includes(lang + ':' + system)}
                         label={'catalogue:' + system} />
-                )}</div>
+                        
+                )}</>
             )}
 
         </div>
@@ -149,7 +151,7 @@ const Catalogue = () => {
     return (
         <>
             <Row>
-                <div className={"col-xs-12 col-md-8 col-md-offset-2"}>
+                <div className={"col-xs-12 col-md-8"}>
                     <h1>{t('catalogue:heading')}</h1>
                 </div>
             </Row>
@@ -157,15 +159,15 @@ const Catalogue = () => {
             {breakpoints.md ?
                 <>
                     <Row>
-                        <div className={"col-md-6 col-md-offset-2 extra-margin double"}>
+                        <div className={"col-md-6 col-md-offset-3 extra-margin double"}>
                             <Searchbar />
                         </div>
                     </Row>
                     <Row>
-                        <div className={"col-md-2"}>
+                        <div className={"col-md-3"}>
                             {tagSidebar}
                         </div>
-                        <div className={"col-md-10"}>
+                        <div className={"col-md-9"}>
                             <CatalogueItemList graphics={catalogue.graphics} />
                         </div>
                     </Row>
@@ -190,12 +192,13 @@ const Catalogue = () => {
             }
 
             {!!graphicId &&
-                <Modal title={graphicOverview && graphicOverview.title} noPadding={true} fitted
+                <Modal title={t('catalogue:detailsFor') + (graphicOverview && graphicOverview.title)} noPadding={true} fitted
                     dismiss={() => navigate("/catalogue")}>
 
                     <CatalogueItemView variantsOverview={graphicOverview.variants || []} />
 
-                </Modal>}
+                </Modal>
+            }
         </>
     )
 };

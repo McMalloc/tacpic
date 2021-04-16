@@ -65,23 +65,24 @@ const Wrapper = styled.div`
 const Checkbox = props => {
     const { t } = useTranslation();
         return (
-            <Wrapper id={props.name + "-cb-wrapper"}>
+          <>
+            <Wrapper role={'checkbox'} aria-disabled={props.disabled} aria-checked={props.value == true} aria-labelledby={props.name + "-label"} id={props.name + "-cb-wrapper"}>
                  <Input
                      onChange={props.onChange}
                      name={props.name}
+                     aria-hidden={true}
                      disabled={props.disabled}
-                     aria-disabled={props.disabled}
                      id={props.name + "-cb"}
                      checked={props.value}
                      value={props.value}
                      type={"checkbox"} />
-                 <CheckboxLabel disabled={props.disabled} checked={props.checked} htmlFor={props.name + "-cb"}>
+                 <CheckboxLabel id={props.name + "-label"} disabled={props.disabled} checked={props.checked} htmlFor={props.name + "-cb"}>
                      <span className={'label'}>{t(props.label)}</span>
                      {props.sublabel &&
                      <><br/><Sub>{t(props.sublabel)}</Sub></>
                      }
                  </CheckboxLabel>
-            </Wrapper>
+            </Wrapper>          </>
         )
 };
 

@@ -41,7 +41,6 @@ export function* labelWriteWatcher() {
         let system = yield select(state => mapSystem(state.editor.file.present.system));
         translateWorker.postMessage({ text: action.value, system });
         const response = yield take(translateWorkerChannel);
-        console.log(response);
         yield put({
           type: "OBJECT_PROP_CHANGED",
           prop: "braille",
