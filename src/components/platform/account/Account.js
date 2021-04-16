@@ -61,27 +61,18 @@ const Account = props => {
                 <>
                     <div className={'row'}>
                         <div className={"col-xs-12 extra-margin"}>
-                            <h4>
-                                {location.pathname === '/account' ?
-                                    <span>{t('account:private')}</span>
-                                    :
+                            <h1>{t('account:private')}</h1>
+                            <p>
+                                {location.pathname !== '/account' &&
                                     <Link to={"/account"}>{t('account:private')}</Link>
                                 }
                                 <Routes>
-                                    <Route path='addresses' element={
-                                        <span> <Icon icon={"angle-right"} /> {t('account:addresses')}</span>} 
-                                    />
-                                    <Route path='my_account' element={
-                                        <span> <Icon icon={"angle-right"} /> {t('account:my_account')}</span>} 
-                                    />
-                                    <Route path='orders' element={
-                                        <span> <Icon icon={"angle-right"} /> {t('account:orders')}</span>} 
-                                    />
-                                    <Route path='newsletter' element={
-                                        <span> <Icon icon={"angle-right"} /> {t("account:newsletter")}</span>} 
-                                    />
+                                    {['addresses', 'my_account', 'orders', 'newsletter'].map(section => 
+                                        <Route path={section} element={
+                                            <span aria-current={location.pathname === '/account/' + section}> <Icon icon={"angle-right"} /> {t('account:' + section)}</span>} />
+                                        )}
                                 </Routes>
-                            </h4>
+                            </p>
 
                         </div>
                     </div>

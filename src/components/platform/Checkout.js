@@ -99,7 +99,10 @@ const Checkout = props => {
             <br />
 
             {!showShippingAddressForm &&
-                <Button icon={'plus'} label={'commerce:newAddress'} onClick={() => setEnterShippingAddress(true)} />}
+                <Button icon={'plus'} label={'commerce:newAddress'} onClick={() => {
+                    setShippingAddress({id: null});
+                    setEnterShippingAddress(true);
+                    }} />}
             <br />
             <br />
             <Checkbox label={"commerce:separateInvoiceAddress"} name={"checkout-use-invoice-address"}
@@ -117,7 +120,7 @@ const Checkout = props => {
                         value={invoiceAddress.id}
                         options={addresses.map(address => {
                             return {
-                                component: <AddressView {...address} />,
+                                label: `${address.company_name}\n${address.first_name} ${address.last_name}\n${address.street} ${address.house_number}\n${address.zip} ${address.city}`,
                                 value: address.id
                             }
                         })} />
@@ -132,7 +135,10 @@ const Checkout = props => {
                     <AddressForm modelCallback={model => setInvoiceAddress(model)} initial={invoiceAddress} />
                 </form>}
                 {!showInvoiceAddressForm &&
-                    <Button icon={'plus'} label={"commerce:addInvoiceAddress"} onClick={() => setEnterInvoiceAddress(true)} />}
+                    <Button icon={'plus'} label={"commerce:addInvoiceAddress"} onClick={() => {
+                        setInvoiceAddress({id: null});
+                        setEnterInvoiceAddress(true);
+                        }} />}
 
             </>}
             <br />
@@ -206,6 +212,9 @@ const Checkout = props => {
     return (
         <>
             <Row>
+            <div className={"col-xs-12"}>
+                <h1>{t('commerce:checkout')}</h1>
+            </div>
                 <div className={"col-xs-12 col-md-5"}>
                     <div style={{ position: 'sticky', top: 12 }}>
 

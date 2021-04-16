@@ -127,15 +127,15 @@ const BasketListing = () => {
                 if (!correspondingVariant) return null
                 return (
                     // <CSSTransition in={quote.items} timeout={200} classNames={'item'}>
-                    <ItemPanel key={index}>
-                        <div className={'upper breakable-long-lines'}>
+                    <ItemPanel role={'group'} key={index}>
+                        <div aria-label={t('catalogue:fullTitle', {graphicTitle: correspondingVariant.graphic_title, variantTitle: correspondingVariant.title})} className={'upper breakable-long-lines'}>
                             <Link
                                 to={`/catalogue/${correspondingVariant.graphic_id}/variant/${correspondingVariant.id}`}>
                                 <strong>{correspondingVariant.graphic_title} ({correspondingVariant.title})</strong>
                             </Link>
                         </div>
                         <div className={'middle'}>
-                            <img alt={t('catalogue:variantPreviewAlt')} style={{ height: 'auto', maxHeight: '100%', width: 'auto' }}
+                            <img aria-hidden={true} alt={t('catalogue:variantPreviewAlt')} style={{ height: 'auto', maxHeight: '100%', width: 'auto' }}
                                 src={`${API_URL}/thumbnails/${correspondingVariant.current_file_name}-THUMBNAIL-sm-p0.png`} />
                         </div>
                         <InfoLabel

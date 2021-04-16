@@ -179,7 +179,7 @@ const Navbar = props => {
         <Button style={{ alignSelf: 'center' }} onClick={() => navigate('/login?redirect=' + location.pathname)} small={lg} label={t("account:login")} icon={"sign-in-alt"} />
     </>
 
-    const basketButton = <NavbarItem className={`single ${basket.length === 0 && 'disabled'}`} id={"basket-nav-link"} to={'/basket'}>
+    const basketButton = <NavbarItem aria-label={t("commerce:basket", { quantity: basket.length })} className={`single ${basket.length === 0 && 'disabled'}`} id={"basket-nav-link"} to={'/basket'}>
         <Icon icon={"shopping-cart"} />&nbsp;
         {basket.length > 0 ?
             <>{t(lg ? "commerce:basket" : "commerce:basketShort", { quantity: basket.length })}</>

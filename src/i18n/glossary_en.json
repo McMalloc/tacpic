@@ -18,5 +18,7 @@
   "tag": "Tag",
   "tag_plural": "Tags",
   "draft": "Draft",
-  "draft_plural": "Drafts"
+  "draft_plural": "Drafts",
+  "variant": "variant",
+  "variant_plural": "variants"
 }

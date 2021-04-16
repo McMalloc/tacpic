@@ -96,5 +96,9 @@
     "/admin": "Administration",
     "/order-completed": "Order completed"
   },
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "closeMenu": "Close menu",
+  "closeModal": "Close dialog",
+  "openMenu": "Open menu",
+  "tacpicToStart": "Back to start"
 }
