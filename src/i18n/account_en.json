@@ -77,5 +77,6 @@
     "placedAt": "Ordered on",
     "state": "Status",
     "sum": "Total"
-  }
+  },
+  "The account you tried to create is currently awaiting verification": "Verification of this e-mail address is still pending. Please check your email inbox, possibly also the spam folder."
 }
