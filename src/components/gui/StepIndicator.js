@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro';
 import React from "react";
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 const Wrapper = styled.div`
@@ -9,9 +9,12 @@ const Wrapper = styled.div`
   margin: 24px 0;
 `;
 
-const StepWrapper = styled.div`
+const StepWrapper = styled.h2`
+  font-size: 1rem;
+  font-family: Roboto, sans-serif;
+  margin: 0;
   text-align: center;
-  padding: 0 ${props=>props.theme.base_padding};
+  padding: 0 ${props => props.theme.base_padding};
   position: relative;
   flex: 1 1 auto; 
   
@@ -30,46 +33,45 @@ const StepWrapper = styled.div`
     &:first-child:before { left: 50%; }
     &:last-child:before { right: 50%; }
   
-  label{
-    font-weight: ${props=>props.active ? 'bold' : 'normal'};
-  }
+
+    font-weight: ${props => props.active ? 'bold' : 'normal'};
 `;
 
 const NumberCircle = styled.span`
   width: 30px;
   height: 30px;
   line-height: 30px;
-  border: 2px solid ${props=>props.theme.brand_secondary_lighter};
+  border: 2px solid ${props => props.theme.brand_secondary_lighter};
   display: inline-block;
   border-radius: 100%;
-  background-color: ${props=>props.active ? props.theme.brand_secondary_lighter : 'white'};
-  font-weight: ${props=>props.active ? 'bold' : 'normal'};
-  color: ${props=>props.active ? 'white' : 'inherit'};
-  cursor: ${props=>props.navigationable ? 'pointer' : 'inherit'};
+  background-color: ${props => props.active ? props.theme.brand_secondary_lighter : 'white'};
+  font-weight: ${props => props.active ? 'bold' : 'normal'};
+  color: ${props => props.active ? 'white' : 'inherit'};
+  cursor: ${props => props.navigationable ? 'pointer' : 'inherit'};
 `;
 
 /**
  * Component for indicating steps in a process.
  */
-const StepIndicator = ({steps, current, navigationable}) => {
-    const { t } = useTranslation();
+const StepIndicator = ({ steps, current, navigationable }) => {
+  const { t } = useTranslation();
 
-    return (
-        <Wrapper>{steps.map((step, index) => {
-            return (
-                <StepWrapper key={index} onClick={() => navigationable && navigationable(index)} active={current === index}>
-                    <NumberCircle navigationable={!!navigationable} active={current === index}>{index + 1}</NumberCircle>
-                    <br /><label>{t(step)}</label>
-                </StepWrapper>
-            )
-        })}</Wrapper>
-    )
+  return (
+    <Wrapper>{steps.map((step, index) => {
+      return (
+        <StepWrapper aria-label={current + 1 + ' ' + t(step)} aria-hidden={current !== index} key={index} onClick={() => navigationable && navigationable(index)} active={current === index}>
+          <NumberCircle aria-hidden={true} navigationable={!!navigationable} active={current === index}>{index + 1}</NumberCircle>
+          <br />{t(step)}
+        </StepWrapper>
+      )
+    })}</Wrapper>
+  )
 
 };
 
 StepIndicator.propTypes = {
-    steps: PropTypes.arrayOf(PropTypes.string).isRequired,
-    current: PropTypes.number.isRequired
+  steps: PropTypes.arrayOf(PropTypes.string).isRequired,
+  current: PropTypes.number.isRequired
 };
 
 export default StepIndicator

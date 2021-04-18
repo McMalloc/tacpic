@@ -44,6 +44,7 @@ const Knowledge = () => {
   const contentIndex = <ContentIndex
     hierarchy={hierarchy.find(cat => cat.slug === 'wissen').children}
     active={category}
+    aria-landmark={'complementary'}
     pending={loadedPages.pending}
     pages={relevantPages} />
 

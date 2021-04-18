@@ -44,5 +44,6 @@
   "checkOverview": "Check",
   "orderFailed": "Order failed",
   "orderSuccessfull": "<0>Thank you for your order!</0><1 /><2>We have e-mailed you an order summary.</2><3>Back to home page</3> or <4>View orders</4>.",
-  "pleaseReviewOrder": "Please check again the contents of your shopping cart before ordering with costs."
+  "pleaseReviewOrder": "Please check again the contents of your shopping cart before ordering with costs.",
+  "checkout": "Checkout"
 }

@@ -8,6 +8,7 @@
   "closeMenu": "Menü schließen",
   "portrait": "Hochformat",
   "done": "Fertig",
+  "edit": "Bearbeiten",
   "submit": "Absenden",
   "hint": "Hinweis",
   "back": "Zurück",
@@ -90,11 +91,14 @@
     "/account/addresses": "Meine Adressen",
     "/account/my_account": "Kontoinformationen",
     "/basket": "Warenkorb",
-    "/checkout": "Bestellen",
+    "/checkout": "Kasse",
     "/editor/splash": "Editor",
     "/editor/app": "Editor",
     "/pricing": "Produkte und Preise",
     "/knowledge": "Wissen",
     "/": "Start"
-  }
+  },
+  "confirmRemove": "Entfernen bestätigen",
+  "dontRemove": "Nein, behalten",
+  "yesRemove": "Ja, entfernen"
 }

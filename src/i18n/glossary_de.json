@@ -18,5 +18,7 @@
   "tag": "Schlagwort",
   "tag_plural": "Schlagwörter",
   "draft": "Entwurf",
-  "draft_plural": "Entwürfe"
+  "variant": "Variante",
+  "draft_plural": "Entwürfe",
+  "variant_plural": "Varianten"
 }

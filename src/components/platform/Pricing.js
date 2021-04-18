@@ -229,7 +229,7 @@ const Pricing = () => {
         })}
       </Row>
       <Row>
-        <div className={"col-xs-12 col-sm-4"}>
+        <div role={'list'} className={"col-xs-12 col-sm-4"}>
           <strong>{t("products:editorFeaturesHeading")}:</strong>
           <ul>
             

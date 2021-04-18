@@ -73,5 +73,9 @@
   "moreTags": "{{amount}} more",
   "orderWithBrailleMailHint": "You'll receive the image description as an attachment to your order confirmation email as Rich Text Format, which is compatible with all prevalent word processors.",
   "orderWithBrailleMailPlain": "Attachement of order confirmation email",
-  "variantPreviewAlt": "Preview of variant"
+  "variantPreviewAlt": "Preview of variant",
+  "availableVariants": "{{amount}} available $t(glossary:variant_plural)",
+  "detailsFor": "Details for",
+  "fullTitle": "$t(glossary:draft) {{graphicTitle}} $t(glossary:variant) {{variantTitle}}",
+  "graphic": "Graphic"
 }
