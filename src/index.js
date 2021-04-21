@@ -19,27 +19,26 @@ import { BreakpointProvider } from "./contexts/breakpoints";
 import { QUERIES } from "./config/constants";
 
 const instance = createInstance({
-    urlBase: `${window.location.protocol}//${window.location.host}`,
-    trackerUrl: 'https://analytics.tacpic.de/matomo.php', // optional, default value: `${urlBase}matomo.php`
-    srcUrl: 'https://analytics.tacpic.de/matomo.js', // optional, default value: `${urlBase}matomo.js`
-    siteId: MATOMO_SITE_ID || 1,
+  urlBase: `${window.location.protocol}//${window.location.host}`,
+  trackerUrl: 'https://analytics.tacpic.de/matomo.php', // optional, default value: `${urlBase}matomo.php`
+  srcUrl: 'https://analytics.tacpic.de/matomo.js', // optional, default value: `${urlBase}matomo.js`
+  siteId: MATOMO_SITE_ID || 1,
 })
 
 window.matomoTracker = instance;
 
-// bootstrapping the app
 
 ReactDOM.render(
   <Provider store={store}>
     <ThemeProvider theme={standard}>
       <MatomoProvider value={instance}>
-      <BrowserRouter history={history}>
-        <DndProvider backend={HTML5Backend}>
-          <BreakpointProvider queries={QUERIES}>
-            <App />
-          </BreakpointProvider>
-        </DndProvider>
-      </BrowserRouter>
+        <BrowserRouter history={history}>
+          <DndProvider backend={HTML5Backend}>
+            <BreakpointProvider queries={QUERIES}>
+              <App />
+            </BreakpointProvider>
+          </DndProvider>
+        </BrowserRouter>
       </MatomoProvider>
     </ThemeProvider>
   </Provider>,
