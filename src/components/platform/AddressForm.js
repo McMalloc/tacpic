@@ -1,14 +1,11 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import PropTypes from 'prop-types';
-import {useDispatch} from "react-redux";
-import {ADDRESS} from "../../actions/action_constants";
-import {Textinput} from "../gui/Input";
-import Select from "../gui/Select";
-import {Row} from "../gui/Grid";
+import { useDispatch } from "react-redux";
+import { ADDRESS } from "../../actions/action_constants";
+import { Textinput } from "../gui/Input";
+import { Row } from "../gui/Grid";
 import Modal from "../gui/Modal";
-import {EWR, GERMAN_STATES} from "../../config/constants";
 import { useTranslation } from "react-i18next";
-import { Alert } from "../gui/Alert";
 
 const submitAddress = (dispatch, address) => {
     dispatch({
@@ -25,16 +22,16 @@ export const defaults = {
     first_name: "",
     last_name: "",
     additional: "",
-    city: "",
     zip: "",
-    state: "",
-    id: null,
-    country: "DEU"
+    city: ""//,
+    // state: "",
+    // id: null,
+    // country: "DEU"
 }
 
 const AddressForm = props => {
     const dispatch = useDispatch();
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const [address, changeAddress] = useState({ ...defaults, ...props.initial });
 
     const setState = event => {
@@ -48,79 +45,80 @@ const AddressForm = props => {
         <Row>
             <div className={"col-xs-6"}>
                 <Textinput required={address.company_name.length === 0} onChange={setState}
-                           value={address.first_name}
-                           name={"first_name"} label={"account:addressMenu.surname"}/>
+                    value={address.first_name}
+                    name={"first_name"} label={"account:addressMenu.surname"} />
             </div>
             <div className={"col-xs-6"}>
                 <Textinput required={address.company_name.length === 0} onChange={setState}
-                           value={address.last_name}
-                           name={"last_name"} label={"account:addressMenu.familyName"}/>
+                    value={address.last_name}
+                    name={"last_name"} label={"account:addressMenu.familyName"} />
             </div>
         </Row>
 
         <Row>
             <div className={"col-xs-6"}>
                 <Textinput onChange={setState}
-                           value={address.company_name}
-                           name={"company_name"} label={"account:addressMenu.companyName"}/>
+                    value={address.company_name}
+                    name={"company_name"} label={"account:addressMenu.companyName"} />
             </div>
         </Row>
 
         <Row>
             <div className={"col-xs-9"}>
                 <Textinput required onChange={setState} value={address.street} name={"street"}
-                           label={"account:addressMenu.street"}/>
+                    label={"account:addressMenu.street"} />
             </div>
             <div className={"col-xs-3"}>
                 <Textinput required onChange={setState} value={address.house_number} name={"house_number"}
-                           label={"account:addressMenu.houseNumber"}/>
+                    label={"account:addressMenu.houseNumber"} />
             </div>
         </Row>
 
         <Row>
-            <div className={"col-xs-9"}>
-                <Textinput 
-                    required 
-                    onChange={setState} 
-                    value={address.city} 
-                    name={"city"} 
-                    label={"account:addressMenu.city"}/>
-            </div>
             <div className={"col-xs-3"}>
                 <Textinput validations={[
                     {
                         fn: val => /[0-9]+/.test(val), message: "account:zip-invalid", callback: () => {
                         }
                     }
-                ]} 
-                required 
-                onChange={setState} 
-                value={address.zip} 
-                name={"zip"} 
-                label={"account:addressMenu.zip"}/>
+                ]}
+                    required
+                    onChange={setState}
+                    value={address.zip}
+                    name={"zip"}
+                    label={"account:addressMenu.zip"} />
+            </div>
+            <div className={"col-xs-9"}>
+                <Textinput
+                    required
+                    onChange={setState}
+                    value={address.city}
+                    name={"city"}
+                    label={"account:addressMenu.city"} />
             </div>
         </Row>
 
         <Row>
-            <div className={"col-xs-6"}>
-                <Select onChange={({label, value}) => {
-                    changeAddress({...address, state: value})
+            {/* <div className={"col-xs-6"}>
+                <Select onChange={({ label, value }) => {
+                    changeAddress({ ...address, state: value })
                 }}
-                        value={address.state} name={"state"} label={"account:addressMenu.state"}
+                    value={address.state} name={"state"} label={"account:addressMenu.state"}
                     options={GERMAN_STATES} />
             </div>
             <div className={"col-xs-6"}>
                 <Select value={address.country} name={"country"} disabled={!address.is_invoice_addr || true}
-                        onChange={(label, value) => changeAddress({...address, country: value})}
-                        options={address.is_invoice_addr ? EWR : [{label: "Deutschland", value: "DEU"}]}
-                        label={"account:addressMenu.country"}/>
-                        <Alert info>{t('account:onlyGermany')}</Alert>
-                {/*{(!address.is_invoice_addr) &&*/}
-                {/*        <small>Zur Zeit unterstützen wir nur die Lieferung nach Deutschland.</small>*/}
-                {/*}*/}
-            </div>
+                    onChange={(label, value) => changeAddress({ ...address, country: value })}
+                    options={address.is_invoice_addr ? EWR : [{ label: "Deutschland", value: "DEU" }]}
+                    label={"account:addressMenu.country"} />
+                <Alert info>{t('account:onlyGermany')}</Alert> */}
+            {/*{(!address.is_invoice_addr) &&*/}
+            {/*        <small>Zur Zeit unterstützen wir nur die Lieferung nach Deutschland.</small>*/}
+            {/*}*/}
+            {/* </div> */}
+
             <div>
-                *: {t('required')}
+                * {t('required')}
             </div>
         </Row>
 
@@ -141,8 +139,8 @@ const AddressForm = props => {
         {/*    </div>*/}
         {/*</Row>*/}
         {/*}*/}
-        </>
-    {/*</form>*/}
+    </>
+    {/*</form>*/ }
 
     if (props.modal) {
         return (
@@ -185,9 +183,10 @@ AddressForm.propTypes = {
         last_name: PropTypes.string,
         additional: PropTypes.string,
         city: PropTypes.string,
-        zip: PropTypes.number,
-        state: PropTypes.string,
-        country: PropTypes.string,
+        state: PropTypes.string
+        // ,
+        // zip: PropTypes.number,
+        // country: PropTypes.string,
     }),
     submit: PropTypes.func,
     cancel: PropTypes.func,

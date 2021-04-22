@@ -72,7 +72,8 @@
     "zip": "ZIP code",
     "state": "State",
     "country": "Country",
-    "add": "Add address"
+    "add": "Add address",
+    "edit": "Confirm address change"
   },
   "orderMenu": {
     "noOrders": "No orders have been recorded yet.",
@@ -86,5 +87,6 @@
   "no_matching_login_message": "There seems to be no account associated with this e-mail or password.",
   "attempt_to_login_to_unverified_account_error_flash": "An account associated with this e-mail address needs to be verified. Please check your inbox and your spam folder, if necessary.",
   "onlyGermany": "Unfortunately, we can only ship to Germany at the moment.",
-  "order-status-4": "Waiting for payment"
+  "order-status-4": "Waiting for payment",
+  "edit_address": "Edit Address"
 }

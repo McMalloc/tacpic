@@ -32,7 +32,6 @@
   "quoteRequestMailCopy": "Guten Tag, %0D%0A%0D%0Abitte lassen Sie mir ein Angebot zukommen für die folgenden Positionen:%0D%0A%0D%0A",
   "quoteRequestMailSubject": "Angebotsanfrage",
   "sendQuoteRequest": "Vorgefertigte Anfrage per E-Mail senden",
-
   "savedAddresses": "Hinterlegte Adressen",
   "separateInvoiceAddress": "Separate Rechnungsadresse",
   "addInvoiceAddress": "Neue Rechnungsaddresse",
