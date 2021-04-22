@@ -22,8 +22,8 @@ const Wrapper = styled.nav`
 `;
 
 const NavbarItem = styled(NavLink)`
-    color: ${props => props.restricted ? props.theme.background : props.theme.brand_secondary};
-    background-color: ${props => props.restricted ? props.theme.danger : props.theme.background};
+    color: ${props => props.restrictedlink ? props.theme.background : props.theme.brand_secondary};
+    background-color: ${props => props.restrictedlink ? props.theme.danger : props.theme.background};
     padding: 8px 8px;
     box-sizing: border-box;
     text-decoration: none;
@@ -155,7 +155,7 @@ const Navbar = props => {
     })
 
     if (user.role === 1) sections.push(
-        <NavbarItem restricted key={sections.length} to={'/admin'}>
+        <NavbarItem restrictedlink={'true'} key={sections.length} to={'/admin'}>
             <Icon icon={"tools"} />&nbsp;
             {t('navigation.admin')}
         </NavbarItem>

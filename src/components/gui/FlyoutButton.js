@@ -18,6 +18,7 @@ const Flyout = styled.div`
   padding: ${(props) => props.theme.large_padding};
   box-sizing: border-box;
   overflow: auto;
+  max-width: 500px;
 
   .flyout-entry {
     min-width: ${(props) =>

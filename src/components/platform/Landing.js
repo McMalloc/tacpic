@@ -104,7 +104,6 @@ const Landing = () => {
     const signedUp = useSelector(state => state.user.logged_in);
 
     const [showMore, setShowMore] = useState(false);
-    const [allowPlayer, setAllowPlayer] = useState(false);
 
     useEffect(() => {
         document.title = 'tacpic | Start';
@@ -251,17 +250,7 @@ const Landing = () => {
                             <p>{t('landing:aboutUsCopy')}</p>
                         </div>
                         <div className={"col-xs-12 col-md-6"}>
-                            {allowPlayer ?
-                                <iframe title="vimeo-player" src="https://www.youtube.com/embed/-HUqk2zYi54" width="100%"
-                                    height="auto" style={{ height: "15em" }} frameBorder={0} allowFullScreen={true} />
-                                :
-                                <Placeholder onClick={() => setAllowPlayer(true)}>{t('landing:aboutUsVideoOptin')}</Placeholder>
-                            }
-                            <p style={{ textAlign: "right" }}><small>
-                                <Trans i18nKey={'landing:aboutUsVideocredits'}>
-                                    0<a href="https://www.lichtempfindlich.org/">1</a>
-                                </Trans>
-                            </small></p>
+                            <img className={'embedded-foto'} src={'images/team_s.jpg'} alt={''} />
                         </div>
                     </div>
                 </div>

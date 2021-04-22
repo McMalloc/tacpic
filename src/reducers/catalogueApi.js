@@ -7,9 +7,9 @@ import {
     VARIANTS,
     VARIANT,
     ITEM_ADDED_TO_BASKET,
-    ITEM_REMOVED_FROM_BASKET, ORDER_RESET, QUOTE, CLEAR_BASKET, LOAD_MORE, ITEM_UPDATED_IN_BASKET, UPDATE_BASKET
+    ITEM_REMOVED_FROM_BASKET, ORDER_RESET, QUOTE, CLEAR_BASKET, LOAD_MORE, ITEM_UPDATED_IN_BASKET, UPDATE_BASKET, RESET_FILTER
 } from '../actions/action_constants';
-import {produce} from "immer";
+import { produce } from "immer";
 
 // let catalogueApiCallbacks = {};
 // createReducer(GRAPHIC.GET, catalogueApiCallbacks);
@@ -68,7 +68,7 @@ const catalogueApi = (state = {}, action) => {
             return {
                 ...state,
             };
-        
+
         case VARIANT.HISTORY.REQUEST:
             return {
                 ...state,
@@ -247,8 +247,8 @@ const catalogueApi = (state = {}, action) => {
                 filterTags.splice(tagIndex, 1);
             }
             return {
-              ...state,
-              filterTags
+                ...state,
+                filterTags
             };
         case 'FORMAT_TOGGLED':
             const formatIndex = state.filterFormat.indexOf(action.format);
@@ -260,7 +260,7 @@ const catalogueApi = (state = {}, action) => {
                 filterFormat.splice(formatIndex, 1);
             }
             return {
-              ...state,
+                ...state,
                 filterFormat
             };
         case 'SYSTEM_TOGGLED':
@@ -273,13 +273,21 @@ const catalogueApi = (state = {}, action) => {
                 filterSystem.splice(systemIndex, 1);
             }
             return {
-              ...state,
+                ...state,
                 filterSystem
             };
         case 'SEARCH_CHANGED':
             return {
                 ...state,
                 filterTerms: action.value
+            };
+        case RESET_FILTER:
+            return {
+                ...state,
+                filterTags: [],
+                filterTerms: [],
+                filterFormat: [],
+                filterSystem: []
             };
         default:
             return state;

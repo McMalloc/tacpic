@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import styled from 'styled-components/macro';
 import {Textinput} from "../../gui/Input";
-import Select from "../../gui/Select";
+import Combobox from "../../gui/Combobox";
 import {Button} from "../../gui/Button";
 import {GRAPHIC, VARIANT} from "../../../actions/action_constants";
 import Modal from "../../gui/Modal";
@@ -52,12 +52,12 @@ const Metadata = () => {
     const file = useSelector(state => state.editor.file.present);
     const {logged_in, role} = useSelector(state => state.user);
     const tags = useSelector(
-        state => state.catalogue.tags.map(tag => {
-            return {
+        state => state.catalogue.tags.map(tag => 
+            ({
                 label: tag.name,
                 value: tag.tag_id
-            }
-        })
+            })
+        )
     );
     const variantTags = useSelector(state => state.editor.file.present.tags);
 
@@ -128,7 +128,7 @@ const Metadata = () => {
                 t("editor:input_catalogue-variant-title-hint")}
             </Alert>
 
-            <Select
+            <Combobox
                 label={"editor:input_catalogue-tags"}
                 tip={"help:input_catalogue-tags"}
                 isMulti

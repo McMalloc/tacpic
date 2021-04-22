@@ -3,12 +3,9 @@ import PropTypes from 'prop-types';
 import { useDispatch } from "react-redux";
 import { ADDRESS } from "../../actions/action_constants";
 import { Textinput } from "../gui/Input";
-import Select from "../gui/Select";
 import { Row } from "../gui/Grid";
 import Modal from "../gui/Modal";
-import { EWR, GERMAN_STATES } from "../../config/constants";
 import { useTranslation } from "react-i18next";
-import { Alert } from "../gui/Alert";
 
 const submitAddress = (dispatch, address) => {
     dispatch({
@@ -38,7 +35,7 @@ const AddressForm = props => {
     const [address, changeAddress] = useState({ ...defaults, ...props.initial });
 
     const setState = event => {
-        const updatedModel = { ...address, [event.target.name]: event.target.value, id: null };
+        const updatedModel = {...address, [event.target.name]: event.target.value};
         props.modelCallback && props.modelCallback(updatedModel);
         changeAddress(updatedModel);
     }
@@ -154,18 +151,19 @@ const AddressForm = props => {
                     action: props.cancel
                 },
                 {
-                    label: "account:addressMenu.add",
+                    label: address.id === null ? "account:addressMenu.add" : "account:addressMenu.edit",
                     name: "confirm-address-form",
                     align: "right",
                     template: 'primary',
                     submitFor: "address-edit-form",
                     disabled: false,
                     action: () => {
+                        console.log(address);
                         submitAddress(dispatch, address);
                         props.cancel();
                     }
                 }
-            ]} title={t("account:add_address")}>
+            ]} title={address.id === null ? t("account:add_address") : t("account:edit_address")}>
                 <form id={"address-edit-form"}>{form}</form>
             </Modal>
         )

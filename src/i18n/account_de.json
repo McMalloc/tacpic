@@ -34,6 +34,7 @@
   "my_sub-description": "Abonnement abschließen, kündigen oder ändern",
   "addresses": "Meine Adressen",
   "add_address": "Neue Adresse hinzufügen",
+  "edit_address": "Adresse bearbeiten",
   "addresses-description": "Liefer- und Rechnungsadressen anlegen, ändern oder entfernen",
   "onlyGermany": "Wir können derzeit leider ausschließlich nach Deutschland liefern.",
   "my_account": "Mein Konto",
@@ -73,7 +74,8 @@
     "zip": "PLZ",
     "state": "Bundesland",
     "country": "Staat",
-    "add": "Adresse anlegen"
+    "add": "Adresse anlegen",
+    "edit": "Adressänderung bestätigen"
   },
   "orderMenu": {
     "noOrders": "Es sind bisher keine Bestellungen erfasst worden.",

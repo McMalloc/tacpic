@@ -9,7 +9,6 @@ export const variantGetSaga = createSaga(
     variant => {
         const deserializedDocument = JSON.parse(variant.current_version.document);
         const {width, height} = determineDimensions(variant.graphic_format, variant.graphic_landscape);
-        console.log(width, height);
         return {
             variant_id: variant.id,
             graphic_id: variant.parent_graphic.id,

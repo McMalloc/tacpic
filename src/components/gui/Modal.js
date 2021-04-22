@@ -204,7 +204,7 @@ class Modal extends Component {
             <ModalTitle id={'modal-title'}>
               {Array.isArray(this.props.title) ? this.props.t(this.props.title[0], this.props.title[1]) : this.props.t(this.props.title)}
             </ModalTitle>
-            {typeof this.props.dismiss === "function" && <Button onClick={this.props.dismiss} id={"close-modal-button"} title={'close'} icon={"times"}></Button>}
+            {typeof this.props.dismiss === "function" && <Button style={{alignSelf: 'center'}} onClick={this.props.dismiss} id={"close-modal-button"} title={'close'} icon={"times"}></Button>}
             {/*<ModalClose>{typeof this.props.dismiss === "function" && <Icon onClick={this.props.dismiss} icon={"times"} />}</ModalClose>*/}
           </ModalHeader>
           <ModalContent ref={this.firstFocusRef} noPadding={this.props.noPadding}>{this.props.children}</ModalContent>

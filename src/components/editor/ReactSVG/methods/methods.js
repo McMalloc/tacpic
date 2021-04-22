@@ -243,9 +243,10 @@ const getBBox = object => {
 };
 
 const getKeyBBox = object => {
+    let container = document.getElementById("container-" + object.uuid);
     return {
-        x: object.anchored ? parseInt(document.getElementById("container-" + object.uuid).dataset.internalX) : object.x,
-        y: object.anchored ? parseInt(document.getElementById("container-" + object.uuid).dataset.internalY) : object.y,
+        x: object.anchored && container !== null ? parseInt(container.dataset.internalX) : object.x,
+        y: object.anchored && container !== null ? parseInt(container.dataset.internalY) : object.y,
         width: object.width,//bbox.width * (object.width / bbox.width),
         height: object.height
     };
@@ -255,7 +256,6 @@ const getKeyBBox = object => {
 export const combineBBoxes = (objects, transformed = true) => {
     let x1 = Infinity, y1 = Infinity, x2 = 0, y2 = 0;
     objects.forEach(object => {
-        console.log(object);
         let box;
         if (transformed) {
             box = methods[object.type].getClientBox(object);

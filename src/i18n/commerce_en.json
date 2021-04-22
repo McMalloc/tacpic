@@ -45,5 +45,9 @@
   "orderFailed": "Order failed",
   "orderSuccessfull": "<0>Thank you for your order!</0><1 /><2>We have e-mailed you an order summary.</2><3>Back to home page</3> or <4>View orders</4>.",
   "pleaseReviewOrder": "Please check again the contents of your shopping cart before ordering with costs.",
-  "checkout": "Checkout"
+  "checkout": "Checkout",
+  "orderTooLargePhone": "Or via phone",
+  "quoteRequestMailCopy": "Hello, %0D%0A%0D%0Aplease send a quote containing these positions:%0D%0A%0D%0A",
+  "quoteRequestMailSubject": "Quote request",
+  "sendQuoteRequest": "Send prepared request via e-mail"
 }

@@ -80,12 +80,12 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    // messy routing related code
     if (!(/catalogue/.test(location.pathname) || /info/.test(location.pathname) || /knowledge\/.+/.test(location.pathname))) {
       document.title = t('region.' + location.pathname) + ' | tacpic';
     }
-
-    // scroll to top at page change
-    document.getElementById("scroll-content").scrollTo(0, 0);
+    // scroll to top at page change, if it is not the catalogue
+    !/\/catalogue/.test(location.pathname) && document.getElementById("scroll-content").scrollTo(0, 0);
     trackPageView();
   }, [location.pathname]);
 
