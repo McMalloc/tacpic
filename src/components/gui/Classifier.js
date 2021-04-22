@@ -27,7 +27,6 @@ class Classifier extends Component {
     };
 
     back = catId => {
-        console.log(catId);
         let newProgress = this.state.progress;
         let index = findIndex(newProgress, cat => cat === catId);
         this.setState({

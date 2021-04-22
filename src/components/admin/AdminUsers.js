@@ -20,7 +20,6 @@ const AdminUsers = props => {
         if (usersData.length === 0 || !usersData[0]) {
             return []
         } else {
-            console.log(Object.keys(usersData[0]));
             return Object.keys(usersData[0]).map(key => ({
                 Header: t(key),
                 accessor: key

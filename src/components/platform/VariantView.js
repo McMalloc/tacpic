@@ -150,7 +150,7 @@ const VariantView = (props) => {
   let { graphicId, variantId } = useParams();
   const dispatch = useDispatch();
   const tags = useSelector(state => state.catalogue.tags);
-  const basketIndex = useSelector(state => state.catalogue.basket.map(item => parseInt(item.contentId)).findIndex(id => id == variantId));
+  const basketIndex = useSelector(state => state.catalogue.basket.map(item => parseInt(item.contentId)).findIndex(id => id == props.id));
   const { logged_in, role } = useSelector((state) => state.user);
   const [product, setProduct] = useState("graphic");
   const [quantity, setQuantity] = useState(1);
@@ -161,6 +161,7 @@ const VariantView = (props) => {
 
   if (!md && entry.intersectionRatio > scrollThreshold) {
     // TODO
+    console.log(props.id);
     window.history.replaceState(
       null,
       null,
@@ -448,14 +449,14 @@ const VariantView = (props) => {
                 {t('catalogue:deliveryTime', { lower: 4, upper: 5 })}
               </div>
             </div>
-
             <Button
               onClick={() => {
                 basketIndex === -1 ?
-                  addToBasket(dispatch, variantId, quantity, product)
+                  addToBasket(dispatch, props.id, quantity, product)
                   :
                   removeFromBasket(dispatch, basketIndex)
               }}
+              fullWidth
               label={t(basketIndex >= 0 ? "commerce:remove" : "catalogue:addToCart")}
               title={t("catalogue:removeFromCart")}
               large

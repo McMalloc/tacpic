@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { CATALOGUE, GRAPHIC, LOAD_MORE, TAGS } from "../../actions/action_constants";
+import { CATALOGUE, TAGS, RESET_FILTER } from "../../actions/action_constants";
 import CatalogueItemList from "./CatalogueItemList";
 import TagList from "./TagList";
 import styled from "styled-components/macro";
@@ -97,6 +97,8 @@ const Catalogue = () => {
             type: TAGS.GET.REQUEST,
             payload: { limit: 300 }
         })
+
+        return () => dispatch({type: RESET_FILTER})
     }, []);
 
     useEffect(() => {

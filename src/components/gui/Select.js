@@ -98,7 +98,7 @@ const Select = props => {
         ><Wrapper>
                 <StyledSelect {...props} onChange={event => props.onChange({value: event.target.value})}>
                     {props.options.map(option =>
-                        <option title={t(option.sublabel)} value={option.value}>
+                        <option key={option.value} title={t(option.sublabel)} value={option.value}>
                             {t(option.label)}
                         </option>
                     )}

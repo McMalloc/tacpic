@@ -43,6 +43,12 @@
   top: 0;
 }
 
+.hidden-for-mail-copy {
+  color: green;
+  display: none;
+  white-space: pre;
+}
+
 .extra-margin {
   &:not(:last-child) {
     margin-bottom: 12px;

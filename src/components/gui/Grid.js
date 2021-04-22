@@ -22,7 +22,6 @@ const Column = props => {
     let classes = "";
 
     // TODO cleveres System überlegen, das hier funktioniert nicht so gut.
-    console.log(props.width);
 
     // props.narrow ?  classes += "col-xs-6 col-sm-4 col-md-3 col-lg-2"    : null;
     // props.medium ?  classes += "col-xs-12 col-sm-6 col-md-4 col-lg-3"   : null;

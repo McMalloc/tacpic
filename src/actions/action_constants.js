@@ -64,3 +64,4 @@ export const SUPPRESS_BACKUP = 'SUPPRESS_BACKUP';
 export const COPY = 'COPY';
 export const PASTE = 'PASTE';
 export const OBJECT_PROP_CHANGED = 'OBJECT_PROP_CHANGED';
+export const RESET_FILTER = 'RESET_FILTER';
