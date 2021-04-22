@@ -42,14 +42,13 @@ const AddressForm = props => {
         props.modelCallback && props.modelCallback(updatedModel);
         changeAddress(updatedModel);
     }
-
     const form = <>
         {/*// < id={props.id} style={{width: props.modal ? 600 : 'auto'}} className={"container"}>*/}
         <Row>
             <div className={"col-xs-6"}>
                 <Textinput required={address.company_name.length === 0} onChange={setState}
                     value={address.first_name}
-                    name={"first_name"} label={"account:addressMenu.surname"} />
+                    name={"first_name"} label={"account:addressMenu.surname"} /> {/*Müsste das nicht "firstName" heißen?*/}
             </div>
             <div className={"col-xs-6"}>
                 <Textinput required={address.company_name.length === 0} onChange={setState}

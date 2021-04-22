@@ -10,7 +10,7 @@ const AddressView = props => {
         {!!props.company_name && <>{props.company_name} <br/></>}
         {props.first_name} {props.last_name} <br />
         {props.street} {props.house_number} <br />
-        {props.zip} {props.city}
+        {/* {props.zip} {props.city} */}
     </div>)
 }
 
@@ -23,9 +23,10 @@ AddressView.propTypes = {
     last_name: PropTypes.string,
     additional: PropTypes.string,
     city: PropTypes.string.isRequired,
-    zip: PropTypes.number.isRequired,
-    state: PropTypes.string.isRequired,
-    country: PropTypes.string.isRequired,
+    zip: PropTypes.number.isRequired
+    // ,
+    // state: PropTypes.string.isRequired,
+    // country: PropTypes.string.isRequired,
 }
 
 export default AddressView;
