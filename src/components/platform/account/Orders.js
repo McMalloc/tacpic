@@ -36,7 +36,7 @@ const Orders = () => {
                     {orders.map(order => {
                         return <tr key={order.id}>
                             <td>
-                                {moment(order.created_at, DB_DATE_FORMAT).format("DD.MM.yyyy")}
+                                {moment(order.created_at, DB_DATE_FORMAT).format(t('dateFormat'))}
                             </td>
                             <td>
                                 {t('{{amount, currency}}', { amount: order.total_gross })}
