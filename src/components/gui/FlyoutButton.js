@@ -22,7 +22,7 @@ const Flyout = styled.div`
 
   .flyout-entry {
     min-width: ${(props) =>
-      props.flyoutWidth ? props.flyoutWidth + "px" : "auto"};
+    props.flyoutWidth ? props.flyoutWidth + "px" : "auto"};
   }
 
   position: fixed;
@@ -79,6 +79,16 @@ const FlyoutEntryWrapper = styled.div`
 
 export const FlyoutEntry = (props) => {
   const { t } = useTranslation();
+  const content = <>
+    <Icon icon={props.icon} />
+    <label>{t(props.label)}</label>
+    {props.sublabel && (
+      <>
+        <br />
+        <span className={'sub-label'}>{t(props.sublabel)}</span>
+      </>
+    )}
+  </>
   return (
     <FlyoutEntryWrapper
       className={"flyout-entry"}
@@ -86,14 +96,27 @@ export const FlyoutEntry = (props) => {
       role={"button"}
       onClick={props.onClick}
     >
-      <Icon icon={props.icon} />
-      <label>{t(props.label)}</label>
-      {props.sublabel && (
+      {!!props.link ?
+        <a className={'no-styled-link'} target={'_blank'} href={props.link}><Icon icon={props.icon} />
+          <label>{t(props.label)}</label>
+          {props.sublabel && (
+            <>
+              <br />
+              <span className={'sub-label'}>{t(props.sublabel)}</span>
+            </>
+          )}</a>
+        :
         <>
-          <br />
-          <span className={'sub-label'}>{t(props.sublabel)}</span>
+          <Icon icon={props.icon} />
+          <label>{t(props.label)}</label>
+          {props.sublabel && (
+            <>
+              <br />
+              <span className={'sub-label'}>{t(props.sublabel)}</span>
+            </>
+          )}
         </>
-      )}
+      }
     </FlyoutEntryWrapper>
   );
 };
@@ -137,7 +160,7 @@ const FlyoutButton = (props) => {
       } else {
         flyoutRef.current.style.left = `${vw - flyoutBBox.width}px`;
       }
-      
+
     }
   }, [out]);
 
@@ -184,7 +207,7 @@ const FlyoutButton = (props) => {
           rightAlign={props.rightAlign || false}
           _ref={flyoutRef}
         >
-          
+
           {props.children}
           {!!props.closeButton && <Button onClick={toggle}
             icon={'times'}

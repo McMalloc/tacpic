@@ -263,10 +263,11 @@ const VariantView = (props) => {
         return <FlyoutEntry
           icon={format === 'pdf' ? 'file-pdf' : format === 'zip' ? 'file-archive' : format === 'rtf' ? 'file-word' : 'braille'}
           key={format}
+          link={`${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`}
           label={"catalogue:" + format}
-          onClick={() =>
-            (window.location = `${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`)
-          }
+          // onClick={() =>
+          //   (window.location = `${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`)
+          // }
           sublabel={`catalogue:${format}-hint`}
         />
       })}
