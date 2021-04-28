@@ -108,7 +108,7 @@ const Addresses = () => {
                 <div className={"col-xs-12"} style={{textAlign: "center"}}>
                     <br/>
                     <Button primary label={"account:add_address"} onClick={() => {
-                        setInitial({is_invoice_addr: false});
+                        setInitial({is_invoice_addr: false, id: null});
                         setShowForm(true);
                     }}/>
                 </div>
