@@ -1,7 +1,7 @@
 import uuidv4 from "../../../../utility/uuid";
-import {getMirrorPoint } from "../../../../utility/geometry";
+import { getMirrorPoint } from "../../../../utility/geometry";
 import fitCurve from "fit-curve";
-import {chunk} from "lodash";
+import { chunk, cloneDeep } from "lodash";
 import { COLOURS } from '../../../../config/constants';
 
 export const createPath = (x = 0, y = 0, template = null, fill = COLOURS.none, moniker = "Kurve") => {
@@ -32,7 +32,7 @@ export const createPath = (x = 0, y = 0, template = null, fill = COLOURS.none, m
 };
 
 export const pathScale = (object, offsetX, offsetY, downX, downY, fullOffsetX, fullOffsetY) => {
-    const {width, height} = getPathBBox(object);
+    const { width, height } = getPathBBox(object);
     object.scaleX = (width - downX + fullOffsetX) / width;
     object.scaleY = (height - downY + fullOffsetY) / height;
     return object;
@@ -52,7 +52,7 @@ export const getPathBBox = path => {
         bbox.y += path.y;
         return bbox;
     } else {
-        return {x: 0, y: 0, width: 0, height: 0}
+        return { x: 0, y: 0, width: 0, height: 0 }
     }
     // paths need to add their translation parameters to the bbox because
     // the native getBBox() method will not measure in transform properties
@@ -64,13 +64,20 @@ export const getPathBBox = path => {
 // param 4 E: end point
 export const changePoint = (path, coords, index = path.points.length - 1, param = 0, kind) => {
     if (!!kind) path.points[index].kind = kind;
+
+    // if it is an bezier vertex, also translate the control points
     if (param === 4) {
         const diffX = path.points[index].coords[4] - coords[0];
         const diffY = path.points[index].coords[5] - coords[1];
         path.points[index].coords[2] -= diffX;
         path.points[index].coords[3] -= diffY;
-        path.points[index + 1].coords[0] -= diffX;
-        path.points[index + 1].coords[1] -= diffY;
+
+        // don't try to move a control point that doesn't exist
+        // because it is the last one in the path
+        if (index + 1 !== path.points.length) {
+            path.points[index + 1].coords[0] -= diffX;
+            path.points[index + 1].coords[1] -= diffY;
+        }
     }
     path.points[index].coords[param] = coords[0];
     path.points[index].coords[param + 1] = coords[1];
@@ -107,6 +114,14 @@ export const removePoint = (path, index) => {
     return path;
 };
 
+export const mergePaths = (source, target, stitchIndex) => {
+    let sourceCopy = cloneDeep(source);
+    let targetCopy = cloneDeep(target);    
+    targetCopy.points[0].kind = 'L';
+    sourceCopy.points = sourceCopy.points.concat(targetCopy.points)
+    return sourceCopy;
+}
+
 export const reverse = path => {
     const lastIndex = path.points.length - 1;
     let allCoordinatesR = chunk(path.points.reduce((acc, point) => {
@@ -118,7 +133,7 @@ export const reverse = path => {
 
     let offset = 0;
     path.points = path.points.map((point, index) => {
-        let reversedPoint = {kind: allKindsR[index]}
+        let reversedPoint = { kind: allKindsR[index] }
         switch (allKindsR[index]) {
             case 'M': case 'L':
                 reversedPoint.coords = allCoordinatesR[index + offset];
@@ -173,7 +188,7 @@ const getPoint = (path, index) => {
  * */
 export const getCoords = (path, index, which = 0) => {
     let point = getPoint(path, index);
-    let coordOffset = point.kind === 'C' ? which*2 : 0;
+    let coordOffset = point.kind === 'C' ? which * 2 : 0;
     const coordsLength = point.coords.length;
     return [
         point.coords[coordsLength - 2 - coordOffset],
