@@ -48,6 +48,9 @@ const Knowledge = () => {
     pending={loadedPages.pending}
     pages={relevantPages} />
 
+    console.log(relevantPages);
+    console.log(hierarchy);
+
   const page = relevantPages.find(page => page.slug === postSlug);
   return <div className='row'>
     <div className={'col-md-3 col-xs-12'}>
