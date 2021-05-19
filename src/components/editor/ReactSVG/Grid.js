@@ -1,5 +1,4 @@
 import React from 'react';
-import './Grid.css';
 import {useSelector} from "react-redux";
 
 // TODO laut react profiler große performance kosten

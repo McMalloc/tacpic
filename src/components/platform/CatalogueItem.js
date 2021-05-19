@@ -5,6 +5,8 @@ import Tile from "../gui/_Tile";
 import { API_URL } from "../../env.json"
 import {LG_SCREEN, MD_SCREEN, SM_SCREEN} from "../../config/constants";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Icon } from "../gui/_Icon";
 
 const Wrapper = styled.div`
   padding: 6px;
@@ -53,6 +55,9 @@ export default props => {
     const {t} = useTranslation();
     const thumbnailURL =
         `${API_URL}/thumbnails/${props.variants[0].current_file_name}-THUMBNAIL-sm-p0.png`
+        console.log(props.variants);
+    
+    const hiddenVariants = props.variants.filter(variant => !variant.public);
     return (
         <Wrapper aria-labelledby={'catalogue-title-' + props.id} role={'link'} id={"catalogue-item-" + props.id}>
             <Link aria-hidden={true} className={'no-styled-link'} to={props.id + "/variant/" + props.variants[0].id}>
@@ -62,7 +67,10 @@ export default props => {
                     <Info className={'breakable-long-lines'}>
                         <Title title={props.title} id={'catalogue-title-' + props.id} className={"hover-sensitive"}>{props.title}</Title><br/>
                         <small>
-                            {t('catalogue:variants', {count: props.variants.length, context: props.filtered ? 'filtered' : 'all'})}
+                            {t('catalogue:variants', {count: props.variants.filter(variant => variant.public).length, context: props.filtered ? 'filtered' : 'all'})}
+                            {hiddenVariants.length > 0 &&
+                                <><span style={{backgroundColor: 'yellow', float:'right'}}>{hiddenVariants.length} <Icon icon={'eye-slash'}/></span></>
+                            }
                         </small>
                     </Info>
                 </Tile>

@@ -3,6 +3,7 @@ import {APP, ERROR_THROWN} from '../actions/action_constants';
 const appReducer = (state = {}, action) => {
     switch (action.type) {
         case APP.FRONTEND.SUCCESS:
+            console.log(action);
             return {
                 ...state,
                 frontend: action.data

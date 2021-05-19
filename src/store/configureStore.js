@@ -3,6 +3,7 @@ import createSagaMiddleware from "redux-saga";
 import {applyMiddleware, compose, createStore} from "redux";
 import createRootReducer from "../reducers";
 import rootSaga from "../sagas";
+import adminSaga from "../sagas/admin_sagas";
 import {createBrowserHistory} from "history";
 import {app, catalogue, editor, user, cms, admin} from "./initialState";
 
@@ -50,4 +51,5 @@ export default createStore(
 );
 
 sagaMiddleware.run(rootSaga);
+sagaMiddleware.run(adminSaga);
 

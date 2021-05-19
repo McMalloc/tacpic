@@ -18,9 +18,9 @@ const Label = styled.span`
 
 const ButtonBase = styled.button`
   background-color: ${(props) =>
-    props.primary ? props.theme.brand_secondary : "white"};
-  color: ${props => (props.primary ? props.theme.background : props.theme.foreground)};
-  border: ${props => props.theme.elementBorder};
+    props.primary ? props.theme.brand_secondary : props.dangerous ? props.theme.danger : "white"};
+  color: ${props => (props.primary || props.dangerous ? props.theme.background : props.theme.foreground)};
+  border: ${props => props.dangerous ? '2px solid ' + props.theme.danger_dark : props.theme.elementBorder};
   padding: ${props =>
     props.small
       ? '2px 4px'

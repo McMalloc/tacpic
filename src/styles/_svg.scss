@@ -6,6 +6,14 @@ svg {
     user-select: none;
   }
 
+  path {
+    transform-origin: center;
+  }
+
+  .grid-line {
+    pointer-events: none;
+  }
+
   text::selection {
     background: none;
   }

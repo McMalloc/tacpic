@@ -155,7 +155,7 @@ const Navbar = props => {
     })
 
     if (user.role === 1) sections.push(
-        <NavbarItem restrictedlink={'true'} key={sections.length} to={'/admin'}>
+        <NavbarItem restrictedlink={'true'} key={sections.length} to={'/admin/start'}>
             <Icon icon={"tools"} />&nbsp;
             {t('navigation.admin')}
         </NavbarItem>

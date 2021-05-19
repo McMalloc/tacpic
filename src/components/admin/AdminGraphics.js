@@ -5,7 +5,7 @@ import styled from 'styled-components/macro';
 
 // TODO: Minimieren-Button
 const Wrapper = styled.div`
-
+    width: 100%;
 `;
 
 const AdminGraphics = props => {
@@ -18,7 +18,7 @@ const AdminGraphics = props => {
 
     return (
         <Wrapper>
-            admin
+            drafts
         </Wrapper>
     )
 };

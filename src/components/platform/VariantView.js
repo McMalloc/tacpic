@@ -18,13 +18,15 @@ import { Numberinput } from "../gui/Input";
 import * as moment from "moment";
 import { APP_URL, API_URL } from "../../env.json";
 import Well from "../gui/Well";
-import { MD_SCREEN, SM_SCREEN, DB_DATE_FORMAT } from "../../config/constants";
+import { MD_SCREEN, SM_SCREEN, DB_DATE_FORMAT, ROLE } from "../../config/constants";
 import { FILE } from "../../actions/action_constants";
 import useIntersect from "../../contexts/intersections";
 import { useBreakpoint } from "../../contexts/breakpoints";
 import { Trans } from "react-i18next";
 import InfoLabel from "../gui/InfoLabel";
 import Select from "../gui/Select";
+import Badge from "../gui/Badge";
+import ElementGrid from "../gui/ElementGrid";
 
 const addToBasket = (dispatch, variantId, quantity, product, index = null) => {
   dispatch({
@@ -46,6 +48,8 @@ const removeFromBasket = (dispatch, index) => {
 const Title = styled.h2`
   grid-area: title;
   margin-top: 0;
+  display: flex;
+  align-items: center;
 `;
 
 const Wrapper = styled.div`
@@ -205,7 +209,7 @@ const VariantView = (props) => {
     </Carousel>
   </Preview>
 
-  const buttonBar = <ButtonBar>
+  const buttonBar = <ElementGrid>
     <FlyoutButton
       flyoutWidth={300}
       disabled={!logged_in || !lg}
@@ -252,7 +256,7 @@ const VariantView = (props) => {
         sublabel={"catalogue:variant-new-hint"}
       />
     </FlyoutButton>
-        &ensp;
+
     <FlyoutButton
       disabled={!logged_in}
       rightAlign
@@ -272,7 +276,7 @@ const VariantView = (props) => {
         />
       })}
     </FlyoutButton>
-    &ensp;
+
     <Toggle
       label={"catalogue:history_" + (showHistory ? "hide" : "show")}
       toggled={showHistory}
@@ -281,32 +285,39 @@ const VariantView = (props) => {
         setSearchParams({ view: showHistory ? "" : "history" })
       }
     />
-    {role === 1 &&
+    {role === ROLE.ADMIN &&
       <FlyoutButton
         disabled={!logged_in}
+        dangerous
         label={'catalogue:adminFeatures'} icon={'eye-slash'}
       >
         <FlyoutEntry
-          label={"catalogue:hideVariant"}
-          onClick={() => dispatch({ type: VARIANT.HIDE.REQUEST, payload: { id: variantId, public: false } })}
+          label={props.public ? "catalogue:hideVariant" : "catalogue:showVariant"}
+          onClick={() => {
+            dispatch({ type: VARIANT.HIDE.REQUEST, payload: { id: variantId, public: !props.public } })
+            window.location.reload();
+          }}
           sublabel={""}
         />
-        <FlyoutEntry
+        {/* <FlyoutEntry
           label={"catalogue:hideGraphic"}
           onClick={() => { }}
           sublabel={""}
-        />
+        /> */}
 
       </FlyoutButton>
     }
-  </ButtonBar>
+    <br />
+  </ElementGrid>
 
   return (
     <Wrapper ref={ref}>
       {pagePreviews}
 
       <Title className={'breakable-long-lines'}>
-        {props.graphicTitle}: {props.title}
+        {props.graphicTitle}: {props.title} {!props.public &&
+            <>&ensp;<Badge serious state={'warning'}><Icon icon={'eye-slash'} /> Nicht öffentlich</Badge></>
+          }
       </Title>
 
       <div className={'details'}>
@@ -381,6 +392,7 @@ const VariantView = (props) => {
         {!lg && <Alert info>{t("editor:not_available-screen")}</Alert>}
       </div>
       <div className={'order'}>
+
         {buttonBar}
 
         <Well>

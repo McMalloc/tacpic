@@ -27,8 +27,8 @@ const Label = styled.label`
       font-family: 'Font Awesome 5 Free';
   }  
   
-  &:hover .label {
-    text-decoration: underline;
+  &:hover {
+      text-decoration: underline;
   }
 `;
 

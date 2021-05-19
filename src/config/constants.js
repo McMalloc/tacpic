@@ -43,8 +43,13 @@ export const TOOLS = {
   PATH: {
     cssClass: "bezier-curve",
     unicode: "\uf55b",
+    id: 'PATH'
   },
 };
+
+export const ROLE = {
+  ADMIN: 1
+}
 
 export const COLOURS = {
   none: "transparent",

@@ -11,6 +11,7 @@ import { Alert } from '../gui/Alert';
 import Modal from '../gui/Modal';
 import { useTranslation, Trans } from 'react-i18next';
 import { useBreakpoint } from '../../contexts/breakpoints';
+import Badge from '../gui/Badge';
 
 const TileWrapper = styled(Tile)`
     flex-direction: row;
@@ -22,28 +23,6 @@ const Section = styled.div`
     /* display: flex; */
     width: 33%;
 `
-
-const Indicator = styled.span`
-  display: inline-block;
-  text-transform: uppercase;
-  color: ${props => props.theme.background};
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  border-radius: ${props => props.theme.border_radius};
-  padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[2]};
-  background-color: ${props => {
-        switch (props.state) {
-            case 0:
-                return props.theme.info;
-            case 1:
-                return props.theme.success;
-            case 2:
-                return props.theme.warning;
-            default:
-                return props.theme.midlight;
-        }
-    }};
-`;
 
 const openLocalFile = (dispatch, data = {}) => dispatch({ type: FILE.OPEN.SUCCESS, data });
 
@@ -126,7 +105,7 @@ const EditorSplash = () => {
                                         {file.lastSaved && moment(file.lastSaved).format(t('dateFormat'))}
                                     </Section>
                                     <Section>
-                                        <Indicator state={2}>{t('editor:notPublished')}</Indicator>
+                                        <Badge state={'warning'}>{t('editor:notPublished')}</Badge>
                                     </Section>
 
                                     <Section style={{ textAlign: 'right', width: 'auto' }}>

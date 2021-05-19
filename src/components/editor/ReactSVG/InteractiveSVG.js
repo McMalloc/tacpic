@@ -13,15 +13,13 @@ import SVGGrid from "./Grid";
 import { findObject } from "../../../utility/findObject";
 import { SVGPage } from "./SVGPage";
 import { ERROR_THROWN } from "../../../actions/action_constants";
-import { TOOL_SENSIBILITY, KEYCODES } from "../../../config/constants";
+import { TOOL_SENSIBILITY, KEYCODES, TOOLS } from "../../../config/constants";
 import styled from "styled-components/macro";
 
 const SVG = styled.svg`
   width: ${props => props.scale * props.canvasWidth}px;
-  /* width: 100%; */
   min-width: 100%;
   height: ${props => props.scale * props.canvasHeight}px;
-  /* height: 100%; */
   min-height: 100%;
   touch-action: none;
   outline: none; 
@@ -57,6 +55,7 @@ class InteractiveSVG extends Component {
         // to be communicated to the store (but the results will be of course)
         editIndex: -1,
         editParam: -1,
+        attachablePath: null,
         selectedPoint: null,
         segmentStart: -1,
         mouseOffsetX: 0,
@@ -188,6 +187,7 @@ class InteractiveSVG extends Component {
     };
 
     mouseDownHandler = event => {
+        console.log('svg');
         try {
             // TODO FIREFOX: TypeError: event.nativeEvent.path is undefined
             //  src/components/editor/widgets/ReactSVG/InteractiveSVG.js:105
@@ -233,7 +233,8 @@ class InteractiveSVG extends Component {
                 unselected = true;
                 this.props.ui.selectedObjects.length !== 0 && this.props.unselect();
                 this.setState({
-                    editIndex: -1
+                    editIndex: -1,
+                    attachablePath: null
                 });
             }
 
@@ -356,6 +357,7 @@ class InteractiveSVG extends Component {
     };
 
     mouseUpHandler = event => {
+        console.log('MOUSE UP SVG');
         try {
             let target = event.nativeEvent.target;
             this.setState({
@@ -376,14 +378,12 @@ class InteractiveSVG extends Component {
 
             if (this.state.previews !== null) { // set preview in store
                 if (this.props.ui.tool === 'PATH') {
-                    console.log("editing path");
                     if (this.state.transform !== null) {
-                        console.log("  persist state");
                         this.state.previews.map(preview => this.props.updateObject(preview));
                         this.setState({
                             previews: null
                         });
-                    } else {
+                    } else if (this.state.dragging) {
                         // creating freeform path segment
                         const smoothedPath = methods.path.smoothSegment(this.state.previews[0], this.state.segmentStart, this.state.previews[0].points.length - 1, 10);
                         this.props.updateObject(smoothedPath);
@@ -416,8 +416,7 @@ class InteractiveSVG extends Component {
                         this.setState({
                             previews: null,
                             edit: null,
-                            editParam: -1,
-                            // editIndex: -1
+                            editParam: -1
                         });
                         this.props.updateObject(this.state.previews);
                     }
@@ -427,7 +426,6 @@ class InteractiveSVG extends Component {
                     switch (this.props.ui.tool) {
                         case "SELECT":
                             if (this.state.dragging) {
-                                console.log("marquee!");
                                 let marqueed = [];
                                 this.props.file.present.pages[this.props.ui.currentPage].objects.forEach(object => {
                                     if (methods[object.type].isMarqueed(object, {
@@ -473,6 +471,8 @@ class InteractiveSVG extends Component {
             // TODO hier das snapping implementieren
             const mouseOffsetX = parseInt(transformedCoords.x);
             const mouseOffsetY = parseInt(transformedCoords.y);
+
+            // console.log(event.target);
 
             this.setState({
                 mouseOffsetX, mouseOffsetY,
@@ -561,6 +561,46 @@ class InteractiveSVG extends Component {
         }
     };
 
+    callbacks = {
+        mouseEnterCallback: event => {
+            event.stopPropagation();
+            console.log(this.props.ui.selectedObjects);
+            console.log(this.state.previews);
+            console.log(' - - - - ');
+            this.props.ui.tool === TOOLS.PATH.id && this.state.previews !== null && this.state.previews[0].type === 'path' && this.setState({
+                attachablePath: {target: event.target.dataset.uuid, source: this.state.previews[0].uuid}
+            });
+        },
+        mouseLeaveCallback: event => {
+            event.stopPropagation();
+            this.setState({
+                // attachablePath: null
+            });
+        },
+        onMouseDown: event => {
+            event.stopPropagation();
+            let attachablePath = cloneDeep(findObject(
+                this.props.file.present.pages[this.props.ui.currentPage].objects, 
+                this.state.attachablePath.target)
+                );
+            let selectedPath = cloneDeep(findObject(
+                this.props.file.present.pages[this.props.ui.currentPage].objects, 
+                this.state.attachablePath.source)
+                );
+            let mergedPath = methods.path.mergePaths(selectedPath, attachablePath, event.target.dataset.index);
+            this.props.updateObject(mergedPath);
+            this.props.remove([this.state.attachablePath.target]);
+            this.props.select([mergedPath.uuid]);
+            this.setState({
+                attachablePath: null
+            })
+        },
+        onMouseUp: event => {
+            console.log('MOUSE UP MANIPULATOR');
+            event.stopPropagation()
+        }
+    }
+
     render() {
         const visibleObjects = this.props.file.present.pages[this.props.ui.currentPage].objects;
         let selectedObjects = this.props.ui.selectedObjects.map(uuid => findObject(visibleObjects, uuid));
@@ -600,10 +640,11 @@ class InteractiveSVG extends Component {
                     })}
 
                     <SVGPage page={this.props.ui.currentPage}
+                        callbacks={this.callbacks}
                         excludes={this.state.previews !== null ? this.state.previews.map(preview => preview.uuid) : []} />
 
                     {this.state.previews !== null &&
-                        this.state.previews.map((preview, index) => mapObject(preview, -(index + 1)))
+                        this.state.previews.map((preview, index) => mapObject(preview, -(index + 1), -1, this.callbacks))
                     }
 
                     {/* Path indicator */}
@@ -626,6 +667,21 @@ class InteractiveSVG extends Component {
                     editIndex={this.state.editIndex}
                     dragging={this.state.dragging}
                 />
+
+                {this.state.attachablePath !== null &&
+                    <PathManipulator
+                        path={findObject(
+                            this.props.file.present.pages[this.props.ui.currentPage].objects,
+                            this.state.attachablePath.target)}
+                        attachable={true}
+                        callbacks={this.callbacks}
+                        offsetX={this.props.ui.viewPortX}
+                        offsetY={this.props.ui.viewPortY}
+                        scale={this.props.ui.scalingFactor}
+                        editIndex={this.state.editIndex}
+                        dragging={this.state.dragging}
+                    />
+                }
 
                 {this.state.dragging && this.state.transform === null && this.state.edit === null &&
                     ((this.props.ui.tool === 'SELECT' || this.props.ui.tool === 'LABEL') && !this.state.panning) &&

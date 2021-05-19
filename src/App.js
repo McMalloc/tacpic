@@ -48,7 +48,7 @@ const Wrapper = styled.div`
 `;
 
 const AppContainer = styled.main`
-  flex: 1 ${(props) => (props.inEditor || props.inEditorSplash ? 1 : 0)} 100%;
+  flex: 1 1 100%;
   overflow-y: ${(props) => (props.inEditor ? "hidden" : "visible")};
 
   display: flex;
@@ -62,6 +62,7 @@ const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const inEditor = /editor\/app/.test(location.pathname) || location.pathname === '/'; // TODO in footer packen, nervt hier
+  const inAdmin = /admin/.test(location.pathname);
   const inEditorSplash = /splash/.test(location.pathname);
   const { trackPageView, trackEvent } = useMatomo()
   const gdpr = useSelector(state => state.app.gdpr);
@@ -108,7 +109,7 @@ const App = () => {
           id={"app-container"}
           inEditor={inEditor}
           inEditorSplash={inEditorSplash}
-          className={!inEditor ? " container" : ""}
+          className={!inEditor && !inAdmin ? " container" : inAdmin ? "container-fluid" : ""}
         >
           <Routes>
             <Route path="/login" element={<Login />} />
@@ -135,9 +136,16 @@ const App = () => {
             <Route path="/editor/app" element={<Suspense fallback={<Loader />}>
               <Editor />
             </Suspense>} />
-            <Route path="/admin" element={<Suspense fallback={<Loader />}>
+
+            <Route path="/admin">
+              <Route path=":section" element={<Suspense fallback={<Loader />}>
               <AdminIndex />
             </Suspense>} />
+              <Route path=":section/:view" element={<Suspense fallback={<Loader />}>
+              <AdminIndex />
+            </Suspense>} />
+            </Route>
+
             {/* <Route path="/editor/app" element={<Editor />} /> */}
             <Route path="/stats" element={<Stats />} />
             <Route path="/pricing" element={<Pricing />} />

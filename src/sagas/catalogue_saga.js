@@ -22,6 +22,7 @@ const mapGraphics = graphics => {
                     braille_format: variant.braille_format,
                     braille_no_of_pages: variant.braille_no_of_pages,
                     graphic_format: variant.graphic_format,
+                    public: variant.public,
                     graphic_no_of_pages: variant.graphic_no_of_pages,
                     created_at: variant.created_at,
                     description: variant.variant_description,
@@ -37,7 +38,7 @@ const mapGraphics = graphics => {
 export const catalogueSearchSaga = createSaga(
     CATALOGUE.SEARCH, 'get',
     'graphics?tags=:tags&search=:terms&system=:system&format=:format&limit=:limit&offset=:offset',
-    takeLatest, false, undefined, graphics => ({graphics: mapGraphics(graphics), count: graphics.length})
+    takeLatest, true, undefined, graphics => ({graphics: mapGraphics(graphics), count: graphics.length})
 );
 
 export const catalogueLoadMoreSaga = createSaga(

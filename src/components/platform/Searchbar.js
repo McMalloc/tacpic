@@ -45,7 +45,10 @@ const Searchbar = () => {
                 noMargin
                 style={{ width: '100%' }}
                 label={t('landing:searchNow')}
-                onChange={event => setSearchTerm(event.target.value)}
+                onChange={event => {
+                    setSearchTerm(event.target.value)
+                    if (event.target.value.trim().length === 0) searchChanged(dispatch, "")
+                }}
                 externalLabel={"search-bar-label"}
                 placeholder={t("catalogue:search-placeholder")}
             />

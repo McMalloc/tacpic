@@ -12,7 +12,7 @@ import {
     smoothCubicPoint,
     getCoords,
     getCoordsForEndRotation,
-    getCoordsForStartRotation, smoothSegment
+    getCoordsForStartRotation, smoothSegment, mergePaths
 } from "./path";
 import i18n from "i18next";
 
@@ -325,6 +325,7 @@ const methods = {
         // translate: translatePath,
         rotate: defaultRotate,
         scale: pathScale,
+        mergePaths: mergePaths,
         smoothSegment,
         getClientBox: defaultGetClientBox,
         create: createPath,

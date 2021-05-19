@@ -114,12 +114,11 @@ export const removePoint = (path, index) => {
     return path;
 };
 
-export const mergePaths = (source, target, stitchIndex) => {
-    let sourceCopy = cloneDeep(source);
-    let targetCopy = cloneDeep(target);    
-    targetCopy.points[0].kind = 'L';
-    sourceCopy.points = sourceCopy.points.concat(targetCopy.points)
-    return sourceCopy;
+export const mergePaths = (source, target, stitchIndex) => { 
+    target.points[0].kind = 'L';
+    source.points = source.points.concat(target.points)
+    source.points.push({kind: 'L', coords: [100,100]});
+    return source;
 }
 
 export const reverse = path => {

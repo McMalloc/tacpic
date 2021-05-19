@@ -113,6 +113,7 @@ const file = (state = {}, action) => {
       
       return produce(state, (draftState) => {
         action.previews.forEach(preview => {
+          if (!preview) return;
           index = draftState.pages[action.shared_currentPage].objects.findIndex(
           (obj) => obj.uuid === preview.uuid
         );

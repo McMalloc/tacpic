@@ -10,7 +10,7 @@ import Embedded from "./Embedded";
 export const extractSVG = index => document.getElementById("page-" + index).outerHTML;
 
 // TODO props.uuid als index?
-export default function mapObject(props, index, pageIndex = -1) {
+export default function mapObject(props, index, pageIndex = -1, callbacks) {
     if (!props || (props.hasOwnProperty('active') && !props.active)) return null;
     switch (props.type) {
         case "rect":
@@ -28,7 +28,7 @@ export default function mapObject(props, index, pageIndex = -1) {
                 </SVGGroup>
             );
         case "path":
-            return <SVGPath key={index} {...props} inPreview={index === -1}/>;
+            return <SVGPath callbacks={callbacks} key={index} {...props} inPreview={index === -1}/>;
         case "ellipse":
             return <Ellipse key={index} {...props} />;
         case "label":

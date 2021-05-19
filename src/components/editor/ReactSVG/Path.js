@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react'
-import './Path.css';
 import { createPattern } from "./Patterns";
 import { getRotation } from "../../../utility/geometry";
 import methods from "./methods/methods";
@@ -7,10 +6,8 @@ import { buildPath } from "./PathGeneration";
 import { COLOURS } from '../../../config/constants';
 
 export default function SVGPath(props) {
-    // const path = buildPath(props.points, props.closed);
-    const path = useMemo(() => buildPath(props.points, props.closed), [props.points, props.closed]);
-    // const smoothPathC = buildPath(props.points, cubicCommand, props.closed);
-    // const smoothPathQ = buildPath(props.points, quadraticCommand, props.closed);
+    const path = buildPath(props.points, props.closed);
+    // const path = useMemo(() => buildPath(props.points, props.closed), [props.points, props.closed]);
 
     const [offsetX, offsetY] = methods.path.getOffset(props);
     const transformProperty = `translate(${props.x} ${props.y}) scale(${props.scaleX} ${props.scaleY}) rotate(${props.angle} ${offsetX} ${offsetY})`;
@@ -26,6 +23,7 @@ export default function SVGPath(props) {
 
     const neutralBorder = <path
         className={"neutral-border"}
+        data-uuid={props.uuid} 
         style={
             {
                 stroke: "white",
@@ -36,8 +34,14 @@ export default function SVGPath(props) {
     />
 
     return (
-        <g data-selectable={1} id={props.uuid} transform={transformProperty}>
-
+        <g
+           // onMouseEnter={props.callbacks.mouseEnterCallback}
+           // onMouseLeave={props.callbacks.mouseLeaveCallback}
+           data-selectable={1} 
+           id={props.uuid} 
+           data-uuid={props.uuid} 
+           transform={transformProperty}>
+               
             {props.startArrow &&
                 <polygon
                     stroke={'white'}

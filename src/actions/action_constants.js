@@ -25,6 +25,7 @@ export const CATALOGUE  = action_constants('CATALOGUE', ['SEARCH', 'MORE']);
 export const TAGS       = action_constants('TAGS',      ['GET', 'SEARCH', 'CREATE']);
 export const BRAILLE    = action_constants('BRAILLE',   ['TRANSLATE']);
 export const ORDER      = action_constants('ORDER',     ['CREATE', 'GET', 'INDEX']);
+export const ORDER_ADMIN      = action_constants('ORDER_ADMIN',     ['INDEX']);
 export const QUOTE      = action_constants('QUOTE',     ['REQUEST', 'GET']);
 export const ADDRESS    = action_constants('ADDRESS',   ['GET', 'CREATE', 'UPDATE', 'REMOVE']); // TODO rename GET to ADDRESS.INDEX
 export const IMPORT     = action_constants('IMPORT',    ['TRACE', 'OCR']);

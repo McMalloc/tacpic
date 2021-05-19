@@ -6,7 +6,7 @@ import Loader from "../gui/Loader";
 import { Icon } from './_Icon';
 
 
-const Wrapper = styled.ul`
+export const Wrapper = styled.ul`
     padding: 0;
     font-size: 0.9rem;
     border-right: 2px solid lightgrey;  
@@ -87,7 +87,7 @@ const Wrapper = styled.ul`
     }
 `;
 
-const IndexLink = styled(NavLink)`
+export const IndexLink = styled(NavLink)`
     position: relative;
     font-weight: 900;
 

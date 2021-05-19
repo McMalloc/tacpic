@@ -13,6 +13,7 @@ import * as moment from 'moment'
 import { Icon } from "../gui/_Icon";
 import { Button } from "../gui/Button";
 import { useTranslation } from "react-i18next";
+import Badge from "../gui/Badge";
 
 const VariantPreviewStyled = styled.div`
   display: flex;
@@ -103,48 +104,26 @@ const Wrapper = styled.div`
 
 const nrOfVisibleTags = 3;
 
-const VariantPreview = ({
-  title,
-  id,
-  description,
-  tags,
-  document,
-  current_file_name,
-  subtitle,
-}) => {
+const VariantPreview = props => {
   let selectedVariantId = useParams().variantId;
-  const allTags = useSelector((state) => state.catalogue.tags);
   const { t } = useTranslation();
   return (
     <VariantPreviewStyled 
       role={'link'}
-      aria-label={title} 
-      active={id === parseInt(selectedVariantId)}>
+      aria-label={props.title} 
+      active={props.id === parseInt(selectedVariantId)}>
       <img
-        alt={t('catalogue:variantPreviewAlt') + ' ' + title}
+        alt={t('catalogue:variantPreviewAlt') + ' ' + props.title}
         aria-hidden={true}
-        src={`${API_URL}/thumbnails/${current_file_name}-THUMBNAIL-xl-p0.png`}
+        src={`${API_URL}/thumbnails/${props.current_file_name}-THUMBNAIL-xl-p0.png`}
       />
       <div aria-hidden={true} className={"variant-info breakable-long-lines"}>
-        <strong>{title}</strong>
+        <strong>{props.title}</strong>
         <br />
-        {subtitle && <small>{subtitle}</small>}
-        {/* <div>
-          {!!tags && tags.length !== 0 &&
-            tags.map((t, index) => {
-              let completeTag = allTags.find((_t) => _t.tag_id === t);
-              if (index > nrOfVisibleTags) return null;
-              if (index === nrOfVisibleTags)
-                return (
-                  <TagView>{t('catalogue:moreTags', {amount: tags.length - nrOfVisibleTags})}</TagView>
-                );
-              return (
-                <TagView title={completeTag && completeTag.name} key={t}>
-                  {completeTag && completeTag.name}
-                </TagView>
-              );
-            })}
-        </div> */}
+        {props.subtitle && <small>{props.subtitle}</small>}
+        {!props.public &&
+            <><br/><Badge serious state={'warning'}><Icon icon={'eye-slash'} /></Badge></>
+          }
       </div>
     </VariantPreviewStyled>
   );
@@ -223,6 +202,7 @@ const CatalogueItemView = ({ variantsOverview }) => {
             <VariantPreview
               title={moment(version.created_at, DB_DATE_FORMAT).format("DD.MM.YYYY, HH:mm") + ' Uhr'}
               id={version.id}
+              public
               key={ index }
               subtitle={`von ${history.contributors.find(contributor => contributor.id === version.user_id).display_name}: ${version.change_message}`}
               current_file_name={version.file_name}
