@@ -61,7 +61,7 @@ const ResetPasswordRequest = props => {
                             onChange={event => setEmail(event.target.value)}
                             name={'email'}/>
 
-                        <ServerError error={user.error}/>
+                        <ServerError i18nKey={'account'} error={user.error}/>
 
                         <div className={'align-center'}>
                             {/*<input type={"submit"} value={"login"}/>*/}

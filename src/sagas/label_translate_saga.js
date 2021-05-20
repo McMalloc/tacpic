@@ -127,7 +127,7 @@ export function* layoutEditWatcher() {
 }
 
 export function* systemChangeWatcher() {
-  yield takeLatest("CHANGE_FILE_PROPERTY", function* (action) {
+  yield debounce(200, "CHANGE_FILE_PROPERTY", function* (action) {
     // TODO auch Brailleseiten neu übersetzen
     if (action.key === "system") {
       try {
@@ -171,11 +171,12 @@ export function* systemChangeWatcher() {
           return labels;
         });
 
-        for (var label of labels) {
+        for (let label of labels) {
           translateWorker.postMessage({ text: label.text, system });
           const response = yield take(translateWorkerChannel);
           yield put({
             type: OBJECT_PROP_CHANGED,
+            undoIgnore: true,
             prop: "braille",
             value: response,
             uuid: label.uuid,

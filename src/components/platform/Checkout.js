@@ -15,6 +15,7 @@ import StepIndicator from "../gui/StepIndicator";
 import uuidv4 from "../../utility/uuid";
 import { useNavigate } from "react-router-dom";
 import { MAX_VALUE_FOR_ORDER } from "../../config/constants";
+import ServerError from "./ServerError";
 
 // TODO Kommentar anfügen
 
@@ -31,7 +32,7 @@ const Checkout = props => {
     // const invoiceAddresses = user.addresses.filter(address => address.is_invoice_addr);
     // const shippingAddresses = user.addresses.filter(address => !address.is_invoice_addr);
     const addresses = user.addresses;
-    const idempotencyKey = uuidv4();
+
     const orderState = useSelector(state => state.catalogue.order);
     const emptyBasket = useSelector(state => state.catalogue.basket.length === 0);
     const quote = useSelector(state => state.catalogue.quote);
@@ -44,6 +45,7 @@ const Checkout = props => {
     }, []);
 
     // const [step, changeStep] = useState(3);
+    const [idempotencyKey, setIdempotencyKey] = useState(uuidv4());
     const [step, changeStep] = useState(0);
     const [autoLoggedin, setAutologgedin] = useState(false);
 
@@ -196,7 +198,7 @@ const Checkout = props => {
             </a>2
             </Trans>
             <br />
-            <Alert warning>{t('commerce:pleaseReviewOrder')}</Alert>
+            <Alert info>{t('commerce:pleaseReviewOrder')}</Alert>
 
 
         </p>
@@ -214,6 +216,7 @@ const Checkout = props => {
             <Row>
             <div className={"col-xs-12"}>
                 <h1>{t('commerce:checkout')}</h1>
+                {idempotencyKey}
             </div>
                 <div className={"col-xs-12 col-md-5"}>
                     <div style={{ position: 'sticky', top: 12 }}>
@@ -242,10 +245,7 @@ const Checkout = props => {
 
                         <br />
                         {orderState.error !== null &&
-                            <><Alert danger>
-                                {t('commerce:orderFailed')}<br />
-                                {orderState.error.type}: {orderState.error.message}
-                            </Alert><br /></>
+                            <><ServerError error={orderState.error} i18nKey={'commerce'} /><br /></>
                         }
                     </div>
 

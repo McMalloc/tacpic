@@ -2,22 +2,22 @@ import React from "react";
 import {Alert} from "../gui/Alert";
 import {useTranslation} from "react-i18next";
 
-export default ({error}) => {
+export default ({error, i18nKey}) => {
     const { t } = useTranslation();
     
     if (!error) return null;
 
     if (!!error.error) return <Alert warning>
-        {t("account:" + error.error)}
+        {t(i18nKey + ":" + error.error)}
     </Alert>
 
     if (!!error['field-error']) return <Alert warning>
-        {t("account:" + error.error)}<br/>
-        {error['field-error'] && t("account:" + error['field-error'][1])}
+        {t(i18nKey + ":" + error.error)}<br/>
+        {error['field-error'] && t(i18nKey + ":" + error['field-error'][1])}
     </Alert>
 
     return <Alert warning>
-        {t("account:" + error.type)}:<br/>
-        {error.message && t("account:" + error.message)}
+        {t(i18nKey + ":" + error.type)}:<br/>
+        {error.message && t(i18nKey + ":" + error.message)}
     </Alert>
 }

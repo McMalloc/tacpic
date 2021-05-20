@@ -85,7 +85,7 @@ const SignupForm = props => {
                                 onChange={event => setDisplayname(event.target.value)}
                                 name={'uname'} />
 
-                            {tryAgain === uname + displayname && <ServerError error={user.error} />}
+                            {tryAgain === uname + displayname && <ServerError i18nKey={'account'} error={user.error} />}
 
 
                             <p>{t("account:passwordNextStep")}</p>

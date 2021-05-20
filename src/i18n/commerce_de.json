@@ -49,5 +49,8 @@
   "paymentMethod": "Bezahlmethode",
   "checkOverview": "Überprüfen",
   "orderFailed": "Bestellung fehlgeschlagen",
-  "orderSuccessfull": "<0>Vielen Dank für Ihre Bestellung!</0><1 /><2>Wir haben Ihnen eine Bestellübersicht per E-Mail geschickt.</2><3>Zurück zur Startseite</3> oder <4>Bestellungen einsehen</4>"
+  "orderSuccessfull": "<0>Vielen Dank für Ihre Bestellung!</0><1 /><2>Wir haben Ihnen eine Bestellübersicht per E-Mail geschickt.</2><3>Zurück zur Startseite</3> oder <4>Bestellungen einsehen</4>",
+
+  "duplicate_order": "Doppelte Bestellung",
+  "duplicate_order_message": "Die Bestellung ist zweimal im System eingegangen. Bitte überprüfen Sie die Bestellung unter Benutzerkonto > Bestellungen."
 }

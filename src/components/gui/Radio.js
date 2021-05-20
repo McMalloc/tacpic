@@ -80,7 +80,7 @@ const Radio = props => {
               id={props.name + "-" + option.value}
               disabled={option.disabled}
               tabIndex={-1}
-              aria-role={'radio'}
+              role={'radio'}
               aria-label={label}
               aria-checked={option.value === props.value}
               value={option.value}

@@ -54,7 +54,7 @@ const undoable = reducer => {
                 if (present === newPresent) {
                     return state
                 }
-                if (actionsToIgnore.includes(action.type) || (!!action.prop && propsToIgnore.includes(action.prop))) { // diese Aktionen nicht der history hinzufügen, aber ausführen
+                if (!!action.undoIgnore || actionsToIgnore.includes(action.type) || (!!action.prop && propsToIgnore.includes(action.prop))) { // diese Aktionen nicht der history hinzufügen, aber ausführen
                     // console.log(action.prop + " ignored");
                     return {
                         ...state,

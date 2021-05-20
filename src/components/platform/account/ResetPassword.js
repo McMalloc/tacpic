@@ -79,7 +79,7 @@ const ResetPassword = props => {
                     onChange={event => setPwdConfirm(event.target.value)}
                     name={'pwdConfirm'}/>
 
-                <ServerError error={user.error}/>
+                <ServerError i18nKey={'account'} error={user.error}/>
 
 
                 <div style={{textAlign: "center"}}>

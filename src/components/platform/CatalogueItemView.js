@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link, useSearchParams, useParams } from "react-router-dom";
 import { GRAPHIC, VARIANT } from "../../actions/action_constants";
 import VariantView from "./VariantView";
-import styled, { useTheme } from "styled-components/macro";
+import styled from "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
-import { TagView } from "./Tag";
 import { API_URL } from "../../env.json";
 import Loader from "../gui/Loader";
 import { useBreakpoint } from "../../contexts/breakpoints";
