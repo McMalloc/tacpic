@@ -1,12 +1,12 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
-import {useTable} from 'react-table';
 import styled from 'styled-components/macro';
 import {ADMIN} from '../../actions/action_constants';
 import Modal from '../gui/Modal';
 import * as moment from "moment";
 import {DB_DATE_FORMAT} from "../../config/constants";
+import Datagrid from "../gui/Datagrid";
 
 // TODO: Minimieren-Button
 const Wrapper = styled.div`
@@ -17,15 +17,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const Row = styled.tr`
-  &:nth-child(odd) {
-    background-color: ${({theme}) => theme.grey_5};
-    &:hover {
-      background-color: ${({theme}) => theme.grey_6};
-    }
-  }
-  cursor: pointer;
-`;
 const Pre = styled.pre`
   white-space: pre-wrap;
   font-size: 0.8rem;
@@ -73,73 +64,33 @@ const AdminErrors = props => {
         }
     }, [memoedErrors.length]);
 
-    console.log(columns)
+    const options = {};
 
+    return <Wrapper>
+        <Datagrid columns={columns} data={errors} options={options}
+                  onCellClick={(cell, rowIndex, colIndex) => console.log(cell, rowIndex, colIndex)}
+                  onRowClick={(row, index) => setModalContent(row)} />
 
-    const tableInstance = useTable({columns, data: memoedErrors})
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-    } = tableInstance
-
-    return (
-        <>
-            <Wrapper>
-                <table {...getTableProps()}>
-                    <thead>
-                    {headerGroups.map(headerGroup => (
-                        <tr {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map(column => (
-                                <th {...column.getHeaderProps()}>
-                                    {column.render('Header')}
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                    </thead>
-                    <tbody {...getTableBodyProps()}>
-                    {rows.map((row, index) => {
-                        prepareRow(row)
-                        console.log(errors[index])
-                        return (
-                            <Row onClick={() => setModalContent(errors[index])} {...row.getRowProps()}>
-                                {row.cells.map(cell => {
-                                    return (
-                                        <td {...cell.getCellProps()}>
-                                            {cell.render('Cell')}
-                                        </td>
-                                    )
-                                })}
-                            </Row>
-                        )
-                    })}
-                    </tbody>
-                </table>
-            </Wrapper>
-            {modalContent !== null &&
-            <Modal fitted dismiss={() => setModalContent(null)} actions={[
-                {
-                    label: "OK",
-                    align: "right",
-                    disabled: false,
-                    action: () => {
-                        setModalContent(null)
-                    }
+        {modalContent !== null &&
+        <Modal fitted dismiss={() => setModalContent(null)} actions={[
+            {
+                label: "Fertig",
+                align: "right",
+                disabled: false,
+                action: () => {
+                    setModalContent(null)
                 }
-            ]} title={"Details"}>
-                <Pre>
-                    {Object.keys(modalContent).map(key => {
-                        return <><strong>{key}:</strong><br/>{modalContent[key]}<br/><br/></>
-                    })}
-                </Pre>
-
-            </Modal>
             }
-        </>
-    )
+        ]} title={"Details"}>
+            <Pre>
+                {Object.keys(modalContent).map(key => {
+                    return <><br/><br/><strong>{key}:</strong><br/>{modalContent[key]}</>
+                })}
+            </Pre>
+
+        </Modal>
+        }
+    </Wrapper>
 };
 
 export default AdminErrors;
