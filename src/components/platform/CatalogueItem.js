@@ -55,7 +55,6 @@ export default props => {
     const {t} = useTranslation();
     const thumbnailURL =
         `${API_URL}/thumbnails/${props.variants[0].current_file_name}-THUMBNAIL-sm-p0.png`
-        console.log(props.variants);
     
     const hiddenVariants = props.variants.filter(variant => !variant.public);
     return (

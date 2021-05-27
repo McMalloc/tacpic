@@ -28,6 +28,8 @@ src/env.json
 
 /public/FRONTEND_VERSION.txt
 /public/FRONTEND.txt
+/public/BACKEND_VERSION.txt
+/public/BACKEND.txt
 
 package-lock.json
 npm-debug.log*
