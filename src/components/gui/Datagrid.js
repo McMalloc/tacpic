@@ -3,6 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {useTable, useSortBy, useFilters} from 'react-table';
 import styled from "styled-components/macro";
 import {Textinput} from "./Input";
+import {Icon} from "./_Icon";
 
 const Row = styled.tr`
   &:nth-child(odd) {
@@ -14,6 +15,10 @@ const Row = styled.tr`
   }
 
   cursor: pointer;
+`;
+
+const SortIndicator = styled.div`
+  float: right;
 `;
 
 function DefaultColumnFilter({column: {filterValue, preFilteredRows, setFilter}}) {
@@ -95,8 +100,15 @@ const Datagrid = props => {
                 {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map(column => (
-                            <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                                {column.render('Header')}
+                            <th>
+                                <div {...column.getHeaderProps(column.getSortByToggleProps())}>
+                                    {column.render('Header')}
+                                    {column.isSorted
+                                        ? column.isSortedDesc
+                                            ? <SortIndicator><Icon icon={'caret-down'} /></SortIndicator>
+                                            : <SortIndicator><Icon icon={'caret-up'} /></SortIndicator>
+                                        : ''}
+                                </div>
                                 <div>{column.render('Filter')}</div>
                             </th>
                         ))}

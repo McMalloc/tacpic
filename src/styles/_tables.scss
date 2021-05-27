@@ -5,9 +5,13 @@ table {
   thead {
     font-weight: bold;
     text-align: left;
+
+    th {
+      background-color: transparent;
+    }
   }
 
-  tr:hover {
+  tbody tr:hover {
     background-color: rgba(255,255,255,0.6);
     color: #1b1e21;
   }
