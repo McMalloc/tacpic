@@ -15,10 +15,11 @@ const Form = styled.div`
   box-sizing: border-box;
   padding: 2rem 3rem;
   margin-top: 4rem;
-  background-color: ${props => props.theme.grey_6};
+  //background-color: ${props => props.theme.grey_6};
+  background: linear-gradient(51deg, rgba(232,232,232,0.95) 0%, rgba(245,245,245,1) 100%);
   
   /* z-index: 1; */
-      position: relative;
+  position: relative;
   border-radius: ${props => props.theme.border_radius};
   box-shadow: ${props => props.theme.distant_shadow};
 
@@ -30,22 +31,6 @@ const Form = styled.div`
 const Video = styled.video`
   max-width: 100%;
   height: auto;
-`;
-
-const Placeholder = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  height: 15em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid ${props => props.theme.grey_4};
-  border-radius: ${props => props.theme.border_radius};
-  cursor: pointer;
-  
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 const BigLogo = styled.img`

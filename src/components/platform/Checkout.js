@@ -216,7 +216,6 @@ const Checkout = props => {
             <Row>
             <div className={"col-xs-12"}>
                 <h1>{t('commerce:checkout')}</h1>
-                {idempotencyKey}
             </div>
                 <div className={"col-xs-12 col-md-5"}>
                     <div style={{ position: 'sticky', top: 12 }}>

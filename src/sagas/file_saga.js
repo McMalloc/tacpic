@@ -7,6 +7,11 @@ export function* openFileWatcher() {
         let mode = action.mode;
 
         yield put({ type: 'CLEAR' })
+        // unselect everything in editor before opening a file
+        yield put({
+            type: 'OBJECT_SELECTED',
+            uuids: [null]
+        });
 
         // new graphic
         if (!action.id) {

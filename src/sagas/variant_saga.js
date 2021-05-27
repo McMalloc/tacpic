@@ -3,6 +3,8 @@ import {GRAPHIC, VARIANT} from "../actions/action_constants";
 import {takeLatest} from "redux-saga/effects";
 import {extractSVG} from "../components/editor/ReactSVG";
 import { determineDimensions } from "../utility/determineFormat";
+import pako from "pako";
+
 
 export const variantGetSaga = createSaga(
     VARIANT.GET, 'get', 'variants/:id', takeLatest, true, undefined,
@@ -42,27 +44,16 @@ const replaceTagUuids = tags => tags.map(tag =>
     })
 )
 
+const prepareFile = file => ({
+    ...file,
+    variantDescription: `${file.braillePages.imageDescription.type}. ${file.braillePages.imageDescription.summary} ${file.braillePages.imageDescription.details}`,
+    tags: replaceTagUuids(file.tags),
+})
+
 export const variantUpdateSaga = createSaga(
-    VARIANT.UPDATE, 'post', 'variants/:variant_id', takeLatest, true, file =>
-        ({
-            ...file,
-            variantDescription: `${file.braillePages.imageDescription.type}. ${file.braillePages.imageDescription.summary} ${file.braillePages.imageDescription.details}`,
-            tags: replaceTagUuids(file.tags),
-            pages: file.pages.map((page, index) => ({...page, rendering: extractSVG(index)}))
-        })
-    );
+    VARIANT.UPDATE, 'post', 'variants/:variant_id', takeLatest, true, prepareFile);
 
 export const variantCreateSaga = createSaga(
-    VARIANT.CREATE, 'post', 'variants', takeLatest, true, file =>
-        ({
-            ...file,
-            variantDescription: `${file.braillePages.imageDescription.summary} (${file.braillePages.imageDescription.type})`,
-            tags: replaceTagUuids(file.tags)
-        }));
+    VARIANT.CREATE, 'post', 'variants', takeLatest, true, prepareFile);
 
-export const graphicCreateSaga = createSaga(GRAPHIC.CREATE, 'post', 'graphics', takeLatest, true, file =>
-    ({
-        ...file,
-        variantDescription: `${file.braillePages.imageDescription.summary} (${file.braillePages.imageDescription.type})`,
-        tags: replaceTagUuids(file.tags)
-    }));
+export const graphicCreateSaga = createSaga(GRAPHIC.CREATE, 'post', 'graphics', takeLatest, true, prepareFile);

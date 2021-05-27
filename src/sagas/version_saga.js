@@ -1,7 +1,5 @@
-import {takeLatest, takeEvery, call, put} from 'redux-saga/effects';
-import {VERSION, CATALOGUE} from "../actions/action_constants";
-import axios from "axios/index";
-import uri_encode from "../utility/uri_encode";
+import {takeLatest} from 'redux-saga/effects';
+import {VERSION} from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {groupBy} from "lodash";
 
