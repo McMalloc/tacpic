@@ -78,7 +78,7 @@ const keyDownHandler = (event, selectedUUIDs, dispatch) => {
 };
 
 const ObjectPreview = props => {
-    if (props.type === 'key') return <Icon style={{width: 45}} icon={'key'} />
+    if (props.type === 'key') return <Icon style={{width: 45}} icon={'list'} />
     if (props.type === 'label') return <Icon style={{width: 45}} icon={'braille'} />
     const object = document.getElementById(props.uuid);
     if (object === null) return null;

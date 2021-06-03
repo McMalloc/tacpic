@@ -198,7 +198,7 @@ const Editor = () => {
 
   switch (uiSettings.fileOpen) {
     case 0:
-      navigate('/editor/splash');
+      setTimeout(() => navigate('/editor/splash'));
       break;
     case 1:
       return <Wrapper>

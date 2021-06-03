@@ -60,7 +60,8 @@
   },
   "keyPanel": {
     "heading": "$t(glossary:key)",
-    "showKey": "Zeige $t(glossary:key)",
+    "showKey": "$t(glossary:key) anzeigen",
+    "showBorder": "Rahmen setzen",
     "fixateKey": "$t(glossary:key) fixieren",
     "label": "Beschriftung",
     "singleKey": "Schlüssel",

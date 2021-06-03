@@ -25,10 +25,10 @@ const Black = styled.span`
   color: blue;
 `;
 
-const Labelrow = styled.tr`
+const Keyrow = styled.tr`
   cursor: pointer;
   &:hover td {
-    background-color: lightgrey;
+    background-color: ${props => props.theme.grey_5};
   }
 `;
 
@@ -36,6 +36,7 @@ export default props => {
     const keyedTextures = useSelector(state => state.editor.file.present.keyedTextures);
     const {scalingFactor, currentPage} = useSelector(state => state.editor.ui);
     const keyedLabels = useSelector(keyedLabelsSelector);
+    const usedPatterns = useSelector(patternsInUseSelector);
     const dispatch = useDispatch();
     // const {}
 
@@ -45,11 +46,12 @@ export default props => {
     const [internalCoords, setInternalCoords] = useState({x: 0, y: 0});
     const keyElem = useRef();
 
+
     useEffect(() => {
         if (!props.anchored) return;
         // throw "error";
         const keyBBox = keyElem.current.getBoundingClientRect();
-        const pageBBox = document.getElementById("page-" + currentPage).getBoundingClientRect();
+        const pageBBox = document.getElementById("CANVAS-" + currentPage).getBoundingClientRect();
 
         setInternalCoords({
             x: (pageBBox.width - pixelToPx(keyBBox.width) - pixelToPx(mmToPx(SAFE_BORDER))) / scalingFactor,
@@ -63,7 +65,7 @@ export default props => {
             <foreignObject x={props.anchored ? internalCoords.x : props.x} y={props.anchored ? internalCoords.y : props.y} style={{overflow: 'visible'}}
                            width={1} height={1} id={props.uuid}>
                 {/*width={props.width} height={props.height}>*/}
-                <table className={'initial'} style={{backgroundColor: 'white', border: '1mm solid black', width: props.width}}
+                <table className={'initial'} style={{backgroundColor: 'white', border: '1mm solid ' + (props.border ? 'black' : 'white'), width: props.width}}
                        ref={keyElem}
                        id={"container-" + props.uuid}
                        data-internal-x={internalCoords.x}
@@ -77,10 +79,14 @@ export default props => {
                             <Braille className={"key-label-braille"} data-selectable={true} data-transformable={true} data-uuid={props.uuid}>legende</Braille>
                         </td>
                     </tr>
+
                     {keyedTextures.map((entry, index) => {
+                        if (!usedPatterns.includes(entry.pattern) || entry.label.trim().length === 0) return null;
                         return (
-                            <tr key={index}>
-                                <td style={{padding: "2mm 6mm 0 2mm", verticalAlign: 'top',
+                            <Keyrow onClick={event => {
+                                setTimeout(() => document.getElementById('input-for-texture-key-' + index).focus(), 0);
+                            }} key={index}>
+                                <td style={{padding: "0 6mm 0 2mm", verticalAlign: 'bottom',
                                     minWidth: texturePreviewWidth + 'mm',
                                     maxWidth: texturePreviewWidth + 'mm',
                                     width: texturePreviewWidth + 'mm'
@@ -90,20 +96,21 @@ export default props => {
                                             inactive={true}
                                             data-selectable={true} data-uuid={props.uuid}
                                         pattern={{template: entry.pattern}}
-                                        x={0} y={0}
+                                        x={0} y={0} fill={'white'}
                                         width={texturePreviewWidth + "mm"} height={texturePreviewHeight + "mm"}/>
                                     </svg>
                                 </td>
                                 <td style={{padding: '0 2mm 2mm 0', verticalAlign: 'top'}}>
-                                    <Black className={"key-label-black"} data-selectable={true} data-uuid={props.uuid}>{entry.label}</Black>
-                                    <Braille className={"key-label-braille"} data-selectable={true} data-uuid={props.uuid}>{entry.braille}</Braille>
+                                    <Black data-key-index={index} className={"key-label-black"} data-uuid={props.uuid}>{entry.label}</Black>
+                                    <Braille data-key-index={index} className={"key-label-braille"} data-uuid={props.uuid}>{entry.braille}</Braille>
                                 </td>
-                            </tr>
+                            </Keyrow>
                         )
                     })}
+
                     {keyedLabels.map((entry, index) => {
                         return (
-                            <Labelrow key={index} onClick={() => dispatch({type: 'OBJECT_SELECTED', uuids: [entry.uuid]})}>
+                            <Keyrow key={index} onClick={() => dispatch({type: 'OBJECT_SELECTED', uuids: [entry.uuid]})}>
                                 <td style={{verticalAlign: 'top', padding: "0 6mm 0 2mm"}}>
                                     <Black className={"key-label-black"}>{entry.keyVal}</Black>
                                     <Braille className={"key-label-braille"}>{entry.keyVal}</Braille>
@@ -112,7 +119,7 @@ export default props => {
                                     <Black className={"key-label-black"}>{entry.text}</Black>
                                     <Braille className={"key-label-braille"}>{entry.braille}</Braille>
                                 </td>
-                            </Labelrow>
+                            </Keyrow>
                         )
                     })}
                     </tbody>

@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro';
 import React from "react";
-import {useTranslation} from "react-i18next";
-import {Sub} from "./_Label";
+import { useTranslation } from "react-i18next";
+import { Sub } from "./_Label";
 
 const CheckboxLabel = styled.label`
   position: relative;
@@ -42,13 +42,17 @@ const Input = styled.input`
   } 
 
   &:checked + label {
-      text-decoration: underline;
+      /* text-decoration: underline; */
   }  
 
   &:disabled + label {
       cursor: not-allowed;
       text-shadow: 1px 1px 0 white;
       color: ${props => props.theme.grey_2};
+
+      &::before {
+        color: ${props => props.theme.grey_3};
+      }
   }
 
   &:focus + label {
@@ -63,27 +67,26 @@ const Wrapper = styled.div`
 `;
 
 const Checkbox = props => {
-    const { t } = useTranslation();
-        return (
-          <>
-            <Wrapper role={'checkbox'} aria-disabled={props.disabled} aria-checked={props.value == true} aria-labelledby={props.name + "-label"} id={props.name + "-cb-wrapper"}>
-                 <Input
-                     onChange={props.onChange}
-                     name={props.name}
-                     aria-hidden={true}
-                     disabled={props.disabled}
-                     id={props.name + "-cb"}
-                     checked={props.value}
-                     value={props.value}
-                     type={"checkbox"} />
-                 <CheckboxLabel id={props.name + "-label"} disabled={props.disabled} checked={props.checked} htmlFor={props.name + "-cb"}>
-                     <span className={'label'}>{t(props.label)}</span>
-                     {props.sublabel &&
-                     <><br/><Sub>{t(props.sublabel)}</Sub></>
-                     }
-                 </CheckboxLabel>
-            </Wrapper>          </>
-        )
+  const { t } = useTranslation();
+  return (
+    <Wrapper title={t(props.label)} style={!!props.style ? props.style : {}} role={'checkbox'} aria-disabled={props.disabled} aria-checked={props.value == true} aria-labelledby={props.name + "-label"} id={props.name + "-cb-wrapper"}>
+      <Input
+        onChange={props.onChange}
+        name={props.name}
+        aria-hidden={true}
+        disabled={props.disabled}
+        id={props.name + "-cb"}
+        checked={props.value}
+        value={props.value}
+        type={"checkbox"} />
+      <CheckboxLabel id={props.name + "-label"} disabled={props.disabled} checked={props.checked} htmlFor={props.name + "-cb"}>
+        <span className={'label'}>{t(props.label)}</span>
+        {props.sublabel &&
+          <><br /><Sub>{t(props.sublabel)}</Sub></>
+        }
+      </CheckboxLabel>
+    </Wrapper>
+  )
 };
 
-export {Checkbox}
+export { Checkbox }

@@ -7,7 +7,7 @@ export const SVGPage = ({page, excludes = [], callbacks}) => {
     return (
         <g id={"page-" + page}>
             
-            <rect data-role={"CANVAS"} data-pageidx={page} x={0} y={0}
+            <rect data-role={'CANVAS'} id={'CANVAS-' + page} data-pageidx={page} x={0} y={0}
                   width={width + "mm"}
                   height={height + "mm"}
                   stroke={'rgba(0,0,0,0.0)'} fill={'white'}/>

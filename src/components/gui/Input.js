@@ -115,7 +115,6 @@ const report = (element, messages) => {
 
 const Textinput = props => {
     let validations = !!props.validations ? [...props.validations] : [];
-
     props.required && validations.push({
         fn: val => /.+/.test(val), message: "account:required", callback: () => {}
     })
@@ -135,11 +134,12 @@ const Textinput = props => {
             label={props.label}
             noMargin={props.noMargin}
             disabled={props.disabled}
-            id={props.label ? "label-for-" + props.name : ""}
+            id={props.name ? "label-for-" + props.name : ''}
             inline={props.inline}>
             <Input
                 disabled={props.disabled}
                 inline={props.inline}
+                id={props.name ? "input-for-" + props.name : ''}
                 autocomplete={props.autocomplete}
                 className={props.className + (pristine ? " pristine" : " dirty")}
                 required={props.required}

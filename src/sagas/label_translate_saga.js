@@ -10,6 +10,7 @@ import { wrapAndChunk } from "../utility/wrapLines";
 import {
   CHANGE_IMAGE_DESCRIPTION,
   CHANGE_PAGE_CONTENT,
+  ERROR_THROWN,
   OBJECT_BULK_ADD,
   OBJECT_PROP_CHANGED,
 } from "../actions/action_constants";
@@ -17,6 +18,7 @@ import {
 /* eslint import/no-webpack-loader-syntax: off */
 import Worker from "worker-loader!../workers/translate.worker.js";
 import { BRAILLE_SYSTEMS } from "../config/constants";
+import { keySelector } from "../reducers/selectors";
 
 const translateWorker = new Worker();
 
@@ -48,7 +50,7 @@ export function* labelWriteWatcher() {
           uuid: action.uuid,
         });
       } catch (error) {
-        console.error(error);
+        put({type: ERROR_THROWN, error})
       }
     }
   });
@@ -66,7 +68,21 @@ export function* textureKeyChangeWatcher() {
         pattern: action.pattern,
       });
     } catch (error) {
-      console.error(error);
+      put({type: ERROR_THROWN, error})
+    }
+  });
+}
+
+export function* labelKeyWatcher() {
+  yield takeLatest(OBJECT_PROP_CHANGED, function* (action) {
+    try {
+      if (action.type === OBJECT_PROP_CHANGED && action.prop === 'isKey' && action.value) {
+        let key = yield select(keySelector);
+        key = Array.isArray(key) ? key[0] : key;
+        if (!key.active) yield put({type: OBJECT_PROP_CHANGED, uuid: key.uuid, prop: 'active', value: true});
+      }
+    } catch (error) {
+      put({type: ERROR_THROWN, error})
     }
   });
 }
@@ -99,7 +115,7 @@ export function* contentEditWatcher() {
           ),
         });
       } catch (error) {
-        console.error(error);
+        put({type: ERROR_THROWN, error})
       }
     }
   );
@@ -121,7 +137,7 @@ export function* layoutEditWatcher() {
         ),
       });
     } catch (error) {
-      console.log(error);
+      put({type: ERROR_THROWN, error})
     }
   });
 }
@@ -210,7 +226,7 @@ export function* ocrImportWatcher() {
           });
         }
       } catch (error) {
-        console.log(error);
+        put({type: ERROR_THROWN, error})
       }
     }
   });

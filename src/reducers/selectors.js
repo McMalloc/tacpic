@@ -5,6 +5,11 @@ export const patternsInUseSelector = state => {
     return uniq(map(filter(allObjects, obj => !!obj && !!obj.pattern), objWithPattern => objWithPattern.pattern.template));
 };
 
+export const keySelector = state => {
+    const allObjects = flatten(state.editor.file.present.pages.map(page => page.objects));
+    return allObjects.filter(obj => obj.type === 'key');
+};
+
 export const keyedLabelsSelector = state => {
     const allObjects = flatten(state.editor.file.present.pages.map(page => page.objects));
     return allObjects.filter(object => object && object.isKey).map(({braille, keyVal, text, uuid}) => ({

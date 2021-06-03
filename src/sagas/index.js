@@ -31,7 +31,7 @@ import {
     labelWriteWatcher,
     layoutEditWatcher,
     ocrImportWatcher,
-    systemChangeWatcher, textureKeyChangeWatcher
+    systemChangeWatcher, textureKeyChangeWatcher, labelKeyWatcher
 } from "./label_translate_saga";
 import {renderWatcher} from "./render_saga";
 import {addressRemoveSaga} from "./address_saga";
@@ -131,6 +131,7 @@ export default function* root() {
         call(userResetRequestSaga),
 
         call(labelWriteWatcher),
+        call(labelKeyWatcher),
         call(textureKeyChangeWatcher),
         call(titleEditWatch),
         call(contentEditWatcher),

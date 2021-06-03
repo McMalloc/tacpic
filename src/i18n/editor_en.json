@@ -62,6 +62,7 @@
   "keyPanel": {
     "heading": "$t(glossary:key)",
     "showKey": "Show $t(glossary:key)",
+    "showBorder": "Draw border",
     "fixateKey": "Fixed $t(glossary:key)",
     "label": "Labeling",
     "singleKey": "Key",
