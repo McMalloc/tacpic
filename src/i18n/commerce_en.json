@@ -49,5 +49,7 @@
   "orderTooLargePhone": "Or via phone",
   "quoteRequestMailCopy": "Hello, %0D%0A%0D%0Aplease send a quote containing these positions:%0D%0A%0D%0A",
   "quoteRequestMailSubject": "Quote request",
-  "sendQuoteRequest": "Send prepared request via e-mail"
+  "sendQuoteRequest": "Send prepared request via e-mail",
+  "duplicate_order": "Multiple identical orders",
+  "duplicate_order_message": "The order entered the system more than once. Please check the state of your order at User Acount > Orders."
 }

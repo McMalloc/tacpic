@@ -115,6 +115,7 @@
     "place": "Platzieren"
   },
   "not_available-screen": "Der Editor steht zur Zeit leider nicht auf mobilen Geräten bzw. kleinen Bildschirmen zur Verfügung.",
+  "sr_not_available-screen": "Der visuelle Editor bietet leider kein Bedienkonzept für Screenreader.",
   "Context": "Eigenschaften",
   "Intro": "Willkommen!",
   "Canvas": "Leinwand",

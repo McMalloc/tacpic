@@ -49,6 +49,7 @@ const EditorSplash = () => {
                     }
                 >
                     <Alert warning>{t("editor:not_available-screen")}</Alert>
+                    <Alert className={'sr-only'} info>{t("editor:sr_not_available-screen")}</Alert>
                 </div>
             </div>
         );
@@ -59,6 +60,7 @@ const EditorSplash = () => {
             <Row>
                 <div className={"col-xs-12 col-md-12"}>
                     <h1>Editor</h1>
+                    <Alert className={'sr-only'} info>{t("editor:sr_not_available-screen")}</Alert>
                     {!user.logged_in &&
                         <Alert info>
                             <Trans i18nKey={'editor:pleaseLogin'}>
