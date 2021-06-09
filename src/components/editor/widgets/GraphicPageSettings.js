@@ -53,7 +53,7 @@ const GraphicPageSettings = () => {
 
                 </div>
                 <div>
-                    <Radio name={"orientation"} onChange={event => {
+                    <Radio name={"orientation"} legend={'editor:label_page-orientation'} onChange={event => {
                         if (width > height && event === 'portrait' || width < height && event === 'landscape') changeFileFormat(dispatch, {height: width, width: height});
                     }} value={width > height ? 'landscape' : 'portrait'} options={[
                         {label: "portrait", value: "portrait"},

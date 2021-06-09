@@ -201,5 +201,6 @@
   "delete_file_confirm_heading": "Confirm delete",
   "delete_file_confirm_copy": "Do you want to permanently delete the local changes, i.e. changes stored only on this device, from {{date}} to {{title}}?",
   "editingMode": "Editing mode",
-  "sr_not_available-screen": "The concept of the visual editor unfortunately is not compatible with screen readers."
+  "sr_not_available-screen": "The concept of the visual editor unfortunately is not compatible with screen readers.",
+  "label_page-orientation": "Orientation"
 }

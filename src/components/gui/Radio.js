@@ -39,6 +39,7 @@ const Grouphead = styled.div`
 
 const Input = styled.input`
   opacity: 0;
+  position: fixed;
   width: 0;
   height: 0;
   margin: 0;

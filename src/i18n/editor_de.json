@@ -160,6 +160,7 @@
   "tablist_shape-contour": "$t(glossary:border)",
   "select_braille-system": "$t(glossary:brailleScript)system",
   "label_page-format": "Seitenformat",
+  "label_page-orientation": "Ausrichtung",
   "portrait": "Hochformat",
   "landscape": "Querformat",
   "select_medium": "Medium",
