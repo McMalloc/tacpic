@@ -33,6 +33,7 @@ const GraphicPageSettings = () => {
         width,
         height
     } = useSelector(state => state.editor.file.present);
+    const showSafeArea = useSelector(state => state.editor.ui.showSafeArea);
 
     return <>
         <fieldset>
@@ -103,6 +104,21 @@ const GraphicPageSettings = () => {
                         sublabel={'editor:graphicPanel.distanceHorizontal'}
                         unit={"mm"}/>
         </fieldset>
+        <fieldset>
+            <legend>{t('editor:graphicPanel.safeArea')}</legend>
+
+                    <Checkbox
+                        name={"cb_safe-area"}
+                        value={!!showSafeArea}
+                        onChange={() => {
+                            dispatch({
+                                type: 'SAFE_AREA_TOGGLE',
+                                state: !showSafeArea
+                            })
+                        }}
+                        label={'editor:graphicPanel.showSafeArea'}
+                    sublabel={'editor:graphicPanel.safeAreaHint'}/>
+         </fieldset>
 
     </>;
 };

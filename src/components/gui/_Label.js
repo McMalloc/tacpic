@@ -26,6 +26,7 @@ const Main = styled.label`
 
 export const Sub = styled.span`
   display: block;
+  font-size: 0.9rem;
   margin: ${props => props.theme.spacing[1]} 0;
   color: ${props => props.theme.brand_secondary};
 `;

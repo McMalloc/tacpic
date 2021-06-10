@@ -120,7 +120,7 @@ const Datagrid = props => {
                     prepareRow(row)
                     return (
                         <Row onClick={() => {
-                            props.onRowClick(row.values, index)
+                            !!props.onRowClick && props.onRowClick(row.values, index)
                         }} {...row.getRowProps()}>
                             {row.cells.map(cell => {
                                 return (

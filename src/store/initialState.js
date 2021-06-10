@@ -15,7 +15,6 @@ export const editor = {
         scalingFactor: 1,
         viewPortX: 0,
         viewPortY: 10,
-        suppressBackup: true,
         previewMode: false,
         preview: null,
         selectedObjects: [],
@@ -23,6 +22,7 @@ export const editor = {
         initialized: true,
         clipboard: [],
         fileOpen: 0,
+        showSafeArea: true,
         import: {
             preview: null,
             previewName: '',

@@ -31,6 +31,9 @@
     "distanceVertical": "vertikaler Gitternetzlinien",
     "showHorizontal": "Horizontales Gitternetz anzeigen",
     "distanceHorizontal": "horizontaler Gitternetzlinien",
+    "safeArea": "Schutzbereich",
+    "showSafeArea": "Schutzbereich anzeigen",
+    "safeAreaHint": "Die Grafik sollte nicht in den Schutzbereich hineinreichen, da wir aufgrund technischer Einschränkungen nicht garantieren können, dass die schwarze Farbe richtig anschwillt.",
     "page": "Seite"
   },
   "braillePanel": {

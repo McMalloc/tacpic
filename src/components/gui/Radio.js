@@ -32,9 +32,10 @@ const Label = styled.label`
   }
 `;
 
-const Grouphead = styled.div`
+const Grouphead = styled.label`
   padding-bottom: 0.5rem;
   font-weight: bold;
+  display: block;
 `;
 
 const Input = styled.input`
@@ -65,7 +66,7 @@ const Radio = props => {
   return (
     <div role={'radiogroup'} aria-labelledby={props.name + "_head"}>
       <Grouphead id={props.name + "_head"}>
-        {Array.isArray(props.legend) ? t(...props.legend) : t(props.legend)}
+          <small>{Array.isArray(props.legend) ? t(...props.legend) : t(props.legend)}</small>
       </Grouphead>
       {props.options && props.options.map((option, index) => {
 

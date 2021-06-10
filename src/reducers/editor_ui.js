@@ -82,6 +82,8 @@ const ui = (state = {}, action) => {
             return { ...state, showHorizontalGrid: action.state };
         case 'DEFAULT_TITLE_TOGGLE':
             return { ...state, defaultTitle: action.state };
+        case 'SAFE_AREA_TOGGLE':
+            return { ...state, showSafeArea: action.state };
         case 'ADD_BACKGROUND':
             return {
                 ...state, openedFile: {
@@ -99,8 +101,6 @@ const ui = (state = {}, action) => {
             return { ...state, initialized: true };
         case 'PAGE_CHANGE':
             return { ...state, selectedObjects: [], currentPage: action.number };
-        case SUPPRESS_BACKUP:
-            return { ...state, suppressBackup: action.flag || false };
         default:
             return state;
     }

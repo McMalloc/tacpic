@@ -150,11 +150,11 @@ const AccordeonPanelFlyoutButton = (props) => {
     const { vw, vh } = getViewport();
     const buttonBBox = buttonRef.current.getBoundingClientRect();
     panelRef.current.style.left = buttonBBox.left + buttonBBox.width + "px";
-    panelRef.current.style.top = buttonBBox.top + "px";
+    panelRef.current.style.top = (buttonBBox.top - 10) + "px";
     const panelBBox = panelRef.current.getBoundingClientRect();
     if (vh < buttonBBox.top + panelBBox.height) {
       panelRef.current.style.top = `${
-        vh - (panelBBox.height) - 36
+        vh - (panelBBox.height)
       }px`;
     }
   }, [props.flownOut, props.forcedRerender]);
