@@ -44,6 +44,7 @@ const createEmbedded = (offsetX = 0, offsetY = 0, markup = '<svg/>', filename = 
     let aspectRatio = parseInt(height) / parseInt(width);
     document.getElementById("MAIN-CANVAS").removeChild(originalSVG);
 
+    console.log(offsetX)
     // reset weird (x-)translations made by potrace, but keep the scaling as it also contains mirroring
     const transforms = getTransforms(group.getAttribute('transform'));
     group.removeAttribute('transform');
@@ -52,7 +53,7 @@ const createEmbedded = (offsetX = 0, offsetY = 0, markup = '<svg/>', filename = 
 
     return {
         uuid: uuidv4(),
-        x, y,
+        x: 0, y,
         scaleX: 1,
         scaleY: 1,
         originalWidth: width,

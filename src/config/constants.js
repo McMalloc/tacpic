@@ -11,6 +11,7 @@ export const SAFE_BORDER = 10;
 export const CACHE_TIMEOUT = 0;
 export const BACKUP_INTERVAL = 3000;
 export const DB_DATE_FORMAT = "%YYYY-%MM-%DD %HH:%mm:%ss %z";
+export const DEFAULT_LABEL_SIZE = [219, 65];
 
 export const XL_SCREEN = "@media only screen and (min-width: 1200px)";
 export const LG_SCREEN = "@media only screen and (min-width: 992px)";
@@ -52,7 +53,7 @@ export const ROLE = {
 }
 
 export const COLOURS = {
-  none: "transparent",
+  white: '#FFFFFF',
   // grey: "#808080",
   blue: "#432C86",
   red: "#E4120D",
@@ -61,7 +62,7 @@ export const COLOURS = {
   orange: "#F08000",
   green: "#79BA4A",
   yellow: "#FFEC01",
-  white: '#FFFFFF'
+  none: "transparent",
 };
 
 export const KEYCODES = {

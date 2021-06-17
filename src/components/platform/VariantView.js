@@ -158,6 +158,7 @@ const VariantView = (props) => {
   const { logged_in, role } = useSelector((state) => state.user);
   const [product, setProduct] = useState("graphic");
   const [quantity, setQuantity] = useState(1);
+  const [lastViewedPreview, setLastViewedPreview] = useState({});
   const [ref, entry] = useIntersect({ threshold: scrollThreshold });
   const [searchParams, setSearchParams] = useSearchParams();
   const showHistory = searchParams.get("view") === "history";
@@ -175,11 +176,15 @@ const VariantView = (props) => {
 
   if (!props.id) return null;
 
+  console.log(lastViewedPreview);
   const pagePreviews = <Preview>
     <Carousel
-      single={
-        <span className={"disabled"}>{t('catalogue:onlyOnePage')}</span>
-      }
+        initial={lastViewedPreview[variantId] || 0}
+        key={variantId}
+        onChange={index => lastViewedPreview[variantId] = index}
+        single={
+          <span className={"disabled"}>{t('catalogue:onlyOnePage')}</span>
+        }
     >
       {props.document.pages
         .map((page, index) => {

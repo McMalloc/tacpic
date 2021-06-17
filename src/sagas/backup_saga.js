@@ -7,7 +7,7 @@ import { idbWrite, idbRemove, idbIndex } from "./idb_saga";
 
 
 export function* backupWatcher() {
-    yield throttle(BACKUP_INTERVAL, ['OBJECT_PROP_CHANGED', 'OBJECT_UPDATED', 'OBJECT_REMOVED', 'UNDO', 'REDO', CHANGE_FILE_PROPERTY], function* (action) {
+    yield throttle(BACKUP_INTERVAL, ['OBJECT_PROP_CHANGED', 'OBJECT_UPDATED', 'OBJECT_REMOVED', 'OBJECTS_SWAPPED', 'UNDO', 'REDO', CHANGE_FILE_PROPERTY], function* (action) {
         try {
             document.getElementById("save-indicator").style.visibility = 'visible';
             let file = yield select(state => state.editor.file.present);

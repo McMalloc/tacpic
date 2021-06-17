@@ -68,8 +68,14 @@ const View = styled.div`
 
 const Carousel = props => {
     const {t} = useTranslation();
-    const [position, setPosition] = useState(0);
+    const [position, _setPosition] = useState(props.initial || 0);
     const validChildren = props.children.filter(c => !!c);
+
+    const setPosition = pos => {
+        _setPosition(pos);
+        !!props.onChange && props.onChange(pos);
+    }
+
     return (
         <Wrapper>
             <View>
@@ -99,7 +105,7 @@ const Carousel = props => {
                                     if (Elem === null) return null;
                                     return (
                                         <Toggle toggled={index === position} onClick={() => setPosition(index)}
-                                                key={index} label={index + 1}/>
+                                                key={index} label={String(index + 1)}/>
                                     )
                                 })
                                 }

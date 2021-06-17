@@ -1,19 +1,19 @@
-import React, { Component, useState } from 'react'
-import { connect } from "react-redux";
+import React, {Component, useState} from 'react'
+import {connect} from "react-redux";
 import Manipulator from "./Manipulator";
 import ToolIndicator from "../ToolIndicator";
 
-import { cloneDeep } from "lodash";
+import {cloneDeep} from "lodash";
 import mapObject from "./index";
 import PathManipulator from "./PathManipulator";
 
 import methods from "./methods/methods";
-import { init, transformCoords } from "./transform";
+import {init, transformCoords} from "./transform";
 import SVGGrid from "./Grid";
-import { findObject } from "../../../utility/findObject";
-import { SVGPage } from "./SVGPage";
-import { ERROR_THROWN } from "../../../actions/action_constants";
-import { TOOL_SENSIBILITY, KEYCODES, TOOLS } from "../../../config/constants";
+import {findObject} from "../../../utility/findObject";
+import {SVGPage} from "./SVGPage";
+import {ERROR_THROWN, OBJECT_SELECTED} from "../../../actions/action_constants";
+import {TOOL_SENSIBILITY, KEYCODES, TOOLS, DEFAULT_LABEL_SIZE} from "../../../config/constants";
 import styled from "styled-components/macro";
 
 const SVG = styled.svg`
@@ -22,9 +22,9 @@ const SVG = styled.svg`
   height: ${props => props.scale * props.canvasHeight}px;
   min-height: 100%;
   touch-action: none;
-  outline: none; 
-  cursor: ${({ isPanning, tool }) => isPanning ? 'move' : tool === 'SELECT' ? 'inherit' : 'crosshair'};
-  
+  outline: none;
+  cursor: ${({isPanning, tool}) => isPanning ? 'move' : tool === 'SELECT' ? 'inherit' : 'crosshair'};
+
   &:hover #tool-indicator {
     visibility: visible;
   }
@@ -82,7 +82,7 @@ class InteractiveSVG extends Component {
             this.props.ui.viewPortY);
 
 
-        this.setState({ canvasWidth: 2.5 * viewboxWidth, canvasHeight: 2 * viewboxHeight })
+        this.setState({canvasWidth: 2.5 * viewboxWidth, canvasHeight: 2 * viewboxHeight})
     }
 
     currentX = x => x - this.svgElement.current.getBoundingClientRect().left;
@@ -111,30 +111,30 @@ class InteractiveSVG extends Component {
                 break;
             case KEYCODES.SHIFT:
                 if (this.state.modifierKeys.shift) break;
-                this.setState({ modifierKeys: { ...this.state.modifierKeys, shift: true } })
+                this.setState({modifierKeys: {...this.state.modifierKeys, shift: true}})
                 break;
             case KEYCODES.SPACE:
                 if (this.state.modifierKeys.space) break;
-                this.setState({ modifierKeys: { ...this.state.modifierKeys, space: true } })
+                this.setState({modifierKeys: {...this.state.modifierKeys, space: true}})
                 break;
             case 38: // up
                 this.props.updateObject(
-                    methods[selectedObject.type].translate({ ...selectedObject }, 0, this.state.modifierKeys.shift ? -10 : -1)
+                    methods[selectedObject.type].translate({...selectedObject}, 0, this.state.modifierKeys.shift ? -10 : -1)
                 );
                 break;
             case 39: // right
                 this.props.updateObject(
-                    methods[selectedObject.type].translate({ ...selectedObject }, this.state.modifierKeys.shift ? 10 : 1, 0)
+                    methods[selectedObject.type].translate({...selectedObject}, this.state.modifierKeys.shift ? 10 : 1, 0)
                 );
                 break;
             case 40: // down
                 this.props.updateObject(
-                    methods[selectedObject.type].translate({ ...selectedObject }, 0, this.state.modifierKeys.shift ? 10 : 1)
+                    methods[selectedObject.type].translate({...selectedObject}, 0, this.state.modifierKeys.shift ? 10 : 1)
                 );
                 break;
             case 37: // left
                 this.props.updateObject(
-                    methods[selectedObject.type].translate({ ...selectedObject }, this.state.modifierKeys.shift ? -10 : -1, 0)
+                    methods[selectedObject.type].translate({...selectedObject}, this.state.modifierKeys.shift ? -10 : -1, 0)
                 );
                 break;
             case 187: // +
@@ -153,7 +153,7 @@ class InteractiveSVG extends Component {
                 if (!selectedObject) return;
                 if (selectedObject.type === 'path' && this.state.editIndex >= 0) {
                     this.props.updateObject(methods.path.removePoint(cloneDeep(selectedObject), this.state.editIndex));
-                    this.setState({ editIndex: -1 });
+                    this.setState({editIndex: -1});
                 } else {
                     this.props.remove(this.props.ui.selectedObjects);
                 }
@@ -169,10 +169,10 @@ class InteractiveSVG extends Component {
         event.preventDefault();
         switch (event.which) {// TODO use constants instead of magic numbers
             case KEYCODES.SHIFT:
-                this.setState({ modifierKeys: { ...this.state.modifierKeys, shift: false } })
+                this.setState({modifierKeys: {...this.state.modifierKeys, shift: false}})
                 break;
             case KEYCODES.SPACE:
-                this.setState({ modifierKeys: { ...this.state.modifierKeys, space: false } })
+                this.setState({modifierKeys: {...this.state.modifierKeys, space: false}})
                 break;
             default:
                 break;
@@ -182,7 +182,7 @@ class InteractiveSVG extends Component {
 
     onModeChange = uuid => {
         this.setState({
-            edit: { uuid }
+            edit: {uuid}
         })
     };
 
@@ -243,7 +243,7 @@ class InteractiveSVG extends Component {
              * selectable and not part of a selected group.
              * */
             let selectedId = null;
-            if (target.dataset.selectable && (this.props.ui.tool === 'SELECT' || !!target.dataset.selectOverride)) {
+            if (target.dataset.selectable && (this.props.ui.tool === 'SELECT' || target.dataset.selectOverride === 'true')) {
                 selectedId = target.dataset.uuid || target.id;
                 let alreadySelected = this.props.ui.selectedObjects.includes(selectedId);
                 if (event.ctrlKey) {
@@ -262,10 +262,10 @@ class InteractiveSVG extends Component {
 
             }
 
-            if (target.dataset.role === 'ROTATE') this.setState({ transform: 'rotate' });
-            if (target.dataset.role === 'SCALE') this.setState({ transform: 'scale' });
+            if (target.dataset.role === 'ROTATE') this.setState({transform: 'rotate'});
+            if (target.dataset.role === 'SCALE') this.setState({transform: 'scale'});
 
-            if (target.dataset.transformable === "true" && this.props.ui.tool === 'SELECT') this.setState({ transform: 'translate' });
+            if (target.dataset.transformable === "true" && this.props.ui.tool === 'SELECT') this.setState({transform: 'translate'});
 
             if (target.dataset.role === 'EDIT-PATH') {
                 this.setState({
@@ -326,7 +326,10 @@ class InteractiveSVG extends Component {
             } else if (this.state.previews !== null) {
                 if (this.state.previews[0].type === 'path' && this.props.ui.tool === 'PATH') { // add points to path that is not complete
                     if (target.dataset.endpoint) {
-                        this.props.updateObject({ ...this.state.previews[0], closed: parseInt(target.dataset.index) === 0 });
+                        this.props.updateObject({
+                            ...this.state.previews[0],
+                            closed: parseInt(target.dataset.index) === 0
+                        });
                         this.setState({
                             previews: null,
                             edit: null,
@@ -387,7 +390,7 @@ class InteractiveSVG extends Component {
                         // creating freeform path segment
                         const smoothedPath = methods.path.smoothSegment(this.state.previews[0], this.state.segmentStart, this.state.previews[0].points.length - 1, 10);
                         this.props.updateObject(smoothedPath);
-                        this.state.edit === null && this.setState({ previews: [cloneDeep(smoothedPath)] });
+                        this.state.edit === null && this.setState({previews: [cloneDeep(smoothedPath)]});
                     }
                 } else {
                     // when dragged, create new object
@@ -441,13 +444,22 @@ class InteractiveSVG extends Component {
                         case "RECT":
                             break;
                         case 'LABEL':
-                            if (!this.state.dragging) break;
-                            let label = methods.label.create(
-                                Math.min(this.state.mouseDownX, this.state.mouseOffsetX),
-                                Math.min(this.state.mouseDownY, this.state.mouseOffsetY),
-                                Math.abs(this.state.mouseOffsetX - this.state.mouseDownX),
-                                Math.abs(this.state.mouseOffsetY - this.state.mouseDownY)
-                            );
+                            let label;
+                            if (!this.state.dragging) {
+                                label = methods.label.create(
+                                    Math.min(this.state.mouseDownX, this.state.mouseOffsetX),
+                                    Math.min(this.state.mouseDownY, this.state.mouseOffsetY),
+                                    DEFAULT_LABEL_SIZE[0],
+                                    DEFAULT_LABEL_SIZE[1]
+                                );
+                            } else {
+                                label = methods.label.create(
+                                    Math.min(this.state.mouseDownX, this.state.mouseOffsetX),
+                                    Math.min(this.state.mouseDownY, this.state.mouseOffsetY),
+                                    Math.abs(this.state.mouseOffsetX - this.state.mouseDownX),
+                                    Math.abs(this.state.mouseOffsetY - this.state.mouseDownY)
+                                );
+                            }
 
                             this.props.updateObject(label);
                             setTimeout(() => {
@@ -492,12 +504,12 @@ class InteractiveSVG extends Component {
                 this.props.wrapperRef.current.scrollTop = this.state.panningRefY - event.pageY;
             }
 
-            /** 
+            /**
              * Transform selected objects by first copying them into the preview state
              * and then applying the transformation that was specified in mouseDownHandler
              * Skip if a path is currently being added, since its vertices aren't transformed,
              * instead a new path is generated
-            */
+             */
             let previews = this.state.previews;
             if (this.state.dragging &&
                 this.state.transform !== null &&
@@ -515,7 +527,7 @@ class InteractiveSVG extends Component {
                 // update previews of objects
                 this.setState({
                     previews: this.state.previews.map(preview => methods[preview.type][this.state.transform](
-                        { ...preview },
+                        {...preview},
                         mouseOffsetX - this.state.mouseOffsetX,
                         mouseOffsetY - this.state.mouseOffsetY,
                         this.state.mouseDownX, this.state.mouseDownY,
@@ -552,7 +564,7 @@ class InteractiveSVG extends Component {
                     [mouseOffsetX, mouseOffsetY],
                     'LF')];
 
-                this.setState({ previews });
+                this.setState({previews});
             }
 
         } catch (error) {
@@ -580,13 +592,13 @@ class InteractiveSVG extends Component {
         onMouseDown: event => {
             event.stopPropagation();
             let attachablePath = cloneDeep(findObject(
-                this.props.file.present.pages[this.props.ui.currentPage].objects, 
+                this.props.file.present.pages[this.props.ui.currentPage].objects,
                 this.state.attachablePath.target)
-                );
+            );
             let selectedPath = cloneDeep(findObject(
-                this.props.file.present.pages[this.props.ui.currentPage].objects, 
+                this.props.file.present.pages[this.props.ui.currentPage].objects,
                 this.state.attachablePath.source)
-                );
+            );
             let mergedPath = methods.path.mergePaths(selectedPath, attachablePath, event.target.dataset.index);
             this.props.updateObject(mergedPath);
             this.props.remove([this.state.attachablePath.target]);
@@ -635,22 +647,22 @@ class InteractiveSVG extends Component {
                     {this.props.file.present.pages.map((page, index) => {
                         if (index === this.props.ui.currentPage) return null;
                         return (
-                            <SVGPage page={index} key={index} excludes={[]} />
+                            <SVGPage page={index} key={index} excludes={[]}/>
                         )
                     })}
 
                     <SVGPage page={this.props.ui.currentPage}
-                        callbacks={this.callbacks}
-                        excludes={this.state.previews !== null ? this.state.previews.map(preview => preview.uuid) : []} />
+                             callbacks={this.callbacks}
+                             excludes={this.state.previews !== null ? this.state.previews.map(preview => preview.uuid) : []}/>
 
                     {this.state.previews !== null &&
-                        this.state.previews.map((preview, index) => mapObject(preview, -(index + 1), -1, this.callbacks))
+                    this.state.previews.map((preview, index) => mapObject(preview, -(index + 1), -1, this.callbacks))
                     }
 
                     {/* Path indicator */}
                     {this.props.ui.tool === 'PATH' && this.state.previews !== null && this.state.previews[0].type === 'path' && !this.state.dragging &&
-                        <path stroke={"black"} strokeWidth={1}
-                            d={`M ${this.state.lastMouseUpX} ${this.state.lastMouseUpY} L ${this.state.mouseOffsetX} ${this.state.mouseOffsetY}`} />
+                    <path stroke={"black"} strokeWidth={1}
+                          d={`M ${this.state.lastMouseUpX} ${this.state.lastMouseUpY} L ${this.state.mouseOffsetX} ${this.state.mouseOffsetY}`}/>
                     }
                 </g>
 
@@ -669,67 +681,68 @@ class InteractiveSVG extends Component {
                 />
 
                 {this.state.attachablePath !== null &&
-                    <PathManipulator
-                        path={findObject(
-                            this.props.file.present.pages[this.props.ui.currentPage].objects,
-                            this.state.attachablePath.target)}
-                        attachable={true}
-                        callbacks={this.callbacks}
-                        offsetX={this.props.ui.viewPortX}
-                        offsetY={this.props.ui.viewPortY}
-                        scale={this.props.ui.scalingFactor}
-                        editIndex={this.state.editIndex}
-                        dragging={this.state.dragging}
-                    />
+                <PathManipulator
+                    path={findObject(
+                        this.props.file.present.pages[this.props.ui.currentPage].objects,
+                        this.state.attachablePath.target)}
+                    attachable={true}
+                    callbacks={this.callbacks}
+                    offsetX={this.props.ui.viewPortX}
+                    offsetY={this.props.ui.viewPortY}
+                    scale={this.props.ui.scalingFactor}
+                    editIndex={this.state.editIndex}
+                    dragging={this.state.dragging}
+                />
                 }
 
                 {this.state.dragging && this.state.transform === null && this.state.edit === null &&
-                    ((this.props.ui.tool === 'SELECT' || this.props.ui.tool === 'LABEL') && !this.state.panning) &&
-                    <g>
-                        <rect
-                            x={Math.min(this.state.t_mouseDownX, this.state.t_mouseOffsetX)}
-                            y={Math.min(this.state.t_mouseDownY, this.state.t_mouseOffsetY)}
-                            fill={'rgba(0,0,255,0.02)'}
-                            id={"SELECTION-BOX"}
-                            stroke={'rgba(0,50,255,0.3)'}
-                            strokeWidth={'1px'}
-                            width={Math.abs(this.state.t_mouseOffsetX - this.state.t_mouseDownX)}
-                            height={Math.abs(this.state.t_mouseOffsetY - this.state.t_mouseDownY)} />
-                    </g>
+                ((this.props.ui.tool === 'SELECT' || this.props.ui.tool === 'LABEL') && !this.state.panning) &&
+                <g>
+                    <rect
+                        x={Math.min(this.state.t_mouseDownX, this.state.t_mouseOffsetX)}
+                        y={Math.min(this.state.t_mouseDownY, this.state.t_mouseOffsetY)}
+                        fill={'rgba(0,0,255,0.02)'}
+                        id={"SELECTION-BOX"}
+                        stroke={'rgba(0,50,255,0.3)'}
+                        strokeWidth={'1px'}
+                        width={Math.abs(this.state.t_mouseOffsetX - this.state.t_mouseDownX)}
+                        height={Math.abs(this.state.t_mouseOffsetY - this.state.t_mouseDownY)}/>
+                </g>
                 }
 
                 {this.svgElement.current !== null &&
-                    <SVGGrid canvasWidth={this.svgElement.current.scrollWidth}
-                        canvasHeight={this.svgElement.current.scrollHeight}
-                        offsetX={this.props.ui.viewPortX}
-                        offsetY={this.props.ui.viewPortY}
-                        verticalGridSpacing={this.props.file.present.verticalGridSpacing * this.props.ui.scalingFactor}
-                        horizontalGridSpacing={this.props.file.present.horizontalGridSpacing * this.props.ui.scalingFactor} />
+                <SVGGrid canvasWidth={this.svgElement.current.scrollWidth}
+                         canvasHeight={this.svgElement.current.scrollHeight}
+                         offsetX={this.props.ui.viewPortX}
+                         offsetY={this.props.ui.viewPortY}
+                         verticalGridSpacing={this.props.file.present.verticalGridSpacing * this.props.ui.scalingFactor}
+                         horizontalGridSpacing={this.props.file.present.horizontalGridSpacing * this.props.ui.scalingFactor}/>
                 }
 
                 {/*<rect id={"REFERENCE"} width={1} height={1} x={-1} y={-1} />*/}
 
                 {/*<g id={"mouse-indicators"}>*/}
                 {/*    {this.props.ui.scalingFactor !== 1 &&*/}
-                {/*<text fill={'green'} fontSize={10} x={5} y={30}>*/}
-                {/*    {this.props.ui.viewPortX}, {this.props.ui.viewPortY}&emsp;*/}
-                {/*    [{this.props.ui.scalingFactor}]*/}
-                {/*</text>*/}
-                {/*    <g>*/}
+                {/*        <>*/}
+                {/*    <text fill={'green'} fontSize={10} x={5} y={30}>*/}
+                {/*        {this.props.ui.viewPortX}, {this.props.ui.viewPortY}&emsp;*/}
+                {/*        [{this.props.ui.scalingFactor}]*/}
+                {/*    </text>*/}
+                {/*        <g>*/}
                 {/*        <line x1={this.state.mouseOffsetX}*/}
-                {/*              y1={0} x2={this.state.mouseOffsetX}*/}
-                {/*              y2={this.state.mouseOffsetY - 2} stroke={'grey'} strokeWidth={0.5}/>*/}
+                {/*        y1={0} x2={this.state.mouseOffsetX}*/}
+                {/*        y2={this.state.mouseOffsetY - 2} stroke={'grey'} strokeWidth={0.5}/>*/}
                 {/*        <text fontSize={8} x={this.state.mouseOffsetX + 2} y={this.state.mouseOffsetY - 8}>*/}
-                {/*            {parseInt(this.state.mouseOffsetX)} document space*/}
+                {/*    {parseInt(this.state.mouseOffsetX)} document space*/}
                 {/*        </text>*/}
 
                 {/*        <line x1={0}*/}
-                {/*              y1={this.state.mouseOffsetY} x2={this.state.mouseOffsetX - 2}*/}
-                {/*              y2={this.state.mouseOffsetY} stroke={'grey'} strokeWidth={0.5}/>*/}
+                {/*        y1={this.state.mouseOffsetY} x2={this.state.mouseOffsetX - 2}*/}
+                {/*        y2={this.state.mouseOffsetY} stroke={'grey'} strokeWidth={0.5}/>*/}
                 {/*        <text fontSize={8} y={this.state.mouseOffsetY + 10} x={this.state.mouseOffsetX - 20}>*/}
-                {/*            {parseInt(this.state.mouseOffsetY)}</text>*/}
-                {/*    </g>*/}
-                {/*    }*/}
+                {/*    {parseInt(this.state.mouseOffsetY)}</text>*/}
+                {/*        </g>*/}
+                {/*        </>}*/}
 
 
                 {/*    <line x1={this.state.t_mouseOffsetX}*/}
@@ -747,7 +760,8 @@ class InteractiveSVG extends Component {
                 {/*          x={this.state.t_mouseOffsetX - 20}>*/}
                 {/*        {parseInt(this.state.t_mouseOffsetY)}</text>*/}
                 {/*</g>*/}
-                <ToolIndicator hide={this.state.dragging} tool={this.props.ui.tool} coords={[this.state.t_mouseOffsetX, this.state.t_mouseOffsetY]} />
+                <ToolIndicator hide={this.state.dragging} tool={this.props.ui.tool}
+                               coords={[this.state.t_mouseOffsetX, this.state.t_mouseOffsetY]}/>
             </SVG>
             // </div>
         )
@@ -810,20 +824,20 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         unselect: () => {
             dispatch({
-                type: 'OBJECT_SELECTED',
+                type: OBJECT_SELECTED,
                 uuids: [null]
             });
         },
         select: uuids => {
             dispatch({
-                type: 'OBJECT_SELECTED',
+                type: OBJECT_SELECTED,
                 uuids
             });
         },
         remove: uuids => {
             if (uuids.length === 0) return;
             dispatch({
-                type: 'OBJECT_SELECTED',
+                type: OBJECT_SELECTED,
                 uuids: [null]
             });
             dispatch({

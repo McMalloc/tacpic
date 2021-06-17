@@ -14,7 +14,7 @@ const Login = props => {
     const user = useSelector(state => state.user);
 
     if (user.logged_in) {
-        navigate("/catalogue");
+        setTimeout(() => navigate('/catalogue'));
     }
 
     return (

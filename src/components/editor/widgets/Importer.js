@@ -77,6 +77,7 @@ const OCRLabel = styled(Toggle)`
 * */
 
 const requestTrace = (dispatch, file, callback) => {
+    if (!(file instanceof Blob)) return;
     let reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = event => {

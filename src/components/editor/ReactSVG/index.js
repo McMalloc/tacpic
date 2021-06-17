@@ -7,7 +7,14 @@ import Ellipse from "./Ellipse";
 import Key from "./Key";
 import Embedded from "./Embedded";
 
-export const extractSVG = index => document.getElementById("page-" + index).outerHTML;
+export const extractSVG = index => {
+    const pageElem = document.getElementById("page-" + index);
+    if (pageElem === null) {
+        return '';
+    } else {
+        return pageElem.outerHTML;
+    }
+};
 
 // TODO props.uuid als index?
 export default function mapObject(props, index, pageIndex = -1, callbacks) {

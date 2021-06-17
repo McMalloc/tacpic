@@ -188,11 +188,11 @@ const Editor = () => {
     localStorage.setItem("accordeonStates", JSON.stringify(newState));
   };
 
-  if (!accordeonStates.key && selectedObjects.length !== 0 && selectedObjects[0].type === "key")
+  if (!accordeonStates.key && selectedObjects.length !== 0 && (!!selectedObjects[0] && selectedObjects[0].type === "key"))
     toggleAccordeon("key", true);
 
   const resetImportModal = () => {
-    dispatch({ type: IMPORT.TRACE.FAILURE, message: null });
+    dispatch({ type: 'IMPORT_TRACE_RESET' });
     setShowImportModal(false);
   };
 
@@ -456,6 +456,7 @@ const Editor = () => {
                     traceImport.previewName
                   )],
                 });
+                dispatch({ type: 'IMPORT_TRACE_RESET' });
                 ocrSelection.length > 0 && dispatch({
                   type: OBJECT_BULK_ADD,
                   objects: ocrSelection.map((ocrIndex, index) => {
@@ -464,7 +465,7 @@ const Editor = () => {
                       index * 50,
                       200,
                       50,
-                      ocr[index],
+                      ocr[ocrIndex],
                       undefined,
                       { editMode: false }
                     );

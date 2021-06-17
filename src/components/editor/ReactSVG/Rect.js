@@ -27,18 +27,17 @@ export default function SVGRect(props) {
         width={props.width}
         height={props.height} />
 
-
     return (
         <g>
-            {!(props.fill === COLOURS.none) && neutralBorder}
+            {neutralBorder}
+
             <rect id={props.uuid}
                 data-uuid={props.uuid}
                 x={xVectorUnits ? null : props.x}
                 y={yVectorUnits ? null : props.y}
                 transform={transformProperty}
-                style={
-                    {
-                        fill: template !== null ? 'url(#pattern-' + template + '-' + props.uuid + '' : props.fill || "transparent",
+                style={{
+                        fill: template !== null ? 'url(#pattern-' + template + '-' + props.uuid + '' : props.fill !== null ? props.fill : "transparent",
                         stroke: props.pattern.offset ? props.fill : "black",
                         strokeWidth: props.border ? props.pattern.offset ? 20 : props.borderWidth + 'mm' : 0,
                         strokeDasharray: props.pattern.offset ? null : props.borderStyle
@@ -49,7 +48,7 @@ export default function SVGRect(props) {
                 width={props.width}
                 height={props.height} />
 
-            {props.fill === COLOURS.none && neutralBorder}
+            {/*{props.fill === COLOURS.none && neutralBorder}*/}
 
             {props.pattern.offset && props.border &&
                 <rect

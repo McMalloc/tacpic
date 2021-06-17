@@ -14,6 +14,10 @@ const ui = (state = {}, action) => {
         case FILE.OPEN.FAILURE:
             return { ...state, fileOpen: 3 };
 
+        case 'IMPORT_TRACE_RESET':
+            return { ...state,
+                import: { preview: null, ocr: [], ocrSelection: [], previewName: '' } };
+
         case IMPORT.TRACE.REQUEST:
             return {
                 ...state, import: {
@@ -35,7 +39,7 @@ const ui = (state = {}, action) => {
                 }
             };
         case IMPORT.TRACE.FAILURE:
-            return { ...state, import: { pending: false, preview: null, ocr: '', error: action.message, previewName: '' } };
+            return { ...state, import: { pending: false, preview: null, ocr: [], error: action.message, previewName: '' } };
 
         case COPY:
             return {

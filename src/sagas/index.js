@@ -41,6 +41,7 @@ import {titleEditWatch} from "./title_saga";
 import { backupRemoveWatcher, backupWatcher, backupAutoRemoveWatcher, backupIndexWatcher } from "./backup_saga";
 import { errorWatcher } from "./error_saga";
 import replaceEntity from "../utility/replaceEntity";
+import {objectSelectedWatcher} from "./select_saga";
 
 const id = args => args;
 
@@ -138,6 +139,7 @@ export default function* root() {
         call(systemChangeWatcher),
         call(layoutEditWatcher),
         call(ocrImportWatcher),
+        call(objectSelectedWatcher),
 
         // call(tagToggledWatcher),
         // call(formatToggledWatcher),
