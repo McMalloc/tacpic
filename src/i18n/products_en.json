@@ -24,5 +24,6 @@
   "pricePerPage": "Price per page",
   "swellA4": "$t(glossary:microcapsule)print $t(glossary:a4)",
   "swellA3": "$t(glossary:microcapsule)print $t(glossary:a3)",
-  "braille": "$t(glossary:brailleEmboss)"
+  "braille": "$t(glossary:brailleEmboss)",
+  "paymentAndShippingInfo": "Payment and shipping"
 }

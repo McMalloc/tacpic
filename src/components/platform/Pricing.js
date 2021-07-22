@@ -189,22 +189,42 @@ const Pricing = () => {
             <tbody>
               <tr>
                 <td>{t("products:swellA4")}</td>
-                <td>-</td>
+                <td>
+                  {
+                    t('{{amount, currency}}',
+                      { amount: 290 }
+                    )
+                  }
+                </td>
               </tr>
               <tr>
                 <td>{t("products:swellA3")}</td>
-                <td>-</td>
+                <td>
+                  {
+                    t('{{amount, currency}} (pro Seite)',
+                      { amount: 590 }
+                    )
+                  }
+                </td>
               </tr>
               <tr>
                 <td>{t("products:braille")}</td>
-                <td>-</td>
+                <td>
+                  {
+                    t('{{amount, currency}}',
+                      { amount: 60 }
+                    )
+                  }
+                </td>
               </tr>
             </tbody>
+            <br />
+            <a target={"_blank"} rel ={"noopener noreferrer"} href={"https://tacpic.de/info/de/62?Zahlung%20und%20Versand"}>{t("products:paymentAndShippingInfo")}</a>
           </PrintserviceTable>
           <br />
           <br />
         </div>
-      </Row>
+      </Row >
 
       <Row>
         <div className={"col-xs-12 col-sm-12 col-lg-12"}>
@@ -220,8 +240,8 @@ const Pricing = () => {
                 heading={t(product.name)}
                 subheading={t(product.durationText)}
                 icon={product.icon}
-                priceLabels={[t(product.price), t(product.priceHint, {price: product.priceAmount})]}
-                copy={t(product.description, {count: product.duration})}
+                priceLabels={[t(product.price), t(product.priceHint, { price: product.priceAmount })]}
+                copy={t(product.description, { count: product.duration })}
                 buttons={product.buttons}
               />
             </div>
@@ -232,7 +252,7 @@ const Pricing = () => {
         <div role={'list'} className={"col-xs-12 col-sm-4"}>
           <strong>{t("products:editorFeaturesHeading")}:</strong>
           <ul>
-            
+
             <Trans i18nKey={'products:editorFeatures'}>
               <li>0</li>
               <li>1</li>
@@ -248,8 +268,8 @@ const Pricing = () => {
         <div className={"col-xs-12 col-sm-8"}>
           <strong>{t("products:formatsHeading")}:</strong>
           <ul>
-            
-          <Trans i18nKey={'products:formats'}>
+
+            <Trans i18nKey={'products:formats'}>
               <li>0</li>
               <li>1</li>
               <li>2</li>
