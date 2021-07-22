@@ -1,5 +1,5 @@
-import styled, { useTheme } from 'styled-components/macro';
-import React, { useEffect, useState } from "react";
+import styled from 'styled-components/macro';
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 import i18n from 'i18next';
@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import { Row } from "../gui/Grid";
 import { Icon } from "../gui/_Icon";
 import { MD_SCREEN } from '../../config/constants';
-import { Button } from '../gui/Button';
 
 const FooterStyled = styled.footer`
    background-color: ${props => props.theme.brand_secondary};
@@ -90,7 +89,7 @@ const Footer = props => {
 
                                 </p>
                             </div>
-                            <div className={"col-md-4 col-xs-12"}>
+                            <address className={"col-md-4 col-xs-12"}>
                                 <p>
                                     <span className={"heading"}>{t('footer:contactHeading')}</span>
                                 tacpic UG (haftungsbeschränkt) <br />
@@ -109,7 +108,7 @@ const Footer = props => {
                                         </span> */}
                                     </a>
                                 </p>
-                            </div>
+                            </address>
                             <div className={"col-md-4 col-xs-12"}>
                                 {/*<img src={"/images/logo_dark.svg"} />*/}
                                 <p>

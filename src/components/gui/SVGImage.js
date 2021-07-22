@@ -1,10 +1,10 @@
 import React, {Component, Fragment, useRef, useState} from 'react';
-import {SVG_MIME} from "../../config/constants";
+import {CONTENT_TYPE} from "../../config/constants";
 
 const SVGImage = props => {
     let imageSrc = null;
     if (!!props.src) {
-        let blob = new Blob([props.src], {type: SVG_MIME});
+        let blob = new Blob([props.src], {type: CONTENT_TYPE.SVG});
         imageSrc = URL.createObjectURL(blob);
     } else {
         return null;

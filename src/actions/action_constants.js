@@ -11,7 +11,7 @@ const action_constants = (domain, methods) => {
 
 
 export const APP        = action_constants('APP',       ['FRONTEND', 'BACKEND', 'VERSION', 'LEGAL', 'IDB_INIT']);
-export const ADMIN      = action_constants('ADMIN',     ['FRONTEND_ERRORS', 'BACKEND_ERRORS']);
+export const ADMIN      = action_constants('ADMIN',     ['FRONTEND_ERRORS', 'BACKEND_ERRORS', 'LOG_INDEX', 'LOG', 'VOUCHER_INDEX']);
 export const USER       = action_constants('USER',      ['LOGIN', 'LOGOUT', 'CREATE', 'SAVE_LAYOUT', 'VALIDATE', 'VERIFY', 'RESET_REQUEST','RESET','UPDATE', 'INDEX']);
 export const SEARCH     = action_constants('SEARCH',    ['QUERY']);
 export const PRODUCT    = action_constants('PRODUCT',   ['FETCH', 'GET']);
@@ -25,7 +25,7 @@ export const CATALOGUE  = action_constants('CATALOGUE', ['SEARCH', 'MORE']);
 export const TAGS       = action_constants('TAGS',      ['GET', 'SEARCH', 'CREATE']);
 export const BRAILLE    = action_constants('BRAILLE',   ['TRANSLATE']);
 export const ORDER      = action_constants('ORDER',     ['CREATE', 'GET', 'INDEX']);
-export const ORDER_ADMIN      = action_constants('ORDER_ADMIN',     ['INDEX']);
+export const ORDER_ADMIN      = action_constants('ORDER_ADMIN',     ['INDEX', 'GET', 'RPC']);
 export const QUOTE      = action_constants('QUOTE',     ['REQUEST', 'GET']);
 export const ADDRESS    = action_constants('ADDRESS',   ['GET', 'CREATE', 'UPDATE', 'REMOVE']); // TODO rename GET to ADDRESS.INDEX
 export const IMPORT     = action_constants('IMPORT',    ['TRACE', 'OCR']);

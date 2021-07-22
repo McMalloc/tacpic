@@ -85,7 +85,7 @@
     "/login": "Anmelden",
     "/account": "Persönlicher Bereich",
     "/admin": "Administration",
-    "/account/orders": "Meine bestellungen",
+    "/account/orders": "Meine Bestellungen",
     "/order-completed": "Bestellung abgeschlossen",
     "/account/newsletter": "Datenschutzeinstellungen",
     "/account/addresses": "Meine Adressen",

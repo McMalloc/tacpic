@@ -143,6 +143,10 @@ small {
   font-style: italic;
 }
 
+address {
+  font-style: normal;
+}
+
 p {
   line-height: 1.4rem;
 
@@ -157,7 +161,6 @@ p {
   &.disabled {
     color: #4a4a4a;
     border-radius: 3px;
-    padding: 8px;
     text-shadow: 1px 1px white;
     font-style: italic;
     font-size: 0.95rem;

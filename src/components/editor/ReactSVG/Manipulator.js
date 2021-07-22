@@ -83,8 +83,10 @@ const Manipulator = (props) => {
     <g transform={transformProperty}>
       <rect
         fill={"none"}
-        // filter="url(#f1)"
-        style={{ outline: "2px dashed " + uiColor }}
+        style={{
+          outline: "2px dashed " + uiColor,
+          stroke: 'transparent' // firefox needs some content styling four outline to work
+        }}
         data-transformable={1}
         data-role={"MANIPULATOR"}
         onDoubleClick={() =>

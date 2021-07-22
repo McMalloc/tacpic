@@ -6,7 +6,6 @@ import { Button } from "../../gui/Button";
 import { Icon } from "../../gui/_Icon";
 import { IMPORT } from "../../../actions/action_constants";
 import { Row } from "../../gui/Grid";
-import { SVG_MIME } from "../../../config/constants";
 import SVGImage from "../../gui/SVGImage";
 import { useTranslation } from "react-i18next";
 import { Alert } from "../../gui/Alert";

@@ -7,6 +7,7 @@ import Modal from '../gui/Modal';
 import * as moment from "moment";
 import {DB_DATE_FORMAT} from "../../config/constants";
 import Datagrid from "../gui/Datagrid";
+import {Pre} from "../gui/Pre";
 
 // TODO: Minimieren-Button
 const Wrapper = styled.div`
@@ -15,13 +16,6 @@ const Wrapper = styled.div`
     white-space: pre;
     font-size: 0.8rem;
   }
-`;
-
-const Pre = styled.pre`
-  white-space: pre-wrap;
-  font-size: 0.8rem;
-  padding: 0.5rem;
-  background-color: ${({theme}) => theme.grey_6};
 `;
 
 const AdminErrors = props => {
@@ -44,6 +38,7 @@ const AdminErrors = props => {
         } else {
             return Object
                 .keys(memoedErrors[0])
+                .filter(key => key !== 'backtrace')
                 .map(key => {
                     let col = {
                         Header: t(key),
@@ -56,7 +51,7 @@ const AdminErrors = props => {
                         col.Cell = props => moment(props.value, DB_DATE_FORMAT).format(t('dateFormat'))
                     }
 
-                    return col
+                    return col;
                 })
         }
     }, [memoedErrors.length]);

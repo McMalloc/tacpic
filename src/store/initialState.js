@@ -131,7 +131,7 @@ export const catalogue = {
     quotedVariants: [],
     order: {
         pending: false,
-        key: null,
+        response: null,
         successful: false,
         error: null
     },
@@ -165,7 +165,15 @@ export const user = {
 export const admin = {
     users: [],
     frontendErrors: [],
-    backendErrors: []
+    backendErrors: [],
+    orders: [],
+    currentOrder: null,
+    currentOrderPending: false,
+    currentOrderError: null,
+
+    vouchers: [],
+    vouchersPending: false,
+    vouchersError: null
 }
 
 export const cms = {

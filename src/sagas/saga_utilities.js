@@ -1,6 +1,6 @@
 import { call, put, select } from "redux-saga/effects";
 import { API_URL } from '../env';
-import { SVG_MIME } from "../config/constants";
+import { CONTENT_TYPE } from "../config/constants";
 import { getCache, setCache } from "./cache";
 import i18n from "i18next";
 
@@ -123,12 +123,10 @@ export default function createSaga(
 
                 let parsedResponse;
                 try {
-                    switch (contentType) {
-                        case SVG_MIME:
-                            parsedResponse = response;
-                            break;
-                        default:
-                            parsedResponse = JSON.parse(response);
+                    if (contentType.toLowerCase().includes(CONTENT_TYPE.JSON)) {
+                        parsedResponse = JSON.parse(response);
+                    } else {
+                        parsedResponse = response;
                     }
                 } catch (e) {
                     console.error(e);
@@ -142,7 +140,7 @@ export default function createSaga(
                     yield put({ type: event.SUCCESS, data, originalPayload: action.payload, statusCode });
                 }
             } catch (error) {
-                console.log(error);
+                console.error(error);
                 yield put({ type: event.FAILURE, error });
             }
         });

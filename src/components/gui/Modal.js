@@ -66,6 +66,7 @@ const ModalTitle = styled.div`
 const ModalContent = styled.div`
   padding: ${props => props.noPadding ? 0 : props.theme.large_padding};
   flex: 1 1 auto;
+  background-color: ${props => props.tinted ? props.theme.grey_5 : 'inherit'};
   display: flex;
   flex-direction: column;
   overflow-y: auto; 
@@ -207,7 +208,7 @@ class Modal extends Component {
             {typeof this.props.dismiss === "function" && <Button style={{alignSelf: 'center'}} onClick={this.props.dismiss} id={"close-modal-button"} title={'close'} icon={"times"}></Button>}
             {/*<ModalClose>{typeof this.props.dismiss === "function" && <Icon onClick={this.props.dismiss} icon={"times"} />}</ModalClose>*/}
           </ModalHeader>
-          <ModalContent ref={this.firstFocusRef} noPadding={this.props.noPadding}>{this.props.children}</ModalContent>
+          <ModalContent ref={this.firstFocusRef} tinted={this.props.tinted} noPadding={this.props.noPadding}>{this.props.children}</ModalContent>
           {this.props.actions && this.props.actions.length !== 0 &&
             <ModalFooter>{this.props.actions.map((action, index) => {
               let buttonProps = {

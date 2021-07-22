@@ -1,4 +1,3 @@
-import styled, { useTheme } from 'styled-components/macro';
 import React, { useEffect } from "react";
 import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,23 +8,27 @@ import { NavLink } from "react-router-dom";
 import { ORDER_RESET } from "../../actions/action_constants";
 
 const OrderCompleted = props => {
-    const theme = useTheme();
     const dispatch = useDispatch();
-    const order = useSelector(
-        state => state.catalogue.order
+    const completedOrder = useSelector(
+        state => state.catalogue.order.response
     );
     const navigate = useNavigate();
 
     useEffect(() => {
         return () => dispatch({ type: ORDER_RESET })
     }, [])
-    // if (order.key === null) navigate('/account/orders');
+
+
+    if (completedOrder === null) {
+        setTimeout(() => navigate('/account/orders'))
+        return null;
+    }
 
     return (
         <CenterWrapper>
-            <Trans i18nKey={'commerce:orderSuccessfull'}>
+            <Trans i18nKey={completedOrder.status === 2 ? 'commerce:orderSuccessfull' : 'commerce:orderReceived'}>
                 <h1>0</h1>
-                <Icon icon={'check-circle fa-3x'} />
+                <Icon icon={completedOrder.status === 2 ? 'check-circle fa-3x' : 'clock fa-3x'} />
                 <p>
                     
                 </p>

@@ -5,7 +5,7 @@ import {MD_SCREEN} from "../../config/constants";
 const ElementGrid = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   
   &>* {
     width: 70%;

@@ -8,6 +8,8 @@ import { NavLink } from 'react-router-dom';
 import AdminGraphics from "./AdminGraphics";
 import AdminOrders from "./AdminOrders";
 import AdminUsers from "./AdminUsers";
+import AdminLogs from "./AdminLogs";
+import AdminVouchers from "./AdminVouchers";
 
 // TODO: Minimieren-Button
 
@@ -29,7 +31,7 @@ const AdminIndex = () => {
             <div style={{ position: 'sticky', top: 0 }}>
                     <Wrapper>
                         <li className={'wiki-categories'}>
-                            <IndexLink expanded={true} className={'no-styled-link'}
+                            <IndexLink className={'no-styled-link'}
                                 to={'/admin/orders/'}>
                                     Bestellungen
                                 </IndexLink>
@@ -39,11 +41,16 @@ const AdminIndex = () => {
                                             Alle Bestellungen
                                         </NavLink>
                                     </li>
+                                    <li>
+                                        <NavLink className={'no-styled-link'} to={'/admin/vouchers/list'}>
+                                            Internetmarken
+                                        </NavLink>
+                                    </li>
                                 </ul>
                             
                         </li>
                         <li className={'wiki-categories'}>
-                            <IndexLink expanded={true} className={'no-styled-link'}
+                            <IndexLink className={'no-styled-link'}
                                 to={'/admin/drafts/'}>
                                     Entwürfe
                                 </IndexLink>
@@ -57,7 +64,7 @@ const AdminIndex = () => {
 
                         </li>
                         <li className={'wiki-categories'}>
-                            <IndexLink expanded={true} className={'no-styled-link'}
+                            <IndexLink className={'no-styled-link'}
                                 to={'/admin/users/'}>
                                     Benutzer*innen
                                 </IndexLink>
@@ -71,19 +78,24 @@ const AdminIndex = () => {
 
                         </li>
                         <li className={'wiki-categories'}>
-                            <IndexLink expanded={true} className={'no-styled-link'}
-                                to={'/admin/errors/'}>
-                                    Exceptions
+                            <IndexLink className={'no-styled-link'}
+                                to={'/admin/logs/'}>
+                                    Logs
                                 </IndexLink>
                                 <ul className={'wiki-articles'}>
                                     <li>
-                                        <NavLink className={'no-styled-link'} to={'/admin/errors/frontend'}>
-                                            Frontend
+                                        <NavLink className={'no-styled-link'} to={'/admin/logs/frontend_exceptions'}>
+                                            Exceptions Frontend
                                         </NavLink>
                                     </li>
                                     <li>
-                                        <NavLink className={'no-styled-link'} to={'/admin/errors/backend'}>
-                                            Backend
+                                        <NavLink className={'no-styled-link'} to={'/admin/logs/backend_exceptions'}>
+                                            Exceptions Backend
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink className={'no-styled-link'} to={'/admin/logs/logfiles'}>
+                                            Logs
                                         </NavLink>
                                     </li>
                                 </ul>
@@ -100,14 +112,20 @@ const AdminIndex = () => {
             {(section === 'orders') && (view === 'list') &&
                 <AdminOrders />
             }
+            {(section === 'vouchers') && (view === 'list') &&
+                <AdminVouchers />
+            }
             {(section === 'users') && (view === 'list') &&
                 <AdminUsers />
             }
-            {(section === 'errors') && (view === 'frontend') &&
+            {(section === 'logs') && (view === 'frontend_exceptions') &&
                 <AdminErrors frontend/>
             }
-            {(section === 'errors') && (view === 'backend') &&
+            {(section === 'logs') && (view === 'backend_exceptions') &&
                 <AdminErrors backend/>
+            }
+            {(section === 'logs') && (view === 'logfiles') &&
+                <AdminLogs />
             }
         </div>
     </div>

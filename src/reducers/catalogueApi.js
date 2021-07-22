@@ -163,8 +163,7 @@ const catalogueApi = (state = {}, action) => {
                 order: {
                     error: null,
                     pending: true,
-                    successful: false,
-                    key: action.payload.idempotencyKey
+                    successful: false
                 }
             };
         case ORDER.CREATE.SUCCESS:
@@ -174,7 +173,8 @@ const catalogueApi = (state = {}, action) => {
                 order: {
                     ...state.order,
                     pending: false,
-                    successful: true
+                    successful: true,
+                    response: action.data
                 }
             };
         case ORDER.CREATE.FAILURE:

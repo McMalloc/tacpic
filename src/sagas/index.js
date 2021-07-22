@@ -19,7 +19,7 @@ import {
     VARIANTS,
     VARIANT,
     ADDRESS,
-    APP, QUOTE, IMPORT, CMS_PAGE, CMS_CATEGORY, CMS_LEGAL, ADMIN
+    APP, QUOTE, IMPORT, CMS_PAGE, CMS_CATEGORY, CMS_LEGAL
 } from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {
@@ -99,8 +99,6 @@ export default function* root() {
         call(createSaga(IMPORT.OCR, 'post', 'ocr', takeLatest, false, id, id)),
 
         call(createSaga(USER.INDEX, 'get', 'internal/users', takeLatest, true, id, id)),
-        call(createSaga(ADMIN.FRONTEND_ERRORS, 'get', 'internal/errors/frontend', takeLatest, true, id, id)),
-        call(createSaga(ADMIN.BACKEND_ERRORS, 'get', 'internal/errors/backend', takeLatest, true, id, id)),
 
         call(orderCreateSaga),
         call(orderIndexSaga),

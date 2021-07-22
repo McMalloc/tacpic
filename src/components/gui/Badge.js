@@ -10,7 +10,7 @@ const Badge = styled.span`
   letter-spacing: 2px;
   border-radius: ${props => props.theme.border_radius};
   padding: ${props => props.theme.spacing[1]} ${props => props.theme.spacing[2]};
-  background-color: ${props => !!props.state ? props.theme[props.state] : props.theme.midlight};
+  background-color: ${props => !!props.state ? props.theme[props.state] : props.theme.grey_3};
 `;
 
 export default Badge;

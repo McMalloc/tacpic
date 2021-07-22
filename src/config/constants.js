@@ -4,7 +4,6 @@ export const A4_WIDTH = 210;
 export const A4_HEIGHT = 297;
 export const PAGE_NUMBER_BOTTOM = 4;
 export const MAX_VALUE_FOR_ORDER = 20000;
-export const SVG_MIME = "image/svg+xml";
 export const SVG_A4_PX_WIDTH = 793.7;
 export const TOOL_SENSIBILITY = 1;
 export const SAFE_BORDER = 10;
@@ -12,6 +11,12 @@ export const CACHE_TIMEOUT = 0;
 export const BACKUP_INTERVAL = 3000;
 export const DB_DATE_FORMAT = "%YYYY-%MM-%DD %HH:%mm:%ss %z";
 export const DEFAULT_LABEL_SIZE = [219, 65];
+
+export const CONTENT_TYPE = {
+  SVG: "image/svg+xml",
+  JSON: "application/json",
+  PLAIN: "text/plain"
+}
 
 export const XL_SCREEN = "@media only screen and (min-width: 1200px)";
 export const LG_SCREEN = "@media only screen and (min-width: 992px)";
