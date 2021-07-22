@@ -201,7 +201,7 @@ const Pricing = () => {
                 <td>{t("products:swellA3")}</td>
                 <td>
                   {
-                    t('{{amount, currency}} (pro Seite)',
+                    t('{{amount, currency}}',
                       { amount: 590 }
                     )
                   }
