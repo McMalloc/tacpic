@@ -5,14 +5,14 @@ import PropTypes from "prop-types";
 
 const Wrapper = styled.div`
     display: flex;
-    justify-content: ${({rightAlign, centerAlign}) => rightAlign ? 'flex-end' : centerAlign ? 'space-evenly' : 'flex-start'};
+    justify-content: ${({rightAlign, centerAlign}) => rightAlign ? 'flex-end' : centerAlign ? 'center' : 'flex-start'};
     flex-wrap: wrap;
 
     button {
         flex: 0 1 auto;
         margin-bottom: 0.5rem;
-        margin-left: ${({rightAlign}) => rightAlign ? '0.5rem' : 0};
-        margin-right: ${({leftAlign}) => leftAlign ? '0.5rem' : 0};
+        margin-left: ${({rightAlign}) => rightAlign ? '0.5rem' : '1rem'};
+        margin-right: ${({leftAlign}) => leftAlign ? '0.5rem' : '1rem'};
     }
 `;
 

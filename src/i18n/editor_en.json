@@ -32,7 +32,10 @@
     "showVertical": "Show vertical grid",
     "distanceVertical": "Vertical grid lines",
     "showHorizontal": "Show horizontal grid",
-    "distanceHorizontal": "Horizontal grid lines"
+    "distanceHorizontal": "Horizontal grid lines",
+    "safeArea": "Protected area",
+    "safeAreaHint": "The graphic should not extend into the protection area, because due to technical limitations we cannot guarantee that the black color will swell properly in this area.",
+    "showSafeArea": "Show protected area"
   },
   "braillePanel": {
     "heading": "$t(glossary:brailleScript) pages",
