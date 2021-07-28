@@ -614,8 +614,12 @@ class InteractiveSVG extends Component {
     }
 
     render() {
-        const visibleObjects = this.props.file.present.pages[this.props.ui.currentPage].objects;
-        let selectedObjects = this.props.ui.selectedObjects.map(uuid => findObject(visibleObjects, uuid));
+        let visibleObjects = [];
+        let selectedObjects = [];
+        if (this.props.ui.currentPage != null) {
+            visibleObjects =  this.props.file.present.pages[this.props.ui.currentPage].objects;
+            selectedObjects = this.props.ui.selectedObjects.map(uuid => findObject(visibleObjects, uuid));
+        }
         return (
             <SVG
                 xmlns={"http://www.w3.org/2000/svg"}

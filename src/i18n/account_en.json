@@ -88,5 +88,6 @@
   "attempt_to_login_to_unverified_account_error_flash": "An account associated with this e-mail address needs to be verified. Please check your inbox and your spam folder, if necessary.",
   "onlyGermany": "Unfortunately, we can only ship to Germany at the moment.",
   "order-status-4": "Waiting for payment",
-  "edit_address": "Edit Address"
+  "edit_address": "Edit Address",
+  "invalid_password_message": "The password was incorrect."
 }

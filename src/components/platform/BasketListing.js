@@ -10,7 +10,6 @@ import {
 } from "../../actions/action_constants";
 import { useDispatch, useSelector } from "react-redux";
 import { Numberinput } from "../gui/Input";
-import { Radio } from "../gui/Radio";
 import { Button } from "../gui/Button";
 import { Link } from "react-router-dom";
 import styled from 'styled-components/macro';
@@ -18,9 +17,7 @@ import { API_URL } from "../../env.json";
 import Well from "../gui/Well";
 import Loader, { LoaderOverlay } from "../gui/Loader";
 import Select from "../gui/Select";
-import { FlyoutEntry } from "../gui/FlyoutButton";
 import InfoLabel from "../gui/InfoLabel";
-// import {CSSTransition} from "react-transition-group";
 
 const updateBasket = (dispatch, variantId, quantity, product, index) => {
     dispatch({
@@ -122,7 +119,7 @@ const BasketListing = () => {
 
     return (
         <Wrapper>
-            {quote.items.map((quoteItem, index) => {
+            {quotedVariants.length > 0 ? quote.items.map((quoteItem, index) => {
                 const correspondingVariant = quotedVariants.find(v => v.id === quoteItem.content_id);
                 if (!correspondingVariant) return null
                 return (
@@ -198,7 +195,10 @@ const BasketListing = () => {
                         </ItemPanel>
                     // </CSSTransition>
                 )
-            })}
+
+            }):
+                <Loader />
+            }
             <MetaItemTable>
                 <tbody>
                     <MetaItemRow>

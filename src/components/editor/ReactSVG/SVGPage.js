@@ -16,7 +16,7 @@ export const SVGPage = ({page, excludes = [], callbacks}) => {
                       height={height + "mm"}
                       stroke={'rgba(0,0,0,0.0)'} fill={'white'}/>
 
-                {pages[page].objects.map((object, index) => {
+                {!!pages[page] && pages[page].objects.map((object, index) => {
                     if (excludes.includes(object.uuid)) return null;
                     return mapObject(object, index, page, callbacks);
                 })}

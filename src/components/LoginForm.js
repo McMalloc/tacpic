@@ -1,9 +1,8 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "./gui/Button";
-import {USER} from "../actions/action_constants";
+import {RESET_USER_ERRORS, USER} from "../actions/action_constants";
 import {useTranslation} from "react-i18next";
-import {Icon} from "./gui/_Icon";
 import {Textinput} from "./gui/Input";
 import {Alert} from "./gui/Alert";
 import {Link} from "react-router-dom";
@@ -14,6 +13,8 @@ const Login = props => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
+    // reset errors
+    useEffect(() => () => dispatch({type: RESET_USER_ERRORS}), []);
 
     // input states
     const [uname, setUname] = useState('');
@@ -56,7 +57,7 @@ const Login = props => {
 
             {user.error !== null && (tryAgain === pwd+uname) &&
             <><Alert warning>
-                {t("account:" + user.error.error)}<br/>
+                {t("account:" + user.error.error)}:<br/>
                 {user.error['field-error'] && t("account:" + user.error['field-error'][1])}
             </Alert><br/></>
             }

@@ -17,6 +17,8 @@ const SignupForm = props => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
+    // reset errors
+    useEffect(() => () => dispatch({type: RESET_USER_ERRORS}), []);
 
     // input states
     const [uname, setUname] = useState('');

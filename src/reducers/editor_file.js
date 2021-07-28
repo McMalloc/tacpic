@@ -294,13 +294,10 @@ const file = (state = {}, action) => {
           let found = false;
           draftState.pages.forEach((page, index) => {
             if (found) return;
-            objectIndex = page.objects.findIndex(object => object.uuid === uuid);
+            objectIndex = page.objects.findIndex(object => (object.uuid === uuid && object.type !== 'key'));
             pageIndex = index;
             if (objectIndex !== -1) found = true;
           })
-          console.log(pageIndex, objectIndex);
-          console.log(draftState.pages[pageIndex].objects);
-          console.log("               ");
           if (found) draftState.pages[pageIndex].objects.splice(objectIndex, 1);
         });
       })

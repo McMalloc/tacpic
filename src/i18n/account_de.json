@@ -88,5 +88,6 @@
   "attempt_to_login_to_unverified_account_error_flash": "Das Konto mit dieser E-Mail-Adresse muss noch verifiziert werden. Bitte prüfen Sie Ihr Postfach und ggf. den Spam-Ordner.",
   "no_matching_login_message": "Kein Benutzerkonto mit dieser E-Mail-Adresse / Passwort bekannt.",
   "login_error_flash": "Beim Anmelden ist ein Problem aufgetreten",
+  "invalid_password_message": "Das Passwort war nicht korrekt.",
   "reallyRemoveAddress": "Möchten Sie wirklich die folgende Adresse entfernen?"
 }

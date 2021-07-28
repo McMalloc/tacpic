@@ -20,7 +20,7 @@ export function* objectSelectedWatcher() {
             let currentPage = yield select(state => state.editor.ui.currentPage);
             let pageWithSelectedObject = yield select(state => pageWithObjectSelector(state, action.uuids[0]));
 
-            if (currentPage !== pageWithSelectedObject) {
+            if (currentPage !== pageWithSelectedObject && pageWithSelectedObject !== null) {
                 yield put({
                     type: 'PAGE_CHANGE',
                     number: pageWithSelectedObject

@@ -51,5 +51,6 @@
   "quoteRequestMailSubject": "Quote request",
   "sendQuoteRequest": "Send prepared request via e-mail",
   "duplicate_order": "Multiple identical orders",
-  "duplicate_order_message": "The order entered the system more than once. Please check the state of your order at User Acount > Orders."
+  "duplicate_order_message": "The order entered the system more than once. Please check the state of your order at User Acount > Orders.",
+  "orderReceived": "<0>Thank you!</0><1 /><2>We've received the order and will now review the details. After that you'll receive an order confirmation.</2><3>Back to home</3> or <4>review orders</4>"
 }

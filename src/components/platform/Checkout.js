@@ -254,9 +254,9 @@ const Checkout = props => {
                         <h2>{t('commerce:basketHeading')}</h2>
                         <BasketListing />
 
-                        <Alert i18nKey={'commerce:betaHint'} danger>
-                            0<br /><strong>2</strong>
-                        </Alert>
+                        {/*<Alert i18nKey={'commerce:betaHint'} danger>*/}
+                        {/*    0<br /><strong>2</strong>*/}
+                        {/*</Alert>*/}
                         <br />
 
 

@@ -132,23 +132,27 @@ const ObjectEntry = props => {
         <div style={{ display: 'flex', alignItems: 'center', height: 35 }}>
             <ObjectPreview {...props} />
             {props.type === "label" ? `${t('editor:placeholderLabel')}: "${props.text}"` : props.moniker}</div>
-        <Button onClick={event => {
-            event.stopPropagation();
-            !!props.selected && dispatch({
-                type: 'OBJECT_SELECTED',
-                uuids: [null]
-            });
-            dispatch({
-                type: 'OBJECT_REMOVED',
-                uuids: [props.uuid]
-            });
-         }}
-            className={'hover-button'} small title={'delete'} icon={"trash-alt"} />
+        {props.type !== 'key' &&
+            <Button onClick={event => {
+                event.stopPropagation();
+                !!props.selected && dispatch({
+                    type: 'OBJECT_SELECTED',
+                    uuids: [null]
+                });
+                dispatch({
+                    type: 'OBJECT_REMOVED',
+                    uuids: [props.uuid]
+                });
+            }}
+                    className={'hover-button'} small title={'delete'} icon={"trash-alt"} />
+        }
+
     </AccordeonMenuEntry>
 }
 
 const Objects = props => {
     const {t} = useTranslation();
+
     const objects = useSelector(
         state => state.editor.file.present.pages[state.editor.ui.currentPage].objects
     )
