@@ -5,6 +5,7 @@ import { Textinput } from "../gui/Input";
 import { Button } from "../gui/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from 'styled-components/macro';
+import {useMatomo} from "@datapunt/matomo-tracker-react";
 
 const Bar = styled.form`
   display: flex;
@@ -34,6 +35,7 @@ const Searchbar = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
+    const { trackPageView, trackEvent } = useMatomo()
 
     const [searchTerm, setSearchTerm] = useState(catalogue.filterTerms);
 
@@ -55,6 +57,7 @@ const Searchbar = () => {
             <Button
                 onClick={event => {
                     event.preventDefault();
+                    trackEvent({category: 'catalogue', action: 'search', name: searchTerm});
                     searchChanged(dispatch, searchTerm);
                     if (location.pathname !== "/catalogue") {
                         navigate("catalogue");

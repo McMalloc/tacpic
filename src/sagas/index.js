@@ -36,7 +36,7 @@ import {
 import {renderWatcher} from "./render_saga";
 import {addressRemoveSaga} from "./address_saga";
 import {basketChangeSaga, basketCheckSaga} from "./basket_saga";
-import {orderCreateSaga, orderIndexSaga} from "./order_saga";
+import {orderCompleteWatcher, orderCreateSaga, orderIndexSaga} from "./order_saga";
 import {titleEditWatch} from "./title_saga";
 import { backupRemoveWatcher, backupWatcher, backupAutoRemoveWatcher, backupIndexWatcher } from "./backup_saga";
 import { errorWatcher } from "./error_saga";
@@ -102,6 +102,7 @@ export default function* root() {
 
         call(orderCreateSaga),
         call(orderIndexSaga),
+        call(orderCompleteWatcher),
 
         call(createSaga(APP.FRONTEND, 'get', 'FRONTEND.json', takeLatest, false, id, id)),
         call(createSaga(APP.BACKEND, 'get', 'BACKEND.json', takeLatest, false, id, id)),

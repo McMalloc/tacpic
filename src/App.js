@@ -87,7 +87,9 @@ const App = () => {
     }
     // scroll to top at page change, if it is not the catalogue
     !/\/catalogue/.test(location.pathname) && document.getElementById("scroll-content").scrollTo(0, 0);
-    trackPageView();
+
+    // track page changes and let some time pass so components down the hierarchy can change the title
+    setTimeout(() => trackPageView(document.title), 500);
   }, [location.pathname]);
 
   const navbarItems = [

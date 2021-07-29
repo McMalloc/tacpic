@@ -6,7 +6,10 @@ import { Icon } from "./_Icon";
 const Wrapper = styled.span`
   display: flex;
   
-margin-bottom: 0.5rem;
+  &:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+  
   .icon {
       width: 2rem;
       align-self: center;

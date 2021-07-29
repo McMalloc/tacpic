@@ -51,7 +51,7 @@ const ItemPanel = styled(Well)`
   }
   .lower {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: space-between;
 
     button {
@@ -185,12 +185,25 @@ const BasketListing = () => {
                                         quoteItem.product_id,
                                         index)} />
 
-                                <InfoLabel
-                                    title={'catalogue:price'}
-                                    info={t('{{amount, currency}}', {
-                                        amount: quoteItem.gross_price * quoteItem.quantity
-                                    })}
-                                    label={'catalogue:price'} />
+                                <div>
+
+                                    <div style={{fontSize: '0.85rem'}}>
+                                        {quoteItem.quantity !== 1 &&
+                                        <>{t('catalogue:singlePrice', {
+                                            amount: quoteItem.gross_price
+                                        })}</>
+
+                                        }
+                                    </div>
+                                    <InfoLabel
+                                        title={'catalogue:price'}
+                                        info={t('{{amount, currency}}', {
+                                            amount: quoteItem.gross_price * quoteItem.quantity
+                                        })}
+                                        label={'catalogue:price'} />
+                                </div>
+
+
                             </div>
                         </ItemPanel>
                     // </CSSTransition>
