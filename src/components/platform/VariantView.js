@@ -478,6 +478,7 @@ const VariantView = (props) => {
               label={t(basketIndex >= 0 ? "commerce:remove" : "catalogue:addToCart")}
               title={t("catalogue:removeFromCart")}
               large
+              style={{flex: '1 1 30%'}}
               primary={basketIndex === -1}
               icon={basketIndex >= 0 ? "shopping-cart" : "cart-plus"}
             />

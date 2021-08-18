@@ -173,6 +173,7 @@ const catalogueApi = (state = {}, action) => {
                 order: {
                     ...state.order,
                     pending: false,
+                    error: null,
                     successful: true,
                     response: action.data
                 }

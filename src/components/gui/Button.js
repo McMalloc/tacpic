@@ -60,10 +60,10 @@ const ButtonBase = styled.button`
   }
 
   &:hover:not(:disabled) {
-    background-color: ${(props) =>
+    background-color: ${props =>
       props.primary ? props.theme.brand_secondary_lighter : props.theme.light};
-    box-shadow: ${(props) => props.theme.middle_shadow};
-    border-color: ${(props) => props.theme.brand_secondary_lighter};
+    box-shadow: ${props => props.theme.middle_shadow};
+    border-color: ${props => props.dangerous ? props.theme.warning : props.theme.brand_secondary_lighter};
     ${Label} {
       text-decoration: underline;
     }

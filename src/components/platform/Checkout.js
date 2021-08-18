@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../gui/Button";
 import { Trans, useTranslation } from "react-i18next";
-import { ADDRESS, ORDER, USER, VARIANTS } from "../../actions/action_constants";
+import {ADDRESS, ORDER, ORDER_RESET, USER, VARIANTS} from "../../actions/action_constants";
 import { Row } from "../gui/Grid";
 import { Alert } from "../gui/Alert";
 import AddressView from "./AddressView";
@@ -41,7 +41,8 @@ const Checkout = props => {
     const dispatch = useDispatch();
     useEffect(() => {
         document.getElementById("app-container").scrollTo(0, 0);
-        dispatch({ type: ADDRESS.GET.REQUEST })
+        dispatch({ type: ORDER_RESET});
+        dispatch({ type: ADDRESS.GET.REQUEST });
     }, []);
 
     // const [step, changeStep] = useState(3);
