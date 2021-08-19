@@ -117,7 +117,7 @@ const AdminOrders = props => {
                                                             <strong>{invoice.invoice_number}</strong>
                                                         }
                                                         <br/>
-                                                        vom {moment(invoice.created_at).format(t('dateFormat'))}
+                                                        vom {moment(invoice.created_at, DB_DATE_FORMAT).format(t('dateFormat'))}
                                                     </div>
                                                     <div>
                                                         <strong>An:</strong><br/>
