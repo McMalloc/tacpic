@@ -55,7 +55,7 @@ const Login = props => {
                 onChange={event => setPwd(event.target.value)}
                 name={'pwd'}/>
 
-            {user.error !== null && (tryAgain === pwd+uname) &&
+            {!!user.error && (tryAgain === pwd+uname) &&
             <><Alert warning>
                 {t("account:" + user.error.error)}:<br/>
                 {user.error['field-error'] && t("account:" + user.error['field-error'][1])}

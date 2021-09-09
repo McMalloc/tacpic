@@ -155,7 +155,7 @@ const VariantView = (props) => {
   const dispatch = useDispatch();
   const tags = useSelector(state => state.catalogue.tags);
   const basketIndex = useSelector(state => state.catalogue.basket.map(item => parseInt(item.contentId)).findIndex(id => id == props.id));
-  const { logged_in, role } = useSelector((state) => state.user);
+  const { logged_in, role, userRights } = useSelector((state) => state.user);
   const [product, setProduct] = useState("graphic");
   const [quantity, setQuantity] = useState(1);
   const [lastViewedPreview, setLastViewedPreview] = useState({});
@@ -467,6 +467,8 @@ const VariantView = (props) => {
                 {t('catalogue:deliveryTime', { lower: 4, upper: 5 })}
               </div>
             </div>
+            {true ?
+            // {!!userRights && userRights.can_order ?
             <Button
               onClick={() => {
                 basketIndex === -1 ?
@@ -482,6 +484,9 @@ const VariantView = (props) => {
               primary={basketIndex === -1}
               icon={basketIndex >= 0 ? "shopping-cart" : "cart-plus"}
             />
+            :
+              <Alert info>{t("commerce:not_whitelisted")}</Alert>
+}
           </OrderWidget>
         </Well>
       </div>

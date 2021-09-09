@@ -24,7 +24,7 @@
   "alreadySignedUp": "Haben Sie bereits ein Konto? <1>Hier anmelden.</1>",
   "forgotPassword": "Passwort vergessen?",
   "passwordResetted": "Ihr Passwort wurde zurückgesetzt. Bitte melden Sie sich mit Ihrem neuen Passwort an.",
-  "signupRestrictedInfo": "Während der Testphase steht aus sicherheitstechnischen und rechtlichen Gründen nur <1>ausgewählten Nutzenden mit entsprechenden E-Mail-Addressen</1> eine Anmeldung offen.",
+  "signupRestrictedInfo": "Während der Testphase steht aus sicherheitstechnischen und rechtlichen Gründen nur <1>ausgewählten Nutzenden mit entsprechenden E-Mail-Addressen</1> offen, Bestellungen aufzugeben.",
   "mailSent": "Wir haben Ihnen eine <1>E-Mail zur Bestätigung</1> geschickt, bitte überprüfen Sie Ihr Postfach.",
   "passwordNextStep": "Für ein Passwort entscheiden Sie sich im nächsten Schritt.",
   "my_lists": "Meine Listen",

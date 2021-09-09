@@ -22,7 +22,7 @@ export const userCreateSaga = createSaga(USER.CREATE, 'post', 'create-account', 
 
 const processLoginResponse = (response, statusCode, authHeader) => {
     localStorage.setItem('jwt', authHeader);
-    if (statusCode === 200) return JSON.parse(/^\{(.*?)\}/.exec(response)[0]); // catch rodauths weird login response
+    if (statusCode === 200) return JSON.parse(/^\{(.*?)(\}\}|\})/.exec(response)[0]); // catch rodauths weird login response
 }
 
 export const userLoginSaga = createSaga(USER.LOGIN, 'post', 'login', takeLatest, false, request=>request, processLoginResponse, null, '/catalogue');

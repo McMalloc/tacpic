@@ -37,7 +37,7 @@
   },
   "error": {
     "AccountError": "Account creation error",
-    "not whitelisted": "This e-mail address has not been approved for registration.",
+    "not_whitelisted": "This e-mail address has not been approved for registration.",
     "display name already in use": "This display name is already taken."
   },
   "help": {

@@ -16,7 +16,7 @@ const Form = styled.div`
   padding: 2rem 3rem;
   margin-top: 4rem;
   //background-color: ${props => props.theme.grey_6};
-  background: linear-gradient(51deg, rgba(232,232,232,0.95) 0%, rgba(245,245,245,1) 100%);
+  background-color: ${props => props.theme.grey_6};
   
   /* z-index: 1; */
   position: relative;
@@ -56,7 +56,7 @@ const Wrapper = styled.main`
   .key-visual {
       position: absolute;
       top: -50px; left: 0; right: 0; bottom: 0;
-      background-image: url('/images/key.jpg');
+      background-image: url('/images/key3.jpg');
 
       ${MD_SCREEN} {
           background-size: contain;
@@ -64,7 +64,7 @@ const Wrapper = styled.main`
       
       &:after {
         background: rgb(255,255,255);
-        background: linear-gradient(0deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 100%);
+        background: linear-gradient(0deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 100%);
         content: "";
         top: 0; left: 0; right: 0;
         position: absolute;

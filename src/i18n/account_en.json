@@ -25,7 +25,7 @@
   "alreadySignedUp": "Do you already have an account? <1>Log in here.</1>",
   "forgotPassword": "Forgot password",
   "passwordResetted": "Your password has been reset. Please log in with your new password.",
-  "signupRestrictedInfo": "During the test phase, for security and legal reasons, only <1>selected users with stored email addresses</1> can log in.",
+  "signupRestrictedInfo": "During the test phase, for security and legal reasons, only <1>selected users with stored email addresses</1> can place orders.",
   "mailSent": "We have sent you a <1>confirmation email</1>, please check your inbox.",
   "passwordNextStep": "You will select a password in the next step.",
   "my_lists": "My lists",

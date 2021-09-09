@@ -52,5 +52,7 @@
   "orderSuccessfull": "<0>Vielen Dank für Ihre Bestellung!</0><1 /><2>Wir haben Ihnen eine Bestellbestätigung per E-Mail geschickt.</2><3>Zurück zur Startseite</3> oder <4>Bestellungen einsehen</4>",
   "orderReceived": "<0>Vielen Dank!</0><1 /><2>Die Bestellung ist eingegangen und wir werden nun die Details prüfen. Danach erhalten Sie eine Bestellbestätigung.</2><3>Zurück zur Startseite</3> oder <4>Bestellungen einsehen</4>",
   "duplicate_order": "Doppelte Bestellung",
+  "not_whitelisted": "Ihr Benutzerkonto ist leider noch nicht für Bestellungen freigeschalten.",
+  "AccountError": "Fehler",
   "duplicate_order_message": "Die Bestellung ist zweimal im System eingegangen. Bitte überprüfen Sie die Bestellung unter Benutzerkonto > Bestellungen."
 }
