@@ -467,8 +467,8 @@ const VariantView = (props) => {
                 {t('catalogue:deliveryTime', { lower: 4, upper: 5 })}
               </div>
             </div>
-            {true ?
-            // {!!userRights && userRights.can_order ?
+            {/* {true ? */}
+            {!!userRights && userRights.can_order ?
             <Button
               onClick={() => {
                 basketIndex === -1 ?
