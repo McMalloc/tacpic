@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { FlyoutButton } from "../gui/FlyoutButton";
 import { useBreakpoint } from "../../contexts/breakpoints";
 
-const Knowledge = () => {
+const Support = props => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { category, postSlug } = useParams();
@@ -36,44 +36,46 @@ const Knowledge = () => {
     document.title = t('knowledge:heading') + ': ' + cat.name + ' | tacpic';
   }, [category, index])
 
-  const knowledgeCat = hierarchy.find(cat => cat.slug === 'wissen');
+  const knowledgeCat = hierarchy.find(cat => cat.slug === 'support');
   if (!successful || !knowledgeCat) return <Loader />
 
   // TODO Dokumententitel
 
+  const parentCategory = hierarchy.find(cat => cat.slug === 'support');
   const contentIndex = <ContentIndex
-    hierarchy={hierarchy.find(cat => cat.slug === 'wissen').children}
+    hierarchy={!!parentCategory ? parentCategory.children : null}
     active={category}
-    parentIndex={'knowledge'}
+    parentIndex={'support'}
     aria-landmark={'complementary'}
     pending={loadedPages.pending}
     pages={relevantPages} />
 
   const page = relevantPages.find(page => page.slug === postSlug);
   return <>
-    <div className='row'>
+  <div className='row'>
 
-      <div className={'col-md-3 col-xs-12'} style={{paddingTop: 120}}>
-        <div style={{ position: 'sticky', top: 0 }}>
-          {breakpoints.md ?
-            <>  
-              <h2 style={{fontSize: '1rem', opacity: 0.8}}>{t('knowledge:topics')}</h2>
-              {contentIndex}
-            </>
-            :
-            <FlyoutButton closeButton={true} label={"knowledge:topics"}>
-              {contentIndex}
-            </FlyoutButton>
-          }
-        </div>
-      </div>
-      <div className={'col-md-9 col-xs-12'}>
-        {!!page &&
-          <ContentPage {...page} />
+    <div className={'col-md-3 col-xs-12'} style={{paddingTop: 120}}>
+      <div style={{ position: 'sticky', top: 0 }}>
+        {breakpoints.md ?
+          <>  
+            <h2 style={{fontSize: '1rem', opacity: 0.8}}>{t('knowledge:topics')}</h2>
+            {contentIndex}
+          </>
+          :
+          <FlyoutButton closeButton={true} label={"knowledge:topics"}>
+            {contentIndex}
+          </FlyoutButton>
         }
       </div>
     </div>
-  </>;
+    <div className={'col-md-9 col-xs-12'}>
+      {!!page &&
+        <ContentPage {...page} />
+      }
+    </div>
+  </div>
+</>
+    ;
 };
 
-export default Knowledge;
+export default Support;

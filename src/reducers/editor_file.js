@@ -315,7 +315,7 @@ const file = (state = {}, action) => {
         draftState.pages.push({
           name: null,//"Seite " + (state.pages.length + 1),
           objects: [
-            methods.label.create(10, 10, 350, 75, title, braille, {
+            methods.label.create(30, 10, 350, 75, title, braille, {
               isTitle: true,
               editMode: false,
               pristine: false,

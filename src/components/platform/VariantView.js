@@ -300,7 +300,7 @@ const VariantView = (props) => {
           label={props.public ? "catalogue:hideVariant" : "catalogue:showVariant"}
           onClick={() => {
             dispatch({ type: VARIANT.HIDE.REQUEST, payload: { id: variantId, public: !props.public } })
-            window.location.reload();
+            // window.location.reload();
           }}
           sublabel={""}
         />

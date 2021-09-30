@@ -63,7 +63,7 @@ const BraillePageSettings = () => {
                             ]}
                         />
                     </div> */}
-      <div>
+      {/* <div>
         <PageGrid>
           <GridCell>
             <Trans i18nKey='editor:braillePanel.countHint'>
@@ -153,7 +153,7 @@ const BraillePageSettings = () => {
           <GridCell></GridCell>
           <GridCell></GridCell>
         </PageGrid>
-      </div>
+      </div> */}
       <div>
         <Checkbox
           name={"cb_pagenumbers"}
@@ -166,7 +166,20 @@ const BraillePageSettings = () => {
             );
           }}
           label={"editor:braillePanel.braille_pagenumbers"}
-          sublabel={"editor:braillePanel.braille_pagenumbers-hints"}
+          // sublabel={"editor:braillePanel.braille_pagenumbers-hints"}
+        />
+        <Checkbox
+          name={"cb_holepunch"}
+          value={braillePages.marginLeft !== 1}
+          onChange={() => {
+            changeBraillePageProperty(
+              dispatch,
+              "marginLeft",
+              braillePages.marginLeft === 1 ? 5 : 1
+            );
+          }}
+          label={"editor:braillePanel.braille_holepunch"}
+          // sublabel={"editor:braillePanel.braille_holepunch-hints"}
         />
       </div>
     </>

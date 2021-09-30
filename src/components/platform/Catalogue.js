@@ -116,7 +116,7 @@ const Catalogue = () => {
         }
     }, [graphicOverview.id, location.pathname, location.search]);
 
-    const tagSidebar = <TagSidebar role={'group'} aria-label={'Filter'}>
+    const tagSidebar = <TagSidebar role={"complementary"} aria-label={'Filter'}>
             <strong id={'filter-group-format'}>{t('catalogue:formatHeading')}</strong>
             <div role={'group'} aria-hidden={true} aria-labelledby={'filter-group-format'} className={"tag-wrapper"}>
 
@@ -161,16 +161,19 @@ const Catalogue = () => {
             {breakpoints.md ?
                 <>
                     <Row>
-                        <div className={"col-md-6 col-md-offset-3 extra-margin double"}>
+                        <div className={"col-md-6 extra-margin double"}>
                             <Searchbar />
                         </div>
                     </Row>
                     <Row>
-                        <div className={"col-md-3"}>
-                            {tagSidebar}
-                        </div>
-                        <div className={"col-md-9"}>
+                        
+                    <div className={"col-md-9"}>
+                    <h2 className={"sr-only"}>Ergebnisse</h2>
                             <CatalogueItemList graphics={catalogue.graphics} />
+                        </div>
+                        <div className={"col-md-3"}>
+                        <h2>Filter</h2>
+                            {tagSidebar}
                         </div>
                     </Row>
                 </>
@@ -180,13 +183,16 @@ const Catalogue = () => {
                         <SearchFilterBar className={"col-xs-12"}>
                             <Searchbar />
                             &emsp;
+                            <h2 className={"sr-only"}>Filter</h2>
                             <FlyoutButton closeButton={true} label={"catalogue:filter"}>
+                            
                                 {tagSidebar}
                             </FlyoutButton>
                         </SearchFilterBar>
                     </Row>
                     <Row>
                         <div className={"col-xs-12"}>
+                        <h2 className={"sr-only"}>Ergebnisse</h2>
                             <CatalogueItemList graphics={catalogue.graphics} />
                         </div>
                     </Row>

@@ -2,12 +2,11 @@ import {useSelector} from "react-redux";
 import mapObject from "./index";
 import React from "react";
 import {determineFormat} from "../../../utility/determineFormat";
+import { SAFE_BORDER } from "../../../config/constants";
 
 export const SVGPage = ({page, excludes = [], callbacks}) => {
     const {width, height, pages} = useSelector(state => state.editor.file.present);
     const showSafeArea = useSelector(state => state.editor.ui.showSafeArea);
-    const {format} = determineFormat(width, height);
-    const offset = format === 'a4' ? 1 : 5;
     return (
         <>
             <g id={"page-" + page}>
@@ -23,13 +22,13 @@ export const SVGPage = ({page, excludes = [], callbacks}) => {
 
                 {showSafeArea &&
                 <rect data-role={'SAFEAREA'}
-                      width={(width - offset * 2) + "mm"}
-                      height={(height - offset * 2) + "mm"}
+                      width={(width - SAFE_BORDER) + "mm"}
+                      height={(height - SAFE_BORDER) + "mm"}
                       className={'editor-ui'}
-                      x={offset + 'mm'}
-                      y={offset + 'mm'}
+                      x={(SAFE_BORDER/2) + 'mm'}
+                      y={(SAFE_BORDER/2) + 'mm'}
                       style={{pointerEvents: 'none'}}
-                      strokeWidth={(offset * 2) + 'mm'}
+                      strokeWidth={(SAFE_BORDER) + 'mm'}
                       stroke={'rgba(200,0,0,0.1)'} fill={'none'}/>
                 }
             </g>

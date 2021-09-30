@@ -51,6 +51,8 @@
     "charactersPerRow": "Zeichen pro Zeile",
     "braille_pagenumbers": "Seitenzahlen",
     "braille_pagenumbers-hints": "verringern die maximale Anzahl der Zeilen um eine Zeile.",
+    "braille_holepunch": "Lochrand",
+    "braille_holepunch-hints": "ca. 4cm auf linker Seite",
     "verbalise_type-of-graphic": "Art der Grafik",
     "verbalise_type-of-graphic-hint": "Definieren Sie zuerst um welche Art von Grafik es sich handelt, z.B. Querschnitt, Liniendiagramm, Lageplan, etc. Falls Sie nach einer visuellen Vorlage arbeiten, geben Sie unbedingt Titel und Seitenzahl der Quelle sowie ggf. weitere Informationen zur Quelle an.",
     "verbalise_summary": "Zusammenfassung",

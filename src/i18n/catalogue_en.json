@@ -2,7 +2,7 @@
   "heading": "$t(glossary:catalogue)",
   "search": "Search",
   "searchterm": "Search term",
-  "search-placeholder": "e.g. Biologie Zelle",
+  "search-placeholder": "e.g. Zelle",
   "grub": "Browse the $t(glossary:catalogue)",
   "history_show": "Show version history",
   "history_hide": "Hide version history",

@@ -129,18 +129,19 @@ const checkActiveChildren = (children, active) => {
     return isActiveParent;
 }
 
-const renderNodes = (node, pages, active, pending) => {
+const renderNodes = (node, pages, active, pending, parentIndex) => {
+    console.log(parentIndex)
     const activeParent = node.slug === active || checkActiveChildren(node.children, active);
     return (
         <li className={'wiki-categories'}>
-            <IndexLink expanded={activeParent} className={'no-styled-link'} to={'/knowledge/' + node.slug}>
+            <IndexLink expanded={activeParent} className={'no-styled-link'} to={`/${parentIndex}/${node.slug}`}>
                 {node.name}
             </IndexLink>
             {node.slug === active && !pending &&
                 <ul className={'wiki-articles'}>
                     {pages.map(page =>
                         <li>
-                            <NavLink className={'no-styled-link'} to={'/knowledge/' + active + '/' + page.slug}>
+                            <NavLink className={'no-styled-link'} to={`/${parentIndex}/${active}/${page.slug}`}>
                                 {page.title.rendered}
                             </NavLink>
                         </li>)}
@@ -149,7 +150,7 @@ const renderNodes = (node, pages, active, pending) => {
             {(node.slug === active && pending) && <Loader frugal />}
             {node.children && node.children.length > 0 && activeParent &&
                 <ul>
-                    {node.children.map(cat => renderNodes(cat, pages, active, pending))}
+                    {node.children.map(cat => renderNodes(cat, pages, active, pending, parentIndex))}
                 </ul>
             }
 
@@ -176,7 +177,7 @@ const ContentIndex = props => {
     if (!props.hierarchy) return null;
     return (
         <Wrapper>
-            {props.hierarchy.map(cat => renderNodes(cat, props.pages, props.active, props.pending))}
+            {props.hierarchy.map(cat => renderNodes(cat, props.pages, props.active, props.pending, props.parentIndex))}
         </Wrapper>
     )
 };

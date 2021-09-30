@@ -370,7 +370,10 @@ const Editor = () => {
               label={t("editor:braillePanel.show")}
               icon={"mag"}
             />
-            <AccordeonPanelFlyoutButton
+            <div className={"padded"}>
+              <BraillePageSettings />
+            </div>
+            {/* <AccordeonPanelFlyoutButton
               flownOut={openedPanel === "brailleSettings"}
               className={"padded"}
               hideFlyout={dragging}
@@ -384,8 +387,8 @@ const Editor = () => {
               label={t("editor:setup")}
               icon={"braille"}
             >
-              <BraillePageSettings />
-            </AccordeonPanelFlyoutButton>
+              
+            </AccordeonPanelFlyoutButton> */}
             <AccordeonPanelFlyoutButton
               flownOut={openedPanel === "imagedescription"}
               forcedRerender={rerender}

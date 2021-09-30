@@ -28,6 +28,7 @@ import Consent from "./components/platform/Consent";
 import Knowledge from "./components/platform/Knowledge";
 import { initLanguage } from "./i18n/i18n";
 import Loader from "./components/gui/Loader";
+import Support from "./components/platform/Support";
 
 const Editor = React.lazy(() => import("./components/editor/Editor"));
 const AdminIndex = React.lazy(() => import("./components/admin/AdminIndex"));
@@ -96,6 +97,7 @@ const App = () => {
     { label: t("navigation.catalogue"), to: "/catalogue" },
     { label: t("navigation.editor"), to: "/editor/splash" },
     { label: t("navigation.pricing"), to: "/pricing" },
+    // { label: t("navigation.support"), to: '/support' },
     { label: t("navigation.knowledge"), to: '/knowledge/tastgrafiken' },
   ];
 
@@ -154,6 +156,9 @@ const App = () => {
             <Route path="/knowledge" element={<Knowledge />} />
             <Route path="/knowledge/:category" element={<Knowledge />} />
             <Route path="/knowledge/:category/:postSlug" element={<Knowledge />} />
+            <Route path="/support" element={<Support />} />
+            <Route path="/support/:category" element={<Support />} />
+            <Route path="/support/:category/:postSlug" element={<Support />} />
             <Route
               path="/info/:lang/:textId"
               element={<LegalIndex />}

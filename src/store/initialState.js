@@ -89,7 +89,7 @@ export const editor = {
                     text: false,
                     rendering: '',
                     objects: [
-                        methods.label.create(10, 10, 350, 75, '', '', { isTitle: true, editMode: false, pristine: true }),
+                        methods.label.create(30, 10, 350, 75, '', '', { isTitle: true, editMode: false, pristine: true }),
                         methods.key.create(100, 100)
                     ]
                 }

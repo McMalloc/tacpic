@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React from "react";
 import styled from "styled-components/macro";
 import { useSelector } from "react-redux";
 import { toBrailleNumbers } from "../../../utility/toBrailleNumber";
@@ -29,7 +29,6 @@ const Wrapper = styled.div`
 const Page = styled.div`
   z-index: 0;
   
-  //padding: 5mm 2.5mm;
   padding-top: ${(props) => brailleCellHeight * props.marginTop}mm;
   padding-left: ${(props) => brailleCellWidth * props.marginLeft}mm;
   padding-right: ${(props) =>
@@ -40,9 +39,6 @@ const Page = styled.div`
   background-color: white;
   box-sizing: border-box;
   width: fit-content;
-  
-  //width: ${a4Width}mm;
-  //height: ${a4height}mm;
   
    font-family: ${(props) =>
      props.system === "cb" ? "HBS8" : "tacpic swell braille"};
@@ -74,7 +70,7 @@ const BraillePage = (props) => {
 
   if (braillePages.braille.trim().length === 0) {
     return (
-      <Wrapper>
+      <Wrapper style={{padding: 12}}>
         <Alert info>{t('editor:braillePanel.noContent')}</Alert>
       </Wrapper>
     );

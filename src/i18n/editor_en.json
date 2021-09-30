@@ -60,7 +60,9 @@
     "verbaliseToSummaryButtonLabel": "Continue to summary",
     "verbaliseToDetailsButtonLabel": "Continue to details",
     "show": "Show $t(glossary:brailleScript) pages",
-    "noContent": "No $t(glossary:brailleScript) content yet"
+    "noContent": "No $t(glossary:brailleScript) content yet",
+    "braille_holepunch": "Hole-punched",
+    "braille_holepunch-hints": "4cm left margin"
   },
   "keyPanel": {
     "heading": "$t(glossary:key)",
