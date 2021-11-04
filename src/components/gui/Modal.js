@@ -40,6 +40,7 @@ const Window = styled.div`
     width: ${props => props.fitted ? 'auto' : '50%'};
   }
   max-height: 90%;
+  max-width: 600px;
   transition: height 0.2s, width 0.2s;
   border-radius: ${props => props.theme.border_radius};
   display: flex;
