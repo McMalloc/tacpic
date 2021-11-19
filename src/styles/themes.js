@@ -29,12 +29,16 @@ export const standard = {
     // middle_shadow: "0 3px 8px rgba(0,0,0,0.2)",
 
     success: "#4c9b42",
+    success_light: "#a9f3a0",
     success_dark: "#21591d",
     info: "#1792b2",
+    info_light: "#daf4ff",
     info_dark: "#005476",
     warning: "#ecc800",
+    warning_light: "#fcfcdc",
     warning_dark: "#c47e00",
     danger: "#911422",
+    danger_light: "#6e101b",
     danger_dark: "#6e101b",
 
     font_size_ui: "0.9em",

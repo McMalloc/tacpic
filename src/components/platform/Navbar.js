@@ -154,7 +154,7 @@ const Navbar = props => {
         )
     })
 
-    if (user.role === 1) sections.push(
+    if (!!user.userRights && user.userRights.can_view_admin) sections.push(
         <NavbarItem restrictedlink={'true'} key={sections.length} to={'/admin/start'}>
             <Icon icon={"tools"} />&nbsp;
             {t('navigation.admin')}

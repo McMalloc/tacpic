@@ -159,7 +159,9 @@ export const user = {
     // 3: password reset
     reset_state: -1,
     addresses: [],
-    error: null
+    error: null,
+    message: null,
+    operationPending: false
 };
 
 export const admin = {

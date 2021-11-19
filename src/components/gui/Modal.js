@@ -37,10 +37,9 @@ const Window = styled.div`
     width: ${props => props.fitted ? 'auto' : '70%'};
   }
   ${LG_SCREEN} {
-    width: ${props => props.fitted ? 'auto' : '50%'};
+    width: ${props => props.fitted ? 'auto' : '600px'};
   }
   max-height: 90%;
-  max-width: 600px;
   transition: height 0.2s, width 0.2s;
   border-radius: ${props => props.theme.border_radius};
   display: flex;
@@ -194,19 +193,21 @@ class Modal extends Component {
   render() {
     // Use a portal to render the children into the element
     return createPortal(
-      <Backdrop id={"modal-backdrop"} onClick={this.props.dismiss}>
-        <Window 
-          ref={this.windowElement} 
-          role={'dialog'} 
+      <Backdrop id={"modal-backdrop"} onMouseDown={event => {
+        if (event.target.id === 'modal-backdrop') this.props.dismiss();
+      }}>
+        <Window
+          ref={this.windowElement}
+          role={'dialog'}
           tabIndex={0}
-          aria-labelledby={"modal-title"} 
-          fitted={this.props.fitted} 
+          aria-labelledby={"modal-title"}
+          fitted={this.props.fitted}
           onClick={event => event.stopPropagation()}>
           <ModalHeader>
             <ModalTitle id={'modal-title'}>
               {Array.isArray(this.props.title) ? this.props.t(this.props.title[0], this.props.title[1]) : this.props.t(this.props.title)}
             </ModalTitle>
-            {typeof this.props.dismiss === "function" && <Button style={{alignSelf: 'center'}} onClick={this.props.dismiss} id={"close-modal-button"} title={'close'} icon={"times"}></Button>}
+            {typeof this.props.dismiss === "function" && <Button style={{ alignSelf: 'center' }} onClick={this.props.dismiss} id={"close-modal-button"} title={'close'} icon={"times"}></Button>}
             {/*<ModalClose>{typeof this.props.dismiss === "function" && <Icon onClick={this.props.dismiss} icon={"times"} />}</ModalClose>*/}
           </ModalHeader>
           <ModalContent ref={this.firstFocusRef} tinted={this.props.tinted} noPadding={this.props.noPadding}>{this.props.children}</ModalContent>

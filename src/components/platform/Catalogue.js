@@ -134,14 +134,14 @@ const Catalogue = () => {
         <strong id={'filter-group-system'}>{t('catalogue:systemHeading')}</strong>
         <div role={'group'} aria-labelledby={'filter-group-system'} className={"tag-wrapper"}>
             {Object.keys(BRAILLE_SYSTEMS).map(lang =>
-                <>{Object.keys(BRAILLE_SYSTEMS[lang]).map(system =>
+                <React.Fragment key={lang}>{Object.keys(BRAILLE_SYSTEMS[lang]).map(system =>
                     <Checkbox onChange={() => toggleSystem(dispatch, lang + ':' + system)}
-                        key={lang + system}
+                        key={system}
                         name={'system-toggle-' + system}
                         value={catalogue.filterSystem.includes(lang + ':' + system)}
                         label={'catalogue:' + system} />
                         
-                )}</>
+                )}</React.Fragment>
             )}
 
         </div>
@@ -168,11 +168,11 @@ const Catalogue = () => {
                     <Row>
                         
                     <div className={"col-md-9"}>
-                    <h2 className={"sr-only"}>Ergebnisse</h2>
+                    <h2 className={"sr-only"}>{t('catalogue:results')}</h2>
                             <CatalogueItemList graphics={catalogue.graphics} />
                         </div>
                         <div className={"col-md-3"}>
-                        <h2>Filter</h2>
+                        <h2>{t('catalogue:filter')}</h2>
                             {tagSidebar}
                         </div>
                     </Row>
@@ -183,7 +183,7 @@ const Catalogue = () => {
                         <SearchFilterBar className={"col-xs-12"}>
                             <Searchbar />
                             &emsp;
-                            <h2 className={"sr-only"}>Filter</h2>
+                            <h2 className={"sr-only"}>{t('catalogue:filter')}</h2>
                             <FlyoutButton closeButton={true} label={"catalogue:filter"}>
                             
                                 {tagSidebar}
@@ -192,7 +192,7 @@ const Catalogue = () => {
                     </Row>
                     <Row>
                         <div className={"col-xs-12"}>
-                        <h2 className={"sr-only"}>Ergebnisse</h2>
+                        <h2 className={"sr-only"}>{t('catalogue:results')}</h2>
                             <CatalogueItemList graphics={catalogue.graphics} />
                         </div>
                     </Row>

@@ -77,6 +77,7 @@ export default function createSaga(
     transformResponse = args => { return args },
     appendedStatePath = []) {
     return function* () {
+        if (!event) throw "Unknown event for endpoint: " + endpoint;
         yield effect(event.REQUEST, function* (action) {
             if (appendedStatePath && appendedStatePath.length > 0) {
                 action.payload[appendedStatePath[appendedStatePath.length - 1]] =

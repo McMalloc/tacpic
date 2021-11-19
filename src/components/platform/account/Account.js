@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, NavLink, Route, Routes, useNavigate } from "react-router-dom";
 import { USER } from "../../../actions/action_constants";
 import Card from "../../gui/Card";
 import { Button } from "../../gui/Button";
@@ -55,7 +55,8 @@ const Account = props => {
     return (
         <>
             {!user.logged_in ?
-                <Alert info>{t('account:notLoggedin')}</Alert>
+                <><Alert info>{t('account:notLoggedin')}</Alert>
+                <NavLink to={'/login'}>{t('account:login')}</NavLink></>
                 // null
                 :
                 <>
@@ -68,7 +69,7 @@ const Account = props => {
                                 }
                                 <Routes>
                                     {['addresses', 'my_account', 'orders', 'newsletter'].map(section => 
-                                        <Route path={section} element={
+                                        <Route key={section} path={section} element={
                                             <span aria-current={location.pathname === '/account/' + section}> <Icon icon={"angle-right"} /> {t('account:' + section)}</span>} />
                                         )}
                                 </Routes>

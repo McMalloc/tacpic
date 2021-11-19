@@ -1,9 +1,14 @@
-import { USER, ADMIN, ORDER_ADMIN } from '../actions/action_constants';
+import { USER_ADMIN, ADMIN, ORDER_ADMIN } from '../actions/action_constants';
 import { admin } from '../store/initialState';
 import createReducer from './createReducer';
 
 const reducerMapping = {
-    [USER.INDEX.SUCCESS]: (prevState, action) => ({ ...prevState, users: action.data }),
+    [USER_ADMIN.INDEX.SUCCESS]: (prevState, action) => ({ ...prevState, users: action.data }),
+
+    [USER_ADMIN.GET.REQUEST]: (prevState, action) => ({ ...prevState, currentUser: null, currentUserPending: true }),
+    [USER_ADMIN.GET.SUCCESS]: (prevState, action) => ({ ...prevState, currentUser: action.data, currentUserError: null, currentUserPending: false }),
+    [USER_ADMIN.GET.FAILURE]: (prevState, action) => ({ ...prevState, currentUser: null, currentUserError: action.message, currentUserPending: false }),
+
     [ADMIN.BACKEND_ERRORS.SUCCESS]: (prevState, action) => ({ ...prevState, backendErrors: action.data }),
     [ADMIN.LOG_INDEX.SUCCESS]: (prevState, action) => ({ ...prevState, logfiles: action.data }),
     [ADMIN.LOG.SUCCESS]: (prevState, action) => ({ ...prevState, currentLogfile: action.data }),

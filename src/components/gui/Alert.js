@@ -1,6 +1,6 @@
 import styled, { ThemeContext } from 'styled-components';
 import React, { useContext } from "react";
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 const Wrapper = styled.div`
   display: flex;
@@ -8,16 +8,14 @@ const Wrapper = styled.div`
   border-radius: ${props => props.theme.border_radius};
   padding: ${props => props.theme.spacing[2]} ${props => props.theme.spacing[2]};
   border: 1px solid ${props => props.colour};
-  border-bottom: 5px solid ${props => props.colour};
-    background-color: white;
-    box-shadow: 1px 1px 2px rgba(0,0,0,0.1) inset;
+  background-color: ${props => props.colourBG};
 `;
 
 const IconContainer = styled.div`
   flex: ${props => props.theme.spacing[2]} 0 0;
   height: 100%;
   color: ${props => props.colour};
-  margin-right: ${props => props.theme.spacing[3]};
+  margin-right: ${props => props.theme.spacing[2]};
 `;
 
 const Message = styled.div`
@@ -27,34 +25,37 @@ const Message = styled.div`
 
 const Alert = props => {
     let iconID = "circle";
+    const { t } = useTranslation();
     const theme = useContext(ThemeContext);
     let colour = theme.brand_secondary;
+    let colourBG = theme.brand_secondary;
+    let type = "default";
     if (props.success) {
         iconID = "check-circle";
-        colour = theme.success_dark;
+        type = "success";
     }
     if (props.info) {
         iconID = "info";
-        colour = theme.info;
+        type = "info";
     }
     if (props.warning) {
         iconID = "hand-point-right";
-        colour = theme.warning;
+        type = "warning";
     }
     if (props.danger) {
         iconID = "exclamation-triangle";
-        colour = theme.danger;
+        type = "danger";
     }
     if (props.complimentaryCopy) {
         iconID = "carret-right";
-        colour = 'transparent';
     }
     return (
-        <Wrapper role={(props.warning || props.danger) ? "alert" : ""} {...props} colour={colour}>
-            <IconContainer aria-hidden={true} colour={colour}>
+        <Wrapper role={(props.warning || props.danger) ? "alert" : ""} {...props} colour={theme[type]} colourBG={theme[type + '_light']}>
+            <IconContainer aria-hidden={true} colour={theme[type + '_dark']}>
                 <i className={"fas fa-" + iconID} />
             </IconContainer>
             <Message {...props}>
+                <strong style={{color: theme[type + '_dark']}}>{t("gui:alert_" + type)}: </strong>
                 {props.i18nKey ?
                     <Trans i18nKey={props.i18nKey}>
                         {props.children}
@@ -69,7 +70,4 @@ const Alert = props => {
 };
 
 export { Alert }
-// const Flyout = props => {
-//       return <div></div>
-// };
 

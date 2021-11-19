@@ -159,7 +159,7 @@ const Textinput = props => {
                 value={props.value}
                 onChange={props.onChange}
             />
-            {!pristine && messages.map(message => <Alert style={{borderRadius: '0 0 3px 3px', marginTop: 0}} warning>{message}</Alert>)}
+            {!pristine && messages.map((message, index) => <Alert key={index} style={{borderRadius: '0 0 3px 3px', marginTop: 0}} warning>{message}</Alert>)}
         </Label>
     )
 };

@@ -67,9 +67,9 @@ const Burgermenu = props => {
             <ul>
               {props.children.map((component, index) => {
                 if (Array.isArray(component)) {
-                  return <>
+                  return <React.Fragment key={index}>
                     {component.map((element, i) => <li key={i}>{element}</li>)}
-                  </>
+                  </React.Fragment>
                 }
                 return <li key={index}>{component}</li>
               })}

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation} from "react-router-dom";
-import {USER} from "../../../actions/action_constants";
+import {USER, RESET_USER_ERRORS} from "../../../actions/action_constants";
 import {Textinput} from "../../gui/Input";
 import {useTranslation} from "react-i18next";
 import {Icon} from "../../gui/_Icon";
@@ -29,6 +29,8 @@ const AccountVerification = props => {
 
     const [pwdValid, setPwdValid] = useState(false);
     const [pwdConfirmValid, setPwdConfirmValid] = useState(false);
+
+    useEffect(() => () => dispatch({type: RESET_USER_ERRORS}), []);
 
     if (user.verification_state === 3) {
         return <Navigate push to="/catalogue"/>;

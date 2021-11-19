@@ -2,6 +2,12 @@ table {
   width: 100%;
   border-collapse: collapse;
 
+  &.extra-padded {
+    td {
+      padding: 10px 3px;
+    }
+  }
+
   thead {
     font-weight: bold;
     text-align: left;
@@ -14,6 +20,12 @@ table {
   tbody tr:hover {
     background-color: rgba(255,255,255,0.6);
     color: #1b1e21;
+  }
+
+  tr:last-child {
+    td {
+      border-bottom: none;
+    }
   }
 
   tr td {

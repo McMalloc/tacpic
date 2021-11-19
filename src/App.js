@@ -16,6 +16,7 @@ import Checkout from "./components/platform/Checkout";
 import { OrderCompleted } from "./components/platform/OrderCompleted";
 import Stats from "./components/platform/Stats";
 import AccountVerification from "./components/platform/account/AccountVerification";
+import LoginChangeVerification from "./components/platform/account/LoginChangeVerification";
 import { useLocation } from "react-router";
 import ResetPassword from "./components/platform/account/ResetPassword";
 import NotFound from "./components/NotFound";
@@ -119,6 +120,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/account/*" element={<Account />} />
             <Route path="/verify-account" element={<AccountVerification />} />
+            <Route path="/verify-login-change" element={<LoginChangeVerification />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route
               path="/reset-password-request"

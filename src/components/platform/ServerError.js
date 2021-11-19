@@ -7,9 +7,11 @@ export default ({error, i18nKey}) => {
     
     if (!error) return null;
 
-    if (!!error.error) return <Alert warning>
+    if (!!error.error && !error['field-error']) return <Alert warning>
         {t(i18nKey + ":" + error.error)}
     </Alert>
+
+    console.log(error);
 
     if (!!error['field-error']) return <Alert warning>
         {t(i18nKey + ":" + error.error)}<br/>
