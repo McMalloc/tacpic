@@ -100,5 +100,10 @@
   "closeMenu": "Close menu",
   "closeModal": "Close dialog",
   "openMenu": "Open menu",
-  "tacpicToStart": "Back to start"
+  "tacpicToStart": "Back to start",
+  "alert_danger": "Attention",
+  "alert_warning": "Note",
+  "alert_success": "Success",
+  "alert_info": "Info",
+  "change": "Change"
 }

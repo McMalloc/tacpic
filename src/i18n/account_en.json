@@ -89,5 +89,18 @@
   "onlyGermany": "Unfortunately, we can only ship to Germany at the moment.",
   "order-status-4": "Waiting for payment",
   "edit_address": "Edit Address",
-  "invalid_password_message": "The password was incorrect."
+  "invalid_password_message": "The password was incorrect.",
+  "USER_UPDATE_SUCCESS": "Display name changed.",
+  "accountCreatedAt": "Account created at",
+  "change_login_error_flash": "Error while changing email address:",
+  "change_login_needs_verification_notice_flash": "We've sent you <1>an email to verify</1> your new email address. Please check your inbox.",
+  "change_password_notice_flash": "Password changed.",
+  "current": "Current",
+  "deleteAccount": "Delete Account",
+  "invalid login, already_an_account_with_this_login_message": "There already exists an account with this email address.",
+  "newEmail": "New email address",
+  "newEmailConfirmationRequired": "The new email address once again needs to be verified.",
+  "newName": "New display name",
+  "newPassword": "New password",
+  "newPasswordRepeated": "Confirm new password"
 }

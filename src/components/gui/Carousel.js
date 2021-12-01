@@ -91,7 +91,6 @@ const Carousel = props => {
                     <Icon icon={"chevron-right"}/>
                 </Navarea>
                 }
-                {/*<Next>rechts</Next>*/}
             </View>
             <Navigation>
                 {validChildren.length === 1 ?

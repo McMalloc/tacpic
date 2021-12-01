@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import Well from "../../gui/Well";
 import { Button } from "../../gui/Button";
 import { Textinput } from "../../gui/Input";
@@ -35,8 +35,8 @@ const AccountInfo = () => {
     useEffect(() => () => dispatch({ type: RESET_USER_ERRORS }), []);
 
     const forms = {
-        changeName: {
-            component: <>{!!user.message ? <Alert success>{t(user.message)}</Alert>
+        display_name: {
+            component: <>{!!user.message ? <Alert success>{t("account:" + user.message)}</Alert>
                 : <form id={"changeName"} onSubmit={event => { event.preventDefault(); forms.changeName.action() }}>
                     <p>{t("account:current")}: {user.displayName}</p>
                     <Textinput
@@ -57,8 +57,8 @@ const AccountInfo = () => {
             },
             valid: () => nameValid
         },
-        changePassword: {
-            component: <>{!!user.message ? <Alert success>{t(user.message)}</Alert>
+        password: {
+            component: <>{!!user.message ? <Alert success>{t("account:" + user.message)}</Alert>
                 : <form id={"changePassword"} onSubmit={event => { event.preventDefault(); forms.changePassword.action() }}>
                     <Textinput
                         value={pwd}
@@ -100,8 +100,11 @@ const AccountInfo = () => {
             },
             valid: () => passwordValid && newPwdValid && pwdRepeatedValid
         },
-        changeLogin: {
-            component: <>{!!user.message ? <Alert info>{t(user.message)}</Alert>
+        email: {
+            component: <>{!!user.message ? <Alert info>
+                <Trans i18nKey={"account:" + user.message}>
+                    0<strong>1</strong>2
+                </Trans></Alert>
                 :
                 <form id={"changeLogin"} onSubmit={event => { event.preventDefault(); forms.changeLogin.action() }}>
                     <p>{t("account:current")}: {user.email}</p>
@@ -147,28 +150,28 @@ const AccountInfo = () => {
                             <td>{t("account:email")}</td>
                             <td>{user.email}</td>
                             <td className={"align-right"}>
-                                <Button icon={'at'} onClick={() => setModalContent('changeLogin')} small>{t("gui:change")}</Button>
+                                <Button icon={'at'} onClick={() => setModalContent('email')} small>{t("gui:change")}</Button>
                             </td>
                         </tr>
                         <tr>
                             <td>{t("account:password")}</td>
                             <td><Secret></Secret></td>
                             <td className={"align-right"}>
-                                <Button icon={'key'} onClick={() => setModalContent('changePassword')} small>{t("gui:change")}</Button>
+                                <Button icon={'key'} onClick={() => setModalContent('password')} small>{t("gui:change")}</Button>
                             </td>
                         </tr>
                         <tr>
                             <td>{t("account:display_name")}</td>
                             <td>{user.displayName}</td>
                             <td className={"align-right"}>
-                                <Button icon={'id-card'} onClick={() => setModalContent('changeName')} small>{t("gui:change")}</Button>
+                                <Button icon={'id-card'} onClick={() => setModalContent('display_name')} small>{t("gui:change")}</Button>
                             </td>
                         </tr>
                         <tr>
-                            <td>Konto erstellt am</td>
+                            <td>{t("account:accountCreatedAt")}</td>
                             <td>{moment(user.createdAt, DB_DATE_FORMAT).format(t('dateFormat'))}</td>
                             <td className={"align-right"}>
-                                <Button icon={'exclamation-triangle'} dangerous small>{t("account:deleteAccount")}</Button>
+                                {/* <Button icon={'exclamation-triangle'} dangerous small>{t("account:deleteAccount")}</Button> */}
                             </td>
                         </tr>
                     </tbody>
@@ -183,7 +186,7 @@ const AccountInfo = () => {
                     }
                 }} actions={[
                     {
-                        label: "Verwerfen",
+                        label: "discard",
                         align: "left",
                         disabled: user.operationPending,
                         action: () => {
@@ -192,7 +195,7 @@ const AccountInfo = () => {
                         }
                     },
                     {
-                        label: !!user.message ? "OK" : "Bestätigen",
+                        label: !!user.message ? "close" : "submit",
                         align: "right",
                         icon: user.operationPending ? "cog fa-spin" : "check",
                         template: "primary",
@@ -207,9 +210,9 @@ const AccountInfo = () => {
                             }
                         }
                     }
-                ]} title={"Details"}>
+                ]} title={t("account:" + modalContent) + " " + t("change").toLowerCase()}>
                     {forms[modalContent]?.component}
-                    <ServerError error={user.error} />
+                    <ServerError i18nKey={'account'} error={user.error} />
                 </Modal>
             }
 

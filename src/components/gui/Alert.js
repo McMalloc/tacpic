@@ -5,10 +5,15 @@ import { Trans, useTranslation } from 'react-i18next';
 const Wrapper = styled.div`
   display: flex;
   margin: ${props => props.theme.spacing[1]} 0;
+  box-shadow: ${props => props.theme.middle_shadow};
   border-radius: ${props => props.theme.border_radius};
   padding: ${props => props.theme.spacing[2]} ${props => props.theme.spacing[2]};
-  border: 1px solid ${props => props.colour};
+  border: 0px solid ${props => props.colour};
   background-color: ${props => props.colourBG};
+
+  strong {
+    color: ${props => props.colour};
+  }
 `;
 
 const IconContainer = styled.div`
@@ -50,12 +55,12 @@ const Alert = props => {
         iconID = "carret-right";
     }
     return (
-        <Wrapper role={(props.warning || props.danger) ? "alert" : ""} {...props} colour={theme[type]} colourBG={theme[type + '_light']}>
+        <Wrapper role={(props.warning || props.danger) ? "alert" : ""} {...props} colour={theme[type + '_dark']} colourBG={theme[type + '_light']}>
             <IconContainer aria-hidden={true} colour={theme[type + '_dark']}>
                 <i className={"fas fa-" + iconID} />
             </IconContainer>
             <Message {...props}>
-                <strong style={{color: theme[type + '_dark']}}>{t("gui:alert_" + type)}: </strong>
+                <strong>{t("alert_" + type)}: </strong>
                 {props.i18nKey ?
                     <Trans i18nKey={props.i18nKey}>
                         {props.children}

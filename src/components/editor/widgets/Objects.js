@@ -167,7 +167,6 @@ const Objects = props => {
 
     return (
         <>
-            {/*<div>Vordergrund</div>*/}
             <Wrapper onKeyDown={event => keyDownHandler(event, selectedUUIDs, dispatch)}>
                 {objects.map((object, index) => {
                     const selected = selectedUUIDs.includes(object.uuid);

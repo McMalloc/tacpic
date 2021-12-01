@@ -48,7 +48,9 @@ const ContentPage = props => {
 
             {!props.noWhistles && 
                 <Details>
-                <br />Dieser Text samt Medieninhalten ist lizenziert unter einer <br /><a rel={"license"} href={"http://creativecommons.org/licenses/by/4.0/"}>Creative Commons Namensnennung 4.0 International Lizenz</a>. <br />Als Quellenangabe genügt eine Verlinkung auf tacpic.de.
+                <br />Dieser Text samt Medieninhalten ist lizenziert unter einer <br />
+                <a rel={"license"} href={"http://creativecommons.org/licenses/by/4.0/"}>Creative Commons Namensnennung 4.0 International Lizenz</a>. <br />
+                Als Quellenangabe genügt eine Verlinkung auf tacpic.de.
                 </Details>
             }
         </Wrapper>

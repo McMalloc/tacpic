@@ -12,6 +12,7 @@
   "submit": "Absenden",
   "hint": "Hinweis",
   "back": "Zurück",
+  "change": "Ändern",
   "delete": "Löschen",
   "loggedInAs": "Eingeloggt als",
   "remove": "Entfernen",
@@ -100,5 +101,9 @@
   },
   "confirmRemove": "Entfernen bestätigen",
   "dontRemove": "Nein, behalten",
-  "yesRemove": "Ja, entfernen"
+  "yesRemove": "Ja, entfernen",
+  "alert_info": "Info",
+  "alert_success": "Erfolgreich",
+  "alert_warning": "Hinweis",
+  "alert_danger": "Achtung"
 }

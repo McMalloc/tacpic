@@ -78,5 +78,6 @@
   "detailsFor": "Details for",
   "fullTitle": "$t(glossary:draft) {{graphicTitle}} $t(glossary:variant) {{variantTitle}}",
   "graphic": "Graphic",
-  "orderWithBrailleHint": "You'll get an image description as a $t(glossary:brailleEmboss) in the same braille system that's used in the graphic."
+  "orderWithBrailleHint": "You'll get an image description as a $t(glossary:brailleEmboss) in the same braille system that's used in the graphic.",
+  "results": "Results"
 }
