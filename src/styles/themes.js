@@ -38,7 +38,7 @@ export const standard = {
     warning_light: "#fcfcdc",
     warning_dark: "#c47e00",
     danger: "#911422",
-    danger_light: "#6e101b",
+    danger_light: "#efefef",
     danger_dark: "#6e101b",
 
     font_size_ui: "0.9em",

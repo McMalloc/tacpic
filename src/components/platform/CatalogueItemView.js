@@ -80,7 +80,7 @@ const VariantColumn = styled.div`
     color: ${(props) => props.theme.background};
 
     &.emphasised {
-      background-color: ${(props) => props.theme.danger};
+      background-color: ${(props) => props.theme.warning_dark};
     }
   }
 `;

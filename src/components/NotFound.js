@@ -2,10 +2,12 @@ import React from "react";
 import Well from "./gui/Well";
 import {Container, Row} from "./gui/Grid";
 import {Alert} from "./gui/Alert";
+import { useTranslation } from "react-i18next";
 
 const NotFound = props => {
+    const {t} = useTranslation();
     return <Container>
-        <Row>
+        {/* <Row>
             <div className={"col-md-6 col-md-offset-3"}>
                 <Alert danger>
                     Die Plattform befindet sich in der Alpha-Phase, d.h. sie wird noch getestet.
@@ -13,9 +15,11 @@ const NotFound = props => {
                 </Alert>
             </div>
 
-        </Row>
+        </Row> */}
         <Row>
-            <Well warning className={"col-md-6 col-md-offset-3 extra-margin"}>404: Seite nicht gefunden :(</Well>
+            <div className={"col-md-6 col-md-offset-3 extra-margin"}>
+                <Alert warning>{t("404NotFound")}</Alert>
+            </div>
         </Row>
     </Container>
 }
