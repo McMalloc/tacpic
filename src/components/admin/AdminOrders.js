@@ -83,7 +83,7 @@ const AdminOrders = props => {
 
                         {currentOrderPending ? <Loader/> : !!currentOrderError ? <ServerError error={currentOrderError}/> :
                             <div className={'container'}>
-                                <p>{moment(currentOrder.order.created_at).format(t('dateFormat'))}</p>
+                                <p>{moment(currentOrder.order.created_at, DB_DATE_FORMAT).format(t('dateFormat'))}</p>
                                 <p>
                                     Status: <Badge state={currentOrder.order.status === 3 ? 'success' : null}>
                                     {t('account:order-status-' + currentOrder.order.status)}
