@@ -260,8 +260,6 @@ const Checkout = props => {
                         {/*</Alert>*/}
                         <br />
 
-
-
                         {step === 3 &&
                             <>
                                 {quote.gross_total > MAX_VALUE_FOR_ORDER ?

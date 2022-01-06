@@ -44,27 +44,28 @@ function seededRandom(seed) {
 
 // displays a secret from jwt
 const Secret = props => {
-    let bytes = [];
+    // let bytes = [];
 
-    const [intcode, setIntcode] = useState(0);
+    // const [intcode, setIntcode] = useState(0);
     
-    useEffect(() => {
-        const jwt = localStorage.getItem("jwt");
-        for (let i = 0; i < jwt.length; i++) {
-            bytes.push(jwt.charCodeAt(i));
-        }
-        setIntcode(parseInt(bytes.slice(88,93).join("")));
-    }, []);
+    // useEffect(() => {
+    //     const jwt = localStorage.getItem("jwt");
+    //     for (let i = 0; i < jwt.length; i++) {
+    //         bytes.push(jwt.charCodeAt(i));
+    //     }
+    //     setIntcode(parseInt(bytes.slice(88,93).join("")));
+    // }, []);
 
-    let max = props.max || 8;
-    let randomArray = Array.from(Array(max).keys()).map(index => {
-        return seededRandom(intcode+index);
-    })
+    // let max = props.max || 8;
+    // let randomArray = Array.from(Array(max).keys()).map(index => {
+    //     return seededRandom(intcode+index);
+    // })
     return (
         <span>
-            {Array.from(Array(max).keys()).map(index => {
+            ••••••
+            {/* {Array.from(Array(max).keys()).map(index => {
                 return <span key={index}>{blocks[Math.floor(randomArray[index] * blocks.length)]}</span>
-            })}
+            })} */}
         </span>
     )
 };

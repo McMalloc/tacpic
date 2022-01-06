@@ -178,6 +178,13 @@ const AccountInfo = () => {
                 </table>
             </Well>
 
+            <div className="col-md-6 col-md-offset-3">
+                <Alert info>
+                {t("account:accountPrivacyInfo")}
+                </Alert>
+            </div>
+
+
             {modalContent !== null &&
                 <Modal dismiss={() => {
                     if (!user.operationPending) {

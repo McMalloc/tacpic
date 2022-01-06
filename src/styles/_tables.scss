@@ -14,6 +14,7 @@ table {
 
     th {
       background-color: transparent;
+      padding: 5px 3px;
     }
   }
 
@@ -31,6 +32,7 @@ table {
   tr td {
     padding: 5px 3px;
     border-bottom: 0.5px solid rgba(0,0,0,0.1);
+    vertical-align: top;
 
     &.icon-cell {
       text-align: center;
