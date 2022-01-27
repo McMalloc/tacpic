@@ -20,7 +20,8 @@
     "systemSelect": "Choose braille system",
     "publishButtonLabel": "Publish",
     "editTitleWhyCant": "Why can't I change the title?",
-    "viewLicense": "View license."
+    "viewLicense": "View license",
+    "whyLicense": "What does that mean? (German)"
   },
   "graphicPanel": {
     "format": "Paper format",

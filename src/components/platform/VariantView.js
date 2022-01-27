@@ -12,8 +12,6 @@ import { TagView } from "./Tag";
 import { Alert } from "../gui/Alert";
 import { NavLink } from "react-router-dom";
 import Carousel from "../gui/Carousel";
-import ButtonBar from "../gui/ButtonBar";
-import { Radio } from "../gui/Radio";
 import { Numberinput } from "../gui/Input";
 import * as moment from "moment";
 import { APP_URL, API_URL } from "../../env.json";
@@ -27,6 +25,7 @@ import InfoLabel from "../gui/InfoLabel";
 import Select from "../gui/Select";
 import Badge from "../gui/Badge";
 import ElementGrid from "../gui/ElementGrid";
+import i18n from "i18next";
 
 const addToBasket = (dispatch, variantId, quantity, product, index = null) => {
   dispatch({
@@ -179,12 +178,12 @@ const VariantView = (props) => {
   console.log(lastViewedPreview);
   const pagePreviews = <Preview>
     <Carousel
-        initial={lastViewedPreview[variantId] || 0}
-        key={variantId}
-        onChange={index => lastViewedPreview[variantId] = index}
-        single={
-          <span className={"disabled"}>{t('catalogue:onlyOnePage')}</span>
-        }
+      initial={lastViewedPreview[variantId] || 0}
+      key={variantId}
+      onChange={index => lastViewedPreview[variantId] = index}
+      single={
+        <span className={"disabled"}>{t('catalogue:onlyOnePage')}</span>
+      }
     >
       {props.document.pages
         .map((page, index) => {
@@ -321,8 +320,8 @@ const VariantView = (props) => {
 
       <Title className={'breakable-long-lines'}>
         {props.graphicTitle}: {props.title} {!props.public &&
-            <>&ensp;<Badge serious state={'warning'}><Icon icon={'eye-slash'} /> Nicht öffentlich</Badge></>
-          }
+          <>&ensp;<Badge serious state={'warning'}><Icon icon={'eye-slash'} /> Nicht öffentlich</Badge></>
+        }
       </Title>
 
       <div className={'details'}>
@@ -370,10 +369,10 @@ const VariantView = (props) => {
                 </td>
               </>
             ) : (
-                <span className={"disabled"}>
-                  {t("none")}
-                </span>
-              )}
+              <span className={"disabled"}>
+                {t("none")}
+              </span>
+            )}
             label={'catalogue:appliedTags'} />
 
 
@@ -383,13 +382,14 @@ const VariantView = (props) => {
             title={'catalogue:createdAt'}
             info={moment(props.created_at, DB_DATE_FORMAT).format(t('dateFormat'))}
             label={'catalogue:createdAt'} />
+
         </div>
 
         {!logged_in && (
           <Alert info>
             <Trans i18nKey={'editor:pleaseLogin'}>
               0<NavLink to={"/login"}>1</NavLink>2<NavLink to={"/signup"}>3</NavLink>4
-          </Trans>
+            </Trans>
 
           </Alert>
         )}
@@ -399,6 +399,22 @@ const VariantView = (props) => {
       <div className={'order'}>
 
         {buttonBar}
+
+        
+        <p style={{fontSize: '0.9rem', lineHeight: '1rem', display: 'flex', alignItems: 'center'}}>
+            <span style={{width: '6em'}} aria-label={"Creative Commons Namensnennung, Weitergabe unter gleichen Bedingungen Lizenz 4.0 International"}>
+              <i class="fab fa-creative-commons"></i>&thinsp;
+              <i class="fab fa-creative-commons-by"></i>&thinsp;
+              <i class="fab fa-creative-commons-sa"></i>&thinsp;
+            </span>
+            <span>
+              {t('catalogue:licenseInfo')} <a  rel={"license"} 
+                target={'_blank'} 
+                href={`https://creativecommons.org/licenses/by-sa/4.0/deed${i18n.language === 'de' ? '.de' : ''}`}>
+                  {t('catalogue:licenseName')}
+            </a>.
+            </span>
+          </p>
 
         <Well>
 
@@ -424,7 +440,7 @@ const VariantView = (props) => {
                 },
                 {
                   label: t('catalogue:orderWithBrailleMail',
-                  { saved: (props.quote - props.quote_graphics_only) }),
+                    { saved: (props.quote - props.quote_graphics_only) }),
                   sublabel: t("catalogue:orderWithBrailleMailHint"),
                   value: 'graphic_nobraille'
                 }
@@ -460,7 +476,7 @@ const VariantView = (props) => {
                       ? props.quote
                       : props.quote_graphics_only)
                   })}</>
-                
+
                 }<br />
                 {t("catalogue:plusShipping", { amount: 200 })}
                 <br />
@@ -469,24 +485,24 @@ const VariantView = (props) => {
             </div>
             {/* {true ? */}
             {!!userRights && userRights.can_order ?
-            <Button
-              onClick={() => {
-                basketIndex === -1 ?
-                  addToBasket(dispatch, props.id, quantity, product)
-                  :
-                  removeFromBasket(dispatch, basketIndex)
-              }}
-              fullWidth
-              label={t(basketIndex >= 0 ? "commerce:remove" : "catalogue:addToCart")}
-              title={t("catalogue:removeFromCart")}
-              large
-              style={{flex: '1 1 30%'}}
-              primary={basketIndex === -1}
-              icon={basketIndex >= 0 ? "shopping-cart" : "cart-plus"}
-            />
-            :
+              <Button
+                onClick={() => {
+                  basketIndex === -1 ?
+                    addToBasket(dispatch, props.id, quantity, product)
+                    :
+                    removeFromBasket(dispatch, basketIndex)
+                }}
+                fullWidth
+                label={t(basketIndex >= 0 ? "commerce:remove" : "catalogue:addToCart")}
+                title={t("catalogue:removeFromCart")}
+                large
+                style={{ flex: '1 1 30%' }}
+                primary={basketIndex === -1}
+                icon={basketIndex >= 0 ? "shopping-cart" : "cart-plus"}
+              />
+              :
               <Alert info>{t("commerce:not_whitelisted")}</Alert>
-}
+            }
           </OrderWidget>
         </Well>
       </div>

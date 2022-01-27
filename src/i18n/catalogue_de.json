@@ -79,5 +79,7 @@
   "brf-hint": "Enthält Braille-Code zum direkten Ausdruck mit einem Braille-Drucker der Index Everest Serie.",
   "zip": "ZIP-Archiv",
   "zip-hint": "Eine Archivdatei, die sämtliche oben genannten Dateien enthält.",
-  "results": "Ergebnisse"
+  "results": "Ergebnisse",
+  "licenseInfo": "Dieses Werk ist lizenziert unter einer",
+  "licenseName": "Creative Commons BY-SA 4.0 International Lizenz"
 }

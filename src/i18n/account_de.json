@@ -55,6 +55,7 @@
   "order-status-2": "An Produktionspartner übergeben",
   "order-status-3": "Abgeschlossen und versendet",
   "order-status-4": "Warte auf Bezahlung",
+  "order-status-5": "Storniert",
   "accountPrivacyInfo": "Wenn Sie eine Datenauskunft nach DSGVO wünschen, oder Ihr Benutzerkonto samt verknüfter Informationen löschen möchten, schreiben Sie bitte an Kontoverwaltung@tacpic.de",
   "payment_options": "Bezahlmöglichkeiten",
   "payment_options-description": "Lastschrift oder Paypal einrichten",

@@ -168,19 +168,16 @@ const Metadata = () => {
             }
             
             <hr/>
-            {/* <Status>
-                <span>Status:</span>
-                <Indicator state={file.graphic_id === null ? 0 : 1}>
-                    Entwurf
-                </Indicator>
-            </Status> */}
             <div>
                 <Checkbox onChange={event => setLicenseAgreed(!licenseAgreed)}
                           name={'cb-license-agreed'}
                           checked={licenseAgreed}
                           label={t("editor:license_agreed")}/>
-                <a className={"checkbox-additional"} target={"blank"}
+                          
+                <a className={"checkbox-additional sub-label"} target={"_blank"}
                    href={`https://creativecommons.org/licenses/by-sa/4.0/deed${i18n.language === 'de' ? '.de' : ''}`}>{t('editor:draftPanel.viewLicense')}</a>
+                <a className={"checkbox-additional sub-label"} target={"_blank"}
+                   href={`/support/katalog/lizenz-der-inhalte`}>{t('editor:draftPanel.whyLicense')}</a>
             </div>
             <br/>
             <Button onClick={() => {

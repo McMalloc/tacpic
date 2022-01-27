@@ -129,18 +129,17 @@ const checkActiveChildren = (children, active) => {
     return isActiveParent;
 }
 
-const renderNodes = (node, pages, active, pending, parentIndex) => {
-    console.log(parentIndex)
+const renderNodes = (node, pages, active, pending, parentIndex, index) => {
     const activeParent = node.slug === active || checkActiveChildren(node.children, active);
     return (
-        <li className={'wiki-categories'}>
-            <IndexLink expanded={activeParent} className={'no-styled-link'} to={`/${parentIndex}/${node.slug}`}>
+        <li key={index} className={'wiki-categories'}>
+            <IndexLink expanded={activeParent + ''} className={'no-styled-link'} to={`/${parentIndex}/${node.slug}`}>
                 {node.name}
             </IndexLink>
             {node.slug === active && !pending &&
                 <ul className={'wiki-articles'}>
-                    {pages.map(page =>
-                        <li>
+                    {pages.map((page, index) =>
+                        <li key={index}>
                             <NavLink className={'no-styled-link'} to={`/${parentIndex}/${active}/${page.slug}`}>
                                 {page.title.rendered}
                             </NavLink>
@@ -177,7 +176,7 @@ const ContentIndex = props => {
     if (!props.hierarchy) return null;
     return (
         <Wrapper>
-            {props.hierarchy.map(cat => renderNodes(cat, props.pages, props.active, props.pending, props.parentIndex))}
+            {props.hierarchy.map((cat, index) => renderNodes(cat, props.pages, props.active, props.pending, props.parentIndex, index))}
         </Wrapper>
     )
 };

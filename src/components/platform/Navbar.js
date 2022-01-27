@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Icon } from "../gui/_Icon";
 import { Button } from "../gui/Button";
-import { LG_SCREEN, MD_SCREEN, SM_SCREEN } from "../../config/constants";
+import { LG_SCREEN, SM_SCREEN } from "../../config/constants";
 import { useBreakpoint } from "../../contexts/breakpoints";
 import { Burgermenu } from "../gui/Burgermenu";
 import LanguageSwitch from '../gui/LanguageSwitch';

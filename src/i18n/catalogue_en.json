@@ -79,5 +79,7 @@
   "fullTitle": "$t(glossary:draft) {{graphicTitle}} $t(glossary:variant) {{variantTitle}}",
   "graphic": "Graphic",
   "orderWithBrailleHint": "You'll get an image description as a $t(glossary:brailleEmboss) in the same braille system that's used in the graphic.",
-  "results": "Results"
+  "results": "Results",
+  "licenseInfo": "This work is licensed under",
+  "licenseName": "Creative Commons BY-SA 4.0 International License"
 }

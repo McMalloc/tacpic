@@ -5,11 +5,11 @@ import moment from 'moment';
 
 const Wrapper = styled.div`
     article {
-        background-color: ${props => props.theme.background};
-        border: 1px solid lightgrey;
-        border-radius: 3px;
-        padding: 0.5rem 1rem;
-        /* box-shadow: ${props => props.theme.distant_shadow}; */
+        padding: 3rem 0;
+        p, ul, ol {
+        font-size: 1.1rem;
+        line-height: 1.8rem;
+        }
 
         video, iframe {
             width: 100%;
@@ -37,20 +37,20 @@ const ContentPage = props => {
     return (
         <Wrapper>
             <h1>{props.title.rendered}</h1>
-            {!props.noWhistles && 
+            {!props.noWhistles &&
                 <Details>
                     Veröffentlicht am {moment(props.date).format('DD.MM.yyyy')}<br />
-                Geändert am {moment(props.modified).format('DD.MM.yyyy')}
+                    Geändert am {moment(props.modified).format('DD.MM.yyyy')}
                 </Details>
             }
 
             <article dangerouslySetInnerHTML={{ __html: props.content.rendered }}></article>
 
-            {!props.noWhistles && 
+            {!props.noWhistles &&
                 <Details>
-                <br />Dieser Text samt Medieninhalten ist lizenziert unter einer <br />
-                <a rel={"license"} href={"http://creativecommons.org/licenses/by/4.0/"}>Creative Commons Namensnennung 4.0 International Lizenz</a>. <br />
-                Als Quellenangabe genügt eine Verlinkung auf tacpic.de.
+                    <br />Dieser Text samt Medieninhalten ist lizenziert unter einer <br />
+                    <a rel={"license"} href={"http://creativecommons.org/licenses/by/4.0/"}>Creative Commons Namensnennung 4.0 International Lizenz</a>. <br />
+                    Als Quellenangabe genügt eine Verlinkung auf tacpic.de.
                 </Details>
             }
         </Wrapper>

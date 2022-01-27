@@ -19,7 +19,8 @@
     "systemSelect": "Braillesystem wählen",
     "publishButtonLabel": "Veröffentlichen",
     "editTitleWhyCant": "Wieso kann ich den Titel nicht ändern?",
-    "viewLicense": "Lizenz einsehen."
+    "viewLicense": "Lizenz einsehen",
+    "whyLicense": "Was bedeutet das?"
   },
   "graphicPanel": {
     "format": "Papierformat",
