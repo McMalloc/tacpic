@@ -102,7 +102,7 @@ const Preview = styled.div`
   padding: 0 20%;
 
   ${MD_SCREEN} {
-    padding: 0 ${(props) => props.theme.large_padding};
+    padding: 0 5%;
 
     & > div {
       position: sticky;

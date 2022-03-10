@@ -50,6 +50,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@playwright/test": "^1.19.1",
     "babel-plugin-macros": "^3.0.1",
     "http-proxy-middleware": "^1.0.6",
     "license-report": "^4.3.0",

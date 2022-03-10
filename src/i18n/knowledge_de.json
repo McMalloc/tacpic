@@ -1,4 +1,6 @@
 {
   "topics": "Themen",
-  "heading": "Wissen"
+  "heading": "Wissen",
+  "introduction": "Bitte wählen Sie ein Thema aus dem Menü.",
+  "notAvailable": ""
 }

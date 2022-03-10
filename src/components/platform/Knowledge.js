@@ -3,61 +3,77 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { CMS_CATEGORY, CMS_PAGE } from "../../actions/action_constants";
 import ContentPage from "../gui/ContentPage";
+import {Alert} from "../gui/Alert";
 import ContentIndex from "../gui/ContentIndex";
 import Loader from "../gui/Loader";
 import { useTranslation } from "react-i18next";
 import { FlyoutButton } from "../gui/FlyoutButton";
 import { useBreakpoint } from "../../contexts/breakpoints";
+import i18n from 'i18next';
+import styled from "styled-components";
 
-const Knowledge = () => {
+const fetchPages = (category, dispatch) => {
+  !category.pages && dispatch({
+    type: CMS_PAGE.INDEX.REQUEST,
+    payload: { filterCategory: category.id }
+  })
+}
+
+const Infotext = styled.div`
+  padding: 3rem;
+`
+
+const Knowledge = props => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { category, postSlug } = useParams();
-  const { index, successful, pending, hierarchy } = useSelector(state => state.cms.categories);
-  const loadedPages = useSelector(state => state.cms.loadedPages);
+  const { catSlug, postSlug } = useParams();
+  const { index, successful, hierarchy } = useSelector(state => state.cms.categories);
   const breakpoints = useBreakpoint();
-  const relevantPages = !!category && successful ? loadedPages.pages.filter(
-    page => page.categories.includes(index.find(cat => cat.slug === category).id)
-  ) : []
+
+  const category = index.find(cat => cat.slug === catSlug);
+  let page = null;
+  index.forEach(category => {
+    if (!!page) return;
+    if (postSlug) {
+      page = category.pages?.find(p => p.slug === postSlug)
+    }
+  })
 
   useEffect(() => {
-    dispatch({
+    index.length === 0 && dispatch({
       type: CMS_CATEGORY.INDEX.REQUEST
     })
   }, [])
 
   useEffect(() => {
-    const cat = index.find(cat => cat.slug === category);
-    if (!cat) return;
-    dispatch({
-      type: CMS_PAGE.INDEX.REQUEST,
-      payload: { filterCategory: cat.id }
-    })
-    document.title = t('knowledge:heading') + ': ' + cat.name + ' | tacpic';
-  }, [category, index])
+    if (!postSlug) {
+      fetch(`/api/cms/posts?slug=${props.category}_introduction`).then(response => page = response)
+    }
+    if (!category) return;
+    fetchPages(category, dispatch)
+    document.title = t('knowledge:heading') + ': ' + category.name + ' | tacpic';
+  }, [catSlug, index.length])
 
-  const knowledgeCat = hierarchy.find(cat => cat.slug === 'wissen');
-  if (!successful || !knowledgeCat) return <Loader />
+  if (!successful) return <Loader />
 
   // TODO Dokumententitel
 
+  const parentCategory = hierarchy.find(cat => cat.slug === props.category);
   const contentIndex = <ContentIndex
-    hierarchy={hierarchy.find(cat => cat.slug === 'wissen').children}
-    active={category}
-    parentIndex={'knowledge'}
-    aria-landmark={'complementary'}
-    pending={loadedPages.pending}
-    pages={relevantPages} />
+    hierarchy={!!parentCategory ? parentCategory.children : null}
+    active={catSlug}
+    parentIndex={props.category}
+    onCategoryClick={(category) => fetchPages(category, dispatch)}
+    index={index}
+    aria-landmark={'complementary'} />
 
-  const page = relevantPages.find(page => page.slug === postSlug);
   return <>
     <div className='row'>
-
-      <div className={'col-md-3 col-xs-12'} style={{paddingTop: 120}}>
+      <div className={'col-md-3 col-xs-12'} style={{ paddingTop: 120 }}>
         <div style={{ position: 'sticky', top: 0 }}>
           {breakpoints.md ?
-            <>  
-              <h2 style={{fontSize: '1rem', opacity: 0.8}}>{t('knowledge:topics')}</h2>
+            <>
+              <h2 style={{ fontSize: '1rem', opacity: 0.8 }}>{t('knowledge:topics')}</h2>
               {contentIndex}
             </>
             :
@@ -68,12 +84,20 @@ const Knowledge = () => {
         </div>
       </div>
       <div className={'col-md-9 col-xs-12'}>
-        {!!page &&
+        {page ?
           <ContentPage {...page} />
+          :
+          i18n.language === 'de' ? <Infotext>
+            {t('knowledge:introduction')}
+            {/* {t(props.category + ':introduction')} */}
+          </Infotext> : <Infotext>
+            <Alert info>{t('knowledge:notAvailable')}</Alert>
+          </Infotext>
         }
       </div>
     </div>
-  </>;
+  </>
+    ;
 };
 
 export default Knowledge;

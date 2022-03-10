@@ -53,6 +53,7 @@
     "editor": "Editor",
     "pricing": "Preise",
     "knowledge": "Wissen",
+    "support": "Hilfe",
     "admin": "Administration"
   },
   "categories": {
@@ -98,6 +99,7 @@
     "/editor/app": "Editor",
     "/pricing": "Produkte und Preise",
     "/knowledge": "Wissen",
+    "/support": "Hilfe",
     "/": "Start"
   },
   "confirmRemove": "Entfernen bestätigen",

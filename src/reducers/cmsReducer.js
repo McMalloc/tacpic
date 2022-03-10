@@ -1,5 +1,5 @@
 import { CMS_CATEGORY, CMS_LEGAL, CMS_PAGE } from '../actions/action_constants';
-import { uniqBy } from 'lodash';
+import produce from 'immer';
 
 
 const cmsReducer = (state = {}, action) => {
@@ -16,7 +16,6 @@ const cmsReducer = (state = {}, action) => {
                 }
                 return result;
             } // TODO extract method
-
 
             return {
                 ...state,
@@ -42,32 +41,63 @@ const cmsReducer = (state = {}, action) => {
             }
 
         case CMS_PAGE.INDEX.SUCCESS:
-            return {
-                ...state,
-                loadedPages: {
-                    pages: uniqBy([...state.loadedPages.pages, ...action.data], 'id'),
-                    pending: false,
-                    successful: true,
-                    error: null
+            console.log(action);
+
+            return produce(state, draftState => {
+                const index = draftState.categories.index.map(cat => {
+                    if (cat.id === action.originalPayload.filterCategory) {
+                        cat.pages = action.data;
+                        cat.pending = false;
+                        cat.successful = true;
+                        cat.error = null;
+                    }
+                })
+                draftState = {
+                    ...state,
+                    categories: {
+                        ...state.categories,
+                        index
+                    }
                 }
-            }
+            })
+
+
         case CMS_PAGE.INDEX.FAILURE:
-            return {
-                ...state,
-                loadedPages: {
-                    ...state.loadedPages,
-                    pending: false,
-                    successful: false
+            return produce(state, draftState => {
+                const index = draftState.categories.index.map(cat => {
+                    if (cat.id === action.payload.filterCategory) {
+                        cat.pages = action.data;
+                        cat.pending = false;
+                        cat.successful = false;
+                        cat.error = action.error;
+                    }
+                })
+                draftState = {
+                    ...draftState,
+                    categories: {
+                        ...state.categories,
+                        index
+                    }
                 }
-            }
+            })
         case CMS_PAGE.INDEX.REQUEST:
-            return {
-                ...state,
-                loadedPages: {
-                    ...state.loadedPages,
-                    pending: true
+            return produce(state, draftState => {
+                const index = draftState.categories.index.map(cat => {
+                    if (cat.id === action.payload.filterCategory) {
+                        cat.pages = action.data;
+                        cat.pending = true;
+                        cat.successful = false;
+                        cat.error = null;
+                    }
+                })
+                draftState = {
+                    ...draftState,
+                    categories: {
+                        ...state.categories,
+                        index
+                    }
                 }
-            }
+            })
 
         case CMS_LEGAL.INDEX.SUCCESS:
             return {

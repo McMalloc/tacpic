@@ -58,7 +58,7 @@ export default props => {
     
     const hiddenVariants = props.variants.filter(variant => !variant.public);
     return (
-        <Wrapper aria-labelledby={'catalogue-title-' + props.id} role={'link'} id={"catalogue-item-" + props.id}>
+        <Wrapper data-pom={'catalogueItem'} aria-labelledby={'catalogue-title-' + props.id} role={'link'} id={"catalogue-item-" + props.id}>
             <Link aria-hidden={true} className={'no-styled-link'} to={props.id + "/variant/" + props.variants[0].id}>
                 <Tile>
                     <Preview

@@ -21,6 +21,7 @@ import { Checkbox } from "../gui/Checkbox";
 import { Button } from "../gui/Button";
 import { Alert } from "../gui/Alert";
 import downloadFile from "../../utility/downloadFile";
+import AdminOrderCreate from "./AdminOrderCreate";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -67,6 +68,7 @@ const AdminOrders = props => {
     if (orders.length === 0) return <Loader />
     return (
         <Wrapper>
+            <AdminOrderCreate />
             <Datagrid columns={columns} data={memoedOrders} onRowClick={(row, index) => {
                 dispatch({ type: ORDER_ADMIN.GET.REQUEST, payload: { id: row.id } });
                 setInvoiceCorrect(null);
@@ -210,7 +212,11 @@ const AdminOrders = props => {
                                                         </div>
                                                         <div>
                                                             <strong>An:</strong><br />
+                                                            {!!currentOrder.user.addresses ? 
                                                             <AddressView {...currentOrder.user.addresses.find(addr => addr.id === invoice.address_id)} />
+                                                            :
+                                                            <p>(manuell angelegt)</p>
+                                                            }
                                                         </div>
 
                                                         {!!invoice.voucher_id ?

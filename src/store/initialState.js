@@ -186,12 +186,6 @@ export const cms = {
         successful: false,
         error: null
     },
-    loadedPages: {
-        pages: [],
-        pending: false,
-        successful: false,
-        error: null
-    },
     legal: {
         menu: [],
         pages: {

@@ -50,7 +50,8 @@
     "editor": "Editor",
     "pricing": "Pricing",
     "knowledge": "Knowledge",
-    "admin": "Administration"
+    "admin": "Administration",
+    "support": "Support"
   },
   "categories": {
     "illustration": "(labeled) Illustration"
@@ -93,6 +94,7 @@
     "/editor/app": "Editor",
     "/pricing": "Products and pricese",
     "/knowledge": "Knowledge",
+    "/support": "Support",
     "/": "Start",
     "/admin": "Administration",
     "/order-completed": "Order completed"

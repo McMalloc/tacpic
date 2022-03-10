@@ -68,6 +68,7 @@ const Login = props => {
             <div className={'align-center'}>
                 <Button icon={user.login_pending ? "cog fa-spin" : "sign-in-alt"} primary
                         label={"account:login"}
+                        data-pom={'loginSubmitButton'}
                         disabled={!(emailValid && passwordValid) || user.login_pending}
                         type={'submit'} />
             </div>

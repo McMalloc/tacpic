@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 import { useTranslation } from "react-i18next";
 import { NavLink } from 'react-router-dom';
@@ -87,7 +87,7 @@ export const Wrapper = styled.ul`
     }
 `;
 
-export const IndexLink = styled(NavLink)`
+export const IndexLink = styled.span`
     position: relative;
     font-weight: 900;
 
@@ -118,41 +118,32 @@ export const IndexLink = styled(NavLink)`
     }   
 `
 
-const checkActiveChildren = (children, active) => {
-    let isActiveParent = false;
-    !!children && children.forEach(child => {
-        isActiveParent = isActiveParent || child.slug === active;
-        if (child.children && child.children.length > 0) {
-            isActiveParent = isActiveParent || checkActiveChildren(child.children, active);
-        }
-    })
-    return isActiveParent;
-}
+const ContentCat = ({ node, active, parentIndex, category, onCategoryClick }) => {
+    const [ expanded, setExpanded ] = useState(category.slug === active);
 
-const renderNodes = (node, pages, active, pending, parentIndex, index) => {
-    const activeParent = node.slug === active || checkActiveChildren(node.children, active);
+    useEffect(() => {
+        setExpanded(false)
+    }, [parentIndex]);
+
     return (
-        <li key={index} className={'wiki-categories'}>
-            <IndexLink expanded={activeParent + ''} className={'no-styled-link'} to={`/${parentIndex}/${node.slug}`}>
+        <li key={node.id} className={'wiki-categories'}>
+            <IndexLink active={active} expanded={expanded} onClick={() => {
+                setExpanded(!expanded)
+                onCategoryClick(category)
+            }} className={'no-styled-link'}>
                 {node.name}
             </IndexLink>
-            {node.slug === active && !pending &&
+            {!category.pending && !!category.pages && expanded &&
                 <ul className={'wiki-articles'}>
-                    {pages.map((page, index) =>
+                    {category.pages.map((page, index) =>
                         <li key={index}>
-                            <NavLink className={'no-styled-link'} to={`/${parentIndex}/${active}/${page.slug}`}>
+                            <NavLink className={'no-styled-link'} to={`/${parentIndex}/${category.slug}/${page.slug}`}>
                                 {page.title.rendered}
                             </NavLink>
                         </li>)}
                 </ul>
             }
-            {(node.slug === active && pending) && <Loader frugal />}
-            {node.children && node.children.length > 0 && activeParent &&
-                <ul>
-                    {node.children.map(cat => renderNodes(cat, pages, active, pending, parentIndex))}
-                </ul>
-            }
-
+            {category.pending && <Loader frugal />}
         </li>
     )
 }
@@ -163,20 +154,26 @@ const ContentIndex = props => {
     if (!!props.articlesOnly) return <Wrapper>
         <li className={'wiki-categories'}>
             <ul className={'wiki-articles'}>
-            {props.pages.map(page =>
-            <li>
-                <NavLink className={'no-styled-link'} to={'/info/de/' + page.id + '?' + page.title}>
-                    {page.title}
-                </NavLink>
-            </li>)}
+                {props.pages.map(page =>
+                    <li>
+                        <NavLink className={'no-styled-link'} to={'/info/de/' + page.id + '?' + page.title}>
+                            {page.title}
+                        </NavLink>
+                    </li>)}
             </ul>
         </li>
-        
+
     </Wrapper>
     if (!props.hierarchy) return null;
     return (
         <Wrapper>
-            {props.hierarchy.map((cat, index) => renderNodes(cat, props.pages, props.active, props.pending, props.parentIndex, index))}
+            {props.hierarchy.map((node, index) =>
+                <ContentCat
+                    node={node}
+                    active={props.active}
+                    parentIndex={props.parentIndex}
+                    category={props.index.find(cat => cat.id === node.id)}
+                    onCategoryClick={props.onCategoryClick} />)}
         </Wrapper>
     )
 };

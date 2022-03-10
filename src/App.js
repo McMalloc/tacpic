@@ -29,7 +29,6 @@ import Consent from "./components/platform/Consent";
 import Knowledge from "./components/platform/Knowledge";
 import { initLanguage } from "./i18n/i18n";
 import Loader from "./components/gui/Loader";
-import Support from "./components/platform/Support";
 
 const Editor = React.lazy(() => import("./components/editor/Editor"));
 const AdminIndex = React.lazy(() => import("./components/admin/AdminIndex"));
@@ -84,7 +83,7 @@ const App = () => {
 
   useEffect(() => {
     // messy routing related code
-    if (!(/catalogue/.test(location.pathname) || /info/.test(location.pathname) || /knowledge\/.+/.test(location.pathname))) {
+    if (!(/catalogue/.test(location.pathname) || /info/.test(location.pathname) || /knowledge\/.+/.test(location.pathname) || /support\/.+/.test(location.pathname))) {
       document.title = t('region.' + location.pathname) + ' | tacpic';
     }
     // scroll to top at page change, if it is not the catalogue
@@ -98,7 +97,7 @@ const App = () => {
     { label: t("navigation.catalogue"), to: "/catalogue" },
     { label: t("navigation.editor"), to: "/editor/splash" },
     { label: t("navigation.pricing"), to: "/pricing" },
-    // { label: t("navigation.support"), to: '/support' },
+    { label: t("navigation.support"), to: '/support' },
     { label: t("navigation.knowledge"), to: '/knowledge/tastgrafiken' },
   ];
 
@@ -155,12 +154,12 @@ const App = () => {
             {/* <Route path="/editor/app" element={<Editor />} /> */}
             <Route path="/stats" element={<Stats />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/knowledge" element={<Knowledge />} />
-            <Route path="/knowledge/:category" element={<Knowledge />} />
-            <Route path="/knowledge/:category/:postSlug" element={<Knowledge />} />
-            <Route path="/support" element={<Support />} />
-            <Route path="/support/:category" element={<Support />} />
-            <Route path="/support/:category/:postSlug" element={<Support />} />
+            <Route path="/knowledge" element={<Knowledge category={'knowledge'} />} />
+            <Route path="/knowledge/:catSlug" element={<Knowledge category={'knowledge'} />} />
+            <Route path="/knowledge/:catSlug/:postSlug" element={<Knowledge category={'knowledge'} />} />
+            <Route path="/support" element={<Knowledge category={'support'} />} />
+            <Route path="/support/:catSlug" element={<Knowledge category={'support'} />} />
+            <Route path="/support/:catSlug/:postSlug" element={<Knowledge category={'support'} />} />
             <Route
               path="/info/:lang/:textId"
               element={<LegalIndex />}
