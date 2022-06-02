@@ -38,7 +38,7 @@ const AdminErrors = props => {
         } else {
             return Object
                 .keys(memoedErrors[0])
-                .filter(key => key !== 'backtrace')
+                .filter(key => key !== 'backtrace' || key !== 'stacktrace' || key !== 'user_agent')
                 .map(key => {
                     let col = {
                         Header: t(key),

@@ -132,6 +132,7 @@ const Metadata = () => {
                 label={"editor:input_catalogue-tags"}
                 tip={"help:input_catalogue-tags"}
                 isMulti
+                pom={"tagCombobox"}
                 creatable
                 onChange={selection => {
                     if (selection === null) selection = [];
@@ -171,6 +172,7 @@ const Metadata = () => {
             <div>
                 <Checkbox onChange={event => setLicenseAgreed(!licenseAgreed)}
                           name={'cb-license-agreed'}
+                          pom="licenseAgreementCheckbox"
                           checked={licenseAgreed}
                           label={t("editor:license_agreed")}/>
                           

@@ -175,7 +175,6 @@ const VariantView = (props) => {
 
   if (!props.id) return null;
 
-  console.log(lastViewedPreview);
   const pagePreviews = <Preview>
     <Carousel
       initial={lastViewedPreview[variantId] || 0}
@@ -222,6 +221,7 @@ const VariantView = (props) => {
     >
       <FlyoutEntry
         icon={"file-medical"}
+        pom={"new variant"}
         label={"catalogue:variant-copy"}
         onClick={() => {
           dispatch({
@@ -235,6 +235,7 @@ const VariantView = (props) => {
       />
       <FlyoutEntry
         icon={"glasses"}
+        pom={"edit variant"}
         label={"catalogue:variant-edit"}
         onClick={() => {
           dispatch({
@@ -248,6 +249,7 @@ const VariantView = (props) => {
       />
       <FlyoutEntry
         icon={"file-export"}
+        pom={"new graphic"}
         label={"catalogue:variant-new"}
         onClick={() => {
           dispatch({
@@ -271,6 +273,7 @@ const VariantView = (props) => {
         return <FlyoutEntry
           icon={format === 'pdf' ? 'file-pdf' : format === 'zip' ? 'file-archive' : format === 'rtf' ? 'file-word' : 'braille'}
           key={format}
+          isDownload={true}
           link={`${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`}
           label={"catalogue:" + format}
           // onClick={() =>
@@ -399,13 +402,12 @@ const VariantView = (props) => {
       <div className={'order'}>
 
         {buttonBar}
-
         
         <p style={{fontSize: '0.9rem', lineHeight: '1rem', display: 'flex', alignItems: 'center'}}>
             <span style={{width: '6em'}} aria-label={"Creative Commons Namensnennung, Weitergabe unter gleichen Bedingungen Lizenz 4.0 International"}>
-              <i class="fab fa-creative-commons"></i>&thinsp;
-              <i class="fab fa-creative-commons-by"></i>&thinsp;
-              <i class="fab fa-creative-commons-sa"></i>&thinsp;
+              <i className={"fab fa-creative-commons"}></i>&thinsp;
+              <i className={"fab fa-creative-commons-by"}></i>&thinsp;
+              <i className={"fab fa-creative-commons-sa"}></i>&thinsp;
             </span>
             <span>
               {t('catalogue:licenseInfo')} <a  rel={"license"} 
@@ -494,7 +496,7 @@ const VariantView = (props) => {
                 }}
                 fullWidth
                 label={t(basketIndex >= 0 ? "commerce:remove" : "catalogue:addToCart")}
-                title={t("catalogue:removeFromCart")}
+                title={t(basketIndex >= 0 ? "commerce:remove" : "catalogue:addToCart")}
                 large
                 style={{ flex: '1 1 30%' }}
                 primary={basketIndex === -1}

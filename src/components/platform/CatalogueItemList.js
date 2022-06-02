@@ -1,14 +1,15 @@
 import React from "react";
-import {useNavigate} from "react-router-dom";
-import CatalogueItem, {Wrapper as CatalogueItemWrapper} from "./CatalogueItem";
+import { useNavigate } from "react-router-dom";
+import CatalogueItem, { Wrapper as CatalogueItemWrapper } from "./CatalogueItem";
 import styled from "styled-components/macro";
-import {useDispatch, useSelector} from "react-redux";
-import {Icon} from "../gui/_Icon";
-import {Alert} from "../gui/Alert";
-import {FILE, LOAD_MORE} from "../../actions/action_constants";
-import {Button} from "../gui/Button";
-import Loader, {LoaderOverlay} from "../gui/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { Icon } from "../gui/_Icon";
+import { Alert } from "../gui/Alert";
+import { FILE, LOAD_MORE } from "../../actions/action_constants";
+import { Button } from "../gui/Button";
+import Loader, { LoaderOverlay } from "../gui/Loader";
 import { useTranslation } from 'react-i18next';
+import ServerError from "./ServerError";
 
 const FlexRow = styled.div`
   display: flex;
@@ -67,47 +68,57 @@ const CatalogueItemList = props => {
     );
     const exhausted = useSelector(state => state.catalogue.exhausted);
     const searchPending = useSelector(state => state.catalogue.searchPending);
+    const searchErrorCode = useSelector(state => state.catalogue.searchErrorCode);
+    const searchError = useSelector(state => state.catalogue.searchError);
     const loadMorePending = useSelector(state => state.catalogue.loadMorePending);
 
     const newButton = <CatalogueItemWrapper role={'button'}>
-            <AddButton id={'btn-new-graphic'} onClick={() => {
-                dispatch({type: FILE.OPEN.REQUEST})
-                navigate("/editor/splash");
-            }}>
-                <span><Icon icon={'plus'}/></span>
-                <span>{t('catalogue:new_graphic') }</span>
-            </AddButton>
-        </CatalogueItemWrapper>
+        <AddButton id={'btn-new-graphic'} onClick={() => {
+            dispatch({ type: FILE.OPEN.REQUEST })
+            navigate("/editor/splash");
+        }}>
+            <span><Icon icon={'plus'} /></span>
+            <span>{t('catalogue:new_graphic')}</span>
+        </AddButton>
+    </CatalogueItemWrapper>
 
     return (
         <Wrapper>
-            {props.graphics && props.graphics.length > 0 ? 
+            {searchErrorCode === 504 &&
+                <Alert info>{t('catalogue:error_timeout')}
+                </Alert>
+            }
+            {searchErrorCode === 500 &&
+                <Alert info>{t('catalogue:error_internal')}
+                </Alert>
+            }
+            {props.graphics && props.graphics.length > 0 ?
                 <FlexRow>
                     {props.graphics.map((graphic, index) => {
                         return (
-                            <CatalogueItem key={index} {...graphic} filtered={filtered}/>
+                            <CatalogueItem key={index} {...graphic} filtered={filtered} />
                         )
                     })}
                     {newButton}
                 </FlexRow>
                 :
                 <>
-                    <div style={{textAlign: 'center', paddingTop: '20%'}}>
-                    {/* <CatalogueItemWrapper>
+                    <div style={{ textAlign: 'center', paddingTop: '20%' }}>
+                        {/* <CatalogueItemWrapper>
                         <Alert info>{t('catalogue:no_graphic_found')}</Alert>
                     </CatalogueItemWrapper> */}
 
-                        <p><Icon icon={"folder-open fa-2x"} /><br/>{t('catalogue:no_graphic_found')}</p>
+                        <p><Icon icon={"folder-open fa-2x"} /><br />{t('catalogue:no_graphic_found')}</p>
                         <br />
-                        <FlexRow style={{justifyContent: 'center'}}>
+                        <FlexRow style={{ justifyContent: 'center' }}>
                             {newButton}
                         </FlexRow>
                     </div>
-                    
+
                 </>
-                }
+            }
             <FlexRow>
-                
+
             </FlexRow>
             <div className={"align-center padded-top"}>
                 {!exhausted &&
@@ -121,9 +132,9 @@ const CatalogueItemList = props => {
             </div>
 
             {searchPending &&
-            <LoaderOverlay>
-                <Loader />
-            </LoaderOverlay>
+                <LoaderOverlay>
+                    <Loader />
+                </LoaderOverlay>
             }
         </Wrapper>
 

@@ -81,5 +81,7 @@
   "zip-hint": "Eine Archivdatei, die sämtliche oben genannten Dateien enthält.",
   "results": "Ergebnisse",
   "licenseInfo": "Dieses Werk ist lizenziert unter einer",
-  "licenseName": "Creative Commons BY-SA 4.0 International Lizenz"
+  "licenseName": "Creative Commons BY-SA 4.0 International Lizenz",
+  "error_internal": "Es ist auf unserer Seite ein Fehler aufgetreten, den wir untersuchen werden.",
+  "error_timeout": "Die Datenbank konnte nicht erreicht werden, bitte kontaktieren Sie uns: kontakt@tacpic.de"
 }

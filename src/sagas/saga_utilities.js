@@ -115,7 +115,7 @@ export default function createSaga(
                             authHeader = response.headers.get("authorization");
                             contentType = response.headers.get("Content-Type");
                             return response.text();
-                        });
+                        })
                     }, action);
                     setCache(endpointWithParams, response);
                 } else {
@@ -134,10 +134,10 @@ export default function createSaga(
                     parsedResponse = response;
                 }
 
-                let data = transformResponse(parsedResponse, statusCode, authHeader);
                 if (statusCode > 204) {
                     yield put({ type: event.FAILURE, message: parsedResponse, originalPayload: action.payload, statusCode });
                 } else {
+                    let data = transformResponse(parsedResponse, statusCode, authHeader);
                     yield put({ type: event.SUCCESS, data, originalPayload: action.payload, statusCode });
                 }
             } catch (error) {

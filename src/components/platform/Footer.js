@@ -93,7 +93,6 @@ const Footer = props => {
                                 <p>
                                     <span className={"heading"}>{t('footer:contactHeading')}</span>
                                 tacpic UG (haftungsbeschränkt) <br />
-                                FEZ Raum 3.13 <br />
                                 Breitscheidstraße 51 <br />
                                 39114 Magdeburg
                             </p>

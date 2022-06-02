@@ -61,7 +61,7 @@ const Combobox = props => {
     const customOptionDisplay = props.options.length > 0 && props.options[0].hasOwnProperty('display');
 
     return (
-        <div>
+        <div data-pom={props.pom}>
             <Label disabled={props.disabled} data-tip={t(props.tip)} label={props.label} sublabel={props.sublabel}>
                 {/*TODO: hack beseitigen*/}
                 {props.label &&

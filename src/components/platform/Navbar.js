@@ -71,7 +71,7 @@ const NavbarItem = styled(NavLink)`
         bottom: 0;
         left: 0;
         right: 0;
-        transition: height 0.3s;
+        transition: height 0.1s;
         content: "";
         z-index: -1;
     }

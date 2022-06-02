@@ -201,7 +201,7 @@ const AccordeonPanelFlyoutButton = (props) => {
 const AccordeonPanel = (props) => {
   return (
     <AccordeonPanelWrapper>
-      <AccordeonPanelTitle onClick={props.onClick} collapsed={props.collapsed}>
+      <AccordeonPanelTitle onClick={props.onClick} data-pom={props.title} collapsed={props.collapsed}>
         <Icon icon={"caret-right"} />
         <span>{props.title}</span>
       </AccordeonPanelTitle>

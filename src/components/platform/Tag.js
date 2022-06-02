@@ -53,6 +53,7 @@ const Tag = ({ name, tag_id }) => {
       <Checkbox onChange={event => toggleTag(dispatch, event.target.name, tag_id)}
         name={'tag-toggle-' + name}
         id={"cb-tag-" + tag_id}
+        pom={name}
         value={checked}
         label={name} />
     </div>

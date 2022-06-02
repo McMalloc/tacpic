@@ -45,11 +45,19 @@ const catalogueApi = (state = {}, action) => {
             };
         case CATALOGUE.SEARCH.SUCCESS:
             return {
-                ...state, graphics: action.data.graphics, exhausted: action.data.count < state.limit, searchPending: false
+                ...state, 
+                graphics: action.data.graphics, 
+                exhausted: action.data.count < state.limit, 
+                searchPending: false,
+                searchError: null,
+                searchErrorCode: null,
             };
         case CATALOGUE.SEARCH.FAILURE:
+            console.log(action);
             return {
                 ...state,
+                searchError: action.message,
+                searchErrorCode: action.statusCode,
                 searchPending: false
             };
 
@@ -67,6 +75,7 @@ const catalogueApi = (state = {}, action) => {
         case GRAPHIC.GET.FAILURE:
             return {
                 ...state,
+                graphicGetPending: false,
             };
 
         case VARIANT.HISTORY.REQUEST:

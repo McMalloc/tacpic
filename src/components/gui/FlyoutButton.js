@@ -79,16 +79,6 @@ const FlyoutEntryWrapper = styled.div`
 
 export const FlyoutEntry = (props) => {
   const { t } = useTranslation();
-  const content = <>
-    <Icon icon={props.icon} />
-    <label>{t(props.label)}</label>
-    {props.sublabel && (
-      <>
-        <br />
-        <span className={'sub-label'}>{t(props.sublabel)}</span>
-      </>
-    )}
-  </>
   return (
     <FlyoutEntryWrapper
       className={"flyout-entry"}
@@ -97,7 +87,7 @@ export const FlyoutEntry = (props) => {
       onClick={props.onClick}
     >
       {!!props.link ?
-        <a className={'no-styled-link'} target={'_blank'} href={props.link}><Icon icon={props.icon} />
+        <a data-pom={props.pom} download={props.isDownload} className={'no-styled-link'} target={'_blank'} href={props.link}><Icon icon={props.icon} />
           <label>{t(props.label)}</label>
           {props.sublabel && (
             <>
@@ -108,7 +98,7 @@ export const FlyoutEntry = (props) => {
         :
         <>
           <Icon icon={props.icon} />
-          <label>{t(props.label)}</label>
+          <label data-pom={props.pom}>{t(props.label)}</label>
           {props.sublabel && (
             <>
               <br />

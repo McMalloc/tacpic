@@ -79,7 +79,9 @@ const Checkbox = props => {
         checked={props.value}
         value={props.value}
         type={"checkbox"} />
-      <CheckboxLabel id={props.name + "-label"} disabled={props.disabled} checked={props.checked} htmlFor={props.name + "-cb"}>
+      <CheckboxLabel id={props.name + "-label"} 
+        data-pom={props.pom}
+        disabled={props.disabled} checked={props.checked} htmlFor={props.name + "-cb"}>
         <span className={'label'}>{t(props.label)}</span>
         {props.sublabel &&
           <><br /><Sub>{t(props.sublabel)}</Sub></>

@@ -5,7 +5,6 @@ import {
     USER_ADMIN
 } from "../../actions/action_constants";
 import createSaga from "../saga_utilities";
-import moment from "moment";
 
 const id = args => args;
 

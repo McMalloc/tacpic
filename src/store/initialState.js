@@ -122,6 +122,8 @@ export const catalogue = {
     viewedGraphic: {},
     graphicGetPending: true,
     searchPending: false,
+    searchError: null,
+    searchErrorCode: null,
     historyPending: false,
     currentHistory: {
         contributors: [],

@@ -68,7 +68,7 @@ const AdminOrders = props => {
     if (orders.length === 0) return <Loader />
     return (
         <Wrapper>
-            <AdminOrderCreate />
+            {/* <AdminOrderCreate /> */}
             <Datagrid columns={columns} data={memoedOrders} onRowClick={(row, index) => {
                 dispatch({ type: ORDER_ADMIN.GET.REQUEST, payload: { id: row.id } });
                 setInvoiceCorrect(null);
