@@ -35,7 +35,9 @@ export const LOCALFILES = action_constants('LOCALFILE', ['INDEX', 'GET', 'REMOVE
 export const CMS_PAGE    = action_constants('CMS_PAGE',   ['INDEX', 'GET']);
 export const CMS_CATEGORY    = action_constants('CMS_CATEGORY',   ['INDEX', 'GET']);
 export const CMS_LEGAL    = action_constants('CMS_LEGAL',   ['INDEX', 'GET']);
+export const CMS_SEARCH    = action_constants('CMS_SEARCH',   ['GET']);
 
+export const CMS_SEARCH_CLEAR = 'CMS_SEARCH_CLEAR';
 export const CANVAS_OBJECT_ADDED = 'CANVAS_OBJECT_ADDED';
 export const CANVAS_OBJECT_REMOVED = 'CANVAS_OBJECT_REMOVED';
 export const CANVAS_OBJECT_MODIFIED = 'CANVAS_OBJECT_REMOVED';

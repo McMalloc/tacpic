@@ -91,7 +91,7 @@ export default function createSaga(
                 let endpointWithParams = replaceParam(endpoint, action.payload);
                 let response;
 
-                let cached = getCache(endpointWithParams);
+                let cached = method === 'get' ? getCache(endpointWithParams) : null;
                 if (cached === null) {
                     response = yield call(action => {
                         const filePayload = action.payload && action.payload.toString() === '[object FormData]';
@@ -124,7 +124,7 @@ export default function createSaga(
 
                 let parsedResponse;
                 try {
-                    if (contentType.toLowerCase().includes(CONTENT_TYPE.JSON)) {
+                    if (contentType?.toLowerCase().includes(CONTENT_TYPE.JSON)) {
                         parsedResponse = JSON.parse(response);
                     } else {
                         parsedResponse = response;

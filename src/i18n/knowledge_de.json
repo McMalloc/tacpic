@@ -2,5 +2,9 @@
   "topics": "Themen",
   "heading": "Wissen",
   "introduction": "Bitte wählen Sie ein Thema aus dem Menü.",
-  "notAvailable": ""
+  "notAvailable": "",
+  "searchResults": "Suchergebnisse",
+  "searchClear": "Suche zurücksetzen",
+  "search-placeholder": "Suchbegriff eingeben",
+  "noResults": "Leider nichts gefunden."
 }

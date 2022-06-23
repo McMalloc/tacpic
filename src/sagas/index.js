@@ -23,7 +23,7 @@ import {
     VARIANTS,
     VARIANT,
     ADDRESS,
-    APP, QUOTE, IMPORT, CMS_PAGE, CMS_CATEGORY, CMS_LEGAL
+    APP, QUOTE, IMPORT, CMS_PAGE, CMS_CATEGORY, CMS_LEGAL, CMS_SEARCH
 } from "../actions/action_constants";
 import createSaga from "./saga_utilities";
 import {
@@ -80,8 +80,7 @@ export default function* root() {
         call(createSaga(VARIANT.HIDE, 'post', 'internal/variants/:id', takeLatest, true, id, id)),
         call(createSaga(VARIANT.HISTORY, 'get', 'variants/:id/history', takeLatest, false, id, id)),
 
-        // call(createSaga(CMS_PAGE.GET, 'get', 'cms/pages/:id', takeLatest, false, id, id)),
-        call(createSaga(CMS_PAGE.INDEX, 'get', 'cms/posts?categories=:filterCategory', takeLatest, false, id, response => {
+        call(createSaga(CMS_PAGE.INDEX, 'get', 'cms/posts?_fields=id,excerpt,title,categories,slug&per_page=100', takeLatest, false, id, response => {
             return response.map(post => ({
                     ...post,
                     title: {
@@ -89,9 +88,12 @@ export default function* root() {
                     }
                 }))
         })),
+        call(createSaga(CMS_PAGE.GET, 'get', 'cms/posts?slug=:slug', takeLatest, false, id, id)),
         call(createSaga(CMS_CATEGORY.INDEX, 'get', 'cms/categories?per_page=100', takeLatest, false, id, id)),
         call(createSaga(CMS_LEGAL.INDEX, 'get', 'cms/menu', takeLatest, false, id, id)),
         call(createSaga(CMS_LEGAL.GET, 'get', 'cms/pages/:id', takeLatest, false, id, id)),
+
+        call(createSaga(CMS_SEARCH.GET, 'get', 'cms/search?search=:searchTerm', takeLatest, false, id, id)),
 
         call(createSaga(ADDRESS.GET, 'get', 'users/addresses', takeLatest, true, id, id)),
         call(createSaga(ADDRESS.CREATE, 'post', 'users/addresses', takeLatest, true, id, id)),

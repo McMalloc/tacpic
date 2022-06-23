@@ -177,7 +177,7 @@ const Navbar = props => {
     const loginSignupLinks = <>
         <Button style={{ alignSelf: 'center' }} onClick={() => navigate('/signup?redirect=' + location.pathname)} small={lg} label={t("account:signup")} icon={"user-plus"} primary />
         &ensp;
-        <Button data-pom={'loginButton'} style={{ alignSelf: 'center' }} onClick={() => navigate('/login?redirect=' + location.pathname)} small={lg} label={t("account:login")} icon={"sign-in-alt"} />
+        <Button data-pom={'loginButton'} style={{ alignSelf: 'center', marginRight: '8px' }} onClick={() => navigate('/login?redirect=' + location.pathname)} small={lg} label={t("account:login")} icon={"sign-in-alt"} />
     </>
 
     const basketButton = <NavbarItem aria-label={t("commerce:basket", { quantity: basket.length })} className={`single ${basket.length === 0 && 'disabled'}`} id={"basket-nav-link"} to={'/basket'}>

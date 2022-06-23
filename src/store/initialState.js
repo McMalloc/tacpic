@@ -181,12 +181,13 @@ export const admin = {
 }
 
 export const cms = {
+    pages: [],
+    pagesSuccessful: false,
+    pagesPending: false,
+    pagesError: null,
     categories: {
         index: [],
         hierarchy: [],
-        pending: false,
-        successful: false,
-        error: null
     },
     legal: {
         menu: [],

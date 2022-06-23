@@ -98,7 +98,7 @@ const App = () => {
     { label: t("navigation.editor"), to: "/editor/splash" },
     { label: t("navigation.pricing"), to: "/pricing" },
     { label: t("navigation.support"), to: '/support' },
-    { label: t("navigation.knowledge"), to: '/knowledge/tastgrafiken' },
+    { label: t("navigation.knowledge"), to: '/knowledge' },
   ];
 
   return (
@@ -151,7 +151,6 @@ const App = () => {
             </Suspense>} />
             </Route>
 
-            {/* <Route path="/editor/app" element={<Editor />} /> */}
             <Route path="/stats" element={<Stats />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/knowledge" element={<Knowledge category={'knowledge'} />} />

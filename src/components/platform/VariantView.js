@@ -213,76 +213,80 @@ const VariantView = (props) => {
   </Preview>
 
   const buttonBar = <ElementGrid>
-    <FlyoutButton
-      flyoutWidth={300}
-      disabled={!logged_in || !lg}
-      icon={"pen"}
-      label={"catalogue:openInEditor"}
-    >
-      <FlyoutEntry
-        icon={"file-medical"}
-        pom={"new variant"}
-        label={"catalogue:variant-copy"}
-        onClick={() => {
-          dispatch({
-            type: FILE.OPEN.REQUEST,
-            id: variantId,
-            mode: 'copy',
-          });
-          navigate('/editor/app');
-        }}
-        sublabel={"catalogue:variant-copy-hint"}
-      />
-      <FlyoutEntry
-        icon={"glasses"}
-        pom={"edit variant"}
-        label={"catalogue:variant-edit"}
-        onClick={() => {
-          dispatch({
-            type: FILE.OPEN.REQUEST,
-            id: variantId,
-            mode: 'edit',
-          });
-          navigate('/editor/app');
-        }}
-        sublabel={"catalogue:variant-edit-hint"}
-      />
-      <FlyoutEntry
-        icon={"file-export"}
-        pom={"new graphic"}
-        label={"catalogue:variant-new"}
-        onClick={() => {
-          dispatch({
-            type: FILE.OPEN.REQUEST,
-            id: variantId,
-            mode: 'new',
-          });
-          navigate('/editor/app');
-        }}
-        sublabel={"catalogue:variant-new-hint"}
-      />
-    </FlyoutButton>
-
-    <FlyoutButton
-      disabled={!logged_in}
-      rightAlign
-      icon={"file-download"}
-      label={"catalogue:download-as"}
-    >
-      {['pdf', 'rtf', 'brf', 'zip'].map(format => {
-        return <FlyoutEntry
-          icon={format === 'pdf' ? 'file-pdf' : format === 'zip' ? 'file-archive' : format === 'rtf' ? 'file-word' : 'braille'}
-          key={format}
-          isDownload={true}
-          link={`${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`}
-          label={"catalogue:" + format}
-          // onClick={() =>
-          //   (window.location = `${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`)
-          // }
-          sublabel={`catalogue:${format}-hint`}
+    {logged_in &&
+      <FlyoutButton
+        flyoutWidth={300}
+        disabled={!logged_in || !lg}
+        icon={"pen"}
+        label={"catalogue:openInEditor"}
+      >
+        <FlyoutEntry
+          icon={"file-medical"}
+          pom={"new variant"}
+          label={"catalogue:variant-copy"}
+          onClick={() => {
+            dispatch({
+              type: FILE.OPEN.REQUEST,
+              id: variantId,
+              mode: 'copy',
+            });
+            navigate('/editor/app');
+          }}
+          sublabel={"catalogue:variant-copy-hint"}
         />
-      })}
-    </FlyoutButton>
+        <FlyoutEntry
+          icon={"glasses"}
+          pom={"edit variant"}
+          label={"catalogue:variant-edit"}
+          onClick={() => {
+            dispatch({
+              type: FILE.OPEN.REQUEST,
+              id: variantId,
+              mode: 'edit',
+            });
+            navigate('/editor/app');
+          }}
+          sublabel={"catalogue:variant-edit-hint"}
+        />
+        <FlyoutEntry
+          icon={"file-export"}
+          pom={"new graphic"}
+          label={"catalogue:variant-new"}
+          onClick={() => {
+            dispatch({
+              type: FILE.OPEN.REQUEST,
+              id: variantId,
+              mode: 'new',
+            });
+            navigate('/editor/app');
+          }}
+          sublabel={"catalogue:variant-new-hint"}
+        />
+      </FlyoutButton>
+    }
+
+    {logged_in &&
+      <FlyoutButton
+        disabled={!logged_in}
+        rightAlign
+        icon={"file-download"}
+        label={"catalogue:download-as"}
+      >
+        {['pdf', 'rtf', 'brf', 'zip'].map(format => {
+          return <FlyoutEntry
+            icon={format === 'pdf' ? 'file-pdf' : format === 'zip' ? 'file-archive' : format === 'rtf' ? 'file-word' : 'braille'}
+            key={format}
+            isDownload={true}
+            link={`${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`}
+            label={"catalogue:" + format}
+            // onClick={() =>
+            //   (window.location = `${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`)
+            // }
+            sublabel={`catalogue:${format}-hint`}
+          />
+        })}
+      </FlyoutButton>
+    }
 
     <Toggle
       label={"catalogue:history_" + (showHistory ? "hide" : "show")}
@@ -295,6 +299,7 @@ const VariantView = (props) => {
     {role === ROLE.ADMIN &&
       <FlyoutButton
         disabled={!logged_in}
+        hidden={!logged_in}
         dangerous
         label={'catalogue:adminFeatures'} icon={'eye-slash'}
       >
@@ -402,21 +407,21 @@ const VariantView = (props) => {
       <div className={'order'}>
 
         {buttonBar}
-        
-        <p style={{fontSize: '0.9rem', lineHeight: '1rem', display: 'flex', alignItems: 'center'}}>
-            <span style={{width: '6em'}} aria-label={"Creative Commons Namensnennung, Weitergabe unter gleichen Bedingungen Lizenz 4.0 International"}>
-              <i className={"fab fa-creative-commons"}></i>&thinsp;
-              <i className={"fab fa-creative-commons-by"}></i>&thinsp;
-              <i className={"fab fa-creative-commons-sa"}></i>&thinsp;
-            </span>
-            <span>
-              {t('catalogue:licenseInfo')} <a  rel={"license"} 
-                target={'_blank'} 
-                href={`https://creativecommons.org/licenses/by-sa/4.0/deed${i18n.language === 'de' ? '.de' : ''}`}>
-                  {t('catalogue:licenseName')}
+
+        <p style={{ fontSize: '0.9rem', lineHeight: '1rem', display: 'flex', alignItems: 'center' }}>
+          <span style={{ width: '6em' }} aria-label={"Creative Commons Namensnennung, Weitergabe unter gleichen Bedingungen Lizenz 4.0 International"}>
+            <i className={"fab fa-creative-commons"}></i>&thinsp;
+            <i className={"fab fa-creative-commons-by"}></i>&thinsp;
+            <i className={"fab fa-creative-commons-sa"}></i>&thinsp;
+          </span>
+          <span>
+            {t('catalogue:licenseInfo')} <a rel={"license"}
+              target={'_blank'}
+              href={`https://creativecommons.org/licenses/by-sa/4.0/deed${i18n.language === 'de' ? '.de' : ''}`}>
+              {t('catalogue:licenseName')}
             </a>.
-            </span>
-          </p>
+          </span>
+        </p>
 
         <Well>
 
@@ -450,43 +455,42 @@ const VariantView = (props) => {
           }
           <br />
 
-          <OrderWidget>
-            {/*<div style={{display: 'flex'}}>*/}
-            <Numberinput
-              // disabled={}
-              inline
-              noMargin
-              onChange={(event) => {
-                setQuantity(Math.max(parseInt(event.currentTarget.value), 1));
-              }}
-              min={1}
-              value={quantity}
-              label={t(`catalogue:pcs`)}
-            />
+          {!!userRights && userRights.can_order ?
+            <OrderWidget>
+              {/*<div style={{display: 'flex'}}>*/}
+              <Numberinput
+                // disabled={}
+                inline
+                noMargin
+                onChange={(event) => {
+                  setQuantity(Math.max(parseInt(event.currentTarget.value), 1));
+                }}
+                min={1}
+                value={quantity}
+                label={t(`catalogue:pcs`)}
+              />
 
-            <div>
-              <strong>{t('{{amount, currency}}', {
-                amount: (product === "graphic"
-                  ? props.quote
-                  : props.quote_graphics_only) * (quantity || 0)
-              })}</strong>
+              <div>
+                <strong>{t('{{amount, currency}}', {
+                  amount: (product === "graphic"
+                    ? props.quote
+                    : props.quote_graphics_only) * (quantity || 0)
+                })}</strong>
 
-              <div style={{ fontSize: '0.8rem' }}>
-                {quantity !== 1 &&
-                  <>{t('catalogue:singlePrice', {
-                    amount: (product === "graphic"
-                      ? props.quote
-                      : props.quote_graphics_only)
-                  })}</>
+                <div style={{ fontSize: '0.8rem' }}>
+                  {quantity !== 1 &&
+                    <>{t('catalogue:singlePrice', {
+                      amount: (product === "graphic"
+                        ? props.quote
+                        : props.quote_graphics_only)
+                    })}</>
 
-                }<br />
-                {t("catalogue:plusShipping", { amount: 200 })}
-                <br />
-                {t('catalogue:deliveryTime', { lower: 4, upper: 5 })}
+                  }<br />
+                  {t("catalogue:plusShipping", { amount: 200 })}
+                  <br />
+                  {t('catalogue:deliveryTime', { lower: 4, upper: 5 })}
+                </div>
               </div>
-            </div>
-            {/* {true ? */}
-            {!!userRights && userRights.can_order ?
               <Button
                 onClick={() => {
                   basketIndex === -1 ?
@@ -502,10 +506,18 @@ const VariantView = (props) => {
                 primary={basketIndex === -1}
                 icon={basketIndex >= 0 ? "shopping-cart" : "cart-plus"}
               />
-              :
+            </OrderWidget>
+            :
+            <>
+              <strong>{t('{{amount, currency}}', {
+                amount: (product === "graphic"
+                  ? props.quote
+                  : props.quote_graphics_only) * (quantity || 0)
+              })}</strong>
               <Alert info>{t("commerce:not_whitelisted")}</Alert>
-            }
-          </OrderWidget>
+            </>
+          }
+
         </Well>
       </div>
 

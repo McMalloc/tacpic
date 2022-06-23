@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
 
 const toggleTag = (dispatch, value, id) => {
-  console.log(value);
   dispatch({
     type: 'TAG_TOGGLED',
     id

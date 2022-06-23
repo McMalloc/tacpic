@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { Row } from "../gui/Grid";
 import { Icon } from "../gui/_Icon";
 import { MD_SCREEN } from '../../config/constants';
+import Loader from '../gui/Loader';
 
 const FooterStyled = styled.footer`
    background-color: ${props => props.theme.brand_secondary};
@@ -83,6 +84,7 @@ const Footer = props => {
                                             to={`/info/${i18n.language}/${text.id}?${text.title}`}>
                                             {t('legal:' + text.title)}</NavLink> <br /></span>
                                     })}
+                                    {legalTexts.length === 0 && <Loader frugal />}
                                 </p>
 
                                 <p>

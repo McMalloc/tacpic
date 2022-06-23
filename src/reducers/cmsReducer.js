@@ -1,4 +1,4 @@
-import { CMS_CATEGORY, CMS_LEGAL, CMS_PAGE } from '../actions/action_constants';
+import { CMS_CATEGORY, CMS_LEGAL, CMS_PAGE, CMS_SEARCH, CMS_SEARCH_CLEAR } from '../actions/action_constants';
 import produce from 'immer';
 
 
@@ -41,63 +41,67 @@ const cmsReducer = (state = {}, action) => {
             }
 
         case CMS_PAGE.INDEX.SUCCESS:
-            console.log(action);
-
             return produce(state, draftState => {
-                const index = draftState.categories.index.map(cat => {
-                    if (cat.id === action.originalPayload.filterCategory) {
-                        cat.pages = action.data;
-                        cat.pending = false;
-                        cat.successful = true;
-                        cat.error = null;
-                    }
-                })
-                draftState = {
-                    ...state,
-                    categories: {
-                        ...state.categories,
-                        index
-                    }
+                const pagesFromServer = action.data;
+                const pages = [...state.pages];
+                if (pages.length === 0) {
+                    draftState.pages = pagesFromServer
+                } else {
+                    draftState.pages = pagesFromServer.map(pageFromServer => {
+                        if (pages.map(p => p.id).includes(pageFromServer.id)) {
+                            return pages.find(p => p.id === pageFromServer.id)
+                        } else {
+                            return pageFromServer
+                        }
+                    })
                 }
+                draftState.pagesPending = false;
+                draftState.pagesSuccessfull = true;
+                draftState.pagesError = null;
+                return draftState;
             })
-
 
         case CMS_PAGE.INDEX.FAILURE:
-            return produce(state, draftState => {
-                const index = draftState.categories.index.map(cat => {
-                    if (cat.id === action.payload.filterCategory) {
-                        cat.pages = action.data;
-                        cat.pending = false;
-                        cat.successful = false;
-                        cat.error = action.error;
-                    }
-                })
-                draftState = {
-                    ...draftState,
-                    categories: {
-                        ...state.categories,
-                        index
-                    }
-                }
-            })
+            return {
+                ...state,
+                pagesPending: false,
+                pagesSuccessfull: false,
+                pagesError: action.data,
+            }
+
         case CMS_PAGE.INDEX.REQUEST:
+            return {
+                ...state,
+                pagesPending: true,
+                pagesSuccessfull: false,
+                pagesError: null
+            }
+
+        case CMS_PAGE.GET.SUCCESS:
             return produce(state, draftState => {
-                const index = draftState.categories.index.map(cat => {
-                    if (cat.id === action.payload.filterCategory) {
-                        cat.pages = action.data;
-                        cat.pending = true;
-                        cat.successful = false;
-                        cat.error = null;
-                    }
-                })
-                draftState = {
-                    ...draftState,
-                    categories: {
-                        ...state.categories,
-                        index
-                    }
+                const pageFromServer = action.data[0];
+                if (!pageFromServer) return draftState;
+                const pages = [...state.pages];
+                if (pages.length === 0) {
+                    draftState.pages = [pageFromServer]
+                } else {
+                    draftState.pages = pages.map(page => {
+                        if (page.id === pageFromServer.id) return pageFromServer;
+                        return page;
+                    })
                 }
+                return draftState;
             })
+
+        case CMS_PAGE.GET.FAILURE:
+            return {
+                ...state
+            }
+
+        case CMS_PAGE.GET.REQUEST:
+            return {
+                ...state
+            }
 
         case CMS_LEGAL.INDEX.SUCCESS:
             return {
@@ -164,6 +168,37 @@ const cmsReducer = (state = {}, action) => {
                         pending: true
                     }
                 }
+            }
+        case CMS_SEARCH.GET.REQUEST:
+            return {
+                ...state,
+                searchPending: true,
+                searchSuccessfull: false,
+                searchError: null
+            }
+        case CMS_SEARCH.GET.SUCCESS:
+            console.log(action.data);
+            return {
+                ...state,
+                searchPending: false,
+                searchSuccessfull: true,
+                searchError: null,
+                searchResults: action.data
+            }
+        case CMS_SEARCH.GET.FAILURE:
+            return {
+                ...state,
+                searchPending: true,
+                searchSuccessfull: false,
+                searchError: action.data
+            }
+        case CMS_SEARCH_CLEAR:
+            return {
+                ...state,
+                searchPending: false,
+                searchSuccessfull: false,
+                searchError: null,
+                searchResults: []
             }
         default:
             return state;

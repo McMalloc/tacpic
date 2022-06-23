@@ -45,6 +45,7 @@ const Searchbar = () => {
                 name={"search-bar"}
                 className={"attached"}
                 noMargin
+                type={'search'}
                 style={{ width: '100%' }}
                 label={t('landing:searchNow')}
                 onChange={event => {
