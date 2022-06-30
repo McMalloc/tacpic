@@ -2,5 +2,9 @@
   "topics": "Topics",
   "heading": "Knowledge base",
   "notAvailable": "Unfortunatley, this content is currently only available in German.",
-  "introduction": "This section will provide general information about tactile media. Please choose a topic fromt he sidebar."
+  "introduction": "This section will provide general information about tactile media. Please choose a topic fromt he sidebar.",
+  "noResults": "No results, sorry.",
+  "search-placeholder": "Enter search term",
+  "searchClear": "Reset search",
+  "searchResults": "Search results"
 }

@@ -153,9 +153,9 @@ const App = () => {
 
             <Route path="/stats" element={<Stats />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/knowledge" element={<Knowledge category={'knowledge'} />} />
-            <Route path="/knowledge/:catSlug" element={<Knowledge category={'knowledge'} />} />
-            <Route path="/knowledge/:catSlug/:postSlug" element={<Knowledge category={'knowledge'} />} />
+            <Route path="/knowledge" element={<Knowledge category={'wissen'} />} />
+            <Route path="/knowledge/:catSlug" element={<Knowledge category={'wissen'} />} />
+            <Route path="/knowledge/:catSlug/:postSlug" element={<Knowledge category={'wissen'} />} />
             <Route path="/support" element={<Knowledge category={'support'} />} />
             <Route path="/support/:catSlug" element={<Knowledge category={'support'} />} />
             <Route path="/support/:catSlug/:postSlug" element={<Knowledge category={'support'} />} />

@@ -81,5 +81,7 @@
   "orderWithBrailleHint": "You'll get an image description as a $t(glossary:brailleEmboss) in the same braille system that's used in the graphic.",
   "results": "Results",
   "licenseInfo": "This work is licensed under",
-  "licenseName": "Creative Commons BY-SA 4.0 International License"
+  "licenseName": "Creative Commons BY-SA 4.0 International License",
+  "error_internal": "Sorry, an internal error occured that will be investigated.",
+  "error_timeout": "We couldn't reach the database, please try again later or contact us: contact@tacpic.de"
 }

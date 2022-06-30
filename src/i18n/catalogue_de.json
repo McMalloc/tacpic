@@ -82,6 +82,6 @@
   "results": "Ergebnisse",
   "licenseInfo": "Dieses Werk ist lizenziert unter einer",
   "licenseName": "Creative Commons BY-SA 4.0 International Lizenz",
-  "error_internal": "Es ist auf unserer Seite ein Fehler aufgetreten, den wir untersuchen werden.",
-  "error_timeout": "Die Datenbank konnte nicht erreicht werden, bitte kontaktieren Sie uns: kontakt@tacpic.de"
+  "error_internal": "Tut uns Leid, es ist auf unserer Seite ein Fehler aufgetreten, den wir untersuchen werden.",
+  "error_timeout": "Die Datenbank konnte nicht erreicht werden, bitte versuchen Sie es später erneut oder kontaktieren Sie uns: kontakt@tacpic.de"
 }
