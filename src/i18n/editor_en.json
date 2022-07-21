@@ -208,5 +208,13 @@
   "delete_file_confirm_copy": "Do you want to permanently delete the local changes, i.e. changes stored only on this device, from {{date}} to {{title}}?",
   "editingMode": "Editing mode",
   "sr_not_available-screen": "The concept of the visual editor unfortunately is not compatible with screen readers.",
-  "label_page-orientation": "Orientation"
+  "label_page-orientation": "Orientation",
+  "tooltip": {
+    "PATH": "Tool for creating straight lines and free form drawings.",
+    "ELLIPSE": "Tool for creating ellipses and circles.",
+    "LABEL": "Tool for creating braille labels.",
+    "RECT": "Tool for creating rectangles and squares.",
+    "braille-system-select": "You can change here the braille system for all labels and braille pages of this draft.",
+    "braille-system-select-link": "Read more in the manual (at the moment German only, sorry)"
+  }
 }

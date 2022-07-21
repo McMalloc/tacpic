@@ -49,7 +49,7 @@ html {
 
 @font-face {
   font-family: Roboto;
-  src: url("/webfonts/Roboto-MediumItalic.ttf");
+  src: url("/webfonts/Roboto-Italic.ttf");
   font-display: swap;
   font-weight: normal;
   font-style: italic;
@@ -85,6 +85,11 @@ a {
 
 button, input, textarea, select {
   font-family: "Roboto", sans-serif;
+}
+
+figcaption {
+  text-align: center;
+  font-style: italic;
 }
 
 fieldset {
@@ -149,6 +154,13 @@ address {
 
 p {
   line-height: 1.4rem;
+
+  code {
+    background-color: #231F20;
+    color: white;
+    padding: 0 0.5rem;
+    border-radius: 2px;
+  }
 
   &:first-child {
     margin-top: 0;

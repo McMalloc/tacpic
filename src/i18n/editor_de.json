@@ -120,6 +120,14 @@
     "selectAll": "Alle auswählen",
     "place": "Platzieren"
   },
+  "tooltip": {
+    "RECT": "Werkzeug zum Aufziehen von Rechtecken.",
+    "ELLIPSE": "Werkzeug zum Aufziehen von Ellipsen und Kreisen.",
+    "LABEL": "Werkzeug zum Anlegen von Beschriftungen.",
+    "PATH": "Werkzeug für Linien und zum Freihandzeichnen.",
+    "braille-system-select": "Ändern Sie hier das Punktschriftsystem für alle Beschriftungen und Punktschriftseiten diesen Entwurfs.",
+    "braille-system-select-link": "Erfahren Sie mehr im Handbuch"
+  },
   "not_available-screen": "Der Editor steht zur Zeit leider nicht auf mobilen Geräten bzw. kleinen Bildschirmen zur Verfügung.",
   "sr_not_available-screen": "Der visuelle Editor bietet leider kein Bedienkonzept für Screenreader.",
   "Context": "Eigenschaften",

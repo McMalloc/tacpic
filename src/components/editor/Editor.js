@@ -40,6 +40,7 @@ import { Alert } from "../gui/Alert";
 import { useBreakpoint } from "../../contexts/breakpoints";
 import { Icon } from "../gui/_Icon";
 import uuidv4 from '../../utility/uuid';
+import Tooltip from "../gui/Tooltip";
 
 const Wrapper = styled.div`
   display: grid;
@@ -198,7 +199,7 @@ const Editor = () => {
 
   switch (uiSettings.fileOpen) {
     case 0:
-      setTimeout(() => navigate('/editor/splash'));
+      // setTimeout(() => navigate('/editor/splash'));
       break;
     case 1:
       return <Wrapper>
@@ -219,28 +220,35 @@ const Editor = () => {
             {Object.keys(TOOLS).map(
               (tool, index) => {
                 return (
-                  <Toggle
-                    label={"editor:toggle_tools-" + tool}
-                    primary
-                    key={index}
-                    icon={TOOLS[tool].cssClass}
-                    toggled={uiSettings.tool === tool}
-                    onClick={() => {
-                      if (
-                        uiSettings.tool === "SELECT" &&
-                        tool !== "SELECT"
-                      ) {
-                        dispatch({
-                          type: "OBJECT_SELECTED",
-                          uuids: [null],
-                        });
-                      }
-                      switchCursorMode(
-                        dispatch,
-                        uiSettings.tool === tool ? "SELECT" : tool
-                      );
-                    }}
-                  />
+                  <React.Fragment key={index}>
+                    <Tooltip anchor={"tool-toggle-" + tool}>
+                      <p>{t('editor:tooltip:' + tool)}</p>
+                      <video src={`/images/help/tooltip__tool_${tool}.webm`} autoPlay muted loop/>
+                    </Tooltip>
+                    <Toggle
+                      label={"editor:toggle_tools-" + tool}
+                      id={"tool-toggle-" + tool}
+                      primary
+                      icon={TOOLS[tool].cssClass}
+                      toggled={uiSettings.tool === tool}
+                      onClick={() => {
+                        if (
+                          uiSettings.tool === "SELECT" &&
+                          tool !== "SELECT"
+                        ) {
+                          dispatch({
+                            type: "OBJECT_SELECTED",
+                            uuids: [null],
+                          });
+                        }
+                        switchCursorMode(
+                          dispatch,
+                          uiSettings.tool === tool ? "SELECT" : tool
+                        );
+                      }}
+                    />
+
+                  </React.Fragment>
                 );
               }
             )}
@@ -293,15 +301,15 @@ const Editor = () => {
               {file.graphicTitle.length === 0 ? (
                 <span className={"disabled"}>{t('editor:noTitle')}</span>
               ) : (
-                  file.graphicTitle
-                )}
+                file.graphicTitle
+              )}
             </strong>
             <br />
             {file.graphicTitle.length !== 0 ? (
               <span>Variante: {file.variantTitle}</span>
             ) : (
-                <Button fullWidth primary label={'editor:editTitle'} />
-              )}
+              <Button fullWidth primary label={'editor:editTitle'} />
+            )}
             <br />
             <SaveIndicator id={"save-indicator"}>
               <Icon icon={"save"} /> {t('editor:saveInProgress')}
@@ -314,6 +322,7 @@ const Editor = () => {
           >
             <Document className={"padded"} />
             {/* </AccordeonPanelFlyoutButton> */}
+
             <AccordeonPanelFlyoutButton
               flownOut={openedPanel === "publish"}
               className={"padded"}
@@ -327,6 +336,7 @@ const Editor = () => {
             >
               <Metadata />
             </AccordeonPanelFlyoutButton>
+
           </AccordeonPanel>
           <AccordeonPanel
             collapsed={!accordeonStates.graphicPages}

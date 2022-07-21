@@ -72,7 +72,7 @@ const GraphicPageSettings = () => {
                         }}
                         label={'editor:graphicPanel.showVertical'}/>
 
-                    <img style={{width: 80, height: "auto"}} src={"/images/vertical_grid.svg"}/>
+                    {/* <img style={{width: 80, height: "auto"}} src={"/images/vertical_grid.svg"}/> */}
 
                     <Numberinput
                         disabled={!showVerticalGrid}
@@ -92,7 +92,7 @@ const GraphicPageSettings = () => {
                         }}
                         label={'editor:graphicPanel.showHorizontal'}/>
 
-                    <img style={{width: 80, height: "auto"}} src={"/images/horizontal_grid.svg"}/>
+                    {/* <img style={{width: 80, height: "auto"}} src={"/images/horizontal_grid.svg"}/> */}
 
                     <Numberinput
                         disabled={!showHorizontalGrid}

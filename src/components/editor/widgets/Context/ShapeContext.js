@@ -8,6 +8,7 @@ import TexturePalette from "../../../gui/TexturePalette";
 import { findObject } from "../../../../utility/findObject";
 import { useTranslation } from "react-i18next";
 import { Alert } from "../../../gui/Alert";
+import Tooltip from "../../../gui/Tooltip";
 import { borderStyles } from "../../ReactSVG/constants";
 import { COLOURS } from "../../../../config/constants";
 import { TEXTURES } from "../../../../config/constants";
@@ -56,11 +57,13 @@ const ShapeContext = props => {
                 <fieldset>
                     <legend>{t('editor:objectPanel.texture')}</legend>
 
+                    <Tooltip content={'hii'}>
                     <TexturePalette
                         disabled={nothingSelected}
                         textures={TEXTURES}
                         selected={selectedObject.pattern.template}
                         onChange={pattern => changePattern(dispatch, selectedObject.uuid, pattern, selectedObject.pattern.offset)} />
+                        </Tooltip>
 
                     <Checkbox name={"padding"}
                         value={selectedObject.pattern.offset}

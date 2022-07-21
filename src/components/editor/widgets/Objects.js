@@ -167,7 +167,7 @@ const Objects = props => {
 
     return (
         <>
-            <Wrapper onKeyDown={event => keyDownHandler(event, selectedUUIDs, dispatch)}>
+            <Wrapper id={'objects-accordeon-panel'} onKeyDown={event => keyDownHandler(event, selectedUUIDs, dispatch)}>
                 {objects.map((object, index) => {
                     const selected = selectedUUIDs.includes(object.uuid);
                     return <AccordeonPanelFlyoutButton

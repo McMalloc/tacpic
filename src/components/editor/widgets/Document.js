@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "../../gui/Select";
+import Tooltip from "../../gui/Tooltip";
 import { useTranslation } from "react-i18next";
-import { BRAILLE_SYSTEMS } from "../../../config/constants";
 
 const Document = (props) => {
   const dispatch = useDispatch();
@@ -11,8 +11,14 @@ const Document = (props) => {
 
     return (
       <div className={props.className}>
+        <Tooltip anchor={"braille-system-select"}>
+                      <p>{t('editor:tooltip:braille-system-select')}</p>
+                      <p><a target="_blank" href="/support/editor/punktschriftsystem-aendern">
+                        {t('editor:tooltip:braille-system-select-link')}</a>
+                        </p>
+                    </Tooltip>
           <Select
-      title={"help:select_braille-system"}
+      id={"braille-system-select"}
       value={system || 'DE:VOLL'}
           onChange={(selection) =>
             dispatch({

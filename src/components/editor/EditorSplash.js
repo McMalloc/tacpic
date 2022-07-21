@@ -34,6 +34,8 @@ const EditorSplash = () => {
     const localIndex = useSelector(state => state.editor.localfiles.index);
     const user = useSelector(state => state.user);
 
+
+
     useEffect(() => {
         dispatch({ type: LOCALFILES.INDEX.REQUEST });
     }, [])
@@ -60,12 +62,13 @@ const EditorSplash = () => {
             <Row>
                 <div className={"col-xs-12 col-md-12"}>
                     <h1>Editor</h1>
+
                     <Alert className={'sr-only'} info>{t("editor:sr_not_available-screen")}</Alert>
                     {!user.logged_in &&
                         <Alert info>
                             <Trans i18nKey={'editor:pleaseLogin'}>
                                 0<NavLink to={"/login"}>1</NavLink>2<NavLink to={"/signup"}>3</NavLink>4
-                        </Trans>
+                            </Trans>
                             <br />{t('editor:pleaseLoginHint')}
                         </Alert>
                     }
