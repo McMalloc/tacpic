@@ -87,7 +87,7 @@ export const FlyoutEntry = (props) => {
       onClick={props.onClick}
     >
       {!!props.link ?
-        <a data-pom={props.pom} download={props.isDownload} className={'no-styled-link'} target={'_blank'} href={props.link}><Icon icon={props.icon} />
+        <a data-pom={props.pom} download={props.isDownload ? 'file.txt' : false} className={'no-styled-link'} target={'_blank'} href={props.link}><Icon icon={props.icon} />
           <label>{t(props.label)}</label>
           {props.sublabel && (
             <>

@@ -1,8 +1,10 @@
 import styled from 'styled-components/macro';
-import React, { useState, useRef, createRef } from "react";
+import React, { useState, useRef, createRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useFloating, offset, flip, autoPlacement, shift } from '@floating-ui/react-dom';
 import { useLayoutEffect } from 'react';
+import { Icon } from './_Icon';
+import { Button } from './Button';
 
 const TooltipElement = styled.div`
   /* display: none; */
@@ -18,6 +20,14 @@ const TooltipElement = styled.div`
   padding: ${(props) => props.theme.base_padding};
   font-size: ${(props) => props.theme.font_size_ui};
   box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+
+  button {
+    position: absolute;
+    top: ${(props) => props.theme.base_padding};
+    right: ${(props) => props.theme.base_padding};
+    cursor: pointer;
+    padding: ${(props) => props.theme.base_padding}
+  }
 
   a {
     color: ${(props) => props.theme.brand_secondary_verylight};
@@ -103,50 +113,58 @@ const Tooltip = props => {
   const [hovered, setHovered] = useState(false);
   const { t } = useTranslation();
 
+  const closeBtn = useRef(null);
+
   useLayoutEffect(() => {
     const elem = document.getElementById(props.anchor);
     reference(elem);
     if (elem) {
-          let enterTimeout;
-    const originalMeCallback = elem.onmouseenter;
-    elem.onmouseenter = event => {
-
-      originalMeCallback && originalMeCallback(event);
-      enterTimeout = setTimeout(() => {
-        setVisible(true);
-        setHovered(true);
-        if (refs.floating.current) {
-          refs.floating.current.onmouseenter = () => {
-            clearTimeout(leaveTimeout);
-            setHovered(true);
-            setVisible(true);
+      let enterTimeout;
+      const originalMeCallback = elem.onmouseenter;
+      elem.onmouseenter = event => {
+        originalMeCallback && originalMeCallback(event);
+        enterTimeout = setTimeout(() => {
+          setVisible(true);
+          setHovered(true);
+            if (closeBtn.current) closeBtn.current.focus();
+          if (refs.floating.current) {
+            refs.floating.current.onmouseenter = () => {
+              clearTimeout(leaveTimeout);
+              setHovered(true);
+              setVisible(true);
+            }
+            refs.floating.current.onmouseleave = () => {
+              setHovered(false);
+              setVisible(false);
+            }
           }
-          refs.floating.current.onmouseleave = () => {
-            setHovered(false);
-            setVisible(false);
-          }
-        }
-      }, 1000);
-    }
-    let leaveTimeout;
-    const originalMlCallback = elem.onmouseleave;
+        }, 1000);
+      }
+      let leaveTimeout;
+      const originalMlCallback = elem.onmouseleave;
 
-    elem.onmouseleave = event => {
-      clearTimeout(enterTimeout);
-      originalMlCallback && originalMlCallback(event);
-      if (!hovered) leaveTimeout = setTimeout(() => setVisible(false), 1000);
-    }
+      elem.onmouseleave = event => {
+        clearTimeout(enterTimeout);
+        originalMlCallback && originalMlCallback(event);
+        if (!hovered) leaveTimeout = setTimeout(() => setVisible(false), 1000);
+      }
 
-    return () => {
-      elem.onmouseenter = originalMeCallback;
-      elem.onmouseleave = originalMlCallback;
-    }
+      return () => {
+        elem.onmouseenter = originalMeCallback;
+        elem.onmouseleave = originalMlCallback;
+      }
     }
 
   }, [])
 
   return (
-    <TooltipElement ref={floating} style={{ top: y, left: x, position: strategy, display: visible ? 'block' : 'none', opacity: visible ? '1' : '0' }}>
+    <TooltipElement 
+      aria-live={"polite"} 
+      ref={floating} 
+      style={{ top: y, left: x, position: strategy, display: visible ? 'block' : 'none', opacity: visible ? '1' : '0' }}
+    >
+      <Button aria-label={'close'} tabindex={-1} ref={closeBtn} onClick={() => {setHovered(false);setVisible(false)}} icon={'times'} primary></Button>
+      
       {props.content && typeof props.content === 'string' ? t(props.content) : props.content}
       {props.children && props.children}
     </TooltipElement>

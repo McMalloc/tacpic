@@ -199,7 +199,7 @@ const Editor = () => {
 
   switch (uiSettings.fileOpen) {
     case 0:
-      // setTimeout(() => navigate('/editor/splash'));
+      setTimeout(() => navigate('/editor/splash'));
       break;
     case 1:
       return <Wrapper>
@@ -222,12 +222,13 @@ const Editor = () => {
                 return (
                   <React.Fragment key={index}>
                     <Tooltip anchor={"tool-toggle-" + tool}>
-                      <p>{t('editor:tooltip:' + tool)}</p>
+                      <p id={'tool-desc-' + tool}>{t('editor:tooltip:' + tool)}</p>
                       <video src={`/images/help/tooltip__tool_${tool}.webm`} autoPlay muted loop/>
                     </Tooltip>
                     <Toggle
                       label={"editor:toggle_tools-" + tool}
                       id={"tool-toggle-" + tool}
+                      aria-describedby={'tool-desc-' + tool}
                       primary
                       icon={TOOLS[tool].cssClass}
                       toggled={uiSettings.tool === tool}
