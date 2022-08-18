@@ -57,13 +57,13 @@ const ShapeContext = props => {
                 <fieldset>
                     <legend>{t('editor:objectPanel.texture')}</legend>
 
-                    <Tooltip content={'hii'}>
+                    {/* <Tooltip content={'hii'}> */}
                     <TexturePalette
                         disabled={nothingSelected}
                         textures={TEXTURES}
                         selected={selectedObject.pattern.template}
                         onChange={pattern => changePattern(dispatch, selectedObject.uuid, pattern, selectedObject.pattern.offset)} />
-                        </Tooltip>
+                        {/* </Tooltip> */}
 
                     <Checkbox name={"padding"}
                         value={selectedObject.pattern.offset}
