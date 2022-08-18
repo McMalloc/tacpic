@@ -264,6 +264,9 @@ const AdminOrders = props => {
                                                         label={'Die Rechnung muss korrigiert werden'} />
                                                     {invoiceCorrect === invoice.id &&
                                                         <>
+                                                            <p>
+                                                                Die Rechnung wurde nur im System angelegt und ging noch nicht an den Kunden raus: 
+                                                            </p>
                                                             <Button disabled={!invoice.address_id} onClick={() => {
                                                                 fetch(`/api/internal/orders/${currentOrder.order.id}/rpc`, {
                                                                     method: 'POST',
@@ -284,8 +287,13 @@ const AdminOrders = props => {
                                                                     setInvoiceCorrect(null)
                                                                 });
                                                             }
-                                                            }>Stornieren</Button>&emsp;
+                                                            }>Stornieren</Button>
 
+                                                            <hr/>
+
+                                                            <p>
+                                                                Die Rechnung ging bereits an den Kunden raus und die Stornorechnung muss auch abgeschickt werden:
+                                                            </p>
                                                             <Button dangerous onClick={() => {
                                                                 fetch(`/api/internal/orders/${currentOrder.order.id}/rpc`, {
                                                                     method: 'POST',

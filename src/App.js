@@ -98,7 +98,7 @@ const App = () => {
     { label: t("navigation.editor"), to: "/editor/splash" },
     { label: t("navigation.pricing"), to: "/pricing" },
     { label: t("navigation.support"), to: '/support' },
-    { label: t("navigation.knowledge"), to: '/knowledge' },
+    { label: t("navigation.knowledge"), to: '/wissen' },
   ];
 
   return (
@@ -153,9 +153,9 @@ const App = () => {
 
             <Route path="/stats" element={<Stats />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/knowledge" element={<Knowledge category={'wissen'} />} />
-            <Route path="/knowledge/:catSlug" element={<Knowledge category={'wissen'} />} />
-            <Route path="/knowledge/:catSlug/:postSlug" element={<Knowledge category={'wissen'} />} />
+            <Route path="/wissen" element={<Knowledge category={'wissen'} />} />
+            <Route path="/wissen/:catSlug" element={<Knowledge category={'wissen'} />} />
+            <Route path="/wissen/:catSlug/:postSlug" element={<Knowledge category={'wissen'} />} />
             <Route path="/support" element={<Knowledge category={'support'} />} />
             <Route path="/support/:catSlug" element={<Knowledge category={'support'} />} />
             <Route path="/support/:catSlug/:postSlug" element={<Knowledge category={'support'} />} />
