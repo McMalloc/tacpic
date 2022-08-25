@@ -5,6 +5,18 @@ import moment from 'moment';
 import Loader from './Loader';
 
 const Wrapper = styled.div`
+    div[class^="wp-container-"] {
+        padding: 0;
+    }
+
+    figure>img {
+        box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+    }
+
+    figcaption {
+        font-size: 0.9rem;
+    }
+
     article {
         padding: 3rem 0;
         p, ul, ol {
