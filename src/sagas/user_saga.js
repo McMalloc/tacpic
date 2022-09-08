@@ -45,6 +45,12 @@ export const userUpdateSaga = createSaga(USER.UPDATE, 'post', 'users', takeLates
 //     return call([localStorage, localStorage.removeItem], 'jwt');
 // });
 
+export function* verifySuccessWatcher() {
+    yield takeLatest(USER.VERIFY.SUCCESS, function* (action) {
+        window.location.href = '/login?after_verify'
+    });
+}
+
 export function* logoutWatcher() {
     yield takeLatest(USER.LOGOUT.REQUEST, function* (action) {
         try {
@@ -53,5 +59,11 @@ export function* logoutWatcher() {
         } catch (error) {
             yield put({type: USER.LOGOUT.FAILURE, error});
         }
+    });
+}
+
+export function* logoutSuccessWatcher() {
+    yield takeLatest(USER.LOGOUT.SUCCESS, function* () {
+        window.location.href = '/login'
     });
 }

@@ -104,5 +104,8 @@
   "newPassword": "New password",
   "newPasswordRepeated": "Confirm new password",
   "order-status-5": "Canceled",
-  "accountPrivacyInfo": "If you want to know which data we have stored regarding your user profile, or if you want to delete your profile, please contact Kontoverwaltung@tacpic.de"
+  "accountPrivacyInfo": "If you want to know which data we have stored regarding your user profile, or if you want to delete your profile, please contact Kontoverwaltung@tacpic.de",
+  "AccountError": "Error while creating account",
+  "afterVerify": "Thanks! You can now login.",
+  "display name already in use": "There already exists an account for this email address."
 }

@@ -13,7 +13,7 @@ const userApi = (state = {}, action) => {
                 verification_state: 3,
                 email: action.data.email,
                 id: action.data.id,
-                logged_in: true
+                logged_in: false
             };
         case USER.VERIFY.FAILURE:
             return {
@@ -66,6 +66,7 @@ const userApi = (state = {}, action) => {
             return {
                 ...state,
                 email: action.payload.login,
+                error: null,
                 login_pending: true
             };
         case USER.VALIDATE.SUCCESS:
@@ -100,11 +101,13 @@ const userApi = (state = {}, action) => {
             return {
                 ...state,
                 verification_state: 0,
+                error: null,
                 email: action.payload.uname
             };
         case USER.CREATE.SUCCESS:
             return {
                 ...state,
+                error: null,
                 verification_state: 1
             };
         case USER.CREATE.FAILURE:

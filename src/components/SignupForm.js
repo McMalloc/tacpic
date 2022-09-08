@@ -6,7 +6,6 @@ import { useTranslation, Trans } from "react-i18next";
 import { Icon } from "./gui/_Icon";
 import { Textinput } from "./gui/Input";
 import { NavLink } from "react-router-dom";
-import { Alert } from "./gui/Alert";
 import ServerError from "./platform/ServerError";
 import { Checkbox } from "./gui/Checkbox";
 
@@ -28,6 +27,8 @@ const SignupForm = props => {
     const [privacyAccepted, setPrivacyAccepted] = useState(false);
     const [newsletterActive, setNewsletterActive] = useState(false);
     const [tryAgain, setTryAgain] = useState('');
+
+    console.log(user.error);
 
     useEffect(() => {
         return () => dispatch({ type: RESET_USER_ERRORS })
@@ -51,11 +52,6 @@ const SignupForm = props => {
                         <h1>{t("account:signup")}</h1>
                         <p>{t("claimUSP")}</p>
                         {/*<hr/>*/}
-                        <Alert info>
-                            <Trans i18nKey={'account:signupRestrictedInfo'}>
-                                0<strong>1</strong>2
-                            </Trans>
-                        </Alert>
                         <br />
                         <form onSubmit={(event) => {
                             event.preventDefault();

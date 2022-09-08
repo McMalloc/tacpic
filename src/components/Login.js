@@ -1,5 +1,5 @@
 import React from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {NavLink} from "react-router-dom";
@@ -11,6 +11,7 @@ const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-
 const Login = props => {
     const {t} = useTranslation();
     const navigate = useNavigate();
+    const {search} = useLocation();
     const user = useSelector(state => state.user);
 
     if (user.logged_in) {
@@ -27,9 +28,11 @@ const Login = props => {
                     }
                 </div>
             </div>
-
             <div className={"row"}>
                 <div className={layout}>
+                    {search === '?after_verify' && 
+                        <p>{t("account:afterVerify")}</p>
+                    }
                     <LoginForm />
                 </div>
                 <>

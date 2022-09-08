@@ -141,7 +141,7 @@ export default function createSaga(
                     yield put({ type: event.SUCCESS, data, originalPayload: action.payload, statusCode });
                 }
             } catch (error) {
-                console.error(error);
+                console.error(event.toString(), error);
                 yield put({ type: event.FAILURE, error });
             }
         });

@@ -1,5 +1,6 @@
 import {
     logoutWatcher,
+    logoutSuccessWatcher,
     validateWatcher,
     userCreateSaga,
     userLoginSaga, userResetRequestSaga, userResetSaga, userUpdateSaga,
@@ -7,6 +8,7 @@ import {
     userLoginChangeSaga,
     userVerifyLoginChangeSaga,
     userVerifySaga,
+    verifySuccessWatcher,
     userChangePasswordSaga
 } from "./user_saga";
 import {call, all, takeLatest} from "redux-saga/effects";
@@ -128,12 +130,14 @@ export default function* root() {
         
 
         call(logoutWatcher),
+        call(logoutSuccessWatcher),
         call(validateWatcher),
         call(userLoginSaga),
         call(userValidateSaga),
         call(userCreateSaga),
         call(userUpdateSaga),
         call(userVerifySaga),
+        call(verifySuccessWatcher),
         call(userChangePasswordSaga),
         call(userLoginChangeSaga),
         call(userVerifyLoginChangeSaga),

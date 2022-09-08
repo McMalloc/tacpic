@@ -32,10 +32,6 @@ const AccountVerification = props => {
 
     useEffect(() => () => dispatch({type: RESET_USER_ERRORS}), []);
 
-    if (user.verification_state === 3) {
-        return <Navigate push to="/catalogue"/>;
-    }
-
     return (
         <Row>
             <form className={layout} onSubmit={event => {
