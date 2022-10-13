@@ -276,7 +276,7 @@ const VariantView = (props) => {
           return <FlyoutEntry
             icon={format === 'pdf' ? 'file-pdf' : format === 'zip' ? 'file-archive' : format === 'rtf' ? 'file-word' : 'braille'}
             key={format}
-            isDownload={true}
+            download={`${props.current_file_name}.${format}`}
             link={`${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`}
             label={"catalogue:" + format}
             // onClick={() =>
