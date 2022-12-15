@@ -51,6 +51,12 @@ const Title = styled.h2`
   align-items: center;
 `;
 
+const Actions = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+`;
+
 const Wrapper = styled.div`
   box-sizing: border-box;
   display: grid;
@@ -404,7 +410,7 @@ const VariantView = (props) => {
 
         {!lg && <Alert info>{t("editor:not_available-screen")}</Alert>}
       </div>
-      <div className={'order'}>
+      <Actions>
 
         {buttonBar}
 
@@ -423,7 +429,8 @@ const VariantView = (props) => {
           </span>
         </p>
 
-        <Well>
+
+        {false && <Well>
 
           <InfoLabel
             label={t('catalogue:graphic')}
@@ -518,8 +525,8 @@ const VariantView = (props) => {
             </>
           }
 
-        </Well>
-      </div>
+        </Well>}
+      </Actions>
 
     </Wrapper>
   );

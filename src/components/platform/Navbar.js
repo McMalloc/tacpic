@@ -180,15 +180,15 @@ const Navbar = props => {
         <Button data-pom={'loginButton'} style={{ alignSelf: 'center', marginRight: '8px' }} onClick={() => navigate('/login?redirect=' + location.pathname)} small={lg} label={t("account:login")} icon={"sign-in-alt"} />
     </>
 
-    const basketButton = <NavbarItem aria-label={t("commerce:basket", { quantity: basket.length })} className={`single ${basket.length === 0 && 'disabled'}`} id={"basket-nav-link"} to={'/basket'}>
-        <Icon icon={"shopping-cart"} />&nbsp;
-        {basket.length > 0 ?
-            <>{t(lg ? "commerce:basket" : "commerce:basketShort", { quantity: basket.length })}</>
-            :
-            <></>
-            // <>{t("commerce:emptyBasket")}</>
-        }
-    </NavbarItem>
+    // const basketButton = <NavbarItem aria-label={t("commerce:basket", { quantity: basket.length })} className={`single ${basket.length === 0 && 'disabled'}`} id={"basket-nav-link"} to={'/basket'}>
+    //     <Icon icon={"shopping-cart"} />&nbsp;
+    //     {basket.length > 0 ?
+    //         <>{t(lg ? "commerce:basket" : "commerce:basketShort", { quantity: basket.length })}</>
+    //         :
+    //         <></>
+    //         // <>{t("commerce:emptyBasket")}</>
+    //     }
+    const basketButton = null
 
     return (
         <Wrapper tinyMenu={!lg}>
