@@ -4,7 +4,7 @@ import { GRAPHIC, VARIANT } from "../../actions/action_constants";
 import VariantView from "./VariantView";
 import styled from "styled-components/macro";
 import { useDispatch, useSelector } from "react-redux";
-import { API_URL } from "../../env.json";
+import env from "../../env.json";
 import Loader from "../gui/Loader";
 import { useBreakpoint } from "../../contexts/breakpoints";
 import { DB_DATE_FORMAT } from "../../config/constants";
@@ -114,7 +114,7 @@ const VariantPreview = props => {
       <img
         alt={t('catalogue:variantPreviewAlt') + ' ' + props.title}
         aria-hidden={true}
-        src={`${API_URL}/thumbnails/${props.current_file_name}-THUMBNAIL-xl-p0.png`}
+        src={`${env.API_URL}/thumbnails/${props.current_file_name}-THUMBNAIL-xl-p0.png`}
       />
       <div aria-hidden={true} className={"variant-info breakable-long-lines"}>
         <strong>{props.title}</strong>

@@ -169,6 +169,7 @@ export default function* root() {
         call(function* () {
             yield takeLatest('GDPR_OKAY', function* () {
                 localStorage.setItem('gdpr', true);
+                yield true;
             })
         }),
     ])

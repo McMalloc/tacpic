@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components/macro";
 import {Link} from "react-router-dom";
 import Tile from "../gui/_Tile";
-import { API_URL } from "../../env.json"
+import env from "../../env.json"
 import {LG_SCREEN, MD_SCREEN, SM_SCREEN} from "../../config/constants";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -54,7 +54,7 @@ const Info = styled.div`
 export default props => {
     const {t} = useTranslation();
     const thumbnailURL =
-        `${API_URL}/thumbnails/${props.variants[0].current_file_name}-THUMBNAIL-sm-p0.png`
+        `${env.API_URL}/thumbnails/${props.variants[0].current_file_name}-THUMBNAIL-sm-p0.png`
     
     const hiddenVariants = props.variants.filter(variant => !variant.public);
     return (

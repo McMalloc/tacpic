@@ -1,5 +1,5 @@
 import { takeLatest, select } from "redux-saga/effects";
-import {API_URL} from '../env';
+import env from '../env';
 import {ERROR_THROWN} from "../actions/action_constants";
 
 export function* errorWatcher() {
@@ -15,7 +15,7 @@ export function* errorWatcher() {
             backend_version,
             frontend_version
         }
-        yield fetch(API_URL + '/logging', {
+        yield fetch(env.API_URL + '/logging', {
             method: 'POST', body: JSON.stringify(report), headers: {'Content-Type': 'application/json'}
         });
     })

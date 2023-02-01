@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../gui/Button";
 import { Trans, useTranslation } from "react-i18next";
-import {ADDRESS, ORDER, ORDER_RESET, USER, VARIANTS} from "../../actions/action_constants";
+import {ADDRESS, ORDER, ORDER_RESET, USER} from "../../actions/action_constants";
 import { Row } from "../gui/Grid";
 import { Alert } from "../gui/Alert";
 import AddressView from "./AddressView";
@@ -194,7 +194,7 @@ const Checkout = props => {
         <p><small>{t('hint')}</small><br />
 
             <Trans i18nKey={'commerce:eulaHint'}>
-                0<a target={'_blank'} href={"/info/de/63?Allgemeine%20Gesch%C3%A4ftsbedingungen"}>
+                0<a target={'_blank'} href={"/info/de/63?Allgemeine%20Gesch%C3%A4ftsbedingungen"} rel="noreferrer">
                     1
             </a>2
             </Trans>

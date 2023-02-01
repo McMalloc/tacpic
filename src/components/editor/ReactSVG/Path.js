@@ -45,7 +45,7 @@ export default function SVGPath(props) {
             {props.startArrow &&
                 <polygon
                     stroke={'white'}
-                    stroke-width={'2mm'}
+                    strokeWidth={'2mm'}
                     transform={
                         `translate(${startPoint.join(',')}) 
                         rotate(-${getRotation(startPoint, secondPoint) + 45})`}
@@ -56,7 +56,7 @@ export default function SVGPath(props) {
             {props.endArrow &&
                 <polygon
                     stroke={'white'}
-                    stroke-width={'2mm'}
+                    strokeWidth={'2mm'}
                     transform={
                         `translate(${lastPointCoords.join(',')}) 
                         rotate(-${getRotation(lastPointCoords, secondLastPointCoords) + 45})`}

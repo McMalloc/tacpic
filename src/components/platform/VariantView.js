@@ -14,7 +14,7 @@ import { NavLink } from "react-router-dom";
 import Carousel from "../gui/Carousel";
 import { Numberinput } from "../gui/Input";
 import * as moment from "moment";
-import { APP_URL, API_URL } from "../../env.json";
+import env from "../../env.json";
 import Well from "../gui/Well";
 import { MD_SCREEN, SM_SCREEN, DB_DATE_FORMAT, ROLE } from "../../config/constants";
 import { FILE } from "../../actions/action_constants";
@@ -196,7 +196,7 @@ const VariantView = (props) => {
             <img
               key={index}
               alt={t('catalogue:pagePreview', { file: props.graphicTitle, number: index + 1 })}
-              src={`${API_URL}/thumbnails/${props.current_file_name}-THUMBNAIL-xl-p${index}.png`}
+              src={`${env.API_URL}/thumbnails/${props.current_file_name}-THUMBNAIL-xl-p${index}.png`}
             />
           );
         })
@@ -283,7 +283,7 @@ const VariantView = (props) => {
             icon={format === 'pdf' ? 'file-pdf' : format === 'zip' ? 'file-archive' : format === 'rtf' ? 'file-word' : 'braille'}
             key={format}
             download={`${props.current_file_name}.${format}`}
-            link={`${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`}
+            link={`${env.APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`}
             label={"catalogue:" + format}
             // onClick={() =>
             //   (window.location = `${APP_URL}/variants/${variantId}/${format}_${props.current_file_name}.${format}`)
@@ -422,7 +422,6 @@ const VariantView = (props) => {
           </span>
           <span>
             {t('catalogue:licenseInfo')} <a rel={"license"}
-              target={'_blank'}
               href={`https://creativecommons.org/licenses/by-sa/4.0/deed${i18n.language === 'de' ? '.de' : ''}`}>
               {t('catalogue:licenseName')}
             </a>.

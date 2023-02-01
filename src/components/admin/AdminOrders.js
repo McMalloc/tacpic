@@ -15,7 +15,7 @@ import AddressView from "../platform/AddressView";
 import Tile from "../gui/_Tile";
 import Well from "../gui/Well";
 import ElementGrid from "../gui/ElementGrid";
-import { API_URL } from "../../env.json";
+import env from "../../env.json";
 import Badge from "../gui/Badge";
 import { Checkbox } from "../gui/Checkbox";
 import { Button } from "../gui/Button";
@@ -335,7 +335,7 @@ const AdminOrders = props => {
 
                                                         </div>
                                                         <img style={{ width: 200 }}
-                                                            src={`${API_URL}/thumbnails/${item.current_file_name}-THUMBNAIL-sm-p0.png`} />
+                                                            src={`${env.API_URL}/thumbnails/${item.current_file_name}-THUMBNAIL-sm-p0.png`} />
 
                                                     </ElementGrid>
                                                 </Well>

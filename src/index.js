@@ -10,7 +10,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 
 import "./index.scss";
 import App from "./App";
-import { MATOMO_SITE_ID } from "./env.json";
+import env from "./env.json";
 import { unregister } from "./registerServiceWorker";
 import store, { history } from "./store/configureStore";
 import { standard } from "./styles/themes";
@@ -22,7 +22,7 @@ const instance = createInstance({
   urlBase: `${window.location.protocol}//${window.location.host}`,
   trackerUrl: 'https://analytics.tacpic.de/matomo.php', // optional, default value: `${urlBase}matomo.php`
   srcUrl: 'https://analytics.tacpic.de/matomo.js', // optional, default value: `${urlBase}matomo.js`
-  siteId: MATOMO_SITE_ID || 1,
+  siteId: env.MATOMO_SITE_ID || 1,
 })
 
 window.matomoTracker = instance;

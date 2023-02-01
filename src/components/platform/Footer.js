@@ -94,7 +94,7 @@ const Footer = props => {
                             <address className={"col-md-4 col-xs-12"}>
                                 <p>
                                     <span className={"heading"}>{t('footer:contactHeading')}</span>
-                                tacpic UG (haftungsbeschränkt) <br />
+                                tacpic UG (haftungsbeschränkt) i. L. <br />
                                 Breitscheidstraße 51 <br />
                                 39114 Magdeburg
                             </p>

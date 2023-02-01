@@ -1,5 +1,5 @@
 import methods from "../components/editor/ReactSVG/methods/methods";
-import { FILE_VERSION } from "../env.json";
+import env from "../env.json";
 
 // states
 // 0 - false
@@ -52,7 +52,7 @@ export const editor = {
             version_id: null,
             lastVersionHash: null,
             derivedFrom: null,
-            formatVersion: FILE_VERSION,
+            formatVersion: env.FILE_VERSION,
 
             keyedStrokes: [],
             keyedTextures: [],

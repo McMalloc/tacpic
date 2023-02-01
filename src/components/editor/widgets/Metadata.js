@@ -176,9 +176,9 @@ const Metadata = () => {
                           checked={licenseAgreed}
                           label={t("editor:license_agreed")}/>
                           
-                <a className={"checkbox-additional sub-label"} target={"_blank"}
+                <a className={"checkbox-additional sub-label"} target={"_blank"} rel="noreferrer"
                    href={`https://creativecommons.org/licenses/by-sa/4.0/deed${i18n.language === 'de' ? '.de' : ''}`}>{t('editor:draftPanel.viewLicense')}</a>
-                <a className={"checkbox-additional sub-label"} target={"_blank"}
+                <a className={"checkbox-additional sub-label"} target={"_blank"} rel="noreferrer"
                    href={`/support/katalog/lizenz-der-inhalte`}>{t('editor:draftPanel.whyLicense')}</a>
             </div>
             <br/>

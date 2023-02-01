@@ -13,7 +13,7 @@ import { Numberinput } from "../gui/Input";
 import { Button } from "../gui/Button";
 import { Link } from "react-router-dom";
 import styled from 'styled-components/macro';
-import { API_URL } from "../../env.json";
+import env from "../../env.json";
 import Well from "../gui/Well";
 import Loader, { LoaderOverlay } from "../gui/Loader";
 import Select from "../gui/Select";
@@ -139,7 +139,7 @@ const BasketListing = () => {
                             </div>
                             <div className={'middle'}>
                                 <img aria-hidden={true} alt={t('catalogue:variantPreviewAlt')} style={{ height: 'auto', maxHeight: '100%', width: 'auto' }}
-                                    src={`${API_URL}/thumbnails/${correspondingVariant.current_file_name}-THUMBNAIL-sm-p0.png`} />
+                                    src={`${env.API_URL}/thumbnails/${correspondingVariant.current_file_name}-THUMBNAIL-sm-p0.png`} />
                             </div>
                             <InfoLabel
                                 title={'catalogue:brailleSystem'}

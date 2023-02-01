@@ -1,5 +1,5 @@
 import { call, put, select } from "redux-saga/effects";
-import { API_URL } from '../env';
+import env from '../env';
 import { CONTENT_TYPE } from "../config/constants";
 import { getCache, setCache } from "./cache";
 import i18n from "i18next";
@@ -105,7 +105,7 @@ export default function createSaga(
                             const jwt = localStorage.getItem('jwt');
                             if (jwt !== null) headers.Authorization = 'Bearer ' + jwt;
                         }
-                        return fetch(API_URL + '/' + endpointWithParams, {
+                        return fetch(env.API_URL + '/' + endpointWithParams, {
                             method,
                             headers,
                             body: method === 'post' ?

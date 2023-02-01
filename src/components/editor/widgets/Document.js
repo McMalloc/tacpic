@@ -13,7 +13,7 @@ const Document = (props) => {
       <div className={props.className}>
         <Tooltip anchor={"braille-system-select"}>
                       <p>{t('editor:tooltip:braille-system-select')}</p>
-                      <p><a target="_blank" href="/support/editor/punktschriftsystem-aendern">
+                      <p><a target="_blank" href="/support/editor/punktschriftsystem-aendern" rel="noreferrer">
                         {t('editor:tooltip:braille-system-select-link')}</a>
                         </p>
                     </Tooltip>

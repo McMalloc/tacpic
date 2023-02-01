@@ -46,8 +46,9 @@ export const userUpdateSaga = createSaga(USER.UPDATE, 'post', 'users', takeLates
 // });
 
 export function* verifySuccessWatcher() {
-    yield takeLatest(USER.VERIFY.SUCCESS, function* (action) {
-        window.location.href = '/login?after_verify'
+    yield takeLatest(USER.VERIFY.SUCCESS, function* () {
+        window.location.href = '/login?after_verify';
+        yield true;
     });
 }
 
@@ -64,6 +65,7 @@ export function* logoutWatcher() {
 
 export function* logoutSuccessWatcher() {
     yield takeLatest(USER.LOGOUT.SUCCESS, function* () {
-        window.location.href = '/login'
+        window.location.href = '/login';
+        yield true;
     });
 }

@@ -1,9 +1,7 @@
 import createSaga from "./saga_utilities";
 import {GRAPHIC, VARIANT} from "../actions/action_constants";
 import {takeLatest} from "redux-saga/effects";
-import {extractSVG} from "../components/editor/ReactSVG";
 import { determineDimensions } from "../utility/determineFormat";
-import pako from "pako";
 
 
 export const variantGetSaga = createSaga(

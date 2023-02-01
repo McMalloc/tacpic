@@ -15,7 +15,6 @@ import {
   OBJECT_PROP_CHANGED,
 } from "../actions/action_constants";
 
-/* eslint import/no-webpack-loader-syntax: off */
 import Worker from "worker-loader!../workers/translate.worker.js";
 import { BRAILLE_SYSTEMS } from "../config/constants";
 import { keySelector } from "../reducers/selectors";
@@ -200,7 +199,7 @@ export function* systemChangeWatcher() {
         }
       } catch (error) {
         console.log(error);
-        // yield put({type: event.FAILURE, error});
+        yield put({type: event.FAILURE, error});
       }
     }
   });
