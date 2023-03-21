@@ -96,9 +96,9 @@ const App = () => {
   const navbarItems = [
     { label: t("navigation.catalogue"), to: "/catalogue" },
     { label: t("navigation.editor"), to: "/editor/splash" },
-    { label: t("navigation.pricing"), to: "/pricing" },
+    // { label: t("navigation.pricing"), to: "/pricing" },
     { label: t("navigation.support"), to: '/support' },
-    { label: t("navigation.knowledge"), to: '/wissen' },
+    // { label: t("navigation.knowledge"), to: '/wissen' },
   ];
 
   return (
@@ -163,14 +163,14 @@ const App = () => {
               path="/info/:lang/:textId"
               element={<LegalIndex />}
             ></Route>
-            <Route exact path="/" element={null} />
+            <Route exact path="/" element={<Landing />} />
             <Route path={"*"} element={<NotFound />} />
           </Routes>
 
         </AppContainer>
-        <Routes>
+        {/* <Routes>
           <Route exact path="/" element={<Landing />} />
-        </Routes>
+        </Routes> */}
         <Footer small={inEditor && !(location.pathname === '/')} />
       </ScrollContent>
 

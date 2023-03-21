@@ -25,9 +25,9 @@ const Account = props => {
     }, [location.pathname])
 
     const menues = [
-        { key: "addresses", icon: "map-marked" },
+        // { key: "addresses", icon: "map-marked" },
         { key: "my_account", icon: "user" },
-        { key: "orders", icon: "shopping-basket" },
+        // { key: "orders", icon: "shopping-basket" },
         { key: "newsletter", icon: "info" },
     ];
 

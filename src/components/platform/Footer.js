@@ -16,7 +16,6 @@ const FooterStyled = styled.footer`
    line-height: 120%;
    position: relative;
    padding: ${props => props.small ? "0.5rem 0" : '1rem 0 1.5rem 0'};
-   margin-top: ${props => props.small ? 0 : "4rem"};
 
    ${MD_SCREEN} {
        font-size: 0.9rem;
@@ -76,7 +75,7 @@ const Footer = props => {
                         </div>
                         :
                         <>
-                            <div className={"col-md-4 col-xs-12"}>
+                            <div className={"col-md-6 col-xs-12"}>
                                 <p>
                                     <span className={"heading"}>{t('footer:informationHeading')}</span>
                                     {legalTexts.map((text, index) => {
@@ -91,7 +90,7 @@ const Footer = props => {
 
                                 </p>
                             </div>
-                            <address className={"col-md-4 col-xs-12"}>
+                            <address className={"col-md-6 col-xs-12"}>
                                 <p>
                                     <span className={"heading"}>{t('footer:contactHeading')}</span>
                                 tacpic UG (haftungsbeschränkt) i. L. <br />
@@ -110,8 +109,7 @@ const Footer = props => {
                                     </a>
                                 </p>
                             </address>
-                            <div className={"col-md-4 col-xs-12"}>
-                                {/*<img src={"/images/logo_dark.svg"} />*/}
+                            {/* <div className={"col-md-4 col-xs-12"}>
                                 <p>
                                     <span className={"heading"}>
                                         {t('footer:fundingHeading')}
@@ -131,7 +129,7 @@ const Footer = props => {
                                         backend: {backend && backend.tag}<br />frontend: {frontend && frontend.tag}
                                     </Version>
                                 </NavLink>
-                            </div>
+                            </div> */}
                         </>
                     }
                 </Row></div>
