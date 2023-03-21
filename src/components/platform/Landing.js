@@ -28,10 +28,10 @@ const Form = styled.div`
   }
 `;
 
-const Video = styled.video`
-  max-width: 100%;
-  height: auto;
-`;
+// const Video = styled.video`
+//   max-width: 100%;
+//   height: auto;
+// `;
 
 const BigLogo = styled.img`
   width: 80%;
@@ -41,54 +41,31 @@ const BigLogo = styled.img`
   }
 `;
 
-const IllustrationContainer = styled.div`
-  min-height: 20vh;
-  text-align: center;
-  img {
-    /* max-height: 20vh; */
-    width: 80%;
-  }
-`
+// const IllustrationContainer = styled.div`
+//   min-height: 20vh;
+//   text-align: center;
+//   img {
+//     /* max-height: 20vh; */
+//     width: 80%;
+//   }
+// `
 
-const Wrapper = styled.main`
+const Wrapper = styled.div`
   position: relative;
-
-  .key-visual {
-      position: absolute;
-      top: -50px; left: 0; right: 0; bottom: 0;
-      background-image: url('/images/key3.jpg');
-
-      ${MD_SCREEN} {
-          background-size: contain;
-      }
-      
-      &:after {
-        background: rgb(255,255,255);
-        background: linear-gradient(0deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 100%);
-        content: "";
-        top: 0; left: 0; right: 0;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-      }
-  }
-
-  .bg-overlay {
-      padding-top: 2rem;
-        position: relative;
-    background-color: ${props => props.theme.grey_6};
-  }
+  height: 100%;
+  background-image: url('/images/key3.jpg');
+  background-size: cover;
 `
 
-const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 vertical-center-wrapper align-center";
+// const layout = "col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 vertical-center-wrapper align-center";
 
 const Landing = () => {
     const t = useTranslation().t;
     const navigate = useNavigate();
-    const videoPlayer = useRef();
-    const signedUp = useSelector(state => state.user.logged_in);
+    // const videoPlayer = useRef();
+    // const signedUp = useSelector(state => state.user.logged_in);
 
-    const [showMore, setShowMore] = useState(false);
+    // const [showMore, setShowMore] = useState(false);
 
     useEffect(() => {
         document.title = 'tacpic | Start';
@@ -97,7 +74,6 @@ const Landing = () => {
 
     return (
         <Wrapper>
-            <div className={'key-visual'} />
 
             <div className={"row"}>
                 <div className={"col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 vertical-center-wrapper align-center"}>
@@ -122,7 +98,8 @@ const Landing = () => {
 
                 </div>
             </div>
-            <div className={"row extra-padding"}>
+
+            {/* <div className={"row extra-padding"}>
                 <p id={"to-jump"} style={{ textAlign: "center", width: "100%" }}>
                     <a href={"#after-jump"} className={'no-styled-link'}>
                         <Button label={'landing:learnMore'}
@@ -240,7 +217,7 @@ const Landing = () => {
                     </div>
                 </div>
 
-            </div>
+            </div> */}
         </Wrapper>
     );
 };
