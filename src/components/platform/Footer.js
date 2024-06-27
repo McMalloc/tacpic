@@ -16,6 +16,10 @@ const FooterStyled = styled.footer`
    line-height: 120%;
    position: relative;
    padding: ${props => props.small ? "0.5rem 0" : '1rem 0 1.5rem 0'};
+   display: flex;
+   justify-content: center;
+   gap: 1.5rem;
+   flex-wrap: wrap;
 
    ${MD_SCREEN} {
        font-size: 0.9rem;
@@ -64,76 +68,18 @@ const Footer = props => {
 
     return (
         <FooterStyled small={props.small}>
-            <div className={"container"}>
 
-                <Row>
-                    {props.small ?
-                        <div className={"col-md-12 align-center"}>
-                            <NavLink target={"blank"} to={`/info/${i18n.language}/66?Impressum`}>
-                                {t('footer:imprint')}
-                            </NavLink>
-                        </div>
-                        :
-                        <>
-                            <div className={"col-md-6 col-xs-12"}>
-                                <p>
-                                    <span className={"heading"}>{t('footer:informationHeading')}</span>
-                                    {legalTexts.map((text, index) => {
-                                        return <span key={index}><NavLink
-                                            to={`/info/${i18n.language}/${text.id}?${text.title}`}>
-                                            {t('legal:' + text.title)}</NavLink> <br /></span>
-                                    })}
-                                    {legalTexts.length === 0 && <Loader frugal />}
-                                </p>
-
-                                <p>
-
-                                </p>
-                            </div>
-                            <address className={"col-md-6 col-xs-12"}>
-                                <p>
-                                    <span className={"heading"}>{t('footer:contactHeading')}</span>
-                                tacpic UG (haftungsbeschränkt) i. L. <br />
-                                Breitscheidstraße 51 <br />
-                                39114 Magdeburg
-                            </p>
-                                <p>
-                                    <Icon icon={"phone-alt"} />&emsp;<a href={"tel://+4917643486710"}>+49 176 43486710</a><br />
-                                    <Icon icon={"envelope"} />&emsp;
-                                    <a
-                                        href={"mailto://kontakt@tacpic.de"}>
-                                        kontakt@tacpic.de
-                                        {/* <span style={{unicodeBidi: 'bidi-override', direction: 'rtl'}}>
-                                        ed.cipcat@tkatnok
-                                        </span> */}
-                                    </a>
-                                </p>
-                            </address>
-                            {/* <div className={"col-md-4 col-xs-12"}>
-                                <p>
-                                    <span className={"heading"}>
-                                        {t('footer:fundingHeading')}
-                                    </span>
-                                    <FooterImageContainer>
-                                        <a target={'blank'} href={"https://europa.sachsen-anhalt.de/esi-fonds-in-sachsen-anhalt/ueber-die-europaeischen-struktur-und-investitionsfonds/esf/"}>
-                                            <img
-                                                alt={t('footer:fundingAltCopy')}
-                                                src={"/images/esf-signetpaar.svg"} />
-                                        </a>
-                                    </FooterImageContainer>
-                                </p>
-
-
-                                <NavLink to={"/stats"} className={"no-styled-link"}>
-                                    <Version>
-                                        backend: {backend && backend.tag}<br />frontend: {frontend && frontend.tag}
-                                    </Version>
-                                </NavLink>
-                            </div> */}
-                        </>
-                    }
-                </Row></div>
+            <>
+                {/* <span className={"heading"}>{t('footer:informationHeading')}</span> */}
+                {legalTexts.map((text, index) => {
+                    return <span className="element" key={index}><NavLink
+                        to={`/info/${i18n.language}/${text.id}?${text.title}`}>
+                        {t('legal:' + text.title)}</NavLink></span>
+                })}
+                {legalTexts.length === 0 && <Loader frugal />}
+            </>
         </FooterStyled>
+
     )
 };
 

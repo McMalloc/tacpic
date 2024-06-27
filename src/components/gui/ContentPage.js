@@ -9,8 +9,17 @@ const Wrapper = styled.div`
         padding: 0;
     }
 
-    figure>img {
+    figure:not(.imprint)>img {
         box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+    }
+    
+    figure.imprint {
+
+        margin: 0;
+
+        >img {
+        width: auto;
+    }
     }
 
     figcaption {

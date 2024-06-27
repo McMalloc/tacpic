@@ -2,7 +2,7 @@ import styled, { useTheme } from "styled-components/macro";
 import React, { useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import CenterWrapper from "../gui/_CenterWrapper";
 import { Row } from "../gui/Grid";
 import { Button } from "../gui/Button";
@@ -175,110 +175,12 @@ const Pricing = () => {
   return (
     <>
       <Row>
-        <div className={"col-xs-12 col-sm-12 col-lg-3"}>
+        <div className={"col-xs-12 col-sm-12 col-lg-6"}>
           <h1>{t("products:pricing")}</h1>
-        </div>
-        <div className={"col-xs-12"}>
-          <h2>{t("products:printing")}</h2>
-          <p>{t("products:printingDescription")}</p>
-          <PrintserviceTable>
-            <thead>
-              <th>{t("product")}</th>
-              <th>{t("products:pricePerPage")}</th>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{t("products:swellA4")}</td>
-                <td>
-                  {
-                    t('{{amount, currency}}',
-                      { amount: 290 }
-                    )
-                  }
-                </td>
-              </tr>
-              <tr>
-                <td>{t("products:swellA3")}</td>
-                <td>
-                  {
-                    t('{{amount, currency}}',
-                      { amount: 590 }
-                    )
-                  }
-                </td>
-              </tr>
-              <tr>
-                <td>{t("products:braille")}</td>
-                <td>
-                  {
-                    t('{{amount, currency}}',
-                      { amount: 60 }
-                    )
-                  }
-                </td>
-              </tr>
-            </tbody>
-            <br />
-            <a target={"_blank"} rel ={"noopener noreferrer"} href={"https://tacpic.de/info/de/62?Zahlung%20und%20Versand"}>{t("products:paymentAndShippingInfo")}</a>
-          </PrintserviceTable>
-          <br />
-          <br />
+          <p>{t("products:note")}</p>
+          <NavLink to={"/catalogue"}>{t("common:back")}</NavLink>
         </div>
       </Row >
-
-      <Row>
-        <div className={"col-xs-12 col-sm-12 col-lg-12"}>
-          <h2>{t("products:heading")}</h2>
-          <p>{t("products:description")}</p>
-        </div>
-      </Row>
-      <Row style={{ padding: "2rem 0" }}>
-        {products.map((product) => {
-          return (
-            <div className={"col-xs-12 col-sm-4"}>
-              <ProductCard
-                heading={t(product.name)}
-                subheading={t(product.durationText)}
-                icon={product.icon}
-                priceLabels={[t(product.price), t(product.priceHint, { price: product.priceAmount })]}
-                copy={t(product.description, { count: product.duration })}
-                buttons={product.buttons}
-              />
-            </div>
-          );
-        })}
-      </Row>
-      <Row>
-        <div role={'list'} className={"col-xs-12 col-sm-4"}>
-          <strong>{t("products:editorFeaturesHeading")}:</strong>
-          <ul>
-
-            <Trans i18nKey={'products:editorFeatures'}>
-              <li>0</li>
-              <li>1</li>
-              <li>2</li>
-              <li>3</li>
-              <li>4</li>
-              <li>5</li>
-              <li>6</li>
-            </Trans>
-
-          </ul>
-        </div>
-        <div className={"col-xs-12 col-sm-8"}>
-          <strong>{t("products:formatsHeading")}:</strong>
-          <ul>
-
-            <Trans i18nKey={'products:formats'}>
-              <li>0</li>
-              <li>1</li>
-              <li>2</li>
-              <li>3</li>
-            </Trans>
-
-          </ul>
-        </div>
-      </Row>
     </>
   );
 };
